@@ -1,0 +1,116 @@
+﻿/*-------------------------------------for Desktop--------------------------------------*/
+.PageContent {
+    margin: 0px;
+    padding: 0px;
+    margin-top: 0%;
+}
+
+.LoginPanel {
+background-color: transparent; border: none; box-shadow: 0px 0px 0px;left: 15%;
+}
+.MyLogo {
+    width: 100%;
+    margin-top: -43%;
+}
+
+.GlobalSearch {
+    height: 40px;
+    width: 122%;
+    margin-left: -14%;
+}
+
+.MyMenu {
+    min-height: 40px;
+    margin-top: -5px;
+    font-weight: bold;
+}
+
+.badge.rightbottom {
+    bottom: 0;
+    right: 0;
+    border-radius: 0px;
+}
+
+.Over {
+    filter: grayscale(0);
+}
+
+    .Over:hover {
+        filter: grayscale(1);
+    }
+
+.Tile {
+    width: 100%;
+    text-align: center;
+    float: left;
+    position: relative;
+}
+
+.ItemName {
+    margin-bottom: 4px;
+    padding: 5px;
+    display: block;
+    color: #3d464d;
+    font-weight: normal;
+    width: 100%;
+    float: left;
+    text-align: left;
+}
+
+.ItemPriceOffer {
+    margin-bottom: 4px;
+    margin-left: 15px;
+    display: block;
+    color: #3d464d;
+    font-weight: bold;
+    float: left;
+    text-align: left;
+    font-size: 16px;
+}
+
+.ItemPrice {
+    margin-bottom: 4px;
+    padding-left: 5px;
+    display: block;
+    color: #3d464d;
+    font-weight: normal;
+    float: left;
+    text-align: left;
+    font-size: 14px;
+    text-decoration: line-through;
+}
+
+
+
+/*-------------------------------------for Tab--------------------------------------*/
+
+@media (min-width: 768px ) and (max-width: 992px) {
+}
+/*-------------------------------------for mobile--------------------------------------*/
+
+@media (max-width: 767px ) {
+    .MyLogo {
+        width: 90%;
+        margin-top: -54%;
+    }
+
+    .MyMenu {
+        min-height: 0px;
+        margin-top: 0px;
+        font-weight: bold;
+    }
+
+    .GlobalSearch {
+        height: 40px;
+        width: 100%;
+        margin-left: 0%;
+    }
+    .PageContent {
+    margin: 0px;
+    padding: 0px;
+    margin-top: -6%;
+}
+    .LoginPanel {
+background-color: transparent; border: none; box-shadow: 0px 0px 0px;left: 0%;
+}
+}

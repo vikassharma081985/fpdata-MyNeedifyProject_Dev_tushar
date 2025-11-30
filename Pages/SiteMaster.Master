@@ -1,0 +1,98 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SiteMaster.master.cs" Inherits="WSBillingMaster.Pages.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
+    <link href="../Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../Css/AppStyle.css" rel="stylesheet" />
+    <link href="../Css/chosen.css" rel="stylesheet" />
+    <script src="../Js/jquery.min.js"></script>
+    <script src="../Js/bootstrap.min.js"></script>
+    <link href="../Css/admin.css" rel="stylesheet" />
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<form id="form1" runat="server">
+    <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+        <style>
+            .navbar {
+                margin-bottom: 0;
+                background-color: #f1f1f1;
+                color: #999;
+                min-height: 60px;
+            }
+        </style>
+        <style>
+            .Header {
+                border: 1px solid #ccc;
+                margin-top: 08%;
+                text-align: center;
+                font-weight: bold;
+                padding: 15px;
+            }
+
+            .Content {
+                border: 1px solid #ccc;
+                margin-top: 2%;
+                padding: 15px;
+                color: #000;
+            }
+        </style>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" style="font-size: 28px; font-family: cursive; font-weight: 600;"
+                        href="#">
+                        <img src="../Images/logoRC.png" style="width: 117px; margin-left: 0%; margin-top: -15%;" /></a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="UserDashboard.aspx" style="color: #000 !important">Home</a></li>
+                        <%-- <li><a href="#" style="color: #000 !important">Add Item</a></li>
+                        <li><a href="#" style="color: #000 !important">Manage Item</a></li>--%>
+                        <li><a href="Login.aspx" style="color: #000 !important">Logout</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <div class="container-fluid" style="margin: 0px; padding: 0px; margin-top: -10px;">
+
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <script>
+            function showmsg(msg) {
+                $('#msgField').html('');
+                $('#msgField').append(msg);
+                $(".alert").css('background-color', '#04b076');
+                $(".alert").removeClass("in").show();
+                $(".alert").delay(1500).addClass("in").fadeOut(1000);
+            }
+            function showerrormsg(msg) {
+                $('#msgField').html('');
+                $('#msgField').append(msg);
+                $(".alert").css('background-color', 'red');
+                $(".alert").removeClass("in").show();
+                $(".alert").delay(1500).addClass("in").fadeOut(1000);
+            }
+        </script>
+
+    </body>
+</form>
+</html>
