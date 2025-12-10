@@ -1,5 +1,4 @@
-﻿using BLL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -8,6 +7,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using BLL;
 
 namespace WSBillingMaster.Pages
 {
@@ -42,7 +42,8 @@ namespace WSBillingMaster.Pages
                 {
                     obj.ExpenseDate =  Convert.ToDateTime(data[0].Date).ToString("yyyy-MM-dd");
                     obj.ExpenseId = data[0].ExpenseId;
-                    obj.ExpenseFile = data[0].File.Replace(@"C:\fakepath\","");
+                    //obj.ExpenseFile = data[0].File.Replace(@"C:\fakepath\","");
+                    obj.ExpenseFile = data[0].File?.Split('|')?[0] ?? "";
                     obj.ExpenseDescription = data[0].Description;
                     obj.Amount = data[0].Amount;
 					obj.Amount = data[0].Amount;

@@ -8,7 +8,7 @@
         <!-- ======================== Expense Entry Section ========================= -->
         <div class="Header">
             <div class="section-title">Expense Manager</div>
-
+            <input type="hidden" id="hfUploadedFile" />
             <div class="responsive-form">
                 <div class="form-row">
                     <div class="form-group">
@@ -69,7 +69,7 @@
 
 
                 <div class="form-row center">
-    <input type="button" class="btn btn-success" value="Save" onclick="Save();" />
+    <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
                         <input type="button" class="btn btn-primary" value="Submit for Reimbursement" onclick="OpenRbmPopup();">
 
 
@@ -461,7 +461,7 @@
         function Save() {
             var Date = $('#txtExpenseDate').val();
             var ExpenseId = $('#ddlExpense').val();
-            var File = $('#fpUpload').val();
+            var File = $('#hfUploadedFile').val();// $('#fpUpload').val();
             var Description = $('#txtExpenseDescription').val();
             var Amount = $('#txtAmount').val();
 
@@ -565,6 +565,9 @@
                         data: data,
                         contentType: false,
                         processData: false,
+                        success: function (response) {
+                            $('#hfUploadedFile').val(response);
+                        }
                     });
                 }
             }

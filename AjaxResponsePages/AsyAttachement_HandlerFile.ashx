@@ -59,6 +59,9 @@ public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
             }
             if (callFor == "Expense")
             {
+                string ext = System.IO.Path.GetExtension(imgName);
+                string uniqueName = System.DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_" + Guid.NewGuid().ToString("N") + ext;
+                imgName = uniqueName;
                 Path = context.Request.PhysicalApplicationPath + "Uploads/Expense/" + imgName;
                 PerPath = Path;
                 if (System.IO.File.Exists(Path))
