@@ -196,32 +196,32 @@ namespace WSBillingMaster.Pages
 
         private void ClearForm()
         {
-            txtAadhar.Text =
-            txtFirstName.Text =
-            txtLastName.Text =
-            txtFatherName.Text =
-            txtBirthPlace.Text =
-            txtAddress.Text =
-            txtHeight.Text =
-            txtWeight.Text =
-            txtEmergencyPhone.Text =
-            txtEmergencyName.Text =
-            txtEmergencyRelation.Text =
-            txtLanguages.Text =
-            txtExperience.Text =
-            txtAccountNumber.Text =
-            txtIFSC.Text =
-            txtBankName.Text =
-            txtLoginPhone.Text =
-            txtPassword.Text = "";
+            //txtAadhar.Text =
+            //txtFirstName.Text =
+            //txtLastName.Text =
+            //txtFatherName.Text =
+            //txtBirthPlace.Text =
+            //txtAddress.Text =
+            //txtHeight.Text =
+            //txtWeight.Text =
+            //txtEmergencyPhone.Text =
+            //txtEmergencyName.Text =
+            //txtEmergencyRelation.Text =
+            //txtLanguages.Text =
+            ////txtExperience.Text =
+            //txtAccountNumber.Text =
+            //txtIFSC.Text =
+            //txtBankName.Text =
+            //txtLoginPhone.Text =
+            //txtPassword.Text = "";
 
-            ddlSkills.SelectedIndex = 0;
-            ddlGender.SelectedIndex = 0;
-            ddlMarital.SelectedIndex = 0;
-            ddlDemand.SelectedIndex = 0;
+            //ddlSkills.SelectedIndex = 0;
+            //ddlGender.SelectedIndex = 0;
+            //ddlMarital.SelectedIndex = 0;
+            //ddlDemand.SelectedIndex = 0;
 
-            rbOTP.Checked = true;
-            rbPassword.Checked = false;
+            //rbOTP.Checked = true;
+            //rbPassword.Checked = false;
         }
     }
 }
