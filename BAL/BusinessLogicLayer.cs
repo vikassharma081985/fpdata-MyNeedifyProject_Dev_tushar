@@ -1354,6 +1354,7 @@ namespace BLL
 		public int EmpId { get; set; }
 		public int ExpenseStatus { get; set; }
 		public string FetchUserId{get; set;}
+        public string ExpenseDataStatus { get; set; }
         public int SaveExpense()
 		{
 			using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -1394,7 +1395,8 @@ namespace BLL
 					sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
 					sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
 					sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
-					sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
+                    sqlCommand.Parameters.AddWithValue("@ExpenseDataStatus", ExpenseDataStatus);
+                    sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
 		
 		
 					return objDAL.GetDataTable(sqlCommand);

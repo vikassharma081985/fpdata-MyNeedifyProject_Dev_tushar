@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BLL;
+using Newtonsoft.Json;
 
 namespace WSBillingMaster.Pages
 {
     public partial class ExpenseManager : System.Web.UI.Page
     {
+        public static string apiBaseUrl = "https://localhost:7089/api/";
+        //public static string apiBaseUrl = "https://198.38.88.185/api/";
+        //public static string apiBaseUrl = "http://198.38.88.185/api/";
+        public static string apiKey = "nQuWK7pMKI@";
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -96,6 +105,7 @@ namespace WSBillingMaster.Pages
                     {
                         obj.ExpenseStatus = 2;
                     }
+                    obj.ExpenseDataStatus = "Reimbursement Created";
                     using (DataTable dt = obj.SearchExpense())
                     {
                         string rtrn = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
@@ -108,6 +118,71 @@ namespace WSBillingMaster.Pages
                     Console.WriteLine($"An error occurred: {ex.Message}");
                     return ex.Message;
                 }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string CallSaveReimbursementAPI(object payload)
+        {
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+            string apiUrl = $"{apiBaseUrl}Expense/SaveReimbursement";
+
+            using (HttpClient client = new HttpClient(handler))
+            {
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
+
+                var json = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                var response = client.PostAsync(apiUrl, content).Result;
+                //string responseData = response.Content.ReadAsStringAsync().Result;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return JsonConvert.SerializeObject(new
+                    {
+                        error = true,
+                        message = "API Error: " + response.StatusCode
+                    });
+                }
+
+                string responseData = response.Content.ReadAsStringAsync().Result;
+                return responseData;
+            }
+        }
+
+        [WebMethod]
+        public static string SaveSignature(string imageData, string expenseIds)
+        {
+            try
+            {
+                // Remove base64 header
+                string base64 = imageData.Replace("data:image/png;base64,", "");
+                byte[] bytes = Convert.FromBase64String(base64);
+
+                string folderPath = HttpContext.Current.Server.MapPath("~/Uploads/Signatures/");
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+
+                string fileName = "SIGN_" + expenseIds + ".png";
+                string[] existingFiles = Directory.GetFiles(folderPath, fileName);
+                foreach (string file in existingFiles)
+                {
+                    File.Delete(file);
+                }
+                string fullPath = Path.Combine(folderPath, fileName);
+                File.WriteAllBytes(fullPath, bytes);
+
+                return fileName; // or relative path
+            }
+            catch
+            {
+                return "";
             }
         }
     }

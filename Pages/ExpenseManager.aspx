@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true" CodeBehind="ExpenseManager.aspx.cs" Inherits="WSBillingMaster.Pages.ExpenseManager" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -46,7 +47,7 @@
         <!-- ======================== All Expenses Section ========================= -->
         <div class="Header" style="margin-top: 20px;">
             <div class="section-title">All Expenses</div>
-			<div class="section-title">Total Expense : Rs. <span id="lblExpenseAmt" style="color:LawnGreen;font-size:Large;">0</span> </div>
+            <div class="section-title">Total Expense : Rs. <span id="lblExpenseAmt" style="color: LawnGreen; font-size: Large;">0</span> </div>
             <div class="responsive-form">
                 <div class="form-row">
                     <div class="form-group">
@@ -64,17 +65,15 @@
                         <select id="ddlExpenseSearch" class="form-control"></select>
                     </div>
 
-            
+
                 </div>
 
 
                 <div class="form-row center">
-    <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
-                        <input type="button" class="btn btn-primary" value="Submit for Reimbursement" onclick="OpenRbmPopup();">
+                    <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
+                    <input type="button" class="btn btn-primary" value="Submit for Reimbursement" onclick="OpenRbmPopup();">
+                </div>
 
-
-</div>
-                          
 
 
             </div>
@@ -82,9 +81,9 @@
             <div class="table-responsive">
                 <table id="tblExpense" style="width: 100%;">
                     <tr>
-                         <th class="MyHeader">
-     <input type="checkbox" id="chkSelectAll" />
- </th>
+                        <th class="MyHeader">
+                            <input type="checkbox" id="chkSelectAll" />
+                        </th>
                         <th class="MyHeader">SNo.</th>
                         <th class="MyHeader">Date</th>
                         <th class="MyHeader">Expense On</th>
@@ -101,125 +100,144 @@
 
 
 
-        <!-- ====================== Modal ====================== -->
-<div id="submitModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeSubmitModal();">&times;</span>
-        <h3>Details which needs to be displayed on header </h3>
-    <div id="rbmPopup" title="Submit Reimbursement" style="display:visible;">
-    <label>Reporting Manager</label>
-    <input type="text" id="txtManager" class="form-control" />
+    <!-- ====================== Modal ====================== -->
+    <div id="submitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSubmitModal();">&times;</span>
+            <h3>Details which needs to be displayed on header </h3>
+            <div id="rbmPopup" title="Submit Reimbursement" style="display: visible;">
+                <label>Reporting Manager</label>
+                <input type="text" id="txtManager" class="form-control" />
 
-    <label>Employee Code</label>
-    <input type="text" id="txtEmpCode" class="form-control" />
+                <label>Employee Code</label>
+                <input type="text" id="txtEmpCode" class="form-control" />
 
-    <label>Company Name</label>
-    <input type="text" id="txtCompany" class="form-control" />
+                <label>Company Name</label>
+                <input type="text" id="txtCompany" class="form-control" />
 
-    <label>Plant Code</label>
-    <input type="text" id="txtPlant" class="form-control" />
+                <label>Plant Code</label>
+                <input type="text" id="txtPlant" class="form-control" />
 
-    <label>Signature (Upload)</label>
-    <input type="file" id="fpSignature" onchange="UploadSignature();" />
-
-    <input type="button" class="btn btn-success" value="Generate Document" onclick="GenerateReimbursementDoc();" />
-</div>
+                <%--<label>Signature (Upload)</label>
+                <input type="file" id="fpSignature" onchange="UploadSignature();" />--%>
+                <label style="cursor:pointer;color:#007bff;" onclick="openSignatureModal()">
+                    Signature (Click to Sign)
+                </label>
+                <label id="lblSignatureFile"
+                       style="display:none;color:green;font-weight:600;">
+                </label>
+                <input type="hidden" id="hfSignaturePath" />
+                <input type="button" class="btn btn-success" value="Generate Document" onclick="GenerateReimbursementDoc();" />
+            </div>
 
         </div>
     </div>
 
 
-        <!-------------------------edit modal-------------------------->
+    <!-------------------------edit modal-------------------------->
 
-<div id="editModal" class="modal">
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal();">&times;</span>
+
+            <h3>Generated Reimbursement Documents</h3>
+
+            <!-- Table will be shown automatically -->
+            <table id="tblRbmDocs" class="table table-bordered">
+                <tr>
+                    <th>SNo</th>
+                    <th>Date</th>
+                    <th>Document</th>
+                    <th>Send Mail</th>
+                    <th>Open / Print</th>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+<div id="signatureModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeEditModal();">&times;</span>
-
-        <h3>Generated Reimbursement Documents</h3>
-
-        <!-- Table will be shown automatically -->
-        <table id="tblRbmDocs" class="table table-bordered">
-            <tr>
-                <th>SNo</th>
-                <th>Date</th>
-                <th>Document</th>
-                <th>Send Mail</th>
-                <th>Open / Print</th>
-            </tr>
-        </table>
-
+        <span class="close" onclick="closeSignatureModal()">&times;</span>
+        <h3>Draw Your Signature</h3>
+        <canvas id="signatureCanvas"
+                width="500" height="200"
+                style="border:1px solid #ccc;background:#fff;"></canvas>
+        <br /><br />
+        <button type="button" class="btn btn-warning" onclick="clearSignature()">Clear</button>
+        <button type="button" class="btn btn-success" onclick="saveSignature()">Save</button>
     </div>
 </div>
 
     <!-- ======================== Styles ========================= -->
     <style>
-                .modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    padding-top: 80px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            padding-top: 80px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
 
-.modal-content {
-    background-color: #fff;
-    margin: auto;
-    padding: 20px;
-    border-radius: 6px;
-    width: 85%;
-    max-width: 700px;
-}
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 6px;
+            width: 85%;
+            max-width: 700px;
+        }
 
-.close {
-    float: right;
-    font-size: 22px;
-    cursor: pointer;
-    font-weight: bold;
-}
+        .close {
+            float: right;
+            font-size: 22px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-@media (max-width: 600px) {
+        @media (max-width: 600px) {
 
-    .modal-content {
-        width: 95% !important;
-        padding: 15px;
-    }
+            .modal-content {
+                width: 95% !important;
+                padding: 15px;
+            }
 
-    .modal-content h3 {
-        font-size: 16px;
-        text-align: center;
-    }
+                .modal-content h3 {
+                    font-size: 16px;
+                    text-align: center;
+                }
 
-    .table-responsive {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
 
-    table {
-        width: 600px; 
-    }
+            table {
+                width: 600px;
+            }
 
-    .MyHeader, .MyCol {
-        font-size: 11px !important;
-        padding: 4px !important;
-        white-space: nowrap;
-        text-align: center !important;
-    }
+            .MyHeader, .MyCol {
+                font-size: 11px !important;
+                padding: 4px !important;
+                white-space: nowrap;
+                text-align: center !important;
+            }
 
-    .close {
-        font-size: 20px;
-    }
+            .close {
+                font-size: 20px;
+            }
 
-    .btn {
-        width: 100%;
-        font-size: 14px;
-        padding: 10px 0 !important;
-    }
-}
+            .btn {
+                width: 100%;
+                font-size: 14px;
+                padding: 10px 0 !important;
+            }
+        }
 
 
         .MyCol, .MyHeader {
@@ -270,23 +288,23 @@
             flex-direction: column;
         }
 
-        .form-group label {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #000;
-            text-align: left;
-        }
+            .form-group label {
+                font-weight: 600;
+                margin-bottom: 5px;
+                color: #000;
+                text-align: left;
+            }
 
-        .form-control,
-        .form-group input[type="file"],
-        .form-group select {
-            padding: 6px;
-            font-size: 13px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            width: 100%;
-        }
+            .form-control,
+            .form-group input[type="file"],
+            .form-group select {
+                padding: 6px;
+                font-size: 13px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+                width: 100%;
+            }
 
         .center {
             justify-content: center;
@@ -302,12 +320,13 @@
 
         /* Responsive for Mobile/Tablet */
         @media (max-width: 1024px) {
-            .Header{
-                margin-top:30%;
+            .Header {
+                margin-top: 30%;
             }
+
             .form-group {
-    margin-bottom: -10px;
-}
+                margin-bottom: -10px;
+            }
         }
 
 
@@ -328,22 +347,22 @@
                 width: 100% !important;
             }
 
-            .form-group label {
-                font-size: 14px;
-            }
+                .form-group label {
+                    font-size: 14px;
+                }
 
-            .form-control,
-            .form-group select,
-            .form-group input[type="file"],
-            .form-group input[type="text"],
-            .form-group input[type="button"],
-            .btn {
-                width: 100% !important;
-                display: block;
-                font-size: 14px;
-                margin-bottom: 15px;
-                box-sizing: border-box;
-            }
+                .form-control,
+                .form-group select,
+                .form-group input[type="file"],
+                .form-group input[type="text"],
+                .form-group input[type="button"],
+                .btn {
+                    width: 100% !important;
+                    display: block;
+                    font-size: 14px;
+                    margin-bottom: 15px;
+                    box-sizing: border-box;
+                }
 
             .btn {
                 padding: 10px 0;
@@ -364,6 +383,41 @@
                 white-space: nowrap;
             }
         }
+
+        #loaderOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            }
+
+            .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #28a745;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            }
+
+            .loader-text {
+            margin-top: 10px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+            }
+
+            @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+            }
     </style>
 
     <!-- ======================== Scripts ========================= -->
@@ -371,23 +425,23 @@
     <script src="../Js/jquery-ui.js"></script>
     <script>
 
-            function EditExpense() {
-                document.getElementById("editModal").style.display = "block";
-     }
+        function EditExpense() {
+            document.getElementById("editModal").style.display = "block";
+        }
 
-            function closeEditModal() {
-                document.getElementById("editModal").style.display = "none";
-     }
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
 
 
 
-            // Select/Deselect All checkboxes
-            $(document).on('change', '#chkSelectAll', function () {
-         var isChecked = $(this).is(':checked');
+        // Select/Deselect All checkboxes
+        $(document).on('change', '#chkSelectAll', function () {
+            var isChecked = $(this).is(':checked');
             $('.chkSingle').prop('checked', isChecked);
-     });
+        });
 
-            // If any single checkbox is unchecked, uncheck Select All
+        // If any single checkbox is unchecked, uncheck Select All
         $(document).on('change', '.chkSingle', function () {
             if (!$(this).is(':checked')) {
                 $('#chkSelectAll').prop('checked', false);
@@ -401,18 +455,25 @@
         );
 
 
-            function OpenRbmPopup() {
-                document.getElementById("submitModal").style.display = "block";
-     }
+        function OpenRbmPopup() {
+            $('#txtManager').val('');
+            $('#txtEmpCode').val('');
+            $('#txtPlant').val('');
+            $('#txtCompany').val('');
+            $('#fpSignature').val('');
+            $('#hfSignaturePath').val('');
+            $('#lblSignatureFile').text('').hide();
+            document.getElementById("submitModal").style.display = "block";
+        }
 
-            function closeSubmitModal() {
-                document.getElementById("submitModal").style.display = "none";
-     }
+        function closeSubmitModal() {
+            document.getElementById("submitModal").style.display = "none";
+        }
 
 
-            function saveSelected() {
-                alert("Selected expenses saved! (Dummy action)");
-     }
+        function saveSelected() {
+            alert("Selected expenses saved! (Dummy action)");
+        }
 
 
 
@@ -503,13 +564,13 @@
             var FromDate = $('#txtFromDate').val();
             var ToDate = $('#txtToDate').val();
             var ExpenseId = $('#ddlExpenseSearch').val();
-	    var UserId = localStorage.getItem("UserId");
-			var totExpense = 0;
+            var UserId = localStorage.getItem("UserId");
+            var totExpense = 0;
 
             $.ajax({
                 url: "ExpenseManager.aspx/SearchExpense",
                 async: true,
-                data: JSON.stringify({ FromDate: FromDate, ToDate: ToDate, ExpenseId: ExpenseId, UserId: UserId  }),
+                data: JSON.stringify({ FromDate: FromDate, ToDate: ToDate, ExpenseId: ExpenseId, UserId: UserId }),
                 contentType: "application/json; charset=utf-8",
                 type: "POST",
                 timeout: 120000,
@@ -518,9 +579,9 @@
                     var data = $.parseJSON(result.d);
                     $('#tblExpense tr').slice(1).remove();
                     $.each(data, function (index, value) {
-					totExpense += value.Amount;
+                        totExpense += value.Amount;
                         var html = '<tr>';
-                        html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" /></td>';
+                        html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
 
                         html += '<td class="MyHeader">' + (index + 1) + '</td>';
                         html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
@@ -533,12 +594,12 @@
                         }
                         html += '</td>';
                         html += '<td class="MyHeader">' + value.EntryDate + '</td>';
-                        html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.Id + ')">Edit</button></td>';
+                        html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
 
                         html += '</tr>';
                         $('#tblExpense').append(html);
                     });
-					$('#lblExpenseAmt').text(totExpense);
+                    $('#lblExpenseAmt').text(totExpense);
                 }
             });
         }
@@ -580,5 +641,179 @@
             $('#fpUpload').val('');
             $('#txtExpenseDescription').val('');
         }
+
+        function parseDateSafe(dateStr) {
+            var parts = dateStr.split('-'); // yyyy-MM-dd
+            return new Date(
+                parseInt(parts[0], 10),
+                parseInt(parts[1], 10) - 1,
+                parseInt(parts[2], 10)
+            ).getTime();
+        }
+
+        function GenerateReimbursementDoc() {
+
+            var selectedIds = [];
+            var selectedDates = [];
+
+            // Loop through all rows except header
+            $('#tblExpense tr').not(':first').each(function () {
+
+                var checkbox = $(this).find('.chkSingle');
+
+                if (checkbox.is(':checked')) {
+                    var id = checkbox.attr('data-id');
+                    if (id) {
+                        selectedIds.push(Number(id));
+                    }
+                    // ExpenseDate is in 3rd column (index 2)
+                    var expenseDateText = $(this).find('td').eq(2).text().trim();
+                    if (expenseDateText) {
+                        selectedDates.push(expenseDateText);
+                    }
+                }
+            });
+
+            if (selectedIds.length === 0) {
+                alert("Please select at least one expense.");
+                return;
+            }
+            debugger;
+            // Build comparable list
+            var parsedDates = selectedDates.map(d => ({
+                original: d,
+                time: parseDateSafe(d)
+            }));
+
+            // Find start & end
+            var startObj = parsedDates.reduce((min, cur) =>
+                cur.time < min.time ? cur : min
+            );
+
+            var endObj = parsedDates.reduce((max, cur) =>
+                cur.time > max.time ? cur : max
+            );
+
+            var startDateStr = startObj.original;
+            var endDateStr = endObj.original;
+            showLoader(); 
+            var payload = {
+                createdBy: 1,
+                managerName: $('#txtManager').val(),
+                plantCode: $('#txtPlant').val(),
+                companyName: $('#txtCompany').val(),
+                signature: $('#hfSignaturePath').val(),
+                employeeCode: $('#txtEmpCode').val(),
+                pdfPath: '',
+                id: selectedIds[0],
+                expenseIds: selectedIds,
+                startExpenseDate: startDateStr,
+                endExpenseDate: endDateStr
+            };
+            $.ajax({
+                url: "ExpenseManager.aspx/CallSaveReimbursementAPI",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ payload: payload }),
+                success: function (res) {
+                    hideLoader();
+                    var result = JSON.parse(res.d);
+                    alert("Reimbursement Created with batch id: " + result.batchID);
+                    Search();
+                    closeSubmitModal();
+                },
+                error: function (err) {
+                    hideLoader();
+                    console.log(err);
+                    alert("Server Error!");
+                }
+            });
+        }
+
+        //var canvas = document.getElementById('signatureCanvas');
+        //var signaturePad = new SignaturePad(canvas);
+
+        var signaturePad = null;
+        function openSignatureModal() {
+            document.getElementById("signatureModal").style.display = "block";
+            setTimeout(function () {
+                var canvas = document.getElementById("signatureCanvas");
+                if (!signaturePad) {
+                    signaturePad = new SignaturePad(canvas);
+                } else {
+                    signaturePad.clear();
+                }
+            }, 100);
+        }
+
+        function closeSignatureModal() {
+            document.getElementById("signatureModal").style.display = "none";
+        }
+
+        function clearSignature() {
+            if (signaturePad) {
+                signaturePad.clear();
+            }
+        }
+
+        function saveSignature() {
+            var selectedIds = [];
+            $('#tblExpense tr').not(':first').each(function () {
+
+                var checkbox = $(this).find('.chkSingle');
+
+                if (checkbox.is(':checked')) {
+                    var id = checkbox.attr('data-id');
+                    if (id) {
+                        selectedIds.push(Number(id));
+                    }
+                }
+            });
+
+            if (selectedIds.length === 0) {
+                alert("Please select at least one expense.");
+                return;
+            }
+
+            if (signaturePad.isEmpty()) {
+                alert("Please provide a signature.");
+                return;
+            }
+
+            var base64Image = signaturePad.toDataURL("image/png");
+            var expenseIds = selectedIds.join('_');
+            showLoader(); 
+            $.ajax({
+                url: "ExpenseManager.aspx/SaveSignature",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ imageData: base64Image, expenseIds: expenseIds }),
+                success: function (res) {
+                    if (res.d !== "") {
+                        hideLoader();
+                        $('#hfSignaturePath').val(res.d);
+                        $('#lblSignatureFile').text(res.d).show();
+                        alert("Signature saved successfully!");
+                        closeSignatureModal();
+                    } else {
+                        hideLoader();
+                        alert("Error saving signature.");
+                    }
+                }
+            });
+        }
+
+        function showLoader() {
+            $('#loaderOverlay').show();
+        }
+
+        function hideLoader() {
+            $('#loaderOverlay').hide();
+        }
     </script>
+
+    <div id="loaderOverlay" style="display:none;">
+    <div class="loader"></div>
+    <div class="loader-text">Please wait...</div>
+</div>
 </asp:Content>
