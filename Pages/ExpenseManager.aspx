@@ -5,6 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
     <div class="container">
         <!-- ======================== Expense Entry Section ========================= -->
         <div class="Header">
@@ -23,8 +24,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Quantity :</label>
+                        <input type="text" id="txtQuantity" value="0" class="form-control" maxlength="5" />
+                    </div>
+                    <div class="form-group">
+                        <label>Rate :</label>
+                        <input type="text" id="txtRate" value="0" class="form-control" maxlength="5" />
+                    </div>
+                    <div class="form-group">
                         <label>Amount :</label>
-                        <input type="text" id="txtAmount" class="form-control" maxlength="5" />
+                        <input type="text" disabled id="txtAmount" class="form-control" maxlength="5" />
                     </div>
 
                     <div class="form-group">
@@ -93,6 +102,11 @@
                         <th class="MyHeader">EntryDate</th>
                     </tr>
                 </table>
+                <div id="pagination" style="margin-top:10px;text-align:center;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="prevPage()">Prev</button>
+                    <span id="pageInfo" style="margin:0 10px;"></span>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="nextPage()">Next</button>
+                </div>
             </div>
         </div>
     </div>
@@ -424,7 +438,9 @@
     <link href="../Css/jquery-ui.css" rel="stylesheet" />
     <script src="../Js/jquery-ui.js"></script>
     <script>
-
+        var expenseData = [];
+        var currentPage = 1;
+        var pageSize = 10;
         function EditExpense() {
             document.getElementById("editModal").style.display = "block";
         }
@@ -497,6 +513,19 @@
         $(document).ready(function () {
             BindExpenseMaster();
             Search();
+
+            function calculateAmount() {
+                var qty = parseFloat($('#txtQuantity').val()) || 0;
+                var rate = parseFloat($('#txtRate').val()) || 0;
+
+                var amount = qty * rate;
+                $('#txtAmount').val(amount);
+            }
+
+            // Trigger on change / typing
+            $('#txtQuantity, #txtRate').on('input', function () {
+                calculateAmount();
+            });
         });
 
         function BindExpenseMaster() {
@@ -524,7 +553,9 @@
             var ExpenseId = $('#ddlExpense').val();
             var File = $('#hfUploadedFile').val();// $('#fpUpload').val();
             var Description = $('#txtExpenseDescription').val();
+            debugger;
             var Amount = $('#txtAmount').val();
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
 
             if (Date == "" || ExpenseId == "" || Amount == "") {
                 alert('Date, Expense On, and Amount are mandatory fields');
@@ -538,6 +569,7 @@
             obj.File = File;
             obj.Description = Description;
             obj.Amount = Amount;
+            obj.userId = hdnUserId;
             data.push(obj);
 
             $.ajax({
@@ -556,6 +588,9 @@
                     } else {
                         alert('Some Error Occurred!');
                     }
+                },
+                error: function (err) {
+                    console.log(err);
                 }
             });
         }
@@ -564,7 +599,8 @@
             var FromDate = $('#txtFromDate').val();
             var ToDate = $('#txtToDate').val();
             var ExpenseId = $('#ddlExpenseSearch').val();
-            var UserId = localStorage.getItem("UserId");
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var UserId = hdnUserId;//localStorage.getItem("UserId");
             var totExpense = 0;
 
             $.ajax({
@@ -576,32 +612,107 @@
                 timeout: 120000,
                 dataType: "json",
                 success: function (result) {
-                    var data = $.parseJSON(result.d);
-                    $('#tblExpense tr').slice(1).remove();
-                    $.each(data, function (index, value) {
-                        totExpense += value.Amount;
-                        var html = '<tr>';
-                        html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
-
-                        html += '<td class="MyHeader">' + (index + 1) + '</td>';
-                        html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
-                        html += '<td class="MyHeader">' + value.Expense + '</td>';
-                        html += '<td class="MyHeader">' + value.Amount + '</td>';
-                        html += '<td class="MyHeader">' + value.Description + '</td>';
-                        html += '<td class="MyHeader">';
-                        if (value.ExpenseFile != '') {
-                            html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank" style="color:#09f;">View Bill</a>';
-                        }
-                        html += '</td>';
-                        html += '<td class="MyHeader">' + value.EntryDate + '</td>';
-                        html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
-
-                        html += '</tr>';
-                        $('#tblExpense').append(html);
-                    });
-                    $('#lblExpenseAmt').text(totExpense);
+                    expenseData = $.parseJSON(result.d);
+                    currentPage = 1;
+                    renderExpenseTable();
                 }
+                //success: function (result) {
+                //    var data = $.parseJSON(result.d);
+                //    $('#tblExpense tr').slice(1).remove();
+                //    $.each(data, function (index, value) {
+                //        totExpense += value.Amount;
+                //        var html = '<tr>';
+                //        html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
+
+                //        html += '<td class="MyHeader">' + (index + 1) + '</td>';
+                //        html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
+                //        html += '<td class="MyHeader">' + value.Expense + '</td>';
+                //        html += '<td class="MyHeader">' + value.Amount + '</td>';
+                //        html += '<td class="MyHeader">' + value.Description + '</td>';
+                //        html += '<td class="MyHeader">';
+                //        if (value.ExpenseFile != '') {
+                //            html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank" style="color:#09f;">View Bill</a>';
+                //        }
+                //        html += '</td>';
+                //        html += '<td class="MyHeader">' + value.EntryDate + '</td>';
+                //        html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
+
+                //        html += '</tr>';
+                //        $('#tblExpense').append(html);
+                //    });
+                //    $('#lblExpenseAmt').text(totExpense);
+                //}
             });
+        }
+
+        function renderExpenseTable() {
+
+            $('#tblExpense tr').slice(1).remove();
+            var totExpense = 0;
+
+            var start = (currentPage - 1) * pageSize;
+            var end = start + pageSize;
+            var pageData = expenseData.slice(start, end);
+
+            $.each(pageData, function (index, value) {
+
+                totExpense += value.Amount;
+
+                var html = '<tr>';
+                if (value.Status != "Reimbursement Created") {
+                    html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
+                }
+                else {
+                    html += '<td class="MyHeader"><input type="checkbox" disabled class="chkSingle" data-id="' + value.ID + '" /></td>';
+                    //html += '<td class="MyHeader"></td>';
+                }
+                html += '<td class="MyHeader">' + (start + index + 1) + '</td>';
+                html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
+                html += '<td class="MyHeader">' + value.Expense + '</td>';
+                html += '<td class="MyHeader">' + value.Amount + '</td>';
+                html += '<td class="MyHeader">' + value.Description + '</td>';
+                html += '<td class="MyHeader">';
+                if (value.ExpenseFile) {
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank">View Bill</a>';
+                }
+                html += '</td>';
+                html += '<td class="MyHeader">' + value.EntryDate + '</td>';
+                if (value.Status != "Reimbursement Created") {
+                    html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
+                }
+                else {
+                    html += '<td class="MyHeader">' +
+                        '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">' +
+                        'View Reimbursement</a></td>';
+                }
+                html += '</tr>';
+
+                $('#tblExpense').append(html);
+            });
+            $('#lblExpenseAmt').text(
+                expenseData.reduce((sum, x) => sum + x.Amount, 0)
+            );
+
+            updatePageInfo();
+        }
+
+        function updatePageInfo() {
+            var totalPages = Math.ceil(expenseData.length / pageSize);
+            $('#pageInfo').text("Page " + currentPage + " of " + totalPages);
+        }
+
+        function nextPage() {
+            if (currentPage * pageSize < expenseData.length) {
+                currentPage++;
+                renderExpenseTable();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderExpenseTable();
+            }
         }
 
         function FileChange(ctrl) {
@@ -639,6 +750,8 @@
             $('#ddlExpense').val('0');
             $('#txtAmount').val('');
             $('#fpUpload').val('');
+            $('#txtQuantity').val('0');
+            $('#txtRate').val('0');
             $('#txtExpenseDescription').val('');
         }
 
@@ -678,7 +791,6 @@
                 alert("Please select at least one expense.");
                 return;
             }
-            debugger;
             // Build comparable list
             var parsedDates = selectedDates.map(d => ({
                 original: d,
@@ -697,8 +809,9 @@
             var startDateStr = startObj.original;
             var endDateStr = endObj.original;
             showLoader(); 
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
             var payload = {
-                createdBy: 1,
+                createdBy: hdnUserId,
                 managerName: $('#txtManager').val(),
                 plantCode: $('#txtPlant').val(),
                 companyName: $('#txtCompany').val(),
@@ -810,6 +923,18 @@
         function hideLoader() {
             $('#loaderOverlay').hide();
         }
+
+        function openExpensePdf(fileName) {
+            if (fileName == '') {
+                alert('File not found');
+                return;
+            }
+            //var pdfUrl = "https://198.38.88.185/api/Download/DownloadPdf" //"https://localhost:7089/api/Download/DownloadPdf"
+            var pdfUrl = "https://localhost:7089/api/Download/DownloadPdf"
+                + "?fileName=" + encodeURIComponent(fileName);
+            window.open(pdfUrl, "_blank");
+        }
+
     </script>
 
     <div id="loaderOverlay" style="display:none;">

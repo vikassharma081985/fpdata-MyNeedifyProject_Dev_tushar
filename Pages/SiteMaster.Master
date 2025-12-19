@@ -61,7 +61,7 @@
                         <li><a href="UserDashboard.aspx" style="color: #000 !important">Home</a></li>
                         <%-- <li><a href="#" style="color: #000 !important">Add Item</a></li>
                         <li><a href="#" style="color: #000 !important">Manage Item</a></li>--%>
-                        <li><a href="Login.aspx" style="color: #000 !important">Logout</a></li>
+                        <li><a href="../Front/index.aspx" style="color: #000 !important">Logout</a></li>
 
                     </ul>
                 </div>

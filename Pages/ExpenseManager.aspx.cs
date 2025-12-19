@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Services;
@@ -18,13 +20,25 @@ namespace WSBillingMaster.Pages
     public partial class ExpenseManager : System.Web.UI.Page
     {
         //public static string apiBaseUrl = "https://localhost:7089/api/";
-        public static string apiBaseUrl = "https://198.38.88.185/api/";
-        //public static string apiBaseUrl = "http://198.38.88.185/api/";
+        //public static string apiBaseUrl = "https://198.38.88.185/api/";
         public static string apiKey = "nQuWK7pMKI@";
 
         protected void Page_Load(object sender, EventArgs e)
+        
         {
-
+            if (!IsPostBack)
+            {
+                if (Session["UserName"] == null || Session["UserId"] == null)
+                {
+                    Session.Clear();
+                    Session.Abandon();
+                    Response.Redirect("~/Front/Index.aspx", true);
+                    return;
+                }
+                string userName = Session["UserName"].ToString();
+                string userId = Session["UserId"].ToString();
+                hdnUserId.Value = userId;
+            }
         }
 
         [WebMethod]
@@ -59,9 +73,9 @@ namespace WSBillingMaster.Pages
 					string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
 					int idx = url.IndexOf('?');
 					string query = idx >= 0 ? url.Substring(idx) : "";
-					obj.FetchUserId = (HttpUtility.ParseQueryString(query).Get("UserId"));
-					obj.OrgId = Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("OrgId"));
-					obj.EmpId = Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("EmpId"));
+                    obj.FetchUserId = Convert.ToString(data[0].userId); // (HttpUtility.ParseQueryString(query).Get("UserId"));
+                    obj.OrgId = 0;//Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("OrgId"));
+                    obj.EmpId = 0;// Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("EmpId"));
                     
 
                     int a = obj.SaveExpense();
@@ -105,6 +119,7 @@ namespace WSBillingMaster.Pages
                     {
                         obj.ExpenseStatus = 2;
                     }
+                    obj.FetchUserId = uID;
                     obj.ExpenseDataStatus = "Reimbursement Created";
                     using (DataTable dt = obj.SearchExpense())
                     {
@@ -130,6 +145,7 @@ namespace WSBillingMaster.Pages
                 ServerCertificateCustomValidationCallback =
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             };
+            var apiBaseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
             string apiUrl = $"{apiBaseUrl}Expense/SaveReimbursement";
 
             using (HttpClient client = new HttpClient(handler))
@@ -194,6 +210,7 @@ namespace WSBillingMaster.Pages
         public string File { get; set; }
         public string Description { get; set; }
         public int Amount { get; set; }
+        public int userId { get; set; }
 
 
 

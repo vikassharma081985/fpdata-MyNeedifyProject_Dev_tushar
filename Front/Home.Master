@@ -70,6 +70,7 @@
                     type: "POST",
                     url: "http://localhost:46692/Front/index.aspx/LoginDetails",
                     //url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
+                    //url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails"
                     data: JSON.stringify({
                         UserName: UserName, Password: Password
                     }),
@@ -77,7 +78,6 @@
                     dataType: "json",
                     async: true,
                     success: function (data) {
-                        debugger
                         var UserInfo = $.parseJSON(data.d);
                         if (UserInfo.length > 0) {
 
@@ -91,7 +91,7 @@
                             $('#btnModalClose').click();
                             //location.reload();
 
-                            //  window.location.href = 'Front/index.aspx';
+                            window.location.href = '../pages/expensemanager.aspx';
                         }
 
                         else {
