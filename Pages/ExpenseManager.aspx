@@ -24,12 +24,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Quantity :</label>
-                        <input type="text" id="txtQuantity" value="0" class="form-control" maxlength="5" />
-                    </div>
-                    <div class="form-group">
                         <label>Rate :</label>
                         <input type="text" id="txtRate" value="0" class="form-control" maxlength="5" />
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity :</label>
+                        <input type="text" id="txtQuantity" value="0" class="form-control" maxlength="5" />
                     </div>
                     <div class="form-group">
                         <label>Amount :</label>
