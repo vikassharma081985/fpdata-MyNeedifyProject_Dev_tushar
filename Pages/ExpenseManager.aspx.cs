@@ -69,8 +69,9 @@ namespace WSBillingMaster.Pages
                     obj.ExpenseFile = data[0].File?.Split('|')?[0] ?? "";
                     obj.ExpenseDescription = data[0].Description;
                     obj.Amount = data[0].Amount;
-					obj.Amount = data[0].Amount;
-					string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
+					obj.Rate = data[0].Rate;
+                    obj.Quantity = data[0].Quantity;
+                    string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
 					int idx = url.IndexOf('?');
 					string query = idx >= 0 ? url.Substring(idx) : "";
                     obj.FetchUserId = Convert.ToString(data[0].userId); // (HttpUtility.ParseQueryString(query).Get("UserId"));
@@ -90,7 +91,7 @@ namespace WSBillingMaster.Pages
 
        [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string SearchExpense(string FromDate, string ToDate, int ExpenseId, string UserId=null)
+        public static string SearchExpense(string FromDate, string ToDate, int? ExpenseId = null, string UserId=null)
         {
             using (BusinessLogicLayer obj = new BusinessLogicLayer())
             {
@@ -100,7 +101,10 @@ namespace WSBillingMaster.Pages
                         obj.FromDate = Convert.ToDateTime(FromDate).ToString("yyyy-MM-dd");
                     if (ToDate != null && ToDate != "")
                         obj.ToDate = Convert.ToDateTime(ToDate).ToString("yyyy-MM-dd");
-                    obj.ExpenseId = ExpenseId;
+                    if (ExpenseId != null)
+                    {
+                        obj.ExpenseId = ExpenseId ?? 0;
+                    }
                     string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
                     int idx = url.IndexOf('?');
                     string query = idx >= 0 ? url.Substring(idx) : "";
@@ -201,17 +205,44 @@ namespace WSBillingMaster.Pages
                 return "";
             }
         }
+
+        [WebMethod]
+        public static string UpdateExpense(List<Expense> data)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    var item = data[0];
+                    obj.Id = item.Id;
+                    obj.ExpenseDate = Convert.ToDateTime(item.Date).ToString("yyyy-MM-dd");
+                    obj.ExpenseId = item.ExpenseId;
+                    obj.ExpenseFile = string.IsNullOrEmpty(item.File) ? "" : item.File.Split('|')[0];
+                    obj.ExpenseDescription = item.Description;
+                    obj.Amount = item.Amount;
+                    obj.Rate = item.Rate;
+                    obj.Quantity = item.Quantity;
+                    obj.FetchUserId = item.userId.ToString();
+
+                    int result = obj.UpdateExpense(); // Implement in BLL
+                    return result > 0 ? "1" : "0";
+                }
+                catch { return "0"; }
+            }
+        }
     }
 
     public class Expense
     {
+        public int Id { get; set; }
         public string Date { get; set; }
         public int ExpenseId { get; set; }
         public string File { get; set; }
         public string Description { get; set; }
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public int userId { get; set; }
-
+        public decimal Rate { get; set; }
+        public int Quantity { get; set; }
 
 
     }

@@ -25,11 +25,11 @@
 
                     <div class="form-group">
                         <label>Rate :</label>
-                        <input type="text" id="txtRate" value="0" class="form-control" maxlength="5" />
+                        <input type="text" id="txtRate" value="0" class="form-control" maxlength="10" oninput="validateRate(this)" />
                     </div>
                     <div class="form-group">
                         <label>Quantity :</label>
-                        <input type="text" id="txtQuantity" value="0" class="form-control" maxlength="5" />
+                        <input type="text" id="txtQuantity" value="1" class="form-control" maxlength="10" />
                     </div>
                     <div class="form-group">
                         <label>Amount :</label>
@@ -94,12 +94,14 @@
                             <input type="checkbox" id="chkSelectAll" />
                         </th>
                         <th class="MyHeader">SNo.</th>
-                        <th class="MyHeader">Date</th>
+                        <th class="MyHeader" style="cursor:pointer;" onclick="sortByDate()">Date <span id="dateSortIcon">▲</span></th>
                         <th class="MyHeader">Expense On</th>
+                        <th class="MyHeader">Rate</th>
+                        <th class="MyHeader">Quantity</th>
                         <th class="MyHeader">Amount</th>
                         <th class="MyHeader">Description</th>
                         <th class="MyHeader">File</th>
-                        <th class="MyHeader">EntryDate</th>
+                        <th class="MyHeader"></th>
                     </tr>
                 </table>
                 <div id="pagination" style="margin-top:10px;text-align:center;">
@@ -180,6 +182,59 @@
         <br /><br />
         <button type="button" class="btn btn-warning" onclick="clearSignature()">Clear</button>
         <button type="button" class="btn btn-success" onclick="saveSignature()">Save</button>
+    </div>
+</div>
+
+HTML<!-- ====================== Edit Expense Modal ====================== -->
+<div id="editExpenseModal" class="modal">
+    <div class="modal-content" style="max-width:800px;">
+        <span class="close" onclick="closeEditExpenseModal()">&times;</span>
+        <h3 style="text-align:center;">Edit Expense</h3>
+        <div class="responsive-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Expense Date :</label>
+                    <input type="text" class="form-control datepicker" id="txtEditExpenseDate" />
+                </div>
+                <div class="form-group">
+                    <label>Expense On :</label>
+                    <select id="ddlEditExpense" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label>Rate :</label>
+                    <input type="text" id="txtEditRate" value="0" class="form-control" maxlength="10" oninput="validateRate(this)" />
+                </div>
+                <div class="form-group">
+                    <label>Quantity :</label>
+                    <input type="text" id="txtEditQuantity" value="1" class="form-control" maxlength="10" />
+                </div>
+                <div class="form-group">
+                    <label>Amount :</label>
+                    <input type="text" disabled id="txtEditAmount" class="form-control" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Current File :</label>
+                    <div id="currentFileLink"></div>
+                </div>
+                <div class="form-group">
+                    <label>Replace File (Optional) :</label>
+                    <input type="file" id="fpEditUpload" onchange="EditFileChange(this);" />
+                    <input type="hidden" id="hfEditUploadedFile" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="flex:1;">
+                    <label>Description :</label>
+                    <textarea class="form-control" id="txtEditDescription" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-row center">
+                <input type="button" class="btn btn-success" value="Update Expense" onclick="UpdateExpense();" />
+                <input type="button" class="btn btn-secondary" value="Cancel" onclick="closeEditExpenseModal();" style="margin-left:10px;" />
+            </div>
+        </div>
     </div>
 </div>
 
@@ -441,6 +496,7 @@
         var expenseData = [];
         var currentPage = 1;
         var pageSize = 10;
+        var dateSortAsc = true;
         function EditExpense() {
             document.getElementById("editModal").style.display = "block";
         }
@@ -513,7 +569,7 @@
         $(document).ready(function () {
             BindExpenseMaster();
             Search();
-
+            calculateAmount();
             function calculateAmount() {
                 var qty = parseFloat($('#txtQuantity').val()) || 0;
                 var rate = parseFloat($('#txtRate').val()) || 0;
@@ -538,10 +594,20 @@
                 dataType: "json",
                 success: function (result) {
                     var data = $.parseJSON(result.d);
+                    //if (data.length > 0) {
+                    //    $.each(data, function (index, value) {
+                    //        $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                    //        $('#ddlExpenseSearch').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                    //    });
+                    //}
                     if (data.length > 0) {
+                        $('#ddlExpense').empty().append('<option value="">Select</option>');
+                        $('#ddlEditExpense').empty().append('<option value="">Select</option>');
                         $.each(data, function (index, value) {
-                            $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
-                            $('#ddlExpenseSearch').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                            if (value.ExpenseId > 0) {
+                                $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                                $('#ddlEditExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                            }
                         });
                     }
                 }
@@ -553,7 +619,8 @@
             var ExpenseId = $('#ddlExpense').val();
             var File = $('#hfUploadedFile').val();// $('#fpUpload').val();
             var Description = $('#txtExpenseDescription').val();
-            debugger;
+            var Quantity = $('#txtQuantity').val();
+            var Rate = $('#txtRate').val();
             var Amount = $('#txtAmount').val();
             var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
 
@@ -570,6 +637,8 @@
             obj.Description = Description;
             obj.Amount = Amount;
             obj.userId = hdnUserId;
+            obj.Quantity = Quantity;
+            obj.Rate = Rate;
             data.push(obj);
 
             $.ajax({
@@ -595,6 +664,36 @@
             });
         }
 
+        function sortByDate() {
+
+            expenseData.sort(function (a, b) {
+
+                var d1 = parseDate(a.ExpenseDate);
+                var d2 = parseDate(b.ExpenseDate);
+
+                return dateSortAsc ? d1 - d2 : d2 - d1;
+            });
+
+            dateSortAsc = !dateSortAsc;
+
+            // Update icon
+            $('#dateSortIcon').text(dateSortAsc ? '▲' : '▼');
+
+            currentPage = 1;
+            renderExpenseTable();
+        }
+
+        function parseDate(dateStr) {
+            if (!dateStr) return 0;
+
+            var parts = dateStr.split('-'); // dd-MMM-yyyy
+            var day = parseInt(parts[0], 10);
+            var month = new Date(Date.parse(parts[1] + " 1, 2000")).getMonth();
+            var year = parseInt(parts[2], 10);
+
+            return new Date(year, month, day).getTime();
+        }
+
         function Search() {
             var FromDate = $('#txtFromDate').val();
             var ToDate = $('#txtToDate').val();
@@ -602,7 +701,6 @@
             var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
             var UserId = hdnUserId;//localStorage.getItem("UserId");
             var totExpense = 0;
-
             $.ajax({
                 url: "ExpenseManager.aspx/SearchExpense",
                 async: true,
@@ -615,6 +713,33 @@
                     expenseData = $.parseJSON(result.d);
                     currentPage = 1;
                     renderExpenseTable();
+                },
+                error: function (xhr, status, error) {
+                    // This is where ACTUAL exceptions and errors are caught
+                    hideLoader();
+
+                    var errorMessage = "An error occurred while searching expenses.";
+
+                    console.error("AJAX Error Details:");
+                    console.error("Status:", status);                    // e.g., "timeout", "error", "abort", "parsererror"
+                    console.error("Error Thrown:", error);               // e.g., exception message
+                    console.error("HTTP Status Code:", xhr.status);      // e.g., 500, 404, 0
+                    console.error("Response Text:", xhr.responseText);   // Full server response (very useful!)
+                    console.error("Full XHR Object:", xhr);
+
+                    if (status === "timeout") {
+                        errorMessage = "Request timed out. Please try again.";
+                    } else if (status === "parsererror") {
+                        errorMessage = "Failed to parse server response. Invalid JSON returned.";
+                    } else if (xhr.status === 500) {
+                        errorMessage = "Server error occurred. Check logs or contact admin.";
+                    } else if (xhr.status === 404) {
+                        errorMessage = "Search endpoint not found.";
+                    } else if (xhr.status === 0) {
+                        errorMessage = "No network connection or server unreachable.";
+                    }
+
+                    alert(errorMessage + "\nCheck browser console (F12) for detailed error logs.");
                 }
                 //success: function (result) {
                 //    var data = $.parseJSON(result.d);
@@ -669,6 +794,8 @@
                 html += '<td class="MyHeader">' + (start + index + 1) + '</td>';
                 html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
                 html += '<td class="MyHeader">' + value.Expense + '</td>';
+                html += '<td class="MyHeader">' + value.Rate + '</td>';
+                html += '<td class="MyHeader">' + value.Quantity + '</td>';
                 html += '<td class="MyHeader">' + value.Amount + '</td>';
                 html += '<td class="MyHeader">' + value.Description + '</td>';
                 html += '<td class="MyHeader">';
@@ -676,9 +803,12 @@
                     html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank">View Bill</a>';
                 }
                 html += '</td>';
-                html += '<td class="MyHeader">' + value.EntryDate + '</td>';
+                /*html += '<td class="MyHeader">' + value.EntryDate + '</td>';*/
                 if (value.Status != "Reimbursement Created") {
-                    html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
+                    //html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
+                    html += '<td class="MyHeader">' +
+                        '<button type="button" class="btn btn-warning btn-sm" onclick="OpenEditModal(' + value.ID + ')">Edit</button>' +
+                        '</td>';
                 }
                 else {
                     html += '<td class="MyHeader">' +
@@ -690,7 +820,8 @@
                 $('#tblExpense').append(html);
             });
             $('#lblExpenseAmt').text(
-                expenseData.reduce((sum, x) => sum + x.Amount, 0)
+                expenseData.reduce((sum, x) => sum + parseFloat(x.Amount || 0), 0)
+                    .toFixed(2)
             );
 
             updatePageInfo();
@@ -933,6 +1064,158 @@
             var pdfUrl = "https://localhost:7089/api/Download/DownloadPdf"
                 + "?fileName=" + encodeURIComponent(fileName);
             window.open(pdfUrl, "_blank");
+        }
+
+        function validateRate(input) {
+            // Allow numbers with up to 2 decimal places
+            input.value = input.value
+                .replace(/[^0-9.]/g, '')          // remove non-numeric
+                .replace(/(\..*)\./g, '$1');      // allow only one decimal
+
+            if (input.value.includes('.')) {
+                let parts = input.value.split('.');
+                parts[1] = parts[1].substring(0, 2); // max 2 digits after decimal
+                input.value = parts.join('.');
+            }
+        }
+        var currentEditingId = 0; // To track which expense is being edited
+
+        function OpenEditModal(expenseId) {
+            var expense = expenseData.find(function (item) {
+                return item.ID == expenseId;
+            });
+
+            if (!expense) {
+                alert("Expense not found!");
+                return;
+            }
+
+            currentEditingId = expense.ID;
+
+            // Populate modal fields
+            $('#txtEditExpenseDate').val(expense.ExpenseDate);
+            $('#ddlEditExpense').val(expense.ExpenseId);
+            $('#txtEditRate').val(expense.Rate || 0);
+            $('#txtEditQuantity').val(expense.Quantity || 1);
+            $('#txtEditAmount').val(expense.Amount);
+            $('#txtEditDescription').val(expense.Description || '');
+            $('#hfEditUploadedFile').val(expense.ExpenseFile || '');
+
+            // Show current file link
+            var fileHtml = '';
+            if (expense.ExpenseFile) {
+                fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" target="_blank" style="color:#007bff;">View Current Bill</a>';
+            } else {
+                fileHtml = '<span style="color:gray;">No file uploaded</span>';
+            }
+            $('#currentFileLink').html(fileHtml);
+
+            // Clear new file input
+            $('#fpEditUpload').val('');
+
+            // Open modal
+            document.getElementById("editExpenseModal").style.display = "block";
+        }
+
+        function closeEditExpenseModal() {
+            document.getElementById("editExpenseModal").style.display = "none";
+            currentEditingId = 0;
+        }
+
+        // Calculate amount in edit modal
+        function calculateEditAmount() {
+            var qty = parseFloat($('#txtEditQuantity').val()) || 0;
+            var rate = parseFloat($('#txtEditRate').val()) || 0;
+            var amount = qty * rate;
+            $('#txtEditAmount').val(amount.toFixed(2));
+        }
+
+        $('#txtEditQuantity, #txtEditRate').on('input', function () {
+            calculateEditAmount();
+        });
+
+        // File upload for edit
+        function EditFileChange(ctrl) {
+            ImgPreview(ctrl.files, ctrl, 'hfEditUploadedFile');
+        }
+
+        // Modified ImgPreview to support different hidden field
+        function ImgPreview(input, ctrl, hiddenFieldId = 'hfUploadedFile') {
+            var file = input[0];
+            var fileType = file["type"];
+            var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg", "application/pdf"];
+            if ($.inArray(fileType, ValidImageTypes) < 0) {
+                alert("Only image or PDF files are allowed");
+                $(ctrl).val('');
+                return;
+            }
+
+            if (input && input[0]) {
+                var data = new FormData();
+                data.append(input[0].name, input[0]);
+                $.ajax({
+                    url: "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Expense",
+                    type: "POST",
+                    async: true,
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $('#' + hiddenFieldId).val(response);
+                    }
+                });
+            }
+        }
+
+        function UpdateExpense() {
+            var Date = $('#txtEditExpenseDate').val().trim();
+            var ExpenseId = $('#ddlEditExpense').val();
+            var File = $('#hfEditUploadedFile').val(); // New file if uploaded, else old one
+            var Description = $('#txtEditDescription').val().trim();
+            var Quantity = $('#txtEditQuantity').val() || '1';
+            var Rate = $('#txtEditRate').val() || '0';
+            var Amount = $('#txtEditAmount').val();
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+
+            if (Date == "" || !ExpenseId || Amount == "0") {
+                alert('Please fill all required fields.');
+                return;
+            }
+
+            var obj = {
+                ID: currentEditingId,
+                Date: Date,
+                ExpenseId: ExpenseId,
+                File: File,
+                Description: Description,
+                Amount: Amount,
+                userId: hdnUserId,
+                Quantity: Quantity,
+                Rate: Rate
+            };
+            showLoader();
+            $.ajax({
+                url: "ExpenseManager.aspx/UpdateExpense",
+                async: true,
+                data: JSON.stringify({ data: [obj] }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    hideLoader();
+                    if (result.d == "1") {
+                        alert('Expense updated successfully!');
+                        closeEditExpenseModal();
+                        Search(); // Refresh table
+                    } else {
+                        alert('Error updating expense.');
+                    }
+                },
+                error: function () {
+                    hideLoader();
+                    alert('Server error during update.');
+                }
+            });
         }
 
     </script>
