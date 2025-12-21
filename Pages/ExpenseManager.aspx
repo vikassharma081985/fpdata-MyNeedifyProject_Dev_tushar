@@ -571,7 +571,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             Search();
             calculateAmount();
             function calculateAmount() {
-                var qty = parseFloat($('#txtQuantity').val()) || 0;
+                var qty = parseFloat($('#txtQuantity').val()) || 1;
                 var rate = parseFloat($('#txtRate').val()) || 0;
 
                 var amount = qty * rate;
@@ -881,7 +881,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             $('#ddlExpense').val('0');
             $('#txtAmount').val('');
             $('#fpUpload').val('');
-            $('#txtQuantity').val('0');
+            $('#txtQuantity').val('1');
             $('#txtRate').val('0');
             $('#txtExpenseDescription').val('');
         }
@@ -1124,7 +1124,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
 
         // Calculate amount in edit modal
         function calculateEditAmount() {
-            var qty = parseFloat($('#txtEditQuantity').val()) || 0;
+            var qty = parseFloat($('#txtEditQuantity').val()) || 1;
             var rate = parseFloat($('#txtEditRate').val()) || 0;
             var amount = qty * rate;
             $('#txtEditAmount').val(amount.toFixed(2));
