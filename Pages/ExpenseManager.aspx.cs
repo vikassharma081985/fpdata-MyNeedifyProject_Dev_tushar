@@ -26,27 +26,50 @@ namespace WSBillingMaster.Pages
         protected void Page_Load(object sender, EventArgs e)
         
         {
+            if (Session["UserName"] == null || Session["UserId"] == null)
+            {
+                Session.Clear();
+                Session.Abandon();
+
+                Response.Clear();
+                Response.Write(@"
+                    <script type='text/javascript'>
+                        alert('Please login first to use this tool.');
+                        window.location.href='/Front/Index.aspx';
+                    </script>
+                ");
+
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+                return;
+            }
+
             if (!IsPostBack)
             {
-                if (Session["UserName"] == null || Session["UserId"] == null)
-                {
-                    Session.Clear();
-                    Session.Abandon();
-                    //Response.Redirect("~/Front/Index.aspx", true);
-                    ScriptManager.RegisterStartupScript(
-                        this,
-                        this.GetType(),
-                        "SessionExpired",
-                        "alert('Please login first to use this tool.'); window.location.href='/Front/Index.aspx';",
-                        true
-                    );
-
-                    return;
-                }
                 string userName = Session["UserName"].ToString();
                 string userId = Session["UserId"].ToString();
                 hdnUserId.Value = userId;
             }
+            //if (!IsPostBack)
+            //{
+            //    if (Session["UserName"] == null || Session["UserId"] == null)
+            //    {
+            //        Session.Clear();
+            //        Session.Abandon();
+            //        //Response.Redirect("~/Front/Index.aspx", true);
+            //        ScriptManager.RegisterStartupScript(
+            //            this,
+            //            this.GetType(),
+            //            "SessionExpired",
+            //            "alert('Please login first to use this tool.'); window.location.href='/Front/Index.aspx';",
+            //            true
+            //        );
+
+            //        return;
+            //    }
+            //    string userName = Session["UserName"].ToString();
+            //    string userId = Session["UserId"].ToString();
+            //    hdnUserId.Value = userId;
+            //}
         }
 
         [WebMethod]

@@ -61,7 +61,16 @@
                         <li><a href="UserDashboard.aspx" style="color: #000 !important">Home</a></li>
                         <%-- <li><a href="#" style="color: #000 !important">Add Item</a></li>
                         <li><a href="#" style="color: #000 !important">Manage Item</a></li>--%>
-                        <li><a href="../Front/index.aspx" style="color: #000 !important">Logout</a></li>
+                        <%--<li><a href="../Front/index.aspx" style="color: #000 !important">Logout</a></li>--%>
+                        <li>
+                            <asp:LinkButton 
+                                ID="lnkLogout" 
+                                runat="server" 
+                                OnClick="lnkLogout_Click"
+                                Style="color:#000 !important">
+                                Logout
+                            </asp:LinkButton>
+                        </li>
 
                     </ul>
                 </div>
