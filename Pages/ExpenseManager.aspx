@@ -22,7 +22,12 @@
                         <label>Expense On :</label>
                         <select id="ddlExpense" class="form-control"></select>
                     </div>
-
+                    <div class="form-group">  <!-- NEW: Added for sub-category -->
+                        <label>Sub Expense :</label>
+                        <select id="ddlSubExpense" class="form-control">
+                            <option value="0">Select</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label>Rate :</label>
                         <input type="text" id="txtRate" value="0" class="form-control" maxlength="10" oninput="validateRate(this)" />
@@ -95,7 +100,8 @@
                         </th>
                         <th class="MyHeader">SNo.</th>
                         <th class="MyHeader" style="cursor:pointer;" onclick="sortByDate()">Date <span id="dateSortIcon">▲</span></th>
-                        <th class="MyHeader">Expense On</th>
+                        <%--<th class="MyHeader">Expense On</th>--%>
+                        <th class="MyHeader">Expense On (Sub)</th>
                         <th class="MyHeader">Rate</th>
                         <th class="MyHeader">Quantity</th>
                         <th class="MyHeader">Amount</th>
@@ -199,6 +205,12 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
                 <div class="form-group">
                     <label>Expense On :</label>
                     <select id="ddlEditExpense" class="form-control"></select>
+                </div>
+                <div class="form-group">  <!-- NEW: Added for sub-category -->
+                    <label>Sub Expense :</label>
+                    <select id="ddlEditSubExpense" class="form-control">
+                        <option value="0">Select</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Rate :</label>
@@ -570,6 +582,19 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             BindExpenseMaster();
             Search();
             calculateAmount();
+
+            // NEW: Added for sub-category - Load sub on category change
+            $('#ddlExpense').on('change', function () {
+                var categoryId = $(this).val();
+                BindSubExpense(categoryId, 'ddlSubExpense');
+            });
+
+            // NEW: Added for sub-category in edit modal
+            $('#ddlEditExpense').on('change', function () {
+                var categoryId = $(this).val();
+                BindSubExpense(categoryId, 'ddlEditSubExpense');
+            });
+
             function calculateAmount() {
                 var qty = parseFloat($('#txtQuantity').val()) || 1;
                 var rate = parseFloat($('#txtRate').val()) || 0;
@@ -617,6 +642,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
         function Save() {
             var Date = $('#txtExpenseDate').val();
             var ExpenseId = $('#ddlExpense').val();
+            var SubExpenseId = $('#ddlSubExpense').val();
             var File = $('#hfUploadedFile').val();// $('#fpUpload').val();
             var Description = $('#txtExpenseDescription').val();
             var Quantity = $('#txtQuantity').val();
@@ -624,8 +650,8 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             var Amount = $('#txtAmount').val();
             var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
 
-            if (Date == "" || ExpenseId == "" || Amount == "") {
-                alert('Date, Expense On, and Amount are mandatory fields');
+            if (Date == "" || ExpenseId == "" || Amount == "" || SubExpenseId == "0") {
+                alert('Date, Expense On, Sub Expense, and Amount are mandatory fields');
                 return;
             }
 
@@ -633,6 +659,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             var data = new Array();
             obj.Date = Date;
             obj.ExpenseId = ExpenseId;
+            obj.SubExpenseId = SubExpenseId;
             obj.File = File;
             obj.Description = Description;
             obj.Amount = Amount;
@@ -793,11 +820,12 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
                 }
                 html += '<td class="MyHeader">' + (start + index + 1) + '</td>';
                 html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
-                html += '<td class="MyHeader">' + value.Expense + '</td>';
+                //html += '<td class="MyHeader">' + value.Expense + '</td>';
+                html += '<td class="MyHeader">' + value.Expense + (value.SubExpense ? ' - ' + value.SubExpense : '') + '</td>';
                 html += '<td class="MyHeader">' + value.Rate + '</td>';
                 html += '<td class="MyHeader">' + value.Quantity + '</td>';
                 html += '<td class="MyHeader">' + value.Amount + '</td>';
-                html += '<td class="MyHeader">' + value.Description + '</td>';
+                html += '<td class="MyHeader" style="width: 200px; white-space: normal; word-wrap: break-word;">' + value.Description + '</td>';
                 html += '<td class="MyHeader">';
                 if (value.ExpenseFile) {
                     html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank">View Bill</a>';
@@ -879,6 +907,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
         function Clear() {
             $('#txtExpenseDate').val('');
             $('#ddlExpense').val('0');
+            $('#ddlSubExpense').val('0');
             $('#txtAmount').val('');
             $('#fpUpload').val('');
             $('#txtQuantity').val('1');
@@ -1100,11 +1129,13 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             $('#txtEditAmount').val(expense.Amount);
             $('#txtEditDescription').val(expense.Description || '');
             $('#hfEditUploadedFile').val(expense.ExpenseFile || '');
+            BindSubExpense(expense.ExpenseId, 'ddlEditSubExpense', expense.SubExpenseId);
 
             // Show current file link
             var fileHtml = '';
             if (expense.ExpenseFile) {
                 fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" target="_blank" style="color:#007bff;">View Current Bill</a>';
+                fileHtml += '<a href="javascript:void(0);" onclick="removeCurrentFile()" style="color:red; margin-left:10px;">[Remove]</a>';
             } else {
                 fileHtml = '<span style="color:gray;">No file uploaded</span>';
             }
@@ -1167,9 +1198,17 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             }
         }
 
+        function removeCurrentFile() {
+            if (confirm("Are you sure you want to remove the current bill file? This cannot be undone.")) {
+                $('#currentFileLink').html('<span style="color:orange;">File will be removed on update</span>');
+                $('#hfEditUploadedFile').val(''); // Clear any new upload too
+            }
+        }
+
         function UpdateExpense() {
             var Date = $('#txtEditExpenseDate').val().trim();
             var ExpenseId = $('#ddlEditExpense').val();
+            var SubExpenseId = $('#ddlEditSubExpense').val();
             var File = $('#hfEditUploadedFile').val(); // New file if uploaded, else old one
             var Description = $('#txtEditDescription').val().trim();
             var Quantity = $('#txtEditQuantity').val() || '1';
@@ -1186,6 +1225,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
                 ID: currentEditingId,
                 Date: Date,
                 ExpenseId: ExpenseId,
+                SubExpenseId: SubExpenseId,
                 File: File,
                 Description: Description,
                 Amount: Amount,
@@ -1217,7 +1257,33 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
                 }
             });
         }
-
+        function BindSubExpense(categoryId, targetDdlId, selectedSubId = null) {
+            if (categoryId == "" || categoryId == "0") {
+                $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
+                return;
+            }
+            $.ajax({
+                url: "ExpenseManager.aspx/BindExpenseSubCategory",
+                async: false,
+                data: JSON.stringify({ categoryId: parseInt(categoryId) }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                timeout: 120000,
+                dataType: "json",
+                success: function (result) {
+                    var data = $.parseJSON(result.d);
+                    $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
+                    $.each(data, function (index, value) {
+                        if (value.Id > 0) {  // Assuming data has SubExpenseId and SubExpense
+                            $('#' + targetDdlId).append('<option value="' + value.Id + '">' + value.ExpenseSubMaster + '</option>');
+                        }
+                    });
+                    if (selectedSubId) {
+                        $('#' + targetDdlId).val(selectedSubId);
+                    }
+                }
+            });
+        }
     </script>
 
     <div id="loaderOverlay" style="display:none;">

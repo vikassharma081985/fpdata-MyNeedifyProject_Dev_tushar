@@ -32,7 +32,15 @@ namespace WSBillingMaster.Pages
                 {
                     Session.Clear();
                     Session.Abandon();
-                    Response.Redirect("~/Front/Index.aspx", true);
+                    //Response.Redirect("~/Front/Index.aspx", true);
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        this.GetType(),
+                        "SessionExpired",
+                        "alert('Please login first to use this tool.'); window.location.href='/Front/Index.aspx';",
+                        true
+                    );
+
                     return;
                 }
                 string userName = Session["UserName"].ToString();
@@ -57,6 +65,20 @@ namespace WSBillingMaster.Pages
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string BindExpenseSubCategory(int categoryId)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                using (DataTable dt = obj.BindExpenseSubCategoryByCategoryId(categoryId))
+                {
+                    string rtrn = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
+                    return rtrn;
+                }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string Save(List<Expense> data)
         {
             using (BusinessLogicLayer obj = new BusinessLogicLayer())
@@ -65,6 +87,7 @@ namespace WSBillingMaster.Pages
                 {
                     obj.ExpenseDate =  Convert.ToDateTime(data[0].Date).ToString("yyyy-MM-dd");
                     obj.ExpenseId = data[0].ExpenseId;
+                    obj.SubCategoryId = data[0].SubExpenseId;
                     //obj.ExpenseFile = data[0].File.Replace(@"C:\fakepath\","");
                     obj.ExpenseFile = data[0].File?.Split('|')?[0] ?? "";
                     obj.ExpenseDescription = data[0].Description;
@@ -217,6 +240,7 @@ namespace WSBillingMaster.Pages
                     obj.Id = item.Id;
                     obj.ExpenseDate = Convert.ToDateTime(item.Date).ToString("yyyy-MM-dd");
                     obj.ExpenseId = item.ExpenseId;
+                    obj.SubCategoryId = item.SubExpenseId;
                     obj.ExpenseFile = string.IsNullOrEmpty(item.File) ? "" : item.File.Split('|')[0];
                     obj.ExpenseDescription = item.Description;
                     obj.Amount = item.Amount;
@@ -237,6 +261,7 @@ namespace WSBillingMaster.Pages
         public int Id { get; set; }
         public string Date { get; set; }
         public int ExpenseId { get; set; }
+        public int SubExpenseId { get; set; }
         public string File { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }

@@ -1351,6 +1351,22 @@ namespace BLL
                 }
             }
         }
+
+        public DataTable BindExpenseSubCategoryByCategoryId(int CategoryId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "usp_GetExpenseSubMasterByExpenseId";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@ExpenseMasterId", CategoryId);
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
         //Expense
         public int OrgId { get; set; }
         public int EmpId { get; set; }
@@ -1368,6 +1384,7 @@ namespace BLL
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@ExpenseDate", ExpenseDate);
                     sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
+                    sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
                     sqlCommand.Parameters.AddWithValue("@File", ExpenseFile);
                     sqlCommand.Parameters.AddWithValue("@Description", ExpenseDescription);
                     sqlCommand.Parameters.AddWithValue("@Amount", Amount);
@@ -1423,6 +1440,7 @@ namespace BLL
 
                     sqlCommand.Parameters.AddWithValue("@ExpenseDate", ExpenseDate ?? (object)DBNull.Value);
                     sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
+                    sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
                     sqlCommand.Parameters.AddWithValue("@File", string.IsNullOrEmpty(ExpenseFile) ? (object)DBNull.Value : ExpenseFile);
                     sqlCommand.Parameters.AddWithValue("@Description", string.IsNullOrEmpty(ExpenseDescription) ? (object)DBNull.Value : ExpenseDescription);
                     sqlCommand.Parameters.AddWithValue("@Amount", Amount);
