@@ -239,7 +239,7 @@
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                                <a href="../Pages/ExpenseManager.aspx" style="color: blue;">
+                                <a href="../Pages/ExpenseManager.aspx" target="_blank" style="color: blue;">
 
                             <h5 class="fw-bold mb-1">Daily</h5>
                             <p class="small text-muted mb-0">Expenses</p>

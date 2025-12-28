@@ -147,7 +147,7 @@ namespace WSBillingMaster.Pages
                         obj.FromDate = Convert.ToDateTime(FromDate).ToString("yyyy-MM-dd");
                     if (ToDate != null && ToDate != "")
                         obj.ToDate = Convert.ToDateTime(ToDate).ToString("yyyy-MM-dd");
-                    if (ExpenseId != null)
+                    if (ExpenseId != null || ExpenseId != 0)
                     {
                         obj.ExpenseId = ExpenseId ?? 0;
                     }

@@ -274,11 +274,40 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             max-width: 700px;
         }
 
-        .close {
+        /*.close {
             float: right;
             font-size: 22px;
             cursor: pointer;
             font-weight: bold;
+        }*/
+        .close {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+
+            width: 26px;
+            height: 26px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+            line-height: 1;
+
+            color: #fff;
+            background-color: #000;
+
+            border-radius: 50%;
+        }
+
+        /* Explicitly prevent hover/focus color changes */
+        .close:hover,
+        .close:focus,
+        .close:active {
+            color: #fff;
+            background-color: #000;
+            outline: none;
         }
 
         @media (max-width: 600px) {
@@ -628,10 +657,14 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
                     if (data.length > 0) {
                         $('#ddlExpense').empty().append('<option value="">Select</option>');
                         $('#ddlEditExpense').empty().append('<option value="">Select</option>');
+                        $('#ddlExpenseSearch').empty().append('<option value="">All</option>');
                         $.each(data, function (index, value) {
                             if (value.ExpenseId > 0) {
                                 $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
                                 $('#ddlEditExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                                $('#ddlExpenseSearch').append(
+                                    '<option value="' + value.ExpenseId + '">' + value.Expense + '</option>'
+                                );
                             }
                         });
                     }
@@ -724,7 +757,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
         function Search() {
             var FromDate = $('#txtFromDate').val();
             var ToDate = $('#txtToDate').val();
-            var ExpenseId = $('#ddlExpenseSearch').val();
+            var ExpenseId = $('#ddlExpenseSearch').val() || "0";
             var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
             var UserId = hdnUserId;//localStorage.getItem("UserId");
             var totExpense = 0;
