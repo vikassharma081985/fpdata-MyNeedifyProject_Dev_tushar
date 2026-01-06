@@ -92,6 +92,20 @@
 
             </div>
 
+
+            <div id="mobileViewToggle" style="display:none; margin-bottom:10px;">
+    <span id="btnTableView" onclick="showTableView()" class="toggle-text active">Table View</span> | 
+    <span id="btnCardView" onclick="showCardView()" class="toggle-text">Card View</span>
+</div>
+
+<div id="cardViewContainer" style="display:none; margin-top:10px;">
+    <!-- Cards will be dynamically appended here -->
+
+</div>
+
+
+
+
             <div class="table-responsive">
                 <table id="tblExpense" style="width: 100%;">
                     <tr>
@@ -107,15 +121,25 @@
                         <th class="MyHeader">Amount</th>
                         <th class="MyHeader">Description</th>
                         <th class="MyHeader">File</th>
-                        <th class="MyHeader"></th>
+                        <th class="MyHeader">Edit</th>
                     </tr>
                 </table>
-                <div id="pagination" style="margin-top:10px;text-align:center;">
+                <%--<div id="pagination" style="margin-top:10px;text-align:center;">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="prevPage()">Prev</button>
                     <span id="pageInfo" style="margin:0 10px;"></span>
                     <button type="button" class="btn btn-secondary btn-sm" onclick="nextPage()">Next</button>
-                </div>
+                </div>--%>
+
             </div>
+
+            <!-- Pagination separated from table -->
+<div id="pagination" class="pgn" style="margin-top:10px; display:flex; justify-content:center; align-items:center; gap:20px;">
+    <button type="button" class="btn btn-secondary btn-sm" onclick="prevPage()">Prev</button>
+    <span id="pageInfo" class="pgninfo" style="text-align:center; flex:none;"></span>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="nextPage()">Next</button>
+</div>
+
+
         </div>
     </div>
 
@@ -191,7 +215,7 @@
     </div>
 </div>
 
-HTML<!-- ====================== Edit Expense Modal ====================== -->
+<!-- ====================== Edit Expense Modal ====================== -->
 <div id="editExpenseModal" class="modal">
     <div class="modal-content" style="max-width:800px;">
         <span class="close" onclick="closeEditExpenseModal()">&times;</span>
@@ -244,7 +268,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             </div>
             <div class="form-row center">
                 <input type="button" class="btn btn-success" value="Update Expense" onclick="UpdateExpense();" />
-                <input type="button" class="btn btn-secondary" value="Cancel" onclick="closeEditExpenseModal();" style="margin-left:10px;" />
+                <input type="button" class="btn btn-secondary" value="Cancel" onclick="closeEditExpenseModal();" />
             </div>
         </div>
     </div>
@@ -252,6 +276,29 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
 
     <!-- ======================== Styles ========================= -->
     <style>
+        @media (max-width: 576px) {
+            .btnn{
+                width: 30% !important;
+
+            }
+
+
+    .table-responsive #pagination {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .table-responsive #pagination button,
+    .table-responsive #pagination span {
+        white-space: nowrap;
+    }
+}
+
+
         .modal {
             display: none;
             position: fixed;
@@ -528,12 +575,154 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
             }
+
+
+                   .Header {
+    text-align: left;
+  
+}
+.expense-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    background-color: #fff;
+    display: block; /* make it block so content stacks vertically */
+}
+
+.expense-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* align text properly for multi-line */
+    margin-bottom: 5px;
+    flex-wrap: wrap; /* allow long text to wrap */
+}
+
+.expense-row strong {
+    color: #555;
+    width: 40%;
+    text-align: left;
+}
+
+.expense-row span {
+    width: 55%;
+    text-align: right;
+    color: #333;
+    word-break: break-word;
+}
+
+.expense-card a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.expense-card a:hover {
+    text-decoration: underline;
+}
+
+.expense-card button {
+    width: 100%;
+    margin-top: 10px;
+}
     </style>
+
+
+  
+
 
     <!-- ======================== Scripts ========================= -->
     <link href="../Css/jquery-ui.css" rel="stylesheet" />
     <script src="../Js/jquery-ui.js"></script>
     <script>
+        // ------------------- Mobile Table/Card View Toggle -------------------
+        function showTableView() {
+            $('#tblExpense').parent().show(); // show table
+            $('#cardViewContainer').hide();    // hide card view
+            $('#btnTableView').prop('disabled', true);
+            $('#btnCardView').prop('disabled', false);
+        }
+
+        function showCardView() {
+            if (!expenseData || expenseData.length === 0) {
+                alert("No expense data available to show in card view.");
+                return;
+            }
+
+            $('#tblExpense').parent().hide(); // hide table
+            $('#cardViewContainer').show();    // show cards
+            $('#btnTableView').prop('disabled', false);
+            $('#btnCardView').prop('disabled', true);
+
+            currentPage = 1; // reset page
+            renderExpenseCards(); // render cards
+        }
+
+        function renderExpenseCards() {
+            $('#cardViewContainer').empty(); // clear old cards
+
+            var start = (currentPage - 1) * pageSize;
+            var end = start + pageSize;
+            var pageData = expenseData.slice(start, end);
+
+            if (pageData.length === 0) {
+                $('#cardViewContainer').html('<div style="text-align:left; color:gray;">No data available</div>');
+                return;
+            }
+
+            $.each(pageData, function (index, value) {
+                var html = '<div class="expense-card" style="border:1px solid #ccc; font-size:14px; padding:10px; margin-bottom:10px; border-radius:5px; box-shadow: 0px 0px 5px rgba(0,0,0,0.1);">';
+
+                if (value.Status != "Reimbursement Created") {
+                    html += '<input type="checkbox" class="chkSingle" data-id="' + value.ID + '" style="margin-bottom:6px;"> ';
+                } else {
+                    html += '<input type="checkbox" class="chkSingle" disabled style="margin-bottom:6px;"> ';
+                }
+                html += '<strong>SNo: </strong>' + (start + index + 1) + '<br>';
+                html += '<strong>Date: </strong>' + value.ExpenseDate + '<br>';
+                html += '<strong>Expense: </strong>' + value.Expense + (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+                html += '<strong>Rate: </strong>' + value.Rate + '<br>';
+                html += '<strong>Quantity: </strong>' + value.Quantity + '<br>';
+                html += '<strong>Amount: </strong>' + value.Amount + '<br>';
+                html += '<strong>Description: </strong>' + value.Description + '<br>';
+                if (value.ExpenseFile) {
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank">View Bill</a><br>';
+                }
+                if (value.Status != "Reimbursement Created") {
+                    html += '<button type="button" class="btnn btn-warning btn-sm mt-1" onclick="OpenEditModal(' + value.ID + ')">Edit</button>';
+                } else {
+                    html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')" class="btn btn-link btn-sm mt-1">View Reimbursement</a>';
+                }
+                html += '</div>';
+
+                $('#cardViewContainer').append(html);
+            });
+        }
+
+
+        // ------------------- Show Toggle Buttons on Mobile -------------------
+        $(document).ready(function () {
+            if ($(window).width() < 768) { // mobile view
+                $('#mobileViewToggle').show();
+                showTableView(); // table visible by default
+            } else {
+                $('#mobileViewToggle').hide();
+                showTableView(); // desktop default
+            }
+
+            $(window).resize(function () {
+                if ($(window).width() < 768) {
+                    $('#mobileViewToggle').show();
+                } else {
+                    $('#mobileViewToggle').hide();
+                    showTableView();
+                }
+            });
+        });
+
+
+
+
         var expenseData = [];
         var currentPage = 1;
         var pageSize = 10;
@@ -801,32 +990,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
 
                     alert(errorMessage + "\nCheck browser console (F12) for detailed error logs.");
                 }
-                //success: function (result) {
-                //    var data = $.parseJSON(result.d);
-                //    $('#tblExpense tr').slice(1).remove();
-                //    $.each(data, function (index, value) {
-                //        totExpense += value.Amount;
-                //        var html = '<tr>';
-                //        html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
 
-                //        html += '<td class="MyHeader">' + (index + 1) + '</td>';
-                //        html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
-                //        html += '<td class="MyHeader">' + value.Expense + '</td>';
-                //        html += '<td class="MyHeader">' + value.Amount + '</td>';
-                //        html += '<td class="MyHeader">' + value.Description + '</td>';
-                //        html += '<td class="MyHeader">';
-                //        if (value.ExpenseFile != '') {
-                //            html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank" style="color:#09f;">View Bill</a>';
-                //        }
-                //        html += '</td>';
-                //        html += '<td class="MyHeader">' + value.EntryDate + '</td>';
-                //        html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
-
-                //        html += '</tr>';
-                //        $('#tblExpense').append(html);
-                //    });
-                //    $('#lblExpenseAmt').text(totExpense);
-                //}
             });
         }
 
@@ -893,19 +1057,42 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
             $('#pageInfo').text("Page " + currentPage + " of " + totalPages);
         }
 
+        //function nextPage() {
+        //    if (currentPage * pageSize < expenseData.length) {
+        //        currentPage++;
+        //        renderExpenseTable();
+        //    }
+        //}
+
+        //function prevPage() {
+        //    if (currentPage > 1) {
+        //        currentPage--;
+        //        renderExpenseTable();
+        //    }
+        //}
+
         function nextPage() {
             if (currentPage * pageSize < expenseData.length) {
                 currentPage++;
-                renderExpenseTable();
+                if ($('#cardViewContainer').is(':visible')) {
+                    renderExpenseCards(); // Card View
+                } else {
+                    renderExpenseTable(); // Table View
+                }
             }
         }
 
         function prevPage() {
             if (currentPage > 1) {
                 currentPage--;
-                renderExpenseTable();
+                if ($('#cardViewContainer').is(':visible')) {
+                    renderExpenseCards(); // Card View
+                } else {
+                    renderExpenseTable(); // Table View
+                }
             }
         }
+
 
         function FileChange(ctrl) {
             ImgPreview(ctrl.files, ctrl);
@@ -1001,7 +1188,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
 
             var startDateStr = startObj.original;
             var endDateStr = endObj.original;
-            showLoader(); 
+            showLoader();
             var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
             var payload = {
                 createdBy: hdnUserId,
@@ -1088,7 +1275,7 @@ HTML<!-- ====================== Edit Expense Modal ====================== -->
 
             var base64Image = signaturePad.toDataURL("image/png");
             var expenseIds = selectedIds.join('_');
-            showLoader(); 
+            showLoader();
             $.ajax({
                 url: "ExpenseManager.aspx/SaveSignature",
                 type: "POST",

@@ -351,10 +351,17 @@ style="border-radius: 20px;">
 
                             <!-- Action Buttons -->
                             <div class="d-flex flex-column flex-md-row gap-2">
-                                <button class="btn btn-sm flex-fill"
+                            <%--    <button class="btn btn-sm flex-fill"
                                     style="background-color:#F48B1E; color:#fff; border:none;">
                                     Add to Cart
-                                </button>
+                                </button>--%>
+
+                                <button class="btn btn-sm flex-fill"
+        style="background-color:#F48B1E; color:#fff; border:none;"
+        onclick="AddToCart('<%# Eval("ItemId") %>')">
+    Add to Cart
+</button>
+
 
                                 <button class="btn btn-sm flex-fill"
                                     style="background-color:#8EC243; color:#fff; border:none;">
@@ -760,5 +767,3 @@ style="border-radius: 20px;">
 
 
 </asp:Content>
-
-

@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Rahul Collection</title>
+    <title>My Needify</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
@@ -67,9 +67,9 @@
 
                 $.ajax({
                     type: "POST",
-                   url: "http://localhost:46692/Front/index.aspx/LoginDetails",
-//url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
-//url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails",
+                    url: "http://localhost:46692/Front/index.aspx/LoginDetails",
+                    //url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
+                    //url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails",
                     data: JSON.stringify({
                         UserName: UserName, Password: Password
                     }),
@@ -82,6 +82,7 @@
 
                             $('[id$=lblUserName]').text('Hi, ' + UserInfo[0].FirstName);
                             $('[id$=LoggedinUser]').show();
+                            $('[id$=NotLoggedIn]').hide();    // login/signup not display when user login
                             $('[id$=lnkLogin]').hide();
                             $('[id$=lnkLogout]').show();
                             $('[id$=MasterhdnUserId]').val(UserInfo[0].UserId);
@@ -278,7 +279,7 @@ font-family: Arial, sans-serif;
 
             .navbar-brand img {
                 height: 100px;
-                margin-top: -35px;
+                margin-top: -28px;
             }
 
         .navbar-nav .nav-link {
@@ -299,10 +300,15 @@ font-family: Arial, sans-serif;
             border-radius: 0;
             margin-top: 0;
         }
+         .dropdown-item{
+                             text-align: left;
 
+         }
         .dropdown-item:hover {
             background-color: #f8f9fa;
             color: #0AA6BF;
+                text-align: left;
+
         }
 
         .dropdown-header {
@@ -371,6 +377,7 @@ font-family: Arial, sans-serif;
             font-weight: 600;
             border-radius: 20px;
             padding: 4px 10px;
+            height: fit-content;
         }
 
         .dropdown-toggle::after {
@@ -451,7 +458,7 @@ font-family: Arial, sans-serif;
         /* ========== MOBILE / TABLET ADJUSTMENTS ========== */
         @media (max-width: 768px) {
             .navbar-brand img {
-                height: 50px;
+                height: 60px;
                         margin-top: 0px;
 
             }
@@ -566,8 +573,7 @@ font-family: Arial, sans-serif;
             }
 
                 .mobile-right div {
-                    margin-left: 15px;
-                    font-size: 13px;
+margin-left: 0px;                    font-size: 13px;
                     text-align: center;
                 }
 
@@ -665,7 +671,69 @@ font-family: Arial, sans-serif;
                 background-color: #f4d03f;
                 color: #fff;
             }
+
+
+            
+            /* FIX NAVBAR STRETCH ON MOBILE PROFILE DROPDOWN */
+@media (max-width: 991.98px) {
+
+    .mobile-topbar {
+        position: relative;
+        overflow: visible;
+    }
+
+    .mobile-topbar .dropdown {
+        position: static;
+    }
+
+    .mobile-topbar .dropdown-menu {
+        position: absolute !important;
+        top: 100% !important;
+        right: 0;
+        left: auto;
+        transform: none !important;
+        min-width: 180px;
+        z-index: 1055;
+    }
+
+    /* prevent navbar height jump */
+    .navbar {
+        align-items: center;
+    }
+}
     </style>
+    <script>
+        function AddToCart(ItemId) {
+
+            var UserId = $('[id$=MasterhdnUserId]').val();
+
+            if (UserId == "" || UserId == undefined)
+                UserId = "0";
+
+            $.ajax({
+                url: "http://trendzshopping.in//Front/index.aspx/AddItemToCart",
+                async: true,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                data: '{ItemId:"' + ItemId + '",UserId:"' + UserId + '",Qty:"1"}',
+
+                success: function (result) {
+
+                    // refresh + open cart
+                    BindCart();
+                    OpenCart();
+                },
+
+                error: function (err) {
+                    console.log(err);
+                    alert("Cart API call failed");
+                }
+            });
+
+        }
+</script>
 
 
 
@@ -689,7 +757,7 @@ font-family: Arial, sans-serif;
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand" href="#">
-                    <img src="../Images/System/mylogo.PNG" width="80" alt="Rahul Logo">
+                    <img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">
                 </a>
             </div>
 
@@ -727,7 +795,7 @@ font-family: Arial, sans-serif;
 
         <!-- DESKTOP LOGO -->
         <a class="navbar-brand d-none d-lg-block" href="#">
-                    <img src="../Images/System/mylogo.PNG" width="80" alt="Rahul Logo">
+                    <img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">
         </a>
 
         <!-- SEARCH BAR -->
@@ -741,21 +809,7 @@ font-family: Arial, sans-serif;
         <!-- DESKTOP RIGHT ICONS -->
         <div class="right-icons d-none d-lg-flex align-items-center gap-3">
 
-            <!-- LOGGED IN USER -->
-            <div id="LoggedinUser" style="display:none;">
-                <div class="dropdown">
-                    <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-bs-toggle="dropdown">
-                        <i class="bi bi-person"></i>
-                        <span id="lblUserName"></span>
-                    </span>
-
-                    <div class="dropdown-menu mt-2 shadow-sm">
-                        <a class="dropdown-item" href="Account.aspx">My Account</a>
-                        <a class="dropdown-item" href="MyOrders.aspx">My Orders</a>
-                        <a class="dropdown-item" href="#" id="lnkLogout2" onclick=" return lnkLogout_ClickNew();">Logout</a>
-                    </div>
-                </div>
-            </div>
+          
 
             <div><i class="bi bi-heart"></i>Wishlist</div>
             <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
@@ -764,6 +818,24 @@ font-family: Arial, sans-serif;
                 <a target="_blank" class="btn btn-admin btn-sm" href="http://trendzshopping.in//Front/index.aspx">Home</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
+
+
+
+                  <!-- LOGGED IN USER -->
+  <div id="LoggedinUser" style="display:none;">
+      <div class="dropdown">
+          <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-bs-toggle="dropdown">
+              <i class="bi bi-person"></i>
+              <span id="lblUserName"></span>
+          </span>
+
+          <div class="dropdown-menu mt-2 shadow-sm">
+              <a class="dropdown-item" href="Account.aspx">My Account</a>
+              <a class="dropdown-item" href="MyOrders.aspx">My Orders</a>
+              <a class="dropdown-item" href="#" id="lnkLogout2" onclick=" return lnkLogout_ClickNew();">Logout</a>
+          </div>
+      </div>
+  </div>
 
                 <!-- NOT LOGGED IN -->
                 <div id="mySidenav">
@@ -803,7 +875,7 @@ font-family: Arial, sans-serif;
 
                
                 <a target="_blank" class="btn btn-admin btn-sm" href="http://trendzshopping.in//Front/index.aspx">Home</a>
-                 <form onsubmit="OpenLogin(); return false;" class="btn btn-seller btn-sm">
+                 <form onsubmit="OpenLogin(); return false;" class="btn btn-seller btn-sm" id="NotLoggedIn">
      <button class="btn btn-seller btn-sm" type="submit">Login/Signup</button>
  </form>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
@@ -1206,7 +1278,7 @@ font-family: Arial, sans-serif;
 
                             <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
                                 <button type="button" id="btnModalClose" class="close" data-dismiss="modal">&times;</button>
-                                <div class="login-form" style="border: 1px solid #ccc; padding: 5%; height: 265px; border-radius: 5px; background-color: #fff;">
+                                <div class="login-form" style="border: 1px solid #ccc; padding: 5%; height: 280px; border-radius: 5px; background-color: #fff;">
                                     <div style="float: left; color: #666; font-size: 20px; margin-bottom: 10px;">Login </div>
 
                                     <br />
