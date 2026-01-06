@@ -320,6 +320,15 @@ font-family: Arial, sans-serif;
             margin-left: -15px !important;
         }
 
+        .dropdown-header {
+            padding: 0 !important;
+            color: #000 !important;
+        }
+
+        .navbar-expand-lg .navbar-nav .dropdown-menu {
+            margin-left: -15px !important;
+        }
+
 
 
 
@@ -458,7 +467,7 @@ font-family: Arial, sans-serif;
         /* ========== MOBILE / TABLET ADJUSTMENTS ========== */
         @media (max-width: 768px) {
             .navbar-brand img {
-                height: 60px;
+                height: 50px;
                         margin-top: 0px;
 
             }
