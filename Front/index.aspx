@@ -294,6 +294,67 @@ style="border-radius: 20px;">
 
 
 
+
+
+                                <div class="col-6 col-md-3">
+               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
+style="border-radius: 20px;">
+                   <div class="text-start">
+                            <h5 class="fw-bold mb-1">Register as Seller</h5>
+                            <p class="small text-muted mb-0">Start selling today</p>
+                        </div>
+                        <img src="../Images/System/seller.PNG"
+    width="50" alt="Kids">
+                    </div>
+                </div>
+
+
+
+
+                                                <div class="col-6 col-md-3">
+               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
+style="border-radius: 20px;">
+                   <div class="text-start">
+                            <h5 class="fw-bold mb-1">Salon Appointment</h5>
+                            <p class="small text-muted mb-0">Schedule Your Visit</p>
+                        </div>
+                        <img src="../Images/System/salon.PNG"
+    width="50" alt="Kids">
+                    </div>
+                </div>
+
+
+
+
+                                                                <div class="col-6 col-md-3">
+               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
+style="border-radius: 20px;">
+                   <div class="text-start">
+                            <h5 class="fw-bold mb-1">Homer Decore</h5>
+                            <p class="small text-muted mb-0">Search Here</p>
+                        </div>
+                        <img src="../Images/System/staircase.PNG"
+    width="50" alt="Kids">
+                    </div>
+                </div>
+
+
+
+
+                                                                <div class="col-6 col-md-3">
+               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
+style="border-radius: 20px;">
+                   <div class="text-start">
+                            <h5 class="fw-bold mb-1">Apparels</h5>
+                            <p class="small text-muted mb-0">Search here</p>
+                        </div>
+                        <img src="../Images/System/fashion.PNG"
+    width="50" alt="Kids">
+                    </div>
+                </div>
+
+
+
      <!-- NEW PRODUCTS ROW WITH HOVER EFFECT, RATINGS, AND ICONS -->
         </div>
 
