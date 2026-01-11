@@ -363,10 +363,10 @@ Edit width, height and placement of the dynamically created image zoom box.
 
 
     <div class="container">
-        <asp:HiddenField runat="server" ID="hdnItemId"hdnItemId" />
-        <asp:HiddenField runat="server" ID="hdnUserId"hdnUserId" />
-        <asp:HiddenField runat="server" ID="hdnStockA"hdnStockAvailable" />
-        <asp:HiddenField runat="server" ID="hdnTotalS"hdnTotalStock" />
+        <asp:HiddenField runat="server" ID="hdnItemId" />
+        <asp:HiddenField runat="server" ID="hdnUserId" />
+        <asp:HiddenField runat="server" ID="hdnStockAvailable" />
+        <asp:HiddenField runat="server" ID="hdnTotalStock" />
 
 
         <div class="product-details row">
@@ -387,7 +387,7 @@ Edit width, height and placement of the dynamically created image zoom box.
                     </div>
                     <div class="col-md-12">
                         <section class="regular slider">
-                            <asp:Repeater ID="rptItemIm"rptItemImages"rver">
+                            <asp:Repeater ID="rptItemImages" runat="server">
                                 <ItemTemplate>
                                     <div class='container'>
                                         <div class='easyzoom example'>
@@ -407,7 +407,7 @@ Edit width, height and placement of the dynamically created image zoom box.
 
                 <div class="holder">
                     <h1>
-                        <asp:Label runat="server" ID="lblItemNa"lblItemName"el></h1>
+                        <asp:Label runat="server" ID="lblItemName"></asp:Label></h1>
                     <%--   <div id="RatingBox">
                         <div style="padding-top: 0px; text-align: center">
 
@@ -436,20 +436,20 @@ Edit width, height and placement of the dynamically created image zoom box.
 
                             <span>
                                 <span style="font-weight: 100; text-decoration: line-through"><i style="font-weight: 100;" class="fa fa-inr"></i>
-                                    <asp:Label ID="lblPrice""lblPrice"rver"></asp:Label></span>
+                                    <asp:Label ID="lblPrice" runat="server"></asp:Label></span>
                                 <span style="margin-left: 15px;"><i class="fa fa-inr"></i>
-                                    <asp:Label ID="lblOfferP"lblOfferPrice"rver"></asp:Label>
+                                    <asp:Label ID="lblOfferPrice" runat="server"></asp:Label>
                                 </span>
 
                                 <span style="margin-left: 15px; color: #7C519B; font-weight: 600">
-                                    <asp:Label ID="lblOff" r"lblOff"rver"></asp:Label>
+                                    <asp:Label ID="lblOff" runat="server"></asp:Label>
                                 </span>
 
                             </span>
                         </strong>
 
                     </div>
-                    <asp:HiddenField ID="hdnRating"hdnRating"rver" Value="0" />
+                    <asp:HiddenField ID="hdnRating" runat="server" Value="0" />
 
                     <div class="product-sets">
                         <strong class="title">
@@ -459,7 +459,7 @@ Edit width, height and placement of the dynamically created image zoom box.
                         </strong>
 
                         <ul class="list-unstyled set-size">
-                            <asp:Repeater ID="rptAvaila"rptAvailableSize"rver">
+                            <asp:Repeater ID="rptAvailableSize" runat="server">
                                 <ItemTemplate>
                                     <li onclick="SelectSize(this);">
                                         <input type="hidden" id="hdnSelectedSizeId" value='<%#Eval("SizeId") %>' />
@@ -499,12 +499,12 @@ Edit width, height and placement of the dynamically created image zoom box.
                                 <div class="col-md-12 col-xs-12">
 
                                     <div id="ShortDes">
-                                        <asp:Label ID="lblDescri"lblDescription"rver"></asp:Label>
+                                        <asp:Label ID="lblDescription" runat="server"></asp:Label>
                                         <br />
                                         <a href="#" id="ReadMore" style="text-decoration: none; color: #7C519B;" onclick="ReadMore();">Read More</a>
                                     </div>
                                     <div id="LongDes" style="display: none;">
-                                        <asp:Label ID="lblDescri"lblDescriptionFull"rver"></asp:Label>
+                                        <asp:Label ID="lblDescriptionFull" runat="server"></asp:Label>
                                         <br />
                                         <a href="#" id="ReadLess" style="text-decoration: none; color: #7C519B;" onclick="ReadLess();">Read Less</a>
                                     </div>
@@ -549,7 +549,7 @@ Edit width, height and placement of the dynamically created image zoom box.
                         <fieldset class="show" id="product-actions-fieldset">
                             <button id="product-actions-btn-add" onclick="return AddToCart();" style="background-color: #7C519B !important; width: 205px; background-image: none; z-index: 999; border: none; position: fixed; bottom: -1%; left: 0;" class="btn btn-primary btn-block">Add to Cart <i class="fa fa-shopping-cart"></i></button>
                             <button id="btnBuyNow" onclick="return BuyNow();" style="background-color: #F6861F !important; background-image: none; width: 205px; z-index: 999; border: none; position: fixed; bottom: -1%; right: 0;" class="btn btn-primary btn-block">Buy Now <i class="fa fa-bolt"></i></button>
-                            <asp:HiddenField ID="hdnSizeId"hdnSizeId"rver" Value="0" />
+                            <asp:HiddenField ID="hdnSizeId" runat="server" Value="0" />
                         </fieldset>
                         <hr class="hide">
                     </div>
@@ -572,7 +572,7 @@ Edit width, height and placement of the dynamically created image zoom box.
                 <div class="products-carousel gallery-js-ready autorotation-disabled">
                     <div class="mask">
                         <div class="row">
-                            <asp:Repeater ID="rptYouMay"rptYouMayLike"rver">
+                            <asp:Repeater ID="rptYouMayLike" runat="server">
                                 <ItemTemplate>
                                     <div class="col-md-2 col-xs-6 col-sm-3">
                                         <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
