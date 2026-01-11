@@ -283,6 +283,7 @@
     <Content Include="Images\logo_0.PNG" />
     <Content Include="Images\logo_1.PNG" />
     <Content Include="Images\logo_2.PNG" />
+    <Content Include="Images\mylogo.png" />
     <Content Include="Images\Slider.gif" />
     <Content Include="Indexresp.html" />
     <Content Include="Jscript\AddItem.js" />
@@ -334,6 +335,7 @@
     <Content Include="Pages\ExportToExcel.aspx" />
     <Content Include="Pages\Invoice.aspx" />
     <Content Include="Pages\ItemImportExport.aspx" />
+    <Content Include="Pages\Job.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\ManageItems.aspx" />
     <Content Include="Pages\ManageRoleWiseManu.aspx" />
@@ -821,6 +823,13 @@
     </Compile>
     <Compile Include="Pages\ItemImportExport.aspx.designer.cs">
       <DependentUpon>ItemImportExport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Job.aspx.cs">
+      <DependentUpon>Job.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Job.aspx.designer.cs">
+      <DependentUpon>Job.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
