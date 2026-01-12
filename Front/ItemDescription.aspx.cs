@@ -24,7 +24,7 @@ namespace FaduPrice.Pages
                     hdnUserId.Value = Session["UserId"].ToString();
                 }
             }
-
+            
         }
 
         private void BindItemData(string ItemId)
@@ -49,10 +49,10 @@ namespace FaduPrice.Pages
                                 lblDescriptionFull.Text = Server.HtmlDecode(dt.Rows[0]["ItemDescription"].ToString());
                                 lblPrice.Text = dt.Rows[0]["OfferPrice"].ToString();
                                 lblOfferPrice.Text = dt.Rows[0]["ItemPrice"].ToString();
-                                lblOff.Text = (((Convert.ToInt32(dt.Rows[0]["OfferPrice"]) - Convert.ToInt32(dt.Rows[0]["ItemPrice"])) * 100) / (Convert.ToInt32(dt.Rows[0]["OfferPrice"]))).ToString() + "% off";
+                                lblOff.Text= (((Convert.ToInt32(dt.Rows[0]["OfferPrice"]) - Convert.ToInt32(dt.Rows[0]["ItemPrice"])) * 100) / (Convert.ToInt32(dt.Rows[0]["OfferPrice"]))).ToString()+"% off";
                                 hdnTotalStock.Value = dt.Rows[0]["TotalStock"].ToString();
-                                // ImgMain.ImageUrl = "../Images/Item/" + dt.Rows[0]["ImageName"].ToString();
-                                // ImgMain.Attributes["src"] = "../Images/Item/" + dt.Rows[0]["ImageName"].ToString();
+                               // ImgMain.ImageUrl = "../Images/Item/" + dt.Rows[0]["ImageName"].ToString();
+                               // ImgMain.Attributes["src"] = "../Images/Item/" + dt.Rows[0]["ImageName"].ToString();
                             }
                         }
                     }
@@ -103,14 +103,14 @@ namespace FaduPrice.Pages
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string AddToCart(string Qty, string SizeId, string ItemId)
-        {
-            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+        {   
+            using (BusinessLogicLayer obj=new BusinessLogicLayer())
             {
                 obj.Quantity = Convert.ToInt32(Qty);
                 obj.SizeId = Convert.ToInt32(SizeId);
                 obj.UserId = HttpContext.Current.Session["UserId"].ToString();
                 obj.ItemId = Convert.ToInt32(ItemId);
-                string CartCtr = obj.AddToCart();
+                string CartCtr=obj.AddToCart();
                 return CartCtr;
             }
         }
@@ -118,8 +118,8 @@ namespace FaduPrice.Pages
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string AddToWishList(string ItemId, string UserId)
-        {
-            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+        {   
+            using (BusinessLogicLayer obj=new BusinessLogicLayer())
             {
                 obj.UserId = UserId.ToString();
                 obj.ItemId = Convert.ToInt32(ItemId);
