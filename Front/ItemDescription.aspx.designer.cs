@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FaduPrice.Pages {
-    
-    
-    public partial class ItemDescription {
-        
+namespace FaduPrice.Pages
+{
+
+
+    public partial class ItemDescription
+    {
+
         /// <summary>
         /// hdnItemId control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnItemId;
-        
+
         /// <summary>
         /// hdnUserId control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnUserId;
-        
+
         /// <summary>
         /// hdnStockAvailable control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnStockAvailable;
-        
+
         /// <summary>
         /// hdnTotalStock control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnTotalStock;
-        
+
         /// <summary>
         /// rptItemImages control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptItemImages;
-        
+
         /// <summary>
         /// lblItemName control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblItemName;
-        
+
         /// <summary>
         /// lblPrice control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPrice;
-        
+
         /// <summary>
         /// lblOfferPrice control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOfferPrice;
-        
+
         /// <summary>
         /// lblOff control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOff;
-        
+
         /// <summary>
         /// hdnRating control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnRating;
-        
+
         /// <summary>
         /// rptAvailableSize control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptAvailableSize;
-        
+
         /// <summary>
         /// lblDescription control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDescription;
-        
+
         /// <summary>
         /// lblDescriptionFull control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDescriptionFull;
-        
+
         /// <summary>
         /// hdnSizeId control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace FaduPrice.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSizeId;
-        
+
         /// <summary>
         /// rptYouMayLike control.
         /// </summary>

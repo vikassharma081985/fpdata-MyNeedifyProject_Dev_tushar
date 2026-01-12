@@ -15,24 +15,6 @@ namespace FaduPrice.Front
     {
 
         /// <summary>
-        /// rptWomenCollection control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptWomenCollection;
-
-        /// <summary>
-        /// divWomenCollNoRecord control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divWomenCollNoRecord;
-
-        /// <summary>
         /// litBullets control.
         /// </summary>
         /// <remarks>
@@ -49,6 +31,24 @@ namespace FaduPrice.Front
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptSlider;
+
+        /// <summary>
+        /// rptWomenCollection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptWomenCollection;
+
+        /// <summary>
+        /// divWomenCollNoRecord control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divWomenCollNoRecord;
 
         /// <summary>
         /// rptMenCollection control.
