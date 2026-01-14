@@ -1,46 +1,110 @@
-﻿ <%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="FaduPrice.Front.index" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.master" AutoEventWireup="true" CodeBehind="ItemDescription.aspx.cs" Inherits="FaduPrice.Pages.ItemDescription" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-     <script src="/slick/slick.js"></script>
 
+    <%--<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>--%>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <%--<script src="../Jscript/jquery.zoom.js"></script>--%>
+    <%--<script src="../Jscript/jquery.zoom.min.js"></script>        --%>
+    <script src="../Jscript/easyzoom.js"></script>
+
+
+    <style>
+        /*.jcf-number .jcf-btn-dec:before, .jcf-number .jcf-btn-dec:after, .jcf-number .jcf-btn-inc:before, .jcf-number .jcf-btn-inc:after {
+            background: #fff;
+            background-color: white;
+        }
+
+        .zoom {
+            display: inline-block;
+            position: relative;
+        }
+
+            
+            .zoom:after {
+                content: '';
+                display: block;
+                width: 33px;
+                height: 33px;
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: url(icon.png);
+            }
+
+            .zoom img {
+                display: block;
+            }
+
+                .zoom img::selection {
+                    background-color: transparent;
+                }
+
+        .SelectSize {
+            border: 1px solid #09f;
+        }*/
+        .SelectSize {
+            border: 1px solid #09f;
+        }
+    </style>
+
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 0px auto;
+        }
+
+        .slick-slide {
+            margin: 0px 20px;
+        }
+
+            .slick-slide img {
+                width: 100%;
+            }
+
+        .slick-prev:before,
+        .slick-next:before {
+            color: black !important;
+        }
+
+
+        .slick-slide {
+            transition: all ease-in-out .3s;
+            opacity: 1;
+        }
+
+        .slick-active {
+            opacity: 1;
+        }
+
+        .slick-current {
+            opacity: 1;
+        }
+    </style>
     <script>
-
-
-        $('.carousel').carousel({
-            interval: 1000
-        });
-
         $(document).ready(function () {
-            $('.MySliderDiv').each(function (index) {
-                if (index == 0) {
-                    $(this).addClass('active');
-                }
+            debugger;
+            $('[id$=ImgMain]').attr('src', $('#subImg').attr('src'));
+            $('[id$=ImgLarge]').attr('href', $('[id$=ImgMain]').attr('src'));
+            $('a.zoom').easyZoom({
+                width: 250,
+                position: 'right',
+                background: '#222'
             });
-            $('.MyBullets').each(function (index) {
-                if (index == 0) {
-                    $(this).addClass('active');
-                }
-            });
+
         });
-
     </script>
-
-        <script>
-            $(document).ready(function () {
-                debugger;
-                $('[id$=ImgMain]').attr('src', $('#subImg').attr('src'));
-                $('[id$=ImgLarge]').attr('href', $('[id$=ImgMain]').attr('src'));
-                $('a.zoom').easyZoom({
-                    width: 250,
-                    position: 'right',
-                    background: '#222'
-                });
-
-            });
-        </script>
     <script type="text/javascript">        
-
+          
         var flagWishList = false;
         function FillHeart() {
             $('#WishlistIco').removeClass("glyphicon-heart-empty");
@@ -84,268 +148,45 @@
         }
     </script>
 
-    <link href="/slick/slick.css" rel="stylesheet" />
-    <link href="/slick/slick-theme.css" rel="stylesheet" />
+    <script src="slick/slick.js"></script>
+    <link href="slick/slick-theme.css" rel="stylesheet" />
+    <link href="slick/slick.css" rel="stylesheet" />
+    <style>
+        /*
 
-    <!---------------sahil style --------------------------------->
-    <style type="text/css">
-        html, body {
-            margin: 0;
-            padding: 0;
+Copy/paste this into your own stylesheet.
+Edit width, height and placement of the dynamically created image zoom box. 
+
+*/
+
+        #easy_zoom {
+            width: 600px;
+            height: 500px;
+            border: 2px solid #eee;
+            background: #fff;
+            color: #333;
+            position: absolute;
+            top: 80px;
+            left: 38%;
+            overflow: hidden;
+            -moz-box-shadow: 0 0 10px #777;
+            -webkit-box-shadow: 0 0 10px #777;
+            box-shadow: 0 0 10px #777;
+            /* vertical and horizontal alignment used for preloader text */
+            line-height: 400px;
+            text-align: center;
+            z-index: 999999;
         }
 
-        * {
-            box-sizing: border-box;
+        .product-details h1 {
+            font-weight: bold;
+            margin: 0 0 10px;
+            font-size: 20px;
+            line-height: 26px;
+            padding-right: 42px;
         }
-
-        .slider {
-            width: 95%;
-            margin: 0px auto;
-        }
-
-        .slick-slide {
-            margin: 0px 20px;
-        }
-
-            .slick-slide img {
-                width: 100%;
-            }
-
-        .slick-prev:before,
-        .slick-next:before {
-            color: black;
-        }
-
-
-        .slick-slide {
-            transition: all ease-in-out .3s;
-            opacity: 1;
-        }
-
-        .slick-active {
-            opacity: 1;
-        }
-
-        .slick-current {
-            opacity: 1;
-        }
-       /*CSS For Sliders*/
-        .carousel-inner > .item > img, .carousel-inner > .item > a > img {
-            width: 100%;
-        }
-
     </style>
-    <!----------------------------end here-------------------------------------------------->
-
-
-
-
-
-
-
-
-
-
-   <!--  Style -->
-<style>
-  .product-card {
-    background-color: #fff;
-    transition: 0.3s ease;
-  }
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-  }
-  .product-title {
-    font-size: 1.6rem;
-    color: #333;
-    font-weight: 600;
-  }
-  .product-description {
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-  .product-image {
-    max-height: 350px;
-    object-fit: cover;
-  }
-  .product-btn {
-    min-width: 120px;
-    font-size: 12px;
-    border-radius: 6px;
-    padding: 6px 12px;
-  }
-  @media (max-width: 576px) {
-    .product-btn {
-      flex: 1 1 auto;
-      min-width: 45%;
-    }
-  }
-  .review-section {
-    border: 1px solid #e5e5e5;
-  }
-  .star-rating i {
-    font-size: 1.3rem;
-    color: #ccc;
-    cursor: pointer;
-    margin-right: 5px;
-    transition: color 0.2s;
-  }
-  .star-rating i.active,
-  .star-rating i:hover,
-  .star-rating i:hover ~ i {
-    color: #F7C32E;
-  }
-</style>
-
-
-
-    <!-----------tushar code-------------------->
-
-<div class="container mt-5">
-    <div class="row align-items-center product-card shadow p-4 rounded bg-white">
-
-        <!-- Product Image (NO carousel) -->
-        <div class="col-md-5 text-center">
-            <img id="ImgMain"
-                 class="img-fluid rounded img-thumbnail"
-                 style="max-width:250px; max-height:150px;"
-                 src=""
-                 alt="Product Image" />
-        </div>
-
-        <!-- Product Details -->
-        <div class="col-md-7 mt-4 mt-md-0">
-
-            <h2 class="product-title mb-3">
-                <asp:Label ID="Label1" runat="server" />
-            </h2>
-
-            <p class="product-description text-muted mb-3">
-                <asp:Label ID="Label2" runat="server" />
-            </p>
-
-            <ul class="list-unstyled mb-3">
-                <li><strong>Brand:</strong> AudioTech</li>
-                <li><strong>Fabric:</strong> 100% Cotton</li>
-                <li><strong>Warranty:</strong> 1 Month</li>
-            </ul>
-
-            <!-- Price -->
-            <div class="product-price mb-4">
-                <span class="text-muted" style="text-decoration: line-through;">
-                    ₹<asp:Label ID="Label3" runat="server" />
-                </span>
-                &nbsp;
-                <span class="text-success fw-bold" style="font-size:1.5rem;">
-                    ₹<asp:Label ID="Label4" runat="server" />
-                </span>
-            </div>
-
-            <!-- Buttons (same JS functions) -->
-            <div class="d-flex gap-2 flex-wrap">
-                <button class="btn btn-sm"
-                        style="background-color:#F48B1E;color:#fff;border:none;"
-                        onclick="return AddToCart();">
-                    Add to Cart
-                </button>
-
-                <button class="btn btn-sm"
-                        style="background-color:#8EC243;color:#fff;border:none;"
-                        onclick="return BuyNow();">
-                    Buy Now
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Reviews Section (UI only) -->
-    <div class="review-section shadow-sm rounded p-4 mt-4 bg-white">
-        <h4 class="mb-3 fw-semibold">Customer Reviews</h4>
-
-        <div class="d-flex align-items-center mb-3">
-            <span class="text-warning me-2">
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star"></i>
-                <i class="fa fa-star-o"></i>
-            </span>
-            <span class="text-muted">(0 Reviews)</span>
-        </div>
-
-        <hr />
-
-        <div class="text-center text-muted py-3">
-            <i class="fa fa-comments" style="font-size:1.5rem;"></i>
-            <p class="mt-2 mb-0">No comments yet</p>
-        </div>
-
-        <hr />
-
-        <div class="add-review mt-3">
-            <h5 class="mb-3">Write a Review</h5>
-
-            <div class="mb-3">
-                <label>Your Rating:</label><br />
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
-                <i class="fa fa-star-o"></i>
-            </div>
-
-            <div class="mb-3">
-                <input type="text" class="form-control form-control-sm" placeholder="Your Name" />
-            </div>
-
-            <div class="mb-3">
-                <textarea class="form-control form-control-sm" rows="3"
-                          placeholder="Write your review here..."></textarea>
-            </div>
-
-            <button class="btn btn-sm"
-                    style="background-color:#0AA6BF;color:#fff;border:none;">
-                Submit Review
-            </button>
-        </div>
-    </div>
-</div>
-
- 
-
-
-
-    <!----------ends here----------------------------->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!----------------------------salhi code --------------------------------------------->
-
-
-      <div class="container">
+    <div class="container">
         <asp:HiddenField runat="server" ID="hdnItemId" Value="0" />
         <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
         <asp:HiddenField runat="server" ID="hdnStockAvailable" Value="0" />
@@ -584,247 +425,227 @@
             </div>
         </div>
     </div>
+    <style>
+        .morecontent span {
+            display: none;
+        }
 
-    
-
-     <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-    <script src="http://localhost:46692//Front/slick/slick.js" type="text/javascript" charset="utf-8"></script>
-    
-
-   
+        .morelink {
+            display: block;
+        }
+    </style>
     <script>
-        $(document).on('ready', function () {
 
-            $(".regular").slick({
-                dots: false,
-                infinite: true,
-                slidesToShow: 2,
-                slidesToScroll: 2
-            });
+        $(document).ready(function () {
+            debugger;
+            var TotalStock = parseInt($('[id$=hdnTotalStock]').val());
+            if (TotalStock > 0) {
+                $('#product-stock').show();
+                $('#OutOfStock').hide();
 
-            $(".variable").slick({
-                dots: true,
-                infinite: true,
-                variableWidth: true
-            });
-            $(".lazy").slick({
-                lazyLoad: 'ondemand', // ondemand progressive anticipated
-                infinite: true
-            });
+                $('#txtQty').removeAttr('disabled');
+                $('#product-actions-btn-add').removeAttr('disabled');
+                $('#btnBuyNow').removeAttr('disabled');
+            }
+            else {
+                $('#product-stock').hide();
+                $('#OutOfStock').show();
+
+                $('#txtQty').attr('disabled', 'disabled');
+                $('#product-actions-btn-add').attr('disabled', 'disabled');
+                $('#btnBuyNow').attr('disabled', 'disabled');
+
+            }
+
         });
-    </script>
-        <script>
 
-            $(document).ready(function () {
-                debugger;
-                var TotalStock = parseInt($('[id$=hdnTotalStock]').val());
-                if (TotalStock > 0) {
-                    $('#product-stock').show();
-                    $('#OutOfStock').hide();
 
-                    $('#txtQty').removeAttr('disabled');
-                    $('#product-actions-btn-add').removeAttr('disabled');
-                    $('#btnBuyNow').removeAttr('disabled');
+        function CheckDelivery() {
+            Pincode = $('#txtPincode').val();
+            if (Pincode != "") {
+                $.ajax({
+                    url: "PlaceOrder.aspx/CheckDelivery",
+                    async: false,
+                    data: '{Pincode:"' + Pincode + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST", // data has to be Posted 
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+                        var Ctr = parseInt(result.d);
+                        if (Ctr > 0) {
+
+                            $('#ErrorMsg').css('color', 'green');
+                            $('#ErrorMsg').html('yay ! Delivery is available in this Area. We will deliver this item within 10 days.');
+                        }
+                        else {
+                            $('#ErrorMsg').css('color', 'red');
+                            $('#ErrorMsg').html('Oops ! Sorry currently delivery is not available in this Area.');
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        function Switch(ctrl) {
+            var Path = $(ctrl).attr('src');
+            $('[id$=ImgMain]').attr('src', Path);
+            $('[id$=ImgLarge]').attr('href', $('[id$=ImgMain]').attr('src'));
+            $('a.zoom').easyZoom();
+
+        }
+
+        function IncreaseQty() {
+            var StockAvailable = parseInt($('[id$=hdnStockAvailable]').val());
+            if (StockAvailable == 0) {
+                alert('Item is Out of Stock !');
+            }
+            else {
+                var Qty = parseInt($('[id$=txtQty]').val().trim());
+                if (Qty < StockAvailable) {
+                    Qty = Qty + 1;
+                    $('[id$=txtQty]').val(Qty);
+                } else {
+                    alert('Only ' + StockAvailable + ' Item left in stock !');
+                }
+            }
+
+        }
+
+        function DecreaseQty() {
+            var Qty = parseInt($('[id$=txtQty]').val().trim());
+            if (Qty > 1) {
+                Qty = Qty - 1;
+                $('[id$=txtQty]').val(Qty);
+            }
+        }
+
+        function AddToCart() {
+            debugger
+            var MasterUserId = $('[id$=MasterhdnUserId]').val();
+            if (MasterUserId != "" && MasterUserId != "0") {
+                var Qty = $('[id$=txtQty]').val();
+                var SizeId = $('[id$=hdnSizeId]').val();
+                var ItemId = $('[id$=hdnItemId]').val();
+
+                if (SizeId == "0") {
+                    alert('Please select size.');
                 }
                 else {
-                    $('#product-stock').hide();
-                    $('#OutOfStock').show();
 
-                    $('#txtQty').attr('disabled', 'disabled');
-                    $('#product-actions-btn-add').attr('disabled', 'disabled');
-                    $('#btnBuyNow').attr('disabled', 'disabled');
-
-                }
-
-            });
-
-
-            function CheckDelivery() {
-                Pincode = $('#txtPincode').val();
-                if (Pincode != "") {
                     $.ajax({
-                        url: "PlaceOrder.aspx/CheckDelivery",
-                        async: false,
-                        data: '{Pincode:"' + Pincode + '"}',
+                        url: "ItemDescription.aspx/AddToCart",
+                        async: true,
+                        data: JSON.stringify({ Qty: Qty, SizeId: SizeId, ItemId: ItemId }),
                         contentType: "application/json; charset=utf-8",
                         type: "POST", // data has to be Posted 
                         timeout: 120000,
                         dataType: "json",
                         success: function (result) {
-                            var Ctr = parseInt(result.d);
-                            if (Ctr > 0) {
-
-                                $('#ErrorMsg').css('color', 'green');
-                                $('#ErrorMsg').html('yay ! Delivery is available in this Area. We will deliver this item within 10 days.');
+                            debugger
+                            var CartCtr = parseInt(result.d);
+                            if (CartCtr > 0) {
+                                $('.Cart-Counter').html(CartCtr);
+                                $('.Cart-Counter').show();
+                                alert('Item has been added in your cart.');
                             }
                             else {
-                                $('#ErrorMsg').css('color', 'red');
-                                $('#ErrorMsg').html('Oops ! Sorry currently delivery is not available in this Area.');
+                                $('.Cart-Counter').html('');
+                                $('.Cart-Counter').hide();
                             }
                         }
                     });
+
                 }
-                return false;
+            }
+            else {
+                alert('Login your account first !');
+                $('[id$=lnkLogin]').click();
             }
 
-            function Switch(ctrl) {
-                var Path = $(ctrl).attr('src');
-                $('[id$=ImgMain]').attr('src', Path);
-                $('[id$=ImgLarge]').attr('href', $('[id$=ImgMain]').attr('src'));
-                $('a.zoom').easyZoom();
+            return false;
+        }
 
-            }
 
-            function IncreaseQty() {
-                var StockAvailable = parseInt($('[id$=hdnStockAvailable]').val());
-                if (StockAvailable == 0) {
-                    alert('Item is Out of Stock !');
+        function BuyNow() {
+            debugger
+            var MasterUserId = $('[id$=MasterhdnUserId]').val();
+            if (MasterUserId != "" && MasterUserId != "0") {
+                var Qty = $('[id$=txtQty]').val();
+                var SizeId = $('[id$=hdnSizeId]').val();
+                var ItemId = $('[id$=hdnItemId]').val();
+
+                if (SizeId == "0") {
+                    alert('Please select size.');
                 }
                 else {
-                    var Qty = parseInt($('[id$=txtQty]').val().trim());
-                    if (Qty < StockAvailable) {
-                        Qty = Qty + 1;
-                        $('[id$=txtQty]').val(Qty);
-                    } else {
-                        alert('Only ' + StockAvailable + ' Item left in stock !');
-                    }
+
+                    $.ajax({
+                        url: "ItemDescription.aspx/AddToCart",
+                        async: true,
+                        data: JSON.stringify({ Qty: Qty, SizeId: SizeId, ItemId: ItemId }),
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST", // data has to be Posted 
+                        timeout: 120000,
+                        dataType: "json",
+                        success: function (result) {
+                            window.location.href = "PlaceOrder.aspx";
+                        }
+                    });
+
                 }
+            }
+            else {
+                alert('Login your account first !');
+                $('[id$=lnkLogin]').click();
+            }
+
+            return false;
+        }
+
+        function SelectSize(ctrl) {
+            debugger;
+            $(ctrl).parent().find('li').each(function () {
+                $(this).removeClass('SelectSize');
+            });
+            var SizeId = $(ctrl).find('[id$=hdnSelectedSizeId]').val();
+            $('[id$=hdnSizeId]').val(SizeId);
+            var StockAvailable = parseInt($(ctrl).find('[id$=hdnSelectedSizeStock]').val());
+
+            if (StockAvailable > 0) {
+                $('#product-stock').show();
+                $('#OutOfStock').hide();
+
+                $('#txtQty').removeAttr('disabled');
+                $('#product-actions-btn-add').removeAttr('disabled');
+                $('#btnBuyNow').removeAttr('disabled');
+            }
+            else {
+                $('#product-stock').hide();
+                $('#OutOfStock').show();
+
+                $('#txtQty').attr('disabled', 'disabled');
+                $('#product-actions-btn-add').attr('disabled', 'disabled');
+                $('#btnBuyNow').attr('disabled', 'disabled');
 
             }
 
-            function DecreaseQty() {
-                var Qty = parseInt($('[id$=txtQty]').val().trim());
-                if (Qty > 1) {
-                    Qty = Qty - 1;
-                    $('[id$=txtQty]').val(Qty);
-                }
-            }
+            $('[id$=hdnStockAvailable]').val(StockAvailable);
 
-            function AddToCart() {
-                debugger
-                var MasterUserId = $('[id$=MasterhdnUserId]').val();
-                if (MasterUserId != "" && MasterUserId != "0") {
-                    var Qty = $('[id$=txtQty]').val();
-                    var SizeId = $('[id$=hdnSizeId]').val();
-                    var ItemId = $('[id$=hdnItemId]').val();
-
-                    if (SizeId == "0") {
-                        alert('Please select size.');
-                    }
-                    else {
-
-                        $.ajax({
-                            url: "ItemDescription.aspx/AddToCart",
-                            async: true,
-                            data: JSON.stringify({ Qty: Qty, SizeId: SizeId, ItemId: ItemId }),
-                            contentType: "application/json; charset=utf-8",
-                            type: "POST", // data has to be Posted 
-                            timeout: 120000,
-                            dataType: "json",
-                            success: function (result) {
-                                debugger
-                                var CartCtr = parseInt(result.d);
-                                if (CartCtr > 0) {
-                                    $('.Cart-Counter').html(CartCtr);
-                                    $('.Cart-Counter').show();
-                                    alert('Item has been added in your cart.');
-                                }
-                                else {
-                                    $('.Cart-Counter').html('');
-                                    $('.Cart-Counter').hide();
-                                }
-                            }
-                        });
-
-                    }
-                }
-                else {
-                    alert('Login your account first !');
-                    $('[id$=lnkLogin]').click();
-                }
-
-                return false;
-            }
+            $(ctrl).addClass('SelectSize');
+        }
 
 
-            function BuyNow() {
-                debugger
-                var MasterUserId = $('[id$=MasterhdnUserId]').val();
-                if (MasterUserId != "" && MasterUserId != "0") {
-                    var Qty = $('[id$=txtQty]').val();
-                    var SizeId = $('[id$=hdnSizeId]').val();
-                    var ItemId = $('[id$=hdnItemId]').val();
-
-                    if (SizeId == "0") {
-                        alert('Please select size.');
-                    }
-                    else {
-
-                        $.ajax({
-                            url: "ItemDescription.aspx/AddToCart",
-                            async: true,
-                            data: JSON.stringify({ Qty: Qty, SizeId: SizeId, ItemId: ItemId }),
-                            contentType: "application/json; charset=utf-8",
-                            type: "POST", // data has to be Posted 
-                            timeout: 120000,
-                            dataType: "json",
-                            success: function (result) {
-                                window.location.href = "PlaceOrder.aspx";
-                            }
-                        });
-
-                    }
-                }
-                else {
-                    alert('Login your account first !');
-                    $('[id$=lnkLogin]').click();
-                }
-
-                return false;
-            }
-
-            function SelectSize(ctrl) {
-                debugger;
-                $(ctrl).parent().find('li').each(function () {
-                    $(this).removeClass('SelectSize');
-                });
-                var SizeId = $(ctrl).find('[id$=hdnSelectedSizeId]').val();
-                $('[id$=hdnSizeId]').val(SizeId);
-                var StockAvailable = parseInt($(ctrl).find('[id$=hdnSelectedSizeStock]').val());
-
-                if (StockAvailable > 0) {
-                    $('#product-stock').show();
-                    $('#OutOfStock').hide();
-
-                    $('#txtQty').removeAttr('disabled');
-                    $('#product-actions-btn-add').removeAttr('disabled');
-                    $('#btnBuyNow').removeAttr('disabled');
-                }
-                else {
-                    $('#product-stock').hide();
-                    $('#OutOfStock').show();
-
-                    $('#txtQty').attr('disabled', 'disabled');
-                    $('#product-actions-btn-add').attr('disabled', 'disabled');
-                    $('#btnBuyNow').attr('disabled', 'disabled');
-
-                }
-
-                $('[id$=hdnStockAvailable]').val(StockAvailable);
-
-                $(ctrl).addClass('SelectSize');
-            }
-
-
-            function ReadMore() {
-                $('#ShortDes').css('display', 'none');
-                $('#LongDes').css('display', 'block');
-            }
-            function ReadLess() {
-                $('#ShortDes').css('display', 'block');
-                $('#LongDes').css('display', 'none');
-            }
-        </script>
+        function ReadMore() {
+            $('#ShortDes').css('display', 'none');
+            $('#LongDes').css('display', 'block');
+        }
+        function ReadLess() {
+            $('#ShortDes').css('display', 'block');
+            $('#LongDes').css('display', 'none');
+        }
+    </script>
     <script src="slick/slick.js"></script>
     <script>
         $(document).on('ready', function () {
@@ -847,5 +668,4 @@
             });
         });
     </script>
-
 </asp:Content>
