@@ -215,7 +215,7 @@ Edit width, height and placement of the dynamically created image zoom box.
                                 <ItemTemplate>
                                     <div class='container'>
                                         <div class='easyzoom example'>
-                                            <img id="subImg" src="<%#"http://trendzshopping.in//Images/Items/"+Eval("ImageName") %>" style="width: 65px !important;" onclick="Switch(this)" class="img-responsive img-thumbnail" />
+                                            <img id="subImg" src="<%#"http://198.38.88.185:8082/Images/Items/"+Eval("ImageName") %>" style="width: 65px !important;" onclick="Switch(this)" class="img-responsive img-thumbnail" />
                                         </div>
                                     </div>
                                 </ItemTemplate>
