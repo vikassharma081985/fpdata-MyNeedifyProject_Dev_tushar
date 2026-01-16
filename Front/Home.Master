@@ -79,7 +79,7 @@
                     success: function (data) {
                         var UserInfo = $.parseJSON(data.d);
                         if (UserInfo.length > 0) {
-
+                            
                             $('[id$=lblUserName]').text('Hi, ' + UserInfo[0].FirstName);
                             $('[id$=LoggedinUser]').show();
                             $('[id$=NotLoggedIn]').hide();    // login/signup not display when user login
@@ -750,6 +750,7 @@ margin-left: 0px;                    font-size: 13px;
 
 
 <body >
+    <form id="form1" runat="server">
 
 
 
@@ -758,7 +759,7 @@ margin-left: 0px;                    font-size: 13px;
 
 <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
     <div class="container-fluid">
-
+        <asp:HiddenField ID="MasterhdnUserId" runat="server" Value="0" />
         <!-- MOBILE TOPBAR -->
         <div class="mobile-topbar d-lg-none w-100 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
@@ -850,9 +851,9 @@ margin-left: 0px;                    font-size: 13px;
 
                 <!-- NOT LOGGED IN -->
                 <div id="mySidenav">
-                <form onsubmit="OpenLogin(); return false;" id="NotLoggedIn">
-                    <button type="submit" class="btn btn-login btn-sm">Login/Signup</button>
-                </form>
+                <div id="NotLoggedIn">
+                    <button type="button" onclick="OpenLogin()" class="btn btn-login btn-sm">Login/Signup</button>
+                </div>
                     </div>
             </div>
 
@@ -886,15 +887,15 @@ margin-left: 0px;                    font-size: 13px;
 
                
                 <a target="_blank" class="btn btn-admin btn-sm" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>
-                 <form onsubmit="OpenLogin(); return false;" class="btn btn-seller btn-sm" id="NotLoggedIn">
-     <button class="btn btn-seller btn-sm" type="submit">Login/Signup</button>
- </form>
+                 <div class="btn btn-seller btn-sm" id="NotLoggedIn">
+     <button class="btn btn-seller btn-sm" type="button" onclick="OpenLogin()">Login/Signup</button>
+ </div>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
 
-                <form onsubmit="logoutUser(); return false;" id="logoutMobileSection" style="display:none;">
-                    <button class="btn btn-login btn-sm" type="submit">Logout</button>
-                </form>
+                <div id="logoutMobileSection" style="display:none;">
+                    <button class="btn btn-login btn-sm" type="button" onclick="logoutUser()">Logout</button>
+                </div>
             </div>
 
         </div>
@@ -1079,7 +1080,7 @@ margin-left: 0px;                    font-size: 13px;
 
     <!---------------------------sahil code--------------------------------------------->
 
-    <form id="form1" runat="server">
+
 
       <%--  <div class="topnav">
             <div id="mySidenav" class="sidenav">
@@ -1657,6 +1658,7 @@ margin-left: 0px;                    font-size: 13px;
                 if (UserId != "0") {
                     $.ajax({
                         url: "http://198.38.88.185:8082/Front/index.aspx/BindCart",
+                        //url: "http://localhost:46692/Front/index.aspx/BindCart",
                         async: true,
                         data: '{UserId:"' + UserId + '"}',
                         contentType: "application/json; charset=utf-8",

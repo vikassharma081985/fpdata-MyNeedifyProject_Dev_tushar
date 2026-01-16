@@ -14,7 +14,7 @@ namespace FaduPrice.Pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["UserId"] = "1";
+            //Session["UserId"] = "1";
             if (Session["UserId"] != null)
             {
                 BindData(Session["UserId"].ToString());
