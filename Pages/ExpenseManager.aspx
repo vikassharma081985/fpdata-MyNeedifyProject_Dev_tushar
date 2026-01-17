@@ -1309,8 +1309,8 @@
                 alert('File not found');
                 return;
             }
-            var pdfUrl = "https://198.38.88.185/api/Download/DownloadPdf" //"https://localhost:7089/api/Download/DownloadPdf"
-            //var pdfUrl = "https://localhost:7089/api/Download/DownloadPdf"
+            //var pdfUrl = "https://198.38.88.185/api/Download/DownloadPdf" //"https://localhost:7089/api/Download/DownloadPdf"
+            var pdfUrl = "https://localhost:7089/api/Download/DownloadPdf"
                 + "?fileName=" + encodeURIComponent(fileName);
             window.open(pdfUrl, "_blank");
         }
