@@ -230,6 +230,8 @@
     <Content Include="Css\snowflakes.css" />
     <Content Include="Front\AboutUs.aspx" />
     <Content Include="Front\Account.aspx" />
+    <Content Include="Front\Appointment1.aspx" />
+    <Content Include="Front\AppointmentMaster.aspx" />
     <Content Include="Front\AsyncUploadFile.ashx" />
     <Content Include="Front\CheckBrowser.html" />
     <Content Include="Front\Checkout.aspx" />
@@ -285,6 +287,7 @@
     <Content Include="Images\logo_2.PNG" />
     <Content Include="Images\mylogo.png" />
     <Content Include="Images\Slider.gif" />
+    <Content Include="Images\Slider\2_appointment.jpg" />
     <Content Include="Indexresp.html" />
     <Content Include="Jscript\AddItem.js" />
     <Content Include="Jscript\AddSupplier.js" />
@@ -563,6 +566,14 @@
     </Compile>
     <Compile Include="Front\Account.aspx.designer.cs">
       <DependentUpon>Account.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Front\Appointment1.aspx.cs">
+      <DependentUpon>Appointment1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Front\AppointmentMaster.aspx.cs">
+      <DependentUpon>AppointmentMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Front\Checkout.aspx.cs">
       <DependentUpon>Checkout.aspx</DependentUpon>

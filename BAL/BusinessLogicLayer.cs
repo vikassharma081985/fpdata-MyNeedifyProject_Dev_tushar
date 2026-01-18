@@ -1302,7 +1302,7 @@ namespace BLL
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@TransactionDetailId", TransactionId);
-
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));    //2026-01-11 by HEMANT
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
             }
@@ -1330,7 +1330,7 @@ namespace BLL
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@FromDate", FromDate);
                     sqlCommand.Parameters.AddWithValue("@ToDate", ToDate);
-
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));    //2026-01-11 by HEMANT
                     return objDAL.GetDataTable(sqlCommand);
                 }
             }
@@ -1642,6 +1642,7 @@ namespace BLL
                     dbSqlCommand.Parameters.AddWithValue("@UserId", UserId);
                     dbSqlCommand.Parameters.AddWithValue("@Role", Role);
                     dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    dbSqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));    //2026-01-11 by HEMANT
                     return objDALCIILibrary.GetDataTable(dbSqlCommand);
                 }
             }
