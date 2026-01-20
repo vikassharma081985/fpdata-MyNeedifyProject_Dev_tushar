@@ -158,7 +158,9 @@ Copy/paste this into your own stylesheet.
 Edit width, height and placement of the dynamically created image zoom box. 
 
 */
-
+          .navbar-brand img {
+      margin-top: -14px;
+  }
         #easy_zoom {
             width: 600px;
             height: 500px;
@@ -186,245 +188,208 @@ Edit width, height and placement of the dynamically created image zoom box.
             padding-right: 42px;
         }
     </style>
-    <div class="container">
-        <asp:HiddenField runat="server" ID="hdnItemId" Value="0" />
-        <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
-        <asp:HiddenField runat="server" ID="hdnStockAvailable" Value="0" />
-        <asp:HiddenField runat="server" ID="hdnTotalStock" Value="0" />
+    <div class="container mt-5">
+
+     <asp:HiddenField runat="server" ID="hdnItemId" Value="0" />
+    <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
+    <asp:HiddenField runat="server" ID="hdnStockAvailable" Value="0" />
+    <asp:HiddenField runat="server" ID="hdnTotalStock" Value="0" />
+    <asp:HiddenField ID="hdnRating" runat="server" Value="0" />
+    <asp:HiddenField ID="hdnSizeId" runat="server" Value="0" />
+
+    <div class="row align-items-start product-card p-4 rounded">
+
+        <!-- LEFT IMAGE SECTION -->
+        <div class="col-md-5 text-center position-relative">
+
+            <a href="#" id="ImgLarge" class="zoom">
+                            <img id="ImgMain" style="width: auto; height: 350px;" src="" class="img-responsive" alt="New York">
+                        </a>
 
 
-        <div class="product-details row">
-            <div class="col-sm-4 col-xs-12" style="margin-top: 20px;">
-
-                <div class="product-mask">
-
-                    <div class="item" style="width: 100%; position: relative;">
-
-                        <p>
-                            <a href="#" id="ImgLarge" class="zoom">
-                                <img id="ImgMain" style="width: auto; height: 350px;" src="" class="img-responsive" alt="New York">
-                            </a>
-                        </p>
-                        <div id="divWishList" style="position: absolute; top: 0; right: 0;">
-                            <a href="#" title="Add to Wishlist" onclick="AddToWishList();"><i id="WishlistIco" style="font-size: 25px; font-weight: 500; color: #7C519B" onmouseover="FillHeart();" onmouseout="EmptyHeart();" class=" glyphicon glyphicon-heart-empty myHeader"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <section class="regular slider">
-                            <asp:Repeater ID="rptItemImages" runat="server">
-                                <ItemTemplate>
-                                    <div class='container'>
-                                        <div class='easyzoom example'>
-                                            <img id="subImg" src="<%#"http://198.38.88.185:8082/Images/Items/"+Eval("ImageName") %>" style="width: 65px !important;" onclick="Switch(this)" class="img-responsive img-thumbnail" />
-                                        </div>
-                                    </div>
-                                </ItemTemplate>
-                            </asp:Repeater>
-                        </section>
-                    </div>
-
-                </div>
-
+            <div id="divWishList" style="position: absolute; top: 5px; right: 10px;">
+                <a href="#" title="Add to Wishlist" onclick="AddToWishList();">
+                    <i id="WishlistIco"
+                        style="font-size:25px;color:#7C519B"
+                        class="glyphicon glyphicon-heart-empty">
+                    </i>
+                </a>
             </div>
 
-            <div class="col-sm-5 descr" id="product-details-col-2">
+            <!-- IMAGE REPEATER -->
+            <div class="mt-3">
+                <asp:Repeater ID="rptItemImages" runat="server">
+                    <ItemTemplate>
+                         <img id="subImg" src="<%#"http://198.38.88.185:8082/Images/Items/"+Eval("ImageName") %>" style="width: 65px !important;" onclick="Switch(this)" class="img-responsive img-thumbnail" />
 
-                <div class="holder">
-                    <h1>
-                        <asp:Label runat="server" ID="lblItemName"></asp:Label></h1>
-                    <%--   <div id="RatingBox">
-                        <div style="padding-top: 0px; text-align: center">
-
-                            <section class='rating-widget'>
-
-                                <!-- Rating Stars Box -->
-                                <div class='rating-stars text-left' style="color: orange; font-size: 18px;">
-
-                                    <i class='fa fa-star fa-fw'></i>
-
-                                    <i class='fa fa-star fa-fw'></i>
-
-                                    <i class='fa fa-star fa-fw'></i>
-
-                                    <i class='fa fa-star fa-fw'></i>
-
-                                    <i class='fa fa-star fa-fw' style="color: #ccc"></i>
-
-                                </div>
-
-                            </section>
-                        </div>
-                    </div>--%>
-                    <div class="product-price">
-                        <strong class="price">
-
-                            <span>
-                                <span style="font-weight: 100; text-decoration: line-through"><i style="font-weight: 100;" class="fa fa-inr"></i>
-                                    <asp:Label ID="lblPrice" runat="server"></asp:Label></span>
-                                <span style="margin-left: 15px;"><i class="fa fa-inr"></i>
-                                    <asp:Label ID="lblOfferPrice" runat="server"></asp:Label>
-                                </span>
-
-                                <span style="margin-left: 15px; color: #7C519B; font-weight: 600">
-                                    <asp:Label ID="lblOff" runat="server"></asp:Label>
-                                </span>
-
-                            </span>
-                        </strong>
-
-                    </div>
-                    <asp:HiddenField ID="hdnRating" runat="server" Value="0" />
-
-                    <div class="product-sets">
-                        <strong class="title">
-                            <label>
-                                Size<%--<a href="#" style="color: #7C519B !important;">(Size Guide)</a>--%>
-                            </label>
-                        </strong>
-
-                        <ul class="list-unstyled set-size">
-                            <asp:Repeater ID="rptAvailableSize" runat="server">
-                                <ItemTemplate>
-                                    <li onclick="SelectSize(this);">
-                                        <input type="hidden" id="hdnSelectedSizeId" value='<%#Eval("SizeId") %>' />
-                                        <input type="hidden" id="hdnSelectedSizeStock" value='<%#Eval("Stock") %>' />
-                                        <label><%#Eval("Size") %></label>
-
-                                    </li>
-                                </ItemTemplate>
-                            </asp:Repeater>
-                        </ul>
-
-
-                        <strong class="title">
-                            <label>Quantity</label></strong>
-                        <div class="qty-block">
-                            <span class="jcf-number">
-                                <input id="txtQty" name="quantity" type="number" min="1" value="1" max="10" readonly="true" class="jcf-real-element">
-                                <span class="jcf-btn-inc" style="background-color: #7c519b; color: #fff" onclick="IncreaseQty()"></span>
-                                <span class="jcf-btn-dec" style="background-color: #7c519b; color: #fff" onclick="DecreaseQty()"></span></span>
-
-
-                            <strong class="stock" id="product-stock">
-                                <i id="product-stock-icon" class="icon-full"></i>In stock</strong>
-
-
-                            <strong style="color: red;" id="OutOfStock">
-                                <i class="fa fa-times-circle-o" style="font-size: 24px;"></i>
-                                <span style="font-size: 24px;">Out of stock </span></strong>
-
-                        </div>
-                        <div class="descr-text" id="product-details-text">
-                            <%--   <hr class="visible-xs">--%>
-
-                            <strong class="title visible-xs" id="product-details-text-title">Overview</strong>
-                            <p></p>
-                            <div class="row">
-                                <div class="col-md-12 col-xs-12">
-
-                                    <div id="ShortDes">
-                                        <asp:Label ID="lblDescription" runat="server"></asp:Label>
-                                        <br />
-                                        <a href="#" id="ReadMore" style="text-decoration: none; color: #7C519B;" onclick="ReadMore();">Read More</a>
-                                    </div>
-                                    <div id="LongDes" style="display: none;">
-                                        <asp:Label ID="lblDescriptionFull" runat="server"></asp:Label>
-                                        <br />
-                                        <a href="#" id="ReadLess" style="text-decoration: none; color: #7C519B;" onclick="ReadLess();">Read Less</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-
-
-            </div>
-            <div class="col-sm-3" id="product-details-col3">
-                <!-- product aside -->
-                <div class="product-actions" id="product-actions">
-                    <ul class="info-list list-unstyled" id="product-info-list">
-                        <li id="product-info-list-item1" style="text-align: left;"><i id="product-info-list-item-icon1" class="fa fa-car"></i>When will I receive my order?</li>
-                    </ul>
-                    <div id="checkpin_div">
-                        <div id="form_checkpin" class="">
-                            <div class="pincode-form form-inline">
-                                <input class="form-control" id="txtPincode" maxlength="6" placeholder="Enter Pincode" />
-                                <button style="background-color: #F6861F !important;" id="pincode-check" onclick="return CheckDelivery();" class="btn">
-                                    Check</button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <ul class="info-list list-unstyled">
-                        <li><span id="ErrorMsg"></span></li>
-
-                    </ul>
-
-                    <div class="product-from join-us-bottom" id="product-actions-form">
-                        <fieldset class="show" id="product-actions-fieldset">
-                            <button id="product-actions-btn-add" onclick="return AddToCart();" style="background-color: #7C519B !important; width: 205px; background-image: none; z-index: 999; border: none; position: fixed; bottom: -1%; left: 0;" class="btn btn-primary btn-block">Add to Cart <i class="fa fa-shopping-cart"></i></button>
-                            <button id="btnBuyNow" onclick="return BuyNow();" style="background-color: #F6861F !important; background-image: none; width: 205px; z-index: 999; border: none; position: fixed; bottom: -1%; right: 0;" class="btn btn-primary btn-block">Buy Now <i class="fa fa-bolt"></i></button>
-                            <asp:HiddenField ID="hdnSizeId" runat="server" Value="0" />
-                        </fieldset>
-                        <hr class="hide">
-                    </div>
-
-
-                </div>
-
+                    </ItemTemplate>
+                </asp:Repeater>
             </div>
 
         </div>
-        <div class="intro-area" id="section-products-carousel" style="display: none;">
 
-            <!--YOU MAY ALSO LIKE-->
+        <!-- RIGHT DETAILS SECTION -->
+        <div class="col-md-7 mt-4 mt-md-0">
 
-            <div class="container-fluid">
-                <div class="col-md-12">
-                    <h2 id="H1" class="text-uppercase">YOU MAY ALSO LIKE</h2>
+            <h2 class="product-title mb-3">
+                <asp:Label runat="server" ID="lblItemName"></asp:Label>
+            </h2>
+
+            <div class="product-price mb-3">
+                <span class="text-muted" style="text-decoration:line-through;">
+                    ₹<asp:Label ID="lblPrice" runat="server"></asp:Label>
+                </span>
+
+                <span class="text-success fw-bold ms-3" style="font-size:1.5rem;">
+                    ₹<asp:Label ID="lblOfferPrice" runat="server"></asp:Label>
+                </span>
+
+                <span class="ms-3" style="color:#7C519B;font-weight:bold;">
+                    <asp:Label ID="lblOff" runat="server"></asp:Label>
+                </span>
+            </div>
+
+            <!-- SIZE SECTION -->
+            <div class="mb-3">
+                <strong>Available Sizes:</strong>
+
+                <ul class="list-unstyled d-flex flex-wrap gap-2 mt-2">
+                    <asp:Repeater ID="rptAvailableSize" runat="server">
+                       <ItemTemplate>
+                                <li onclick="SelectSize(this);">
+                                    <input type="hidden" id="hdnSelectedSizeId" value='<%#Eval("SizeId") %>' />
+                                    <input type="hidden" id="hdnSelectedSizeStock" value='<%#Eval("Stock") %>' />
+                                    <label><%#Eval("Size") %></label>
+
+                                </li>
+                            </ItemTemplate>
+
+                    </asp:Repeater>
+                </ul>
+            </div>
+
+            <!-- QUANTITY -->
+            <div class="mb-3">
+                <strong>Quantity:</strong>
+
+                <div class="d-flex align-items-center gap-2 mt-2">
+
+                    <button type="button" onclick="DecreaseQty()" class="btn btn-sm btn-secondary">-</button>
+
+                    <input id="txtQty" type="number" value="1" min="1" max="10"
+                        readonly class="form-control form-control-sm text-center"
+                        style="width:70px;" />
+
+                    <button type="button" onclick="IncreaseQty()" class="btn btn-sm btn-secondary">+</button>
                 </div>
 
-                <div class="products-carousel gallery-js-ready autorotation-disabled">
-                    <div class="mask">
-                        <div class="row">
-                            <asp:Repeater ID="rptYouMayLike" runat="server">
-                                <ItemTemplate>
-                                    <div class="col-md-2 col-xs-6 col-sm-3">
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
-                                            <div class="Tile">
-                                                <img class="img-responsive img-thumbnail" src="<%#"../Images/Items/"+Eval("ImageName") %>" />
-                                            </div>
-                                        </a>
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
-                                            <span class="ItemName"><%#Eval("ItemName") %></span>
-                                        </a>
-                                        <div class="ItemPrice">
-                                            <span><i class="fa fa-inr"></i><%#Eval("OfferPrice") %></span>
-                                        </div>
-                                        <div class="ItemPriceOffer">
-                                            <span><i class="fa fa-inr"></i><%#Eval("ItemPrice") %></span>
-                                        </div>
-                                    </div>
-                                </ItemTemplate>
-                            </asp:Repeater>
-                        </div>
-                    </div>
+                <div class="mt-2">
+                    <strong class="text-success" id="product-stock">In Stock</strong>
 
+                    <strong style="color:red;display:none;" id="OutOfStock">
+                        Out of Stock
+                    </strong>
                 </div>
-
 
             </div>
+
+            <!-- DESCRIPTION -->
+            <div class="mb-3">
+
+                <div id="ShortDes">
+                    <asp:Label ID="lblDescription" runat="server"></asp:Label>
+
+                    <br />
+                    <a href="#" onclick="ReadMore();" style="color:#7C519B;">Read More</a>
+                </div>
+
+                <div id="LongDes" style="display:none;">
+                    <asp:Label ID="lblDescriptionFull" runat="server"></asp:Label>
+
+                    <br />
+                    <a href="#" onclick="ReadLess();" style="color:#7C519B;">Read Less</a>
+                </div>
+
+            </div>
+
+            <!-- PINCODE CHECK -->
+            <div class="mb-3">
+
+                <input id="txtPincode" maxlength="6"
+                    class="form-control form-control-sm d-inline-block"
+                    placeholder="Enter Pincode"
+                    style="width:150px;" />
+
+                <button onclick="return CheckDelivery();"
+                    class="btn btn-sm"
+                    style="background:#0AA6BF;color:#fff;">
+                    Check
+                </button>
+
+                <span id="ErrorMsg"></span>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="d-flex gap-2 flex-wrap">
+
+                <button onclick="return AddToCart();"
+                    class="btn btn-sm"
+                    style="background:#F48B1E;color:#fff;">
+                    Add to Cart
+                </button>
+
+                <button onclick="return BuyNow();"
+                    class="btn btn-sm"
+                    style="background:#8EC243;color:#fff;">
+                    Buy Now
+                </button>
+
+            </div>
+
         </div>
     </div>
+
+    <!-- YOU MAY ALSO LIKE SECTION -->
+    <div class="mt-5">
+
+        <h4 class="mb-3">YOU MAY ALSO LIKE</h4>
+
+        <div class="row">
+
+            <asp:Repeater ID="rptYouMayLike" runat="server">
+                <ItemTemplate>
+
+                    <div class="col-md-2 col-6 text-center mb-3">
+
+                        <a href="<%#"http://trendzshopping.in/Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
+
+                             <img class="img-responsive img-thumbnail" src="<%#"../Images/Items/"+Eval("ImageName") %>" />
+
+                        </a>
+
+                        <div class="mt-2">
+                            <%#Eval("ItemName") %>
+                        </div>
+
+                        <div class="text-success fw-bold">
+                            ₹<%#Eval("OfferPrice") %>
+                        </div>
+
+                        <div class="text-muted" style="text-decoration:line-through;">
+                            ₹<%#Eval("ItemPrice") %>
+                        </div>
+
+                    </div>
+
+                </ItemTemplate>
+            </asp:Repeater>
+
+        </div>
+    </div>
+
+</div>
+
     <style>
         .morecontent span {
             display: none;
