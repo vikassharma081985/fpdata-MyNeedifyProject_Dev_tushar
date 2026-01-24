@@ -66,7 +66,7 @@
                     type: "POST",
                     
                     //url: "http://localhost:46692/Front/index.aspx/LoginDetails",
-                    url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
+                    url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails",
                     data: JSON.stringify({
                         UserName: UserName, Password: Password
                     }),
@@ -845,7 +845,7 @@
             <span style="font-size: 30px; margin-left: 10px;">
                 <img src="../Images/System/logo.png" style="height: 100px;" /></span>
             &emsp;
-            <a href="http://localhost:46692/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>
+            <a href="http://198.38.88.185:8082/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>
 		<%--<a href="http://trendzshopping.in/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>--%>
 		 <a href="../Pages/ExpenseManager.aspx" target="_blank" style="color: blue;">Expense Master</a>
         </div>
