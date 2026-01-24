@@ -54,7 +54,7 @@
                     </button>
                     <a class="navbar-brand" style="font-size: 28px; font-family: cursive; font-weight: 600;"
                         href="#">
-                        <img src="../Images/mylogo.png" style="width: 117px; margin-left: 0%; margin-top: -43%;" /></a>
+                        <img src="../Images/system/mylogo.png" style="width: 117px; margin-left: 0%; margin-top: -43%;" /></a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
