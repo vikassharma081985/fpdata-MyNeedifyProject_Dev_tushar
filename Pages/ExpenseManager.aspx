@@ -98,7 +98,8 @@
                 </div>
 
                 <!-- Charts Section -->
-                <div id="chartsContainer" style="display:none; margin-top: 20px; margin-bottom: 20px; text-align: center;">
+                <div id="chartsContainer"
+                    style="display:none; margin-top: 20px; margin-bottom: 20px; text-align: center;">
                     <div class="form-row center" style="flex-wrap: wrap; gap: 20px; justify-content: center;">
                         <div class="chart-box"
                             style="width: 35%; min-width: 250px; background: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
@@ -1573,32 +1574,33 @@
 
                 // 2. Process Data for Month Wise
                 var monthMap = {};
-                var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                // Helper to get month index for sorting
+                var getMonthIndex = function (monStr) {
+                    return new Date(monStr + " 1, 2000").getMonth();
+                };
 
                 $.each(expenseData, function (index, item) {
-                    // Parse date: dd-MMM-yyyy
-                    // We can use the parseDate helper or just string manipulation if format is consistent
-                    // item.ExpenseDate is "dd-MMM-yyyy". e.g. "24-Jan-2026"
-                    // Let's rely on the MMM part directly if possible, or parse it properly.
-
                     var parts = item.ExpenseDate.split('-');
                     if (parts.length === 3) {
                         var monthStr = parts[1]; // MMM
                         var yearStr = parts[2];
                         var key = monthStr + "-" + yearStr;
 
-                        // To sort correctly, maybe store as comparable index? 
-                        // for simple pie, key-value is enough.
-                        if (!monthMap[key]) monthMap[key] = 0;
-                        monthMap[key] += item.Amount;
+                        if (!monthMap[key]) monthMap[key] = { amount: 0, sortValue: getMonthIndex(monthStr) + parseInt(yearStr) * 12 };
+                        monthMap[key].amount += item.Amount;
                     }
                 });
 
-                var monthLabels = Object.keys(monthMap);
-                var monthValues = Object.values(monthMap);
-                var monthColors = generateColors(monthLabels.length);
+                // Sort months chronologically
+                var monthKeys = Object.keys(monthMap).sort(function (a, b) {
+                    return monthMap[a].sortValue - monthMap[b].sortValue;
+                });
 
-                // 3. Render/Update Category Chart
+                var monthLabels = monthKeys;
+                var monthValues = monthKeys.map(function (k) { return monthMap[k].amount; });
+                // var monthColors = generateColors(monthLabels.length); // Not strictly needed for line chart but helpful for points
+
+                // 3. Render/Update Category Chart (Pie)
                 var ctxCat = document.getElementById('pieChartCategory').getContext('2d');
                 if (categoryChart) {
                     categoryChart.destroy();
@@ -1616,7 +1618,32 @@
                     options: {
                         responsive: true,
                         plugins: {
-                            legend: { position: 'bottom' },
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    generateLabels: function (chart) {
+                                        var data = chart.data;
+                                        if (data.labels.length && data.datasets.length) {
+                                            return data.labels.map(function (label, i) {
+                                                var meta = chart.getDatasetMeta(0);
+                                                var style = meta.controller.getStyle(i);
+                                                var value = data.datasets[0].data[i];
+                                                var formattedValue = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value);
+
+                                                return {
+                                                    text: label + ' (' + formattedValue + ')',
+                                                    fillStyle: style.backgroundColor,
+                                                    strokeStyle: style.borderColor,
+                                                    lineWidth: style.borderWidth,
+                                                    hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                                    index: i
+                                                };
+                                            });
+                                        }
+                                        return [];
+                                    }
+                                }
+                            },
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
@@ -1635,19 +1662,25 @@
                     }
                 });
 
-                // 4. Render/Update Month Chart
+                // 4. Render/Update Month Chart (Line)
                 var ctxMonth = document.getElementById('pieChartMonth').getContext('2d');
                 if (monthChart) {
                     monthChart.destroy();
                 }
                 monthChart = new Chart(ctxMonth, {
-                    type: 'pie',
+                    type: 'line',
                     data: {
                         labels: monthLabels,
                         datasets: [{
+                            label: 'Monthly Expense',
                             data: monthValues,
-                            backgroundColor: monthColors,
-                            borderWidth: 1
+                            borderColor: '#36A2EB',
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Fill color
+                            fill: true,
+                            tension: 0.1, // Smooth curve
+                            borderWidth: 2,
+                            pointBackgroundColor: '#FF6384',
+                            pointRadius: 4
                         }]
                     },
                     options: {
@@ -1657,14 +1690,24 @@
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        var label = context.label || '';
+                                        var label = context.dataset.label || '';
                                         if (label) {
                                             label += ': ';
                                         }
-                                        if (context.parsed !== null) {
-                                            label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(context.parsed);
+                                        if (context.parsed.y !== null) {
+                                            label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(context.parsed.y);
                                         }
                                         return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value, index, values) {
+                                        return '₹' + value; // Simple formatting
                                     }
                                 }
                             }
