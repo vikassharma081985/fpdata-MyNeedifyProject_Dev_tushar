@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
+<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
     CodeBehind="ExpenseManager.aspx.cs" Inherits="WSBillingMaster.Pages.ExpenseManager" %>
 
     <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -1352,9 +1352,9 @@
                     alert('File not found');
                     return;
                 }
-                //var pdfUrl = "https://198.38.88.185/api/Download/DownloadPdf" //"https://localhost:7089/api/Download/DownloadPdf"
-                var pdfUrl = "https://localhost:7089/api/Download/DownloadPdf"
-                    + "?fileName=" + encodeURIComponent(fileName);
+                var pdfUrl = "DownloadPdfProxy.ashx?fileName=" + encodeURIComponent(fileName);
+
+
                 window.open(pdfUrl, "_blank");
             }
 
