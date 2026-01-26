@@ -2191,6 +2191,8 @@ namespace BLL
         public int CreatedBy { get; set; }
         public string OrgProfileImage { get; set; }
         public bool OrgStatus { get; set; }
+        public string Latitude { get; set; } = "0";
+        public string Longitude { get; set; } = "0";
         #endregion
 
         #region Organization Master BLL - Insert
@@ -2220,6 +2222,8 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@CreatedBy", UserId);
                     sqlCommand.Parameters.AddWithValue("@Username", UserName);
                     sqlCommand.Parameters.AddWithValue("@ProfileImage", OrgProfileImage);
+                    sqlCommand.Parameters.AddWithValue("@Latitude", Latitude);
+                    sqlCommand.Parameters.AddWithValue("@Longitude", Longitude);
                     sqlCommand.Parameters.AddWithValue("@Action", 1);
                     sqlCommand.Parameters.AddWithValue("@ReturnId", SqlDbType.Int);
                     sqlCommand.Parameters["@ReturnId"].Direction = ParameterDirection.Output;
@@ -2274,6 +2278,8 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@Password", Password);
                     sqlCommand.Parameters.AddWithValue("@modifiedBy", UserId);
                     sqlCommand.Parameters.AddWithValue("@ProfileImage", OrgProfileImage);
+                    sqlCommand.Parameters.AddWithValue("@Latitude", Latitude);
+                    sqlCommand.Parameters.AddWithValue("@Longitude", Longitude);
                     sqlCommand.Parameters.AddWithValue("@Action", 3);
                     sqlCommand.Parameters.AddWithValue("@ReturnId", SqlDbType.Int);
                     sqlCommand.Parameters["@ReturnId"].Direction = ParameterDirection.Output;

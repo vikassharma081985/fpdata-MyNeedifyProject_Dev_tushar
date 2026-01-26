@@ -299,6 +299,8 @@
     <Content Include="Js\bootstrap.min.js" />
     <Content Include="Js\Checkout.txt" />
     <Content Include="Js\Combobox.js" />
+    <Content Include="Js\Custom\AddOrganization.js" />
+    <Content Include="Js\Custom\OrganizationMaster.js" />
     <Content Include="Js\font-awesome.min.css" />
     <Content Include="Js\jquery-1.4.1.min.js" />
     <Content Include="Js\jquery-latest.min.js" />
@@ -319,6 +321,7 @@
     <Content Include="Pages\AddCategory.aspx" />
     <Content Include="Pages\AddItem.aspx" />
     <Content Include="Pages\AddMenu.aspx" />
+    <Content Include="Pages\AddOrganization.aspx" />
     <Content Include="Pages\AddRole.aspx" />
     <Content Include="Pages\AddSubCategory.aspx" />
     <Content Include="Pages\AddSubSubCategory.aspx" />
@@ -708,6 +711,10 @@
     </Compile>
     <Compile Include="Pages\AddMenu.aspx.designer.cs">
       <DependentUpon>AddMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AddOrganization.aspx.cs">
+      <DependentUpon>AddOrganization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\AddRole.aspx.cs">
       <DependentUpon>AddRole.aspx</DependentUpon>

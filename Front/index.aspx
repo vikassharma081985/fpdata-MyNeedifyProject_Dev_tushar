@@ -301,11 +301,12 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
+                       <a href="../Pages/AddOrganization.aspx" target="_blank" style="color: blue;">
                             <h5 class="fw-bold mb-1">Register as Seller</h5>
                             <p class="small text-muted mb-0">Start selling today</p>
                         </div>
                         <img src="../Images/System/seller.PNG"
-    width="50" alt="Kids">
+    width="50" alt="Kids"></a>
                     </div>
                 </div>
 
