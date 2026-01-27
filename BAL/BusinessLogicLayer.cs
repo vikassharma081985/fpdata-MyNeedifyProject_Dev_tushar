@@ -132,8 +132,6 @@ namespace BLL
         //public int OrgId { get; set;  }
         public float SettlementAmt { get; set; }
 
-
-
         public int ManageDiscount()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -1366,7 +1364,7 @@ namespace BLL
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@TransactionDetailId", TransactionId);
-
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));    //2026-01-11 by HEMANT
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
             }
@@ -1394,7 +1392,7 @@ namespace BLL
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@FromDate", FromDate);
                     sqlCommand.Parameters.AddWithValue("@ToDate", ToDate);
-
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));    //2026-01-11 by HEMANT
                     return objDAL.GetDataTable(sqlCommand);
                 }
             }
@@ -1706,6 +1704,7 @@ namespace BLL
                     dbSqlCommand.Parameters.AddWithValue("@UserId", UserId);
                     dbSqlCommand.Parameters.AddWithValue("@Role", Role);
                     dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    dbSqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));    //2026-01-11 by HEMANT
                     return objDALCIILibrary.GetDataTable(dbSqlCommand);
                 }
             }
@@ -2254,6 +2253,8 @@ namespace BLL
         public int CreatedBy { get; set; }
         public string OrgProfileImage { get; set; }
         public bool OrgStatus { get; set; }
+        public string Latitude { get; set; } = "0";
+        public string Longitude { get; set; } = "0";
         #endregion
 
         #region Organization Master BLL - Insert
@@ -2283,6 +2284,8 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@CreatedBy", UserId);
                     sqlCommand.Parameters.AddWithValue("@Username", UserName);
                     sqlCommand.Parameters.AddWithValue("@ProfileImage", OrgProfileImage);
+                    sqlCommand.Parameters.AddWithValue("@Latitude", Latitude);
+                    sqlCommand.Parameters.AddWithValue("@Longitude", Longitude);
                     sqlCommand.Parameters.AddWithValue("@Action", 1);
                     sqlCommand.Parameters.AddWithValue("@ReturnId", SqlDbType.Int);
                     sqlCommand.Parameters["@ReturnId"].Direction = ParameterDirection.Output;
@@ -2337,6 +2340,8 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@Password", Password);
                     sqlCommand.Parameters.AddWithValue("@modifiedBy", UserId);
                     sqlCommand.Parameters.AddWithValue("@ProfileImage", OrgProfileImage);
+                    sqlCommand.Parameters.AddWithValue("@Latitude", Latitude);
+                    sqlCommand.Parameters.AddWithValue("@Longitude", Longitude);
                     sqlCommand.Parameters.AddWithValue("@Action", 3);
                     sqlCommand.Parameters.AddWithValue("@ReturnId", SqlDbType.Int);
                     sqlCommand.Parameters["@ReturnId"].Direction = ParameterDirection.Output;

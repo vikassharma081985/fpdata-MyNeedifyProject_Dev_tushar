@@ -35,6 +35,7 @@ namespace WSBillingMaster.Pages
                         HttpContext.Current.Session["EmployeeName"] = dt.Rows[0]["EmployeeName"].ToString();
                         HttpContext.Current.Session["RoleId"] = dt.Rows[0]["RoleId"].ToString();
                         HttpContext.Current.Session["UserId"] = dt.Rows[0]["EmployeeId"].ToString();
+                        HttpContext.Current.Session["OrgId"] = dt.Rows[0]["OrgId"].ToString();      //2026-01-11 by HEMANT
                         return "1";
                     }
                     else

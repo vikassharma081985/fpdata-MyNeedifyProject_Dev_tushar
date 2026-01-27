@@ -54,6 +54,9 @@
     <Reference Include="ClosedXML, Version=0.105.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
       <HintPath>packages\ClosedXML.0.105.0\lib\netstandard2.0\ClosedXML.dll</HintPath>
     </Reference>
+    <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
+      <HintPath>packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
+    </Reference>
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <HintPath>packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
     </Reference>
@@ -91,6 +94,9 @@
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.2, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.2\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Extensions.Logging.8.0.1\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.2, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Extensions.Logging.Abstractions.8.0.2\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
@@ -242,6 +248,12 @@
     <Content Include="Front\ContactUs.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Front\Appointment1.aspx" />
+    <Content Include="Front\AppointmentMaster.aspx" />
+    <Content Include="Front\AsyncUploadFile.ashx" />
+    <Content Include="Front\CheckBrowser.html" />
+    <Content Include="Front\Checkout.aspx" />
+    <Content Include="Front\ContactUs.aspx" />
     <Content Include="Front\Feedback.aspx" />
     <Content Include="Front\Home.Master" />
     <Content Include="Front\Home1.Master" />
@@ -291,7 +303,9 @@
     <Content Include="Images\logo_0.PNG" />
     <Content Include="Images\logo_1.PNG" />
     <Content Include="Images\logo_2.PNG" />
+    <Content Include="Images\mylogo.png" />
     <Content Include="Images\Slider.gif" />
+    <Content Include="Images\Slider\2_appointment.jpg" />
     <Content Include="Indexresp.html" />
     <Content Include="Jscript\AddItem.js" />
     <Content Include="Jscript\AddSupplier.js" />
@@ -303,6 +317,8 @@
     <Content Include="Js\bootstrap.min.js" />
     <Content Include="Js\Checkout.txt" />
     <Content Include="Js\Combobox.js" />
+    <Content Include="Js\Custom\AddOrganization.js" />
+    <Content Include="Js\Custom\OrganizationMaster.js" />
     <Content Include="Js\font-awesome.min.css" />
     <Content Include="Js\jquery-1.4.1.min.js" />
     <Content Include="Js\jquery-latest.min.js" />
@@ -323,6 +339,7 @@
     <Content Include="Pages\AddCategory.aspx" />
     <Content Include="Pages\AddItem.aspx" />
     <Content Include="Pages\AddMenu.aspx" />
+    <Content Include="Pages\AddOrganization.aspx" />
     <Content Include="Pages\AddRole.aspx" />
     <Content Include="Pages\AddSubCategory.aspx" />
     <Content Include="Pages\AddSubSubCategory.aspx" />
@@ -342,6 +359,7 @@
     <Content Include="Pages\ExportToExcel.aspx" />
     <Content Include="Pages\Invoice.aspx" />
     <Content Include="Pages\ItemImportExport.aspx" />
+    <Content Include="Pages\Job.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\ManageItems.aspx" />
     <Content Include="Pages\ManageRoleWiseManu.aspx" />
@@ -574,6 +592,14 @@
     <Compile Include="Front\Account.aspx.designer.cs">
       <DependentUpon>Account.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Front\Appointment1.aspx.cs">
+      <DependentUpon>Appointment1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Front\AppointmentMaster.aspx.cs">
+      <DependentUpon>AppointmentMaster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Front\Checkout.aspx.cs">
       <DependentUpon>Checkout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -708,6 +734,10 @@
     <Compile Include="Pages\AddMenu.aspx.designer.cs">
       <DependentUpon>AddMenu.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AddOrganization.aspx.cs">
+      <DependentUpon>AddOrganization.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Pages\AddRole.aspx.cs">
       <DependentUpon>AddRole.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -833,6 +863,13 @@
     </Compile>
     <Compile Include="Pages\ItemImportExport.aspx.designer.cs">
       <DependentUpon>ItemImportExport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Job.aspx.cs">
+      <DependentUpon>Job.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Job.aspx.designer.cs">
+      <DependentUpon>Job.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

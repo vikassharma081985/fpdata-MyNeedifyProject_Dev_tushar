@@ -38,8 +38,16 @@
             margin-top: 15px;
             margin-bottom: 15px;
         }
+
+
+        @media (max-width: 768px) {
+
+            .frm {
+                margin-bottom:600px !important;
+            }
+        }
     </style>
-    <div class="container" style="padding-bottom: 25px;">
+    <div class="container frm" style="padding-bottom: 25px; margin-bottom:400px;">
         <div class="col-md-8 col-xs-12">
             <div class="Header">
                 Delivery Address

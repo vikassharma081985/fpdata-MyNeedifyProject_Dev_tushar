@@ -79,7 +79,6 @@
                     success: function (data) {
                         var UserInfo = $.parseJSON(data.d);
                         if (UserInfo.length > 0) {
-
                             $('[id$=lblUserName]').text('Hi, ' + UserInfo[0].FirstName);
                             $('[id$=LoggedinUser]').show();
                             $('[id$=NotLoggedIn]').hide();    // login/signup not display when user login
@@ -211,7 +210,7 @@
 
         function lnkLogout_ClickNew() {
             sessionStorage.clear();
-            window.open("http://trendzshopping.in//Front/Index.aspx");
+            window.open("http://198.38.88.185:8082/Front/Index.aspx");
         }
     </script>
 
@@ -720,7 +719,7 @@ margin-left: 0px;                    font-size: 13px;
                 UserId = "0";
 
             $.ajax({
-                url: "http://trendzshopping.in//Front/index.aspx/AddItemToCart",
+                url: "http://198.38.88.185:8082/Front/index.aspx/AddItemToCart",
                 async: true,
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -742,7 +741,7 @@ margin-left: 0px;                    font-size: 13px;
             });
 
         }
-</script>
+    </script>
 
 
 
@@ -750,6 +749,7 @@ margin-left: 0px;                    font-size: 13px;
 
 
 <body >
+    <form id="form1" runat="server">
 
 
 
@@ -758,7 +758,7 @@ margin-left: 0px;                    font-size: 13px;
 
 <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
     <div class="container-fluid">
-
+        <asp:HiddenField ID="MasterhdnUserId" runat="server" Value="0" />
         <!-- MOBILE TOPBAR -->
         <div class="mobile-topbar d-lg-none w-100 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
@@ -766,7 +766,8 @@ margin-left: 0px;                    font-size: 13px;
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand" href="#">
-                    <img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">
+                    <%--<img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">--%>
+                    <img src="../Images/system/mylogo.png" width="80" alt="Logo">
                 </a>
             </div>
 
@@ -804,7 +805,8 @@ margin-left: 0px;                    font-size: 13px;
 
         <!-- DESKTOP LOGO -->
         <a class="navbar-brand d-none d-lg-block" href="#">
-                    <img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">
+                    <%--<img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">--%>
+            <img src="../Images/system/mylogo.png" width="80" alt="Logo">
         </a>
 
         <!-- SEARCH BAR -->
@@ -824,7 +826,7 @@ margin-left: 0px;                    font-size: 13px;
             <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
 
             <div class="login-buttons d-flex ms-3 gap-2">
-                <a target="_blank" class="btn btn-admin btn-sm" href="http://trendzshopping.in//Front/index.aspx">Home</a>
+                <a target="_blank" class="btn btn-admin btn-sm" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
 
@@ -848,9 +850,9 @@ margin-left: 0px;                    font-size: 13px;
 
                 <!-- NOT LOGGED IN -->
                 <div id="mySidenav">
-                <form onsubmit="OpenLogin(); return false;" id="NotLoggedIn">
-                    <button type="submit" class="btn btn-login btn-sm">Login/Signup</button>
-                </form>
+                <div id="NotLoggedIn">
+                    <button type="button" onclick="OpenLogin()" class="btn btn-login btn-sm">Login/Signup</button>
+                </div>
                     </div>
             </div>
 
@@ -883,16 +885,16 @@ margin-left: 0px;                    font-size: 13px;
             <div class="d-lg-none mt-3 d-flex flex-column gap-2">
 
                
-                <a target="_blank" class="btn btn-admin btn-sm" href="http://trendzshopping.in//Front/index.aspx">Home</a>
-                 <form onsubmit="OpenLogin(); return false;" class="btn btn-seller btn-sm" id="NotLoggedIn">
-     <button class="btn btn-seller btn-sm" type="submit">Login/Signup</button>
- </form>
+                <a target="_blank" class="btn btn-admin btn-sm" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>
+                 <div class="btn btn-seller btn-sm" id="NotLoggedIn">
+     <button class="btn btn-seller btn-sm" type="button" onclick="OpenLogin()">Login/Signup</button>
+ </div>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
 
-                <form onsubmit="logoutUser(); return false;" id="logoutMobileSection" style="display:none;">
-                    <button class="btn btn-login btn-sm" type="submit">Logout</button>
-                </form>
+                <div id="logoutMobileSection" style="display:none;">
+                    <button class="btn btn-login btn-sm" type="button" onclick="logoutUser()">Logout</button>
+                </div>
             </div>
 
         </div>
@@ -991,7 +993,7 @@ margin-left: 0px;                    font-size: 13px;
 
        
     <!-- Footer -->
-    <footer style="background-color: #212121; color: #fff; margin-top:-200px;">
+    <footer style="background-color: #212121; color: #fff;">
         <div class="container py-5">
             <div class="row text-start">
                 <!-- Column 1 -->
@@ -1057,7 +1059,7 @@ margin-left: 0px;                    font-size: 13px;
         </div>
 
         <!-- Footer Bottom -->
-        <div class="text-center py-3" style="background-color: #212121; color: #fff; font-size: 14px;">
+        <div class="text-center py-3" style="background-color: #212121; color: #fff; font-size: 14px;     height: 100px;">
             &copy; 2025 Rahul Collection. All rights reserved.
         </div>
     </footer>
@@ -1077,7 +1079,6 @@ margin-left: 0px;                    font-size: 13px;
 
     <!---------------------------sahil code--------------------------------------------->
 
-    <form id="form1" runat="server">
 
       <%--  <div class="topnav">
             <div id="mySidenav" class="sidenav">
@@ -1149,7 +1150,7 @@ margin-left: 0px;                    font-size: 13px;
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="http://trendzshopping.in//Front/index.aspx">Home</a>
+                    <a class="navbar-brand" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>
                 </div>
 
                 <div class="collapse navbar-collapse js-navbar-collapse">
@@ -1260,10 +1261,10 @@ margin-left: 0px;                    font-size: 13px;
                     <hr style="border: 0.5px solid #ccc;" />
                     <div class="container" style="color: #999; font-size: 11px; text-align: center;">
                         <div class="col-md-6" style="text-align: center;">
-                            Copyright © 2021 trendzshopping
+                            Copyright © 2021 myNeedify
                         </div>
                         <div class="col-md-6" style="text-align: center;">
-                            Design & Developed by : <a href="http://www.trendzshopping.in/" style="color: #09f; text-decoration: none;">W Solution</a><br />
+                            Design & Developed by : <a href="http://198.38.88.185:8082/" style="color: #09f; text-decoration: none;">W Solution</a><br />
                             <button id="btnLoginOpen" data-toggle="modal" data-target="#myModal" onclick="return false;" style="display: none;" value="click"></button>
                         </div>
                     </div>
@@ -1622,7 +1623,7 @@ function sendOtp() {
 
 
             </div>
-            <a href="http://trendzshopping.in//Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
+            <a href="http://198.38.88.185:8082/Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
                 <input type="button" style="width: 100%; height: 60px; background-color: #F6861F; background-image: none; border-bottom: none;" class="btn btn-primary" value="Proceed to Checkout" /></a>
 
         </div>
@@ -1668,7 +1669,7 @@ function sendOtp() {
             function Logout() {
                 var Test_id = "1";
                 $.ajax({
-                    url: "http://trendzshopping.in//Front/index.aspx/Logout",
+                    url: "http://198.38.88.185:8082/Front/index.aspx/Logout",
                     async: true,
                     data: '{TestId:"' + Test_id + '"}',
                     contentType: "application/json; charset=utf-8",
@@ -1701,7 +1702,8 @@ function sendOtp() {
                 var UserId = $('[id$=MasterhdnUserId]').val();
                 if (UserId != "0") {
                     $.ajax({
-                        url: "http://trendzshopping.in//Front/index.aspx/BindCart",
+                        url: "http://198.38.88.185:8082/Front/index.aspx/BindCart",
+                        //url: "http://localhost:46692/Front/index.aspx/BindCart",
                         async: true,
                         data: '{UserId:"' + UserId + '"}',
                         contentType: "application/json; charset=utf-8",
@@ -1721,7 +1723,7 @@ function sendOtp() {
                                 for (var i = 0; i < CartData.length; i++) {
                                     html += '<div class="row" style="margin-bottom: 30px;">';
                                     html += '<div class="col-md-5">';
-                                    html += '<img src="http://trendzshopping.in//Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
+                                    html += '<img src="http://198.38.88.185:8082/Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
                                     html += '<p style="padding: 15px;text-align: center;empty-cells: hide;color: red;"><a href="#" style="color:red;text-decoration:none;" onClick="RemoveCartItem(' + CartData[i].CartId + ',this);">Remove</a><p>';
                                     html += '</div>';
                                     html += '<div class="col-md-7">';
@@ -1754,7 +1756,7 @@ function sendOtp() {
             function RemoveCartItem(CartId, ctrl) {
                 debugger;
                 $.ajax({
-                    url: "http://trendzshopping.in//Front/index.aspx/RemoveCartItem",
+                    url: "http://198.38.88.185:8082/Front/index.aspx/RemoveCartItem",
                     async: false,
                     data: '{CartId:"' + CartId + '"}',
                     contentType: "application/json; charset=utf-8",
@@ -1845,7 +1847,7 @@ function sendOtp() {
                 var txtGlobalSearch = $('[id$=txtGlobalSearch]').val().trim();
                 if (txtGlobalSearch != "") {
                     //window.location.href = "http://trendzshopping.in//Front/Search.aspx?Search=" + txtGlobalSearch;
-                    window.open("http://trendzshopping.in//Front/Search.aspx?Search=" + txtGlobalSearch);
+                    window.open("http://198.38.88.185:8082/Front/Search.aspx?Search=" + txtGlobalSearch);
                     //window.open("http://trendzshopping.in/Front/Search.aspx?Search=" + txtGlobalSearch);
                 }
                 else {

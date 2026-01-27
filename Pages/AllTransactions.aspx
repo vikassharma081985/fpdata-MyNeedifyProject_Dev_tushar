@@ -34,7 +34,7 @@
                 </tr>
             </table>
         </div>
-        <%--<div class="col-md-12" style="padding: 5px; background-color: #f1f1f1; border: 1px solid #000; color: #000">
+        <div class="col-md-12" style="padding: 5px; background-color: #f1f1f1; border: 1px solid #000; color: #000">
             <div class="col-md-1" style="text-align: center;">
                 SN
             </div>
@@ -63,10 +63,10 @@
                 Mode
             </div>
 
-        </div>--%>
+        </div>
         <div class="Content" style="max-height: 400px; overflow: auto;">
             <asp:GridView ID="grdTransaction" runat="server" Width="100%" AutoGenerateColumns="true" EmptyDataText="No Record Found" ></asp:GridView>
-           <%-- <asp:Repeater ID="rptItems" runat="server">
+            <asp:Repeater ID="rptItems" runat="server">
                 <ItemTemplate>
 
                     <div class="col-md-12" style="padding: 15px;">
@@ -102,7 +102,7 @@
 
                     </div>
                 </ItemTemplate>
-            </asp:Repeater>--%>
+            </asp:Repeater>
         </div>
     </div>
     <link href="../Css/jquery-ui.css" rel="stylesheet" />

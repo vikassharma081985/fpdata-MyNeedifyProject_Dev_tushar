@@ -65,8 +65,8 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:46692/Front/index.aspx/LoginDetails",
-                    //url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
+                    //url: "http://localhost:46692/Front/index.aspx/LoginDetails",
+                    url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
                     data: JSON.stringify({
                         UserName: UserName, Password: Password
                     }),

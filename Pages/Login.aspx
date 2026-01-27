@@ -25,7 +25,6 @@
             }
         }
     </style>
-<script src="../Js/jquery.min.js"></script>
 </head>
 <body style="background-image: url(../Js/Snowflakes/baby-wallpaper-preview.jpg); background-size: cover; background-repeat: no-repeat;">
     <form id="form1" runat="server">
