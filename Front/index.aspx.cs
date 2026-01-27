@@ -1,0 +1,241 @@
+﻿using BLL;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Script.Services;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+ 
+namespace FaduPrice.Front
+{
+    public partial class index : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            BindData();
+            if (Request["Logout"] != null)
+            {
+                if (Request["Logout"] == "1")
+                {
+                    Session.Abandon();
+                    Session.Clear();
+                    Session.RemoveAll();
+                    Response.Redirect("http://faduprice.in/Pages/Index.aspx?Logout=true");
+                }
+            }
+          
+
+        }
+
+        private void BindData()
+        {
+            int index = -1;
+            using (BusinessLogicLayer objFp = new BusinessLogicLayer())
+            {
+                using (DataSet dsMain = objFp.GetHomePageData())
+                {
+                    index++;
+                    if (dsMain.Tables.Count > index)
+                    {
+                        using (DataTable dt = dsMain.Tables[index])
+                        {
+                            if (dt.Rows.Count > 0 && dt != null)
+                            {
+                                rptSlider.DataSource = dt;
+                                rptSlider.DataBind();
+
+                                string Bullets = "";
+                                for (int i = 0; i < dt.Rows.Count; i++)
+                                {
+                                    Bullets += " <li  class='MyBullets' data-target='#myCarousel' data-slide-to='"+i+"'></li>";
+                                }
+                                litBullets.Text = Bullets;
+                            }
+                        }
+                    }
+
+                    index++;
+                    if (dsMain.Tables.Count > index)
+                    {
+                        using (DataTable dt = dsMain.Tables[index])
+                        {
+                            if (dt.Rows.Count > 0 && dt != null)
+                            {
+                                rptWomenCollection.DataSource = dt;
+                                rptWomenCollection.DataBind();
+                                divWomenCollNoRecord.Visible = false;
+                            }
+                            else
+                            {
+                                divWomenCollNoRecord.Visible = true;
+                            
+                            }
+                        }
+                    }
+
+                    index++;
+                    if (dsMain.Tables.Count > index)
+                    {
+                        using (DataTable dt = dsMain.Tables[index])
+                        {
+                            if (dt.Rows.Count > 0 && dt != null)
+                            {
+                                rptMenCollection.DataSource = dt;
+                                rptMenCollection.DataBind();
+                                divMenCollNoRecord.Visible = false;
+
+                            }
+                            else
+                            {
+                                divMenCollNoRecord.Visible = true;
+                            }
+                        }
+                    }
+
+                    index++;
+                    if (dsMain.Tables.Count > index)
+                    {
+                        using (DataTable dt = dsMain.Tables[index])
+                        {
+                            if (dt.Rows.Count > 0 && dt != null)
+                            {
+                                rptElectronics.DataSource = dt;
+                                rptElectronics.DataBind();
+                                divElectronicsNoRecord.Visible = false;
+                            }
+                            else
+                            {
+                                divElectronicsNoRecord.Visible = true;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        #region "LoginDetails"
+
+        [WebMethod(EnableSession = true)]
+        public static string LoginDetails(string UserName, string Password)
+        {
+            //System.Threading.Thread.Sleep(2000);
+            return CheckLoginDetails(UserName, Password);
+        }
+        public static string CheckLoginDetails(string UserName, string Password)
+        {
+            using (BusinessLogicLayer objFp = new BusinessLogicLayer())
+            {
+                objFp.UserName = UserName;
+                //objFp.Password = Password;
+                string passEncryp = PasswordHelper.HashPasswordSHA256(Password);
+                objFp.Password = passEncryp;
+                using (DataSet dsMain = objFp.GetLoginFrontDetails())
+                {
+                    using (DataTable LoginDetails = dsMain.Tables[0])
+                    {
+                        if (LoginDetails.Rows.Count > 0)
+                        {
+                            HttpContext context = HttpContext.Current;
+                            context.Session["UserName"] = LoginDetails.Rows[0]["FirstName"].ToString();
+                            context.Session["UserId"] = LoginDetails.Rows[0]["UserId"].ToString();
+                            return Newtonsoft.Json.JsonConvert.SerializeObject(LoginDetails);
+                        }
+                        else
+                        {
+                            return Newtonsoft.Json.JsonConvert.SerializeObject(LoginDetails);
+                        }
+
+                    }
+                }
+            }
+        }
+        #endregion
+
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string BindCart(string UserId)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                obj.UserId = UserId;
+                using (DataSet ds = obj.BindCart())
+                {
+                    string rtrn = Newtonsoft.Json.JsonConvert.SerializeObject(ds);
+                    return rtrn;
+                }
+                
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string RemoveCartItem(string CartId)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                obj.ItemId = Convert.ToInt32(CartId);
+                obj.LoggedInUser = Convert.ToInt32(HttpContext.Current.Session["UserId"]);
+                obj.RemoveCartItem();
+                return "";
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string Logout(string TestId)
+        {
+            HttpContext.Current.Session.Abandon();
+            HttpContext.Current.Session.Clear();
+            HttpContext.Current.Session.RemoveAll();
+            HttpContext.Current.Response.Redirect("http://trendzshopping.in//Front/Index.aspx?Logout=1");
+            return "";   
+        }
+        
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GetMenu()
+        {
+            string MenuString = string.Empty;
+            using (BusinessLogicLayer objFp = new BusinessLogicLayer())
+            {
+                MenuString = objFp.GetMenuData();
+            }
+            return MenuString;
+            //dbo.GetMenus
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string btnSignup(string txtFirstName, string txtLastName, string txtMobile, string txtEmail, string txtPassword1)
+        {
+            string rtrn = "0";
+            string passEncryp = PasswordHelper.HashPasswordSHA256(txtPassword1); ;
+            using (BusinessLogicLayer objFp = new BusinessLogicLayer())
+            {
+                objFp.FirstName = txtFirstName;
+                objFp.LastName = txtLastName;
+                objFp.Mobile = txtMobile;
+                objFp.Email = txtEmail;
+                objFp.Password = passEncryp;
+                using (DataTable dt = objFp.SaveSignUp())
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        rtrn = Newtonsoft.Json.JsonConvert.SerializeObject(dt);                        
+                    }
+                    else
+                    {
+                        rtrn = "0";                       
+
+                    }
+                }
+            }
+            return rtrn;
+        }
+    }
+}

@@ -1,0 +1,1890 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>My Needify</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
+    <%--<link href="../Js/bootstrap.min.css" rel="stylesheet" />--%>
+    <script src="../Js/jquery.min.js"></script>
+    <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
+    <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>--%>
+    <script src="../Js/bootstrap.min.js"></script>
+    <script src="../Js/bootstrap-slider.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="../Js/bootstrap-slider.css" rel="stylesheet" />
+    <link href="../Js/Raleway.css" rel="stylesheet" />
+    <link href="../Js/Raleway-bold.css" rel="stylesheet" />
+    <link href="../Css/MyStyle.css" rel="stylesheet" />
+    <link href="../Css/Common.css?v=0.1" rel="stylesheet" />
+    <link rel="icon" href="../Images/System/favicon.ico" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
+    <%--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--%>
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/bootstrap-slider.js"></script>--%>
+    <%--<link href=" https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.css" rel="stylesheet">--%>
+    <%--<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Raleway" />--%>
+    <%--<link href='https://fonts.googleapis.com/css?family=Raleway:800' rel='stylesheet' type='text/css'>--%>
+
+    <script>
+        var appURL = "<%= appURL %>";
+
+        function CheckLoginDetails() {
+            var UserName = $('[id$=txtUserName]').val().trim();
+            var Password = $('[id$=txtPassword]').val();
+
+            var RoleName = $('[id*=ddlRole] :selected').text();
+            //$('[id*=hdnRole]').val(RoleName);
+            var flag = true;
+            if (UserName == "") {
+                flag = false;
+                $('[id$=txtUserName]').css('border', '1px solid red');
+            }
+            else {
+                $('[id$=txtUserName]').css('border', '1px solid #ccc');
+            }
+            if (Password == "") {
+                flag = false;
+                $('[id$=txtPassword]').css('border', '1px solid red');
+            }
+            else {
+                $('[id$=txtPassword]').css('border', '1px solid #ccc');
+            }
+
+
+            if (flag) {
+
+                $('[id*=loader]').css('display', 'block');
+                $('[id*=btnSubmit]').val('Please Wait');
+
+
+                $.ajax({
+                    type: "POST",
+                    url: appURL+"Front/index.aspx/LoginDetails",
+                    //url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
+                    //url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails",
+                    data: JSON.stringify({
+                        UserName: UserName, Password: Password
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        var UserInfo = $.parseJSON(data.d);
+                        if (UserInfo.length > 0) {
+
+                            $('[id$=lblUserName]').text('Hi, ' + UserInfo[0].FirstName);
+                            $('[id$=LoggedinUser]').show();
+                            $('[id$=NotLoggedIn]').hide();    // login/signup not display when user login
+                            $('[id$=lnkLogin]').hide();
+                            $('[id$=lnkLogout]').show();
+                            $('[id$=MasterhdnUserId]').val(UserInfo[0].UserId);
+                            BindCart();
+                            $('#btnModalClose').click();
+                            //location.reload();
+
+                            //  window.location.href = 'Front/index.aspx';
+                        }
+
+                        else {
+                            alert("User Name  & paasword is not correct");
+                            $('[id*=loader]').css('display', 'none');
+                            $('[id*=btnSubmit]').val('Login');
+                            $('[id*=lblAlert]').css('display', 'block');
+                            $('[id$=LoggedinUser]').hide();
+                            $('[id$=lnkLogin]').show();
+                            $('[id$=lnkLogout]').hide();
+                        }
+
+                    },
+
+                    failure: function (response) {
+                        alert('fail');
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+
+                    }
+                });
+                return false;
+            }
+            else {
+                return false;
+
+            }
+        }
+    </script>
+
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        //jQuery(window).load(function() {
+        //    jQuery('#preloader').show();
+
+        //});
+        $(document).ready(function () {
+
+
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+
+        $(document).ready(function () {
+            if ($(window).width() <= 600) {
+                $('#MyNavbar').removeClass('navbar-fixed-top');
+            }
+
+        });
+    </script>
+    <script>
+        var flag = true;
+        $(document).ready(function () {
+
+            $("#lblUserName, #categories").mouseenter(function () {
+                $(".dropdown-content").show();
+            });
+
+
+            //$("#categories").mouseleave(function () {
+            //    debugger
+            //     $(".dropdown-content").hide();
+            //    $(".dropdown-content").show();
+            //});
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (event) {
+
+
+                if (!event.target.matches('#lblUserName')) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        $(".dropdown-content").hide();
+                        //if (openDropdown.classList.contains('show')) {
+                        //    openDropdown.classList.remove('show');
+                        //}
+                    }
+                }
+            }
+
+            $(".dropdown").click(
+                function () {
+                    if (flag) {
+                        $('.dropdown-menu', this).stop(true, true).slideDown("slow");
+                        $(this).toggleClass('open');
+                        flag = false;
+                    } else {
+                        $('.dropdown-menu', this).stop(true, true).slideUp("slow");
+                        $(this).toggleClass('open');
+                        flag = true;
+                    }
+                });
+        });
+        //var j = jQuery.noConflict();
+        function OpenLogin() {
+            debugger;
+            closeNav();
+            //j('#myModal').modal('show');
+            jQuery.noConflict();
+            $('#myModal').modal('show');
+            return false;
+        }
+
+
+        function lnkLogout_ClickNew() {
+            sessionStorage.clear();
+            window.open("http://trendzshopping.in//Front/Index.aspx");
+        }
+    </script>
+
+
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+font-family: Arial, sans-serif;
+        }
+        .slider-box img {
+    height: 350px;
+    object-fit: cover;
+    border-radius: 0; 
+}
+
+
+
+
+        .navbar {
+    background: linear-gradient(90deg, #F7DA44 0%, #F7D000 50%, #FFE082 100%);
+}
+
+
+        .carousel-inner img {
+    width: 100%;
+    height: 250px !important;
+}
+        @media (min-width: 1200px) {
+            .container {
+                width: 100% !important;
+            }
+        }
+
+        .otp-box {
+            width: 45px;
+            height: 45px;
+            text-align: center;
+            font-size: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+            .otp-box:focus {
+                border-color: #7C519B;
+                outline: none;
+                box-shadow: 0 0 5px rgba(124, 81, 155, 0.5);
+            }
+
+
+     /*   .navbar {
+            background-color: #fff;
+            padding: 0.3rem 1rem;
+        }*/
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #0AA6BF !important;
+            font-size: 14px !important;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .navbar-brand img {
+                height: 100px;
+                margin-top: -28px;
+            }
+
+        .navbar-nav .nav-link {
+            color: #212529;
+            font-weight: 600;
+            margin: 0 8px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #0AA6BF;
+            }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            margin-top: 0;
+        }
+         .dropdown-item{
+                             text-align: left;
+
+         }
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #0AA6BF;
+                text-align: left;
+
+        }
+
+        .dropdown-header {
+            padding: 0 !important;
+            color: #000 !important;
+        }
+
+        .navbar-expand-lg .navbar-nav .dropdown-menu {
+            margin-left: -15px !important;
+        }
+
+        .dropdown-header {
+            padding: 0 !important;
+            color: #000 !important;
+        }
+
+        .navbar-expand-lg .navbar-nav .dropdown-menu {
+            margin-left: -15px !important;
+        }
+
+
+
+
+
+        /* Search Row */
+        .search-row {
+            background-color: #fff;
+            padding: 8px 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        .search-box {
+            background-color: #f5f5f6;
+            border-radius: 4px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+            .search-box input {
+                border: none;
+                background: transparent;
+                width: 100%;
+                outline: none;
+                font-size: 14px;
+            }
+
+        .right-icons {
+            display: flex;
+            align-items: center;
+        }
+
+            .right-icons div {
+                text-align: center;
+                margin-left: 20px;
+                font-size: 13px;
+                color: #212529;
+            }
+
+            .right-icons i {
+                font-size: 18px;
+                display: block;
+            }
+
+        .login-buttons .btn {
+            font-size: 13px;
+            margin-left: 8px;
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 4px 10px;
+            height: fit-content;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .li {
+            list-style: none !important;
+        }
+
+        .fw-bold {
+            font-size: 14px !important;
+            color: black;
+        }
+
+
+        @media (min-width: 1200px) {
+            .col-lg-4 {
+                width: 100% !important;
+            }
+        }
+        /* Disable hover effect for buttons */
+        .btn-admin:hover {
+            background-color: #0AA6BF !important;
+            color: #fff !important;
+        }
+
+        .btn-sellers:hover {
+            background-color: #8EC243 !important;
+            color: #fff !important;
+        }
+
+        .btn-login:hover {
+            background-color: #8EC243 !important;
+            color: #fff !important;
+        }
+
+
+        .btn-admin {
+            background-color: #0AA6BF;
+            color: #fff;
+        }
+
+        .btn-seller {
+            background-color: #F48B1E;
+            color: #fff;
+        }
+
+        .btn-login {
+            background-color: #8EC243;
+            color: #fff;
+        }
+
+
+
+        .product-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+            /* Hover effect */
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            /* Rating stars size */
+            .product-card .bi-star,
+            .product-card .bi-star-fill {
+                font-size: 14px;
+            }
+
+
+        .py-5 {
+            padding-bottom: 0rem !important;
+        }
+        /* ========== MOBILE / TABLET ADJUSTMENTS ========== */
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                height: 50px;
+                        margin-top: 0px;
+
+            }
+
+            .category-card h6 {
+                font-size: 0.85rem;
+            }
+
+            .fw-bold {
+                font-size: 12px !important;
+            }
+
+            .p-3 {
+                padding: 1rem !important;
+                height: -webkit-fill-available !important;
+            }
+
+            .small,
+            small {
+                font-size: 10px;
+            }
+
+            .category-card p {
+                font-size: 0.7rem;
+            }
+
+            .product-card p {
+                font-size: 0.8rem;
+            }
+
+            .product-card .fw-bold {
+                font-size: 0.9rem;
+            }
+
+            .product-card button {
+                font-size: 0.75rem;
+                padding: 6px 8px;
+            }
+
+            .list-unstyled {
+                font-size: 12px;
+            }
+
+            .nav > li {
+                padding-left: 30px !important;
+            }
+
+
+
+            .navbar-nav .open .dropdown-menu {
+                position: static;
+                float: inline-start !important;
+                width: auto;
+                margin-top: 0;
+                background-color: transparent;
+                border: 0;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+
+            .navbar-expand-lg .navbar-nav .dropdown-menu {
+                margin-left: 0px !important;
+            }
+
+
+            .dropdown-menu {
+                min-width: 160px;
+            }
+        }
+
+        /* MOBILE MENU */
+        @media (max-width: 991px) {
+            .navbar-toggler-icon {
+                width: 25px;
+                height: 25px;
+            }
+
+            .navbar-brand img {
+                height: 50px;
+            }
+
+            .navbar-collapse {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 70%;
+                background-color: #fff;
+                padding-top: 60px;
+                box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+                overflow-y: auto;
+            }
+
+            .navbar-toggler {
+                border: none;
+            }
+
+                .navbar-toggler:focus {
+                    box-shadow: none;
+                }
+
+            .mobile-topbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+
+            .mobile-right {
+                display: flex;
+                align-items: center;
+            }
+
+                .mobile-right div {
+margin-left: 0px;                    font-size: 13px;
+                    text-align: center;
+                }
+
+                .mobile-right i {
+                    font-size: 18px;
+                }
+
+            .search-box {
+                width: 90%;
+            }
+
+            .mobile-search {
+                display: block;
+                width: 100%;
+                padding: 0 15px;
+            }
+
+            .dropdown-menu {
+                position: static !important;
+                float: none;
+            }
+
+
+            .login-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 15px;
+                padding: 0 15px;
+            }
+
+                .login-buttons .btn {
+                    width: 100%;
+                    text-align: center;
+                }
+        }
+
+        @media (min-width: 992px) {
+            .mobile-topbar,
+            .mobile-search {
+                display: none;
+            }
+
+            .navbar-expand-lg {
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1024px) {
+            .navbar-brand img {
+                height: 50px;
+            }
+
+            .search-box {
+                width: 300px;
+            }
+
+            .right-icons div {
+                margin-left: 12px;
+                font-size: 12px;
+            }
+
+            .navbar-nav .nav-link {
+                margin: 0 5px;
+                font-size: 13px;
+            }
+        }
+
+
+        .footer-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+            .footer-link:hover {
+                color: #f4d03f;
+            }
+
+        .social-icon {
+            color: #fff;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #8EC044;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .social-icon:hover {
+                background-color: #f4d03f;
+                color: #fff;
+            }
+
+
+            
+            /* FIX NAVBAR STRETCH ON MOBILE PROFILE DROPDOWN */
+@media (max-width: 991.98px) {
+
+    .mobile-topbar {
+        position: relative;
+        overflow: visible;
+    }
+
+    .mobile-topbar .dropdown {
+        position: static;
+    }
+
+    .mobile-topbar .dropdown-menu {
+        position: absolute !important;
+        top: 100% !important;
+        right: 0;
+        left: auto;
+        transform: none !important;
+        min-width: 180px;
+        z-index: 1055;
+    }
+
+    /* prevent navbar height jump */
+    .navbar {
+        align-items: center;
+    }
+}
+    </style>
+    <script>
+        function AddToCart(ItemId) {
+
+            var UserId = $('[id$=MasterhdnUserId]').val();
+
+            if (UserId == "" || UserId == undefined)
+                UserId = "0";
+
+            $.ajax({
+                url: "http://trendzshopping.in//Front/index.aspx/AddItemToCart",
+                async: true,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                data: '{ItemId:"' + ItemId + '",UserId:"' + UserId + '",Qty:"1"}',
+
+                success: function (result) {
+
+                    // refresh + open cart
+                    BindCart();
+                    OpenCart();
+                },
+
+                error: function (err) {
+                    console.log(err);
+                    alert("Cart API call failed");
+                }
+            });
+
+        }
+</script>
+
+
+
+</head>
+
+
+<body >
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
+    <div class="container-fluid">
+
+        <!-- MOBILE TOPBAR -->
+        <div class="mobile-topbar d-lg-none w-100 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">
+                </a>
+            </div>
+
+            <!-- MOBILE RIGHT ICONS -->
+            <div class="mobile-right d-flex align-items-center gap-3">
+
+                    <!-- MOBILE RIGHT ICONS (same as desktop) -->
+    <div class="right-icons d-flex align-items-center gap-3">
+
+        <!-- LOGGED IN USER -->
+        <div id="LoggedinUser" style="display:none;">
+            <div class="dropdown">
+                <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-bs-toggle="dropdown">
+                    <i class="bi bi-person"></i>
+                    <span id="lblUserName"></span>
+                </span>
+                <div class="dropdown-menu mt-2 shadow-sm">
+                    <a class="dropdown-item" href="Account.aspx">My Account</a>
+                    <a class="dropdown-item" href="MyOrders.aspx">My Orders</a>
+                    <a class="dropdown-item" href="#" id="lnkLogout2" onclick="return lnkLogout_ClickNew();">Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div><i class="bi bi-heart"></i>Wishlist</div>
+        <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
+
+        
+</div>
+
+            </div>
+        </div>
+
+
+
+        <!-- DESKTOP LOGO -->
+        <a class="navbar-brand d-none d-lg-block" href="#">
+                    <img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">
+        </a>
+
+        <!-- SEARCH BAR -->
+        <div class="search-box mx-auto d-none d-lg-flex align-items-center border rounded-pill px-3"
+             style="max-width: 600px; width:100%; height:40px;">
+            <i class="bi bi-search me-2 text-secondary"></i>
+            <input type="text" onclick="Search();" class="form-control border-0 shadow-none"
+                   placeholder="Search for products, brands and more">
+        </div>
+
+        <!-- DESKTOP RIGHT ICONS -->
+        <div class="right-icons d-none d-lg-flex align-items-center gap-3">
+
+          
+
+            <div><i class="bi bi-heart"></i>Wishlist</div>
+            <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
+
+            <div class="login-buttons d-flex ms-3 gap-2">
+                <a target="_blank" class="btn btn-admin btn-sm" href="http://trendzshopping.in//Front/index.aspx">Home</a>
+                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
+                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
+
+
+
+                  <!-- LOGGED IN USER -->
+  <div id="LoggedinUser" style="display:none;">
+      <div class="dropdown">
+          <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-bs-toggle="dropdown">
+              <i class="bi bi-person"></i>
+              <span id="lblUserName"></span>
+          </span>
+
+          <div class="dropdown-menu mt-2 shadow-sm">
+              <a class="dropdown-item" href="Account.aspx">My Account</a>
+              <a class="dropdown-item" href="MyOrders.aspx">My Orders</a>
+              <a class="dropdown-item" href="#" id="lnkLogout2" onclick=" return lnkLogout_ClickNew();">Logout</a>
+          </div>
+      </div>
+  </div>
+
+                <!-- NOT LOGGED IN -->
+                <div id="mySidenav">
+                <form onsubmit="OpenLogin(); return false;" id="NotLoggedIn">
+                    <button type="submit" class="btn btn-login btn-sm">Login/Signup</button>
+                </form>
+                    </div>
+            </div>
+
+        </div>
+
+        <!-- MOBILE SEARCH -->
+        <div class="search-box d-flex align-items-center mt-3 border rounded-pill px-3 d-lg-none">
+            <i class="bi bi-search me-2 text-secondary"></i>
+            <input type="text" onclick="Search();" class="form-control border-0 shadow-none"
+                   placeholder="Search for products, brands and more">
+        </div>
+
+        <!-- COLLAPSIBLE NAV (MOBILE) -->
+        <div class="collapse navbar-collapse" id="mainNav">
+
+            <div class="d-flex justify-content-end d-lg-none">
+                <button class="btn btn-link text-dark fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+
+            <!-- MENU FROM SERVER -->
+            <div class="d-lg-none mt-3">
+                <%= divmenu.InnerHtml %>
+            </div>
+
+            <!-- LOGIN BUTTONS MOBILE -->
+            <div class="d-lg-none mt-3 d-flex flex-column gap-2">
+
+               
+                <a target="_blank" class="btn btn-admin btn-sm" href="http://trendzshopping.in//Front/index.aspx">Home</a>
+                 <form onsubmit="OpenLogin(); return false;" class="btn btn-seller btn-sm" id="NotLoggedIn">
+     <button class="btn btn-seller btn-sm" type="submit">Login/Signup</button>
+ </form>
+                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
+                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
+
+                <form onsubmit="logoutUser(); return false;" id="logoutMobileSection" style="display:none;">
+                    <button class="btn btn-login btn-sm" type="submit">Logout</button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- DESKTOP MENU -->
+        <div id="divmenu" runat="server" class="d-none d-lg-block"></div>
+
+    </div>
+</nav>
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+<!---------------------------------------------------------------------------------------------->
+
+<%--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">
+  Open Login Popup
+</button>
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content LoginPanel">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="login-form" style="border: 1px solid #ccc; padding: 5%; border-radius: 5px; background-color: #fff;">
+          
+          <div class="form-group">
+              <input type="text" runat="server" id="txtUserName2" class="form-control" />
+          </div>
+
+          <div class="form-group">
+              <input type="text" runat="server" id="txtPassword2" class="form-control" />
+          </div>
+
+            <input type="submit" runat="server" onclick="CheckLoginDetails();" class="btn btn-warning btn-block" value="Login" />
+          <div class="text-right mt-2">
+            <a href="#" style="color:#007bff;">Forgot password?</a>
+          </div>
+
+          <div class="text-center mt-3">
+            <span style="color:#999;">New to Fadu price?</span>
+            <a href="#" data-toggle="modal" data-target="#myModalsignup" style="color:#007bff;">Create New Account</a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>--%>
+
+
+<!------------------------------------------------------------------------------------------------------->
+
+
+
+
+
+
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Content -->
+
+       
+    <!-- Footer -->
+    <footer style="background-color: #212121; color: #fff; margin-top:-200px;">
+        <div class="container py-5">
+            <div class="row text-start">
+                <!-- Column 1 -->
+                <div class="col-6 col-md-2 mb-3">
+                    <h6 class="fw-bold mb-3 footer-link" >MEN</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">T-Shirts</a></li>
+                        <li><a href="#" class="footer-link">Shirts</a></li>
+                        <li><a href="#" class="footer-link">Jeans</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="col-6 col-md-2 mb-3">
+                    <h6 class="fw-bold mb-3 footer-link">WOMEN</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Dresses</a></li>
+                        <li><a href="#" class="footer-link">Tops</a></li>
+                        <li><a href="#" class="footer-link">Kurtas</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="col-6 col-md-2 mb-3">
+                    <h6 class="fw-bold mb-3 footer-link">KIDS</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Boys Clothing</a></li>
+                        <li><a href="#" class="footer-link">Girls Clothing</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4 -->
+                <div class="col-6 col-md-2 mb-3">
+                    <h6 class="fw-bold mb-3 footer-link">SUPPORT</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                        <li><a href="#" class="footer-link">FAQ</a></li>
+                        <li><a href="#" class="footer-link">Shipping</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 5 -->
+                <div class="col-12 col-md-4 mb-3">
+                    <h6 class="fw-bold mb-3 footer-link">ABOUT US</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="footer-link">Company Info</a></li>
+                        <li><a href="#" class="footer-link">Careers</a></li>
+                        <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-2 mb-3">
+                <h6 style="font-size: 14px;">FOLLOW US</h6>
+                <div class="d-flex gap-2 mt-2">
+                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="text-center py-3" style="background-color: #212121; color: #fff; font-size: 14px;">
+            &copy; 2025 Rahul Collection. All rights reserved.
+        </div>
+    </footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!---------------------------sahil code--------------------------------------------->
+
+    <form id="form1" runat="server">
+
+      <%--  <div class="topnav">
+            <div id="mySidenav" class="sidenav">
+                <div style="width: 100%; float: left; margin-top: -20%; border-bottom: 1px solid #666;">
+                    <div style="width: 79%; float: left; padding: 10px;">
+                        <img src="../Images/System/avatar.png" style="height: 40px; width: 40px; float: left;" />
+                        <a href="javascript:void(0)" style="top: -15px; left: 60%;"
+                            class="closebtn">Hello</a>
+                        <asp:LinkButton ID="lnkLogin2" runat="server" Style="float: left; width: 60%; text-align: left; color: #fff; font-weight: 500; margin-left: 0px; margin-top: -5px;"
+                            OnClientClick="return OpenLogin();"> Login/Signup   </asp:LinkButton>
+                        <div id="LoggedinUser1" runat="server" style="float: left; width: 60%; text-align: left; color: #fff; font-weight: 500; margin-left: 15px; margin-top: 15px;">
+                            <label id="lblUserName1" runat="server" style="float: left; text-align: left; color: #fff; font-weight: 500; margin-left: 0px; margin-top: -5px;"></label>
+                            <div>
+                            </div>
+                        </div>
+                        
+                        <div style="width: 1%; float: left; text-align: right;">
+                            &nbsp;
+                        <a href="javascript:void(0)" style="top: -15px; left: 60%;"
+                            class="closebtn" onclick="closeNav()">&times;</a>
+                        </div>
+                    </div>
+                    <div>
+                        <asp:LinkButton ID="lnkLogout1" OnClick="lnkLogout_Click" runat="server" Style="display: none;"> Logout</asp:LinkButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 50%; float: left;">
+            <span style="font-size: 30px; margin-left: 10px;">
+                <img src="../Images/System/logo.png" style="height: 100px;" /></span>
+            &emsp;
+            <a href="http://localhost:46692/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>
+        </div>
+        <div style="width: 50%; float: right;">
+        </div>
+       
+        <div class="container" style="width: auto;">
+            <div class="pull-right" style="margin-top: 0px; margin-right: 10px; width: 30%;">
+                <div style=" float: left;">
+                    <div style="width: 20%; float: left; padding-top: 20px;">
+                    </div>
+                </div>
+                <div style="width: 100%">
+                    <a href="#" style="width: 15%; margin-right: 15px;" title="Notifications">
+                        <i style="font-size: 20px; font-weight: 500;" class="fa fa-bell-o myHeader"></i>
+                    </a>
+                    <a href="#" style="width: 15%; margin-right: 15px;" title="Love FaduPrice">
+                        <i style="font-size: 20px; font-weight: 500;" class=" glyphicon glyphicon-heart-empty myHeader"></i>
+                    </a>
+                    <a href="#" onclick="OpenCart();" style="width: 15%; font-size: 20px;">
+                        <img src="../Images/System/cart.PNG" style="border-radius: 5px; height: 40px; display: none;" />
+                        <span style="font-weight: 500;" class="glyphicon glyphicon-shopping-cart myHeader"></span>
+                        <div class="myHeader" style="font-size: 20px; position: absolute; top: 3px; left: 40%; width: 85px;">
+                        </div>
+                        <div class="Cart-Counter" style="display: none; left: 86%; top: 8%;">
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="container" style="width: auto;">
+            <nav class="navbar navbar-inverse">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://trendzshopping.in//Front/index.aspx">Home</a>
+                </div>
+
+                <div class="collapse navbar-collapse js-navbar-collapse">
+                    <div id="div2" runat="server">
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="container">
+            <div class="col-sm-3 col-md-3 pull-right" style="z-index: 99; margin-top: 0px;">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" style="height: 30px;" name="srch-term" id="txtGlobalSearch">
+                        <div class="input-group-btn" style="background-color: #F6861F;">
+                            <button class="btn btn-default" onclick="Search();" style="height: 30px; background-color: #F6861F;" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid PageContent">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>--%>
+
+        <%-- Footer --%>
+<%--        <div class="container-fluid" style="margin-left: 0px; margin-top: 30px; padding: 30px; background-color: #fff; color: #000">
+            <asp:HiddenField ID="MasterhdnUserId" runat="server" Value="0" />
+            <footer class="footer footer-ae" style="width: 100%;">
+                <div class="container-fluid">
+                    <nav class="footer-nav hidden-xs">
+                        <ul class="row list-unstyled" style="margin-left: 15%;">
+                            <li>
+                                <div class="col-sm-3">
+                                    <div class="FooterHead">Shop</div>
+                                    <ul class="footer-links list-unstyled">
+
+                                        <li class="yCmsComponent">
+                                            <a href="http://www.faduprice.in/Pages/Search.aspx?SubSubCategory=54" target="_blank" title="Bottoms">Men</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="http://www.faduprice.in/Pages/Search.aspx?SubSubCategory=45" target="_blank" title="Dresses & Jumpsuits">Women</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Accessories">Accessories</a></li>
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li>
+                                <div class="col-sm-3">
+                                    <div class="FooterHead">Customer Service</div>
+                                    <ul class="footer-links list-unstyled">
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Accessories">Help</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Bottoms">Contact Us</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="MyAccount.aspx" title="Shoes">My Account</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Sportswear">Return Policy</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Tops">Terms of Use</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Winterwear">Frequently Ask Questions </a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Winterwear">Privacy Statement </a></li>
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li>
+                                <div class="col-sm-3">
+                                    <div class="FooterHead">About Us</div>
+                                    <ul class="footer-links list-unstyled">
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Bottoms">Company</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Essentials">Feedback</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="#" title="Tops">Careers</a></li>
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li>
+                                <div class="col-sm-3">
+                                    <div class="FooterHead">Get Social</div>
+                                    <ul class="footer-links list-unstyled">
+                                        <li class="yCmsComponent">
+                                            <a href="https://www.facebook.com/faduprice/" target="_blank" title="Facebook"><i style="color: #7C519B; font-size: 20px;" class="fa fa-facebook"></i>&nbsp;&nbsp;Facebook</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="https://www.instagram.com/faduprice/" target="_blank" title="Instagram"><i style="color: #7C519B; font-size: 20px;" class="fa fa-instagram"></i>&nbsp;&nbsp;Instagram</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="https://twitter.com/Faduprice" target="_blank" title="twitter"><i style="color: #7C519B; font-size: 20px;" class="fa fa-twitter"></i>&nbsp;&nbsp;Twitter</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="https://in.pinterest.com/faduprice/ " target="_blank" title="Pinterest"><i style="color: #7C519B; font-size: 20px;" class="fa fa-pinterest"></i>&nbsp;&nbsp;Pinterest</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="https://plus.google.com/u/2/110063294915695284909" target="_blank" title="Google Plus"><i style="color: #7C519B; font-size: 20px;" class="fa fa-google"></i>&nbsp;&nbsp;Google Plus</a></li>
+                                        <li class="yCmsComponent">
+                                            <a href="https://www.linkedin.com/company/13440204/" target="_blank" title="LinkedIn"><i style="color: #7C519B; font-size: 20px;" class="fa fa-linkedin"></i>&nbsp;&nbsp;LinkedIn</a></li>
+
+
+                                    </ul>
+
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                    <hr style="border: 0.5px solid #ccc;" />
+                    <div class="container" style="color: #999; font-size: 11px; text-align: center;">
+                        <div class="col-md-6" style="text-align: center;">
+                            Copyright © 2021 trendzshopping
+                        </div>
+                        <div class="col-md-6" style="text-align: center;">
+                            Design & Developed by : <a href="http://www.trendzshopping.in/" style="color: #09f; text-decoration: none;">W Solution</a><br />
+                            <button id="btnLoginOpen" data-toggle="modal" data-target="#myModal" onclick="return false;" style="display: none;" value="click"></button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </footer>
+        </div>--%>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content LoginPanel">
+                    <%-- <div class="modal-header">
+                        
+                        
+                    </div>--%>
+                    <div class="modal-body">
+                        <div class="container">
+
+
+                            <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                                <button type="button" id="btnModalClose" class="close" data-dismiss="modal">&times;</button>
+                                <div class="login-form" style="border: 1px solid #ccc; padding: 5%; height: 280px; border-radius: 5px; background-color: #fff;">
+                                    <div style="float: left; color: #666; font-size: 20px; margin-bottom: 10px;">Login </div>
+
+                                    <br />
+                                    <br />
+
+                                    <div class="form-group">
+
+                                        <asp:TextBox ID="txtUserName" runat="server" class="form-username form-control" placeholder="Username"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group">
+                                        <asp:TextBox ID="txtPassword" TextMode="Password" runat="server" class="form-password form-control" placeholder="Password"></asp:TextBox>
+                                    </div>
+                                    <asp:Button ID="btnSubmit" runat="server" OnClientClick="return CheckLoginDetails();" class="cambutton" Style="background-color: #F6861F; color: #fff; height: 35px; padding: 7px; width: 100%; text-align: center; border: none;" Text="Login"></asp:Button>
+                                    <br />
+
+                                    <div style="float: left; width: 98%; padding-top: 5px; color: blue; font-family: Segoe UI; font-size: 14px; text-decoration: none;">
+                                        <a href="#" data-toggle="modal" data-target="#forgotPass"; style="color: #39f;">Forgot password ?</a></div>
+                                    <div style="float: left; margin-top: 5px; color: #a0a0a0; font-size: 14px">New to Fadu price </div>
+                                    <div style="font-size: 14px; text-align: center">
+                                        <a href="#" data-toggle="modal" data-target="#myModalsignup" style="float: left; margin-top: 5px; font-size: 12px; color: #39f;">&nbsp;Create New Account</a>
+                                    </div>
+                                    <br />
+                                    <br />
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModalsignup" role="dialog" style="top: 10%;">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content LoginPanel">
+                    <div class="modal-header">
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <div class="login-form" style="background-color: #fff; border: 1px solid #ccc; padding: 5%; height: 405px; border-radius: 5px;">
+                                <div style="float: left; color: #666; font-size: 20px; margin-bottom: 10px;">sign up </div>
+
+                                <br />
+                                <br />
+
+                                <div class="form-group">
+
+                                    <asp:TextBox ID="txtFirstName" runat="server" MaxLength="10" class="form-username form-control" placeholder="FirstName"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+
+                                    <asp:TextBox ID="txtLastName" runat="server" MaxLength="10" class="form-username form-control" placeholder="LastName"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:TextBox ID="txtMobile" runat="server" MaxLength="10" class="form-username form-control" placeholder="Mobile"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:TextBox ID="txtEmail" runat="server" MaxLength="25" class="form-username form-control" placeholder="Email"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:TextBox ID="txtPassword1" TextMode="Password" MaxLength="20" runat="server" class="form-password form-control" placeholder="Password"></asp:TextBox>
+                                </div>
+                                <asp:Button ID="btnSignup" runat="server" OnClientClick="return ValidateSignup();" class="cambutton" Style="background-color: #7C519B; height: 35px; color: #fff; padding: 7px; width: 100%; text-align: center; border: none;" Text="Submit"></asp:Button>
+                                <%--<asp:Button ID="btnSignup" runat="server" OnClick="btnSignup_Click1" Text="Submit"></asp:Button>--%>
+                                <br />
+                                <br />
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-------------forgot pass modal----------------->
+<div class="modal fade" id="forgotPass" role="dialog" style="top: 10%;">
+  <div class="modal-dialog">
+    <div class="modal-content LoginPanel">
+      <div class="modal-header"></div>
+      <div class="modal-body">
+        <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <div
+            class="login-form"
+            style="background-color: #fff; border: 1px solid #ccc; padding: 5%; height: 205px; border-radius: 5px;"
+          >
+            <div style="float: left; color: #666; font-size: 20px; margin-bottom: 10px;">
+              Sign Up
+            </div>
+
+            <br /><br />
+
+            <div class="form-group">
+              <input
+                type="email"
+                id="forgotEmail"
+                class="form-control"
+                placeholder="Enter Your Email"
+              />
+            </div>
+
+            <button
+              type="button"
+             style="background-color: #F6861F; color: #fff; height: 35px; padding: 7px; width: 100%; text-align: center; border: none;" onclick="openOtpModal()"
+            >
+              Submit
+            </button>
+
+            <br /><br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!------------------------------- OTP Modal----------------------------->
+<div class="modal fade" id="otpModal" role="dialog" style="top: 10%;">
+  <div class="modal-dialog">
+    <div class="modal-content LoginPanel">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="text-align:center; color:#555;">Enter OTP</h4>
+      </div>
+
+      <div class="modal-body text-center">
+        <p style="color:#777;">Please enter the 4-digit OTP sent to your email.</p>
+
+        <div id="otpInputs" style="display:flex; justify-content:center; gap:10px; margin:20px 0;">
+          <input type="number" maxlength="1" class="otp-box" />
+          <input type="number" maxlength="1" class="otp-box" />
+          <input type="number" maxlength="1" class="otp-box" />
+          <input type="number" maxlength="1" class="otp-box" />
+        </div>
+
+        <button type="button"  style="background-color: #F6861F; color: #fff; height: 35px; padding: 7px; width: 100%; text-align: center; border: none; width:100%;" onclick="verifyOtp()">
+          Verify
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        <!------------- SET NEW PASSWORD MODAL--------------------------->
+<div class="modal fade" id="setPasswordModal" role="dialog" style="top: 10%;">
+  <div class="modal-dialog">
+    <div class="modal-content LoginPanel">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="text-align:center; color:#555;">Set New Password</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="newPassword">New Password</label>
+          <input
+            type="password"
+            id="newPassword"
+            class="form-control"
+            placeholder="Enter new password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            class="form-control"
+            placeholder="Confirm new password"
+          />
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-success"
+          style="width:100%; background-color:#28a745; border:none;"
+          onclick="setPassword()"
+        >
+          Save Password
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    // Open OTP Modal
+    function openOtpModal() {
+        sendOtp();
+        $("#forgotPass").modal("hide");
+        setTimeout(() => {
+            $("#otpModal").modal("show");
+            $(".otp-box:first").focus();
+        }, 400);
+    }
+
+    // OTP auto-move focus
+    $(document).on("keyup", ".otp-box", function (e) {
+        if (this.value.length === 1 && e.keyCode !== 8) {
+            $(this).next(".otp-box").focus();
+        } else if (e.keyCode === 8) {
+            $(this).prev(".otp-box").focus();
+        }
+    });
+
+    //  Verify OTP & Open Set Password Modal
+    function verifyOtp() {
+        var email = $('[id$=forgotEmail]').val().trim();
+        let otp = "";
+        $(".otp-box").each(function () {
+            otp += $(this).val();
+        });
+
+        if (otp.length === 4) {
+            $.ajax({
+                    type: "POST",
+                    url: appURL+"Front/ForgotPassword.aspx/VerifyOtp",
+                    data: JSON.stringify({ email: email, otp: otp }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.d) {
+                            $("#otpModal").modal("hide");
+                                setTimeout(() => {
+                                    $("#setPasswordModal").modal("show");
+                                }, 400);
+                        } else {
+                            alert(response.d);
+                        }
+                    },
+                    error: function (err) {
+                        alert(err.responseText);
+                    }
+                });
+            
+        } else {
+            alert("Please enter all 4 digits.");
+        }
+    }
+
+    //  Save Password
+    function setPassword() {
+        let newPass = $("#newPassword").val();
+        let confirmPass = $("#confirmPassword").val();
+
+        if (newPass === "" || confirmPass === "") {
+            alert("Please fill in both fields.");
+        } else if (newPass !== confirmPass) {
+            alert("Passwords do not match!");
+        } else {
+            alert("Password successfully set!");
+            $("#setPasswordModal").modal("hide");
+        }
+    }
+function sendOtp() {
+    var email = $('[id$=forgotEmail]').val().trim();
+    //var email = $("#txtForgotEmail").val();
+
+    if (!email) {
+        alert("Please enter email");
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: appURL+"Front/ForgotPassword.aspx/SendOtp",
+        data: JSON.stringify({ email: email }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.d === "SUCCESS") {
+                openOtpModal();
+            } else {
+                alert(response.d);
+            }
+        },
+        error: function (err) {
+            alert(err.responseText);
+        }
+    });
+}
+
+</script>
+
+
+        <!----------------forgot pass modal end -------------------------->
+
+
+        <%-- cart --%>
+        <!-- Modal -->
+        <div class="Layout" style="display: none;"></div>
+        <div id="myCart" style="background-color: #fff; height: 100%; width: 450px; position: fixed; top: 0px; right: 0px; z-index: 99999999; padding: 0px; border: 1px solid #ccc; display: none;">
+            <div style="width: 100%; background-color: #7C519B; color: #fff; padding: 0px; height: 45px; padding-left: 40px; padding-top: 10px; padding-right: 20px; font-size: 22px;">
+                My Cart(<span id="CartCtr"></span>) <a href="#" onclick="CloseCart();"><i class="fa fa-close" style="float: right; font-size: 16px; color: #fff;"></i></a>
+            </div>
+            <div style="float: left; width: 100%; padding: 15px; margin-left: 10px;">
+
+                <div class="container-fluid" id="CartItems" style="height: 350px; overflow: auto;">
+
+                    <div id="NoItem" style="margin-top: 15%; display: none;">
+                        <div class="col-md-12 text-center">
+                            <img src="../Images/System/Sadface.png" />
+                        </div>
+                        <div class="col-md-12 text-center" style="font-size: 20px; color: #999; padding-top: 20px;">
+                            Oops ! No Item Found in Cart.
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <a href="http://trendzshopping.in//Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
+                <input type="button" style="width: 100%; height: 60px; background-color: #F6861F; background-image: none; border-bottom: none;" class="btn btn-primary" value="Proceed to Checkout" /></a>
+
+        </div>
+
+        <script>
+            function OpenCart() {
+                BindCart();
+                $('#myCart').fadeIn(200);
+                $('.Layout').fadeIn(200);
+            }
+
+            function CloseCart() {
+                $('#myCart').fadeOut(200);
+                $('.Layout').fadeOut(200);
+            }
+
+            function MMWomen() {
+                $('#MegaMenuMen').fadeOut(200);
+                $('#MegaMenuWomen').fadeToggle(200);
+            }
+            function MMWomenOut() {
+
+                $('#MegaMenuWomen').hide();
+            }
+            function MMWomenIN() {
+                $('#MegaMenuWomen').show();
+            }
+
+            function MMMen() {
+                $('#MegaMenuWomen').fadeOut(200);
+                $('#MegaMenuMen').fadeToggle(200);
+            }
+
+            function MMMenOut() {
+
+                $('#MegaMenuMen').hide();
+            }
+            function MMMenIN() {
+
+                $('#MegaMenuMen').show();
+            }
+
+            function Logout() {
+                var Test_id = "1";
+                $.ajax({
+                    url: "http://trendzshopping.in//Front/index.aspx/Logout",
+                    async: true,
+                    data: '{TestId:"' + Test_id + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST", // data has to be Posted 
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+
+                    }
+                });
+            }
+
+            $(document).ready(function () {
+                //GetMenu();
+                BindCart()
+            });
+            function GetMenu() {
+                $.ajax({
+                    url: "../Front/Index.aspx/GetMenu",
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST", // data has to be Posted 
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+                        $('#divmenu').html(result.d);
+                    }
+                });
+            }
+            function BindCart() {
+                var UserId = $('[id$=MasterhdnUserId]').val();
+                if (UserId != "0") {
+                    $.ajax({
+                        url: "http://trendzshopping.in//Front/index.aspx/BindCart",
+                        async: true,
+                        data: '{UserId:"' + UserId + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST", // data has to be Posted 
+                        timeout: 120000,
+                        dataType: "json",
+                        success: function (result) {
+                            var ds = $.parseJSON(result.d)
+                            var CartCtr = parseInt(ds.Table[0].CartCtr);
+                            var CartData = ds.Table1;
+                            if (CartCtr > 0) {
+                                $('.Cart-Counter').html(CartCtr);
+                                $('#CartCtr').html(CartCtr);
+                                $('.Cart-Counter').show();
+
+                                var html = '';
+                                for (var i = 0; i < CartData.length; i++) {
+                                    html += '<div class="row" style="margin-bottom: 30px;">';
+                                    html += '<div class="col-md-5">';
+                                    html += '<img src="http://trendzshopping.in//Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
+                                    html += '<p style="padding: 15px;text-align: center;empty-cells: hide;color: red;"><a href="#" style="color:red;text-decoration:none;" onClick="RemoveCartItem(' + CartData[i].CartId + ',this);">Remove</a><p>';
+                                    html += '</div>';
+                                    html += '<div class="col-md-7">';
+                                    html += '<h4>' + CartData[i].ItemName + '</h4>';
+                                    html += '<strong>Quantity : </strong>';
+                                    html += '<input type="text" value="' + CartData[i].ItemQuantity + '" style="width: 75px;" class="form-control" />';
+                                    html += '<br />';
+                                    html += '<span style="font-size: 22px;"><strong><i class="fa fa-inr"></i>' + parseInt(CartData[i].ItemPrice) * parseInt(CartData[i].ItemQuantity) + ' </strong></span>';
+                                    html += '</div>';
+                                    html += '<hr />';
+                                    html += '</div>';
+                                }
+                                $('[id$=CartItems]').html(html);
+                                $('[id$=NoItem]').hide();
+                            }
+                            else {
+                                $('.Cart-Counter').html('');
+                                $('.Cart-Counter').hide();
+                                $('[id$=NoItem]').show();
+
+                            }
+                        }
+                    });
+                }
+                else {
+                    $('[id$=NoItem]').show();
+                }
+            }
+
+            function RemoveCartItem(CartId, ctrl) {
+                debugger;
+                $.ajax({
+                    url: "http://trendzshopping.in//Front/index.aspx/RemoveCartItem",
+                    async: false,
+                    data: '{CartId:"' + CartId + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST", // data has to be Posted 
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+                        $(ctrl).parent().parent().parent().remove();
+                        BindCart();
+                    }
+                });
+            }
+
+
+            function ValidateSignup() {
+                var FName = $('[id$=txtFirstName]').val().trim();
+                var LName = $('[id$=txtLastName]').val().trim();
+                var Email = $('[id$=txtEmail]').val().trim();
+                var Mobile = $('[id$=txtMobile]').val().trim();
+                var Password = $('[id$=txtPassword1]').val().trim();
+                var flag = true;
+                if (FName == "") {
+                    flag = false;
+                    $('[id$=txtFirstName]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtFirstName]').css('border', '1px solid #ccc');
+                }
+
+                if (LName == "") {
+                    flag = false;
+                    $('[id$=txtLastName]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtLastName]').css('border', '1px solid #ccc');
+                }
+                if (Email == "") {
+                    flag = false;
+                    $('[id$=txtEmail]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtEmail]').css('border', '1px solid #ccc');
+                }
+                if (Mobile == "") {
+                    flag = false;
+                    $('[id$=txtEmail]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtEmail]').css('border', '1px solid #ccc');
+                }
+                if (Password == "") {
+                    flag = false;
+                    $('[id$=txtPassword1]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtPassword1]').css('border', '1px solid #ccc');
+                }
+                if (flag) {
+                    //return true;
+                    $.ajax({
+                        //url: "http://trendzshopping.in//Front/index.aspx/btnSignup",
+                        url: appURL+"Front/index.aspx/btnSignup",
+                        async: false,
+                        data: '{txtFirstName:"' + FName + '", txtLastName:"' + LName + '", txtMobile:"' + Mobile + '", txtEmail:"' + Email + '", txtPassword1:"' + Password + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST", // data has to be Posted 
+                        timeout: 120000,
+                        dataType: "json",
+                        success: function (result) {
+                            var dt = $.parseJSON(result.d);
+                            if (dt == '0') {
+                                alert('User not created.');
+                            }
+                            else {
+                                alert('User created successfully.');
+                                window.location.href = window.location.href;
+                            }
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
+            }
+
+            function Search() {
+                debugger;
+                var txtGlobalSearch = $('[id$=txtGlobalSearch]').val().trim();
+                if (txtGlobalSearch != "") {
+                    //window.location.href = "http://trendzshopping.in//Front/Search.aspx?Search=" + txtGlobalSearch;
+                    window.open("http://trendzshopping.in//Front/Search.aspx?Search=" + txtGlobalSearch);
+                    //window.open("http://trendzshopping.in/Front/Search.aspx?Search=" + txtGlobalSearch);
+                }
+                else {
+                    return;
+                }
+            }
+        </script>
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "250px";
+            }
+
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
+        <style>
+            .Layout {
+                background-color: #000;
+                opacity: 0.5;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                z-index: 999999;
+            }
+
+            .font {
+                color: #666;
+                font-weight: 100;
+            }
+
+            .MMHeading {
+                font-weight: 600;
+                color: #000;
+            }
+        </style>
+    </form>
+    <script src="../Js/bootstrap.min.js"></script>
+</body>
+</html>

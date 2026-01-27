@@ -1,0 +1,1360 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<title>Rahul Collection</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+       <script src="../Js/jquery.min.js"></script>
+         <script src="../Js/bootstrap.min.js"></script>
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+<link href="../Js/Raleway.css" rel="stylesheet" />
+    <link href="../Js/Raleway-bold.css" rel="stylesheet" />
+    <link href="../Css/MyStyle.css" rel="stylesheet" />
+    <link href="../Css/Common.css?v=0.1" rel="stylesheet" />
+    <link rel="icon" href="../Images/System/favicon.ico" />
+
+      <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar {
+      background-color: #fff;
+      /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); */
+      padding: 0.3rem 1rem; /* reduced navbar height */
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: #0AA6BF !important;
+      font-size: 18px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .navbar-brand img {
+      height: 60px;
+    }
+
+    .navbar-nav .nav-link {
+      color: #212529;
+      font-weight: 600;
+      margin: 0 8px;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #0AA6BF;
+    }
+
+    .dropdown-menu {
+      border: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 0;
+      margin-top: 0;
+    }
+
+    .dropdown-item:hover {
+      background-color: #f8f9fa;
+      color: #0AA6BF;
+    }
+
+    /* Search Row */
+    .search-row {
+      background-color: #fff;
+      padding: 8px 0; /* smaller height */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+
+    .search-box {
+      background-color: #f5f5f6;
+      border-radius: 4px;
+      padding: 5px 10px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      width: 100%;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .right-icons {
+      display: flex;
+      align-items: center;
+    }
+
+    .right-icons div {
+      text-align: center;
+      margin-left: 20px;
+      font-size: 13px;
+      color: #212529;
+    }
+
+    .right-icons i {
+      font-size: 18px;
+      display: block;
+    }
+
+    .login-buttons .btn {
+      font-size: 13px;
+      margin-left: 8px;
+      font-weight: 600;
+      border-radius: 20px;
+      padding: 4px 10px;
+    }
+
+  /* Disable hover effect for buttons */
+.btn-admin:hover {
+  background-color: #0AA6BF !important;
+  color: #fff !important;
+}
+
+.btn-seller:hover {
+  background-color: #F48B1E !important;
+  color: #fff !important;
+}
+
+.btn-login:hover {
+  background-color: #8EC243 !important;
+  color: #fff !important;
+}
+
+
+    .btn-admin {
+      background-color: #0AA6BF;
+      color: #fff;
+    }
+
+    .btn-seller {
+      background-color: #F48B1E;
+      color: #fff;
+    }
+
+    .btn-login {
+      background-color: #8EC243;
+      color: #fff;
+    }
+
+
+
+      .product-card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    /* Hover effect */
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Rating stars size */
+    .product-card .bi-star,
+    .product-card .bi-star-fill {
+        font-size: 14px;
+    }
+
+
+    .py-5 {
+    padding-bottom: 0rem !important;
+}
+    /* ========== MOBILE / TABLET ADJUSTMENTS ========== */
+    @media (max-width: 768px) {
+        .navbar-brand img {
+            height: 50px;
+        }
+
+        .category-card h6 {
+            font-size: 0.85rem;
+        }
+
+        .fw-bold {
+            font-size: 10px !important;
+        }
+
+        .p-3 {
+            padding: 1rem !important;
+        }
+
+        .small,
+        small {
+            font-size: 10px;
+        }
+
+        .category-card p {
+            font-size: 0.7rem;
+        }
+
+        .product-card p {
+            font-size: 0.8rem;
+        }
+
+        .product-card .fw-bold {
+            font-size: 0.9rem;
+        }
+
+        .product-card button {
+            font-size: 0.75rem;
+            padding: 6px 8px;
+        }
+      .list-unstyled {
+    font-size: 12px;
+}
+      }
+
+    /* MOBILE MENU */
+    @media (max-width: 991px) {
+      .navbar-toggler-icon {
+    width: 25px;
+    height: 25px;
+    
+}
+
+.navbar-brand img {
+    height: 50px;
+}
+      .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 70%;
+        background-color: #fff;
+        padding-top: 60px;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+
+      .navbar-toggler {
+        border: none;
+      }
+
+      .navbar-toggler:focus {
+        box-shadow: none;
+      }
+
+      .mobile-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .mobile-right {
+        display: flex;
+        align-items: center;
+      }
+
+      .mobile-right div {
+        margin-left: 15px;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      .mobile-right i {
+        font-size: 18px;
+      }
+
+      .search-box {
+        width: 90%;
+          margin: 10px 0;
+      }
+
+      .mobile-search {
+        display: block;
+        width: 100%;
+        padding: 0 15px;
+      }
+
+      .dropdown-menu {
+        position: static !important;
+        float: none;
+      }
+
+      .login-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 15px;
+        padding: 0 15px;
+      }
+
+      .login-buttons .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .mobile-topbar,
+      .mobile-search {
+        display: none;
+      }
+
+      .navbar-expand-lg {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (min-width: 992px) and (max-width: 1024px) {
+      .navbar-brand img {
+        height: 50px;
+      }
+
+      .search-box {
+        width: 300px;
+      }
+
+      .right-icons div {
+        margin-left: 12px;
+        font-size: 12px;
+      }
+
+      .navbar-nav .nav-link {
+        margin: 0 5px;
+        font-size: 13px;
+      }
+    }
+
+
+     .footer-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+  }
+
+  .footer-link:hover {
+    color: #f4d03f; 
+  }
+
+  .social-icon {
+    color: #fff;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #8EC044;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .social-icon:hover {
+    background-color: #f4d03f;
+    color: #fff;
+  }
+  </style>
+
+   <script>
+
+
+        function CheckLoginDetails() {
+            debugger
+            var UserName = $('[id$=txtUserName]').val().trim();
+            var Password = $('[id$=txtPassword]').val();
+
+            var RoleName = $('[id*=ddlRole] :selected').text();
+            //$('[id*=hdnRole]').val(RoleName);
+            var flag = true;
+            if (UserName == "") {
+                flag = false;
+                $('[id$=txtUserName]').css('border', '1px solid red');
+            }
+            else {
+                $('[id$=txtUserName]').css('border', '1px solid #ccc');
+            }
+            if (Password == "") {
+                flag = false;
+                $('[id$=txtPassword]').css('border', '1px solid red');
+            }
+            else {
+                $('[id$=txtPassword]').css('border', '1px solid #ccc');
+            }
+
+            if (flag) {
+
+                $('[id*=loader]').css('display', 'block');
+                $('[id*=btnSubmit]').val('Please Wait');
+
+
+                $.ajax({
+                    type: "POST",
+                    //url: "http://localhost:46692/Front/index.aspx/LoginDetails",
+                    url: "http://localhost:46692/Front/index.aspx/LoginDetails",
+                    data: JSON.stringify({
+                        UserName: UserName, Password: Password
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    async: true,
+                    success: function (data) {
+                        debugger
+                        var UserInfo = $.parseJSON(data.d);
+                        if (UserInfo.length > 0) {
+
+                            $('[id$=lblUserName]').text('Hi, ' + UserInfo[0].FirstName);
+                            $('[id$=LoggedinUser]').show();
+                            $('[id$=lnkLogin]').hide();
+                            $('[id$=lnkLogout]').show();
+                            $('[id$=MasterhdnUserId]').val(UserInfo[0].UserId);
+                            BindCart();
+                            $('#btnModalClose').click();
+                            location.reload();
+
+                            //  window.location.href = 'Front/index.aspx';
+                        }
+                        else {
+                            alert("User Name  & paasword is not correct");
+                            $('[id*=loader]').css('display', 'none');
+                            $('[id*=btnSubmit]').val('Login');
+                            $('[id*=lblAlert]').css('display', 'block');
+                            $('[id$=LoggedinUser]').hide();
+                            $('[id$=lnkLogin]').show();
+                            $('[id$=lnkLogout]').hide();
+                        }
+
+                    },
+
+                    failure: function (response) {
+                        alert('fail');
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+
+                    }
+                });
+                return false;
+            }
+            else {
+                return false;
+
+            }
+        }
+    </script>
+
+    <script>
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        //jQuery(window).load(function() {
+        //    jQuery('#preloader').show();
+
+        //});
+        $(document).ready(function () {
+
+
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideDown("400");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).not('.in .dropdown-menu').stop(true, true).slideUp("400");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+
+        $(document).ready(function () {
+            if ($(window).width() <= 600) {
+                $('#MyNavbar').removeClass('navbar-fixed-top');
+            }
+
+        });
+    </script>
+    <script>
+        var flag = true;
+        $(document).ready(function () {
+
+            $("#lblUserName, #categories").mouseenter(function () {
+                $(".dropdown-content").show();
+            });
+
+
+            //$("#categories").mouseleave(function () {
+            //    debugger
+            //     $(".dropdown-content").hide();
+            //    $(".dropdown-content").show();
+            //});
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (event) {
+
+
+                if (!event.target.matches('#lblUserName')) {
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        $(".dropdown-content").hide();
+                        //if (openDropdown.classList.contains('show')) {
+                        //    openDropdown.classList.remove('show');
+                        //}
+                    }
+                }
+            }
+
+            $(".dropdown").click(
+                function () {
+                    if (flag) {
+                        $('.dropdown-menu', this).stop(true, true).slideDown("slow");
+                        $(this).toggleClass('open');
+                        flag = false;
+                    } else {
+                        $('.dropdown-menu', this).stop(true, true).slideUp("slow");
+                        $(this).toggleClass('open');
+                        flag = true;
+                    }
+                });
+        });
+        //var j = jQuery.noConflict();
+        function OpenLogin() {
+            debugger;
+            closeNav();
+            //j('#myModal').modal('show');
+            jQuery.noConflict();
+            $('#myModal').modal('show');
+            return false;
+        }
+    </script>
+
+    <body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top" id="form1" runat="server">
+    <div class="container-fluid"  id="mySidenav">
+      <!-- MOBILE TOPBAR -->
+ <div class="mobile-topbar d-lg-none">
+        <div class="d-flex align-items-center">
+          <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <a class="navbar-brand" href="#">
+          <img src="https://trendzshopping.in/Images/System/logo.png" width="80" alt="Rahul Logo">
+        </a>
+        <div class="mobile-right">
+          <div><i class="bi bi-person"></i></div>
+          <div><i class="bi bi-heart"></i></div>
+          <div><i class="bi bi-bag"></i></div>
+        </div>
+      </div>
+
+      <!-- DESKTOP NAVBAR -->
+      <a class="navbar-brand d-none d-lg-flex" href="#">
+        <img src="https://trendzshopping.in/Images/System/logo.png" width="120" alt="Rahul Logo">
+      </a>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">MEN</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">T-Shirts</a></li>
+              <li><a class="dropdown-item" href="#">Shirts</a></li>
+              <li><a class="dropdown-item" href="#">Jeans</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">WOMEN</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Dresses</a></li>
+              <li><a class="dropdown-item" href="#">Tops</a></li>
+              <li><a class="dropdown-item" href="#">Kurtas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">KIDS</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Boys Clothing</a></li>
+              <li><a class="dropdown-item" href="#">Girls Clothing</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a class="nav-link" href="#">ELECTRONICS</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">BEAUTY</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">GENZ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">STUDIO <span class="small fw-bold" style="color:#F58C1C;">NEW</span></a></li>
+
+          <!-- Buttons for mobile inside collapsible -->
+          <div class="login-buttons d-lg-none">
+            <button class="btn btn-admin">Admin Login</button>
+            <button class="btn btn-seller">Seller Login</button>
+            <a href="javascript:void(0)" style="top: -15px; left: 60%;"
+                            class="closebtn">Hello</a>
+             <asp:LinkButton ID="lnkLogin2" runat="server" class="btn btn-login"
+                            OnClientClick="return OpenLogin();">Login / Signup
+                            </asp:LinkButton>
+                             <div id="LoggedinUser1" runat="server" style="float: left; width: 60%; text-align: left; color: #fff; font-weight: 500; margin-left: 15px; margin-top: 15px;">
+                            <label id="lblUserName1" runat="server" style="float: left; text-align: left; color: #fff; font-weight: 500; margin-left: 0px; margin-top: -5px;"></label>
+                        </div>
+                        
+                        <div style="width: 1%; float: left; text-align: right;">
+                            &nbsp;
+                        <a href="javascript:void(0)" style="top: -15px; left: 60%;"
+                            class="closebtn" onclick="closeNav()">&times;</a>
+                        </div>
+                    </div>
+                    <div>
+                        <asp:LinkButton ID="lnkLogout1" OnClick="lnkLogout_Click" runat="server" Style="display: none;"> Logout</asp:LinkButton>
+                    </div>
+          </div>
+        </ul>
+        <!-- Right Icons (Desktop) -->
+        <div class="right-icons ms-lg-3 d-none d-lg-flex">
+          <div><i class="bi bi-person"></i>Profile</div>
+          <div><i class="bi bi-heart" id="CartCtr" onclick="CloseCart();"></i>Wishlist</div>
+          <div><i class="bi bi-bag" onclick="OpenCart();"></i>Bag</div>
+        <!-- Buttons (Desktop only) -->
+        <div class="login-buttons d-none d-lg-flex ms-3">
+          <button class="btn btn-admin">Admin Login</button>
+          <button class="btn btn-seller">Seller Login</button>
+<asp:LinkButton ID="lnkLogin2" runat="server" class="btn btn-login"
+                            OnClientClick="return OpenLogin();">Login / Signup
+                            </asp:LinkButton>
+                             <div id="LoggedinUser1" runat="server" style="float: left; width: 60%; text-align: left; color: #fff; font-weight: 500; margin-left: 15px; margin-top: 15px;">
+                            <label id="lblUserName1" runat="server" style="float: left; text-align: left; color: #fff; font-weight: 500; margin-left: 0px; margin-top: -5px;"></label>
+                        </div>
+                        
+                        <div style="width: 1%; float: left; text-align: right;">
+                            &nbsp;
+                        <a href="javascript:void(0)" style="top: -15px; left: 60%;"
+                            class="closebtn" onclick="closeNav()">&times;</a>
+                        </div>
+                    </div>
+                    <div>
+                        <asp:LinkButton ID="lnkLogout1" OnClick="lnkLogout_Click" runat="server" Style="display: none;"> Logout</asp:LinkButton>
+
+                    </div>         
+                  </div>
+
+
+
+                      <div id="LoggedinUser" runat="server" style="font-size: 18px; color: #fff; font-weight: 500; margin-left: 15px; margin-top: 15px;">
+                                <label id="lblUserName" runat="server" style="float: left; text-align: left; font-size: 18px; color: black; font-weight: 500; margin-left: 0px; margin-top: -5px;"></label>
+                                    <div class="dropdown-content">
+                                        <a href="http://localhost:46692//Front/MyAccount.aspx">My Account</a>
+                                        <a href="http://localhost:46692//Front/MyOrders.aspx">My Orders</a>
+                                        <!-- <%--<a href="#">Logout</a>--%> -->
+                                          <asp:LinkButton ID="lnkLogout" OnClick="lnkLogout_Click" runat="server" Style="display: none;">Logout</asp:LinkButton>
+                                </div>
+                            </div>
+                
+      </div>
+    </div>
+  </nav>
+
+  <!-- Search Row (Centered) -->
+  <div class="search-row">
+    <div class="search-box">
+      <i class="bi bi-search me-2 text-secondary"></i>
+      <input type="text" placeholder="Search for products, brands and more" id="txtGlobalSearch" onclick="Search();">
+    </div>
+  </div>
+
+
+
+
+
+
+   <!-- Content -->
+        <div class="container my-4">
+            <h4 class="text-center mb-3">SHOP BY CATEGORY</h4>
+            <div class="row g-3">
+                <!-- Kids -->
+                <div class="col-6 col-md-3">
+                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center rounded">
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-1">Kids</h6>
+                            <p class="small text-muted mb-0">Fashion</p>
+                        </div>
+                        <img src="https://www.bbassets.com/media/uploads/p/l/40331689_1-kisah-blue-regular-fit-kurta.jpg"
+                            width="80" alt="Kids">
+                    </div>
+                </div>
+
+                <!-- Grooming -->
+                <div class="col-6 col-md-3">
+                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center rounded">
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-1">Grooming</h6>
+                            <p class="small text-muted mb-0">Care</p>
+                        </div>
+                        <img src="https://www.bbassets.com/media/uploads/p/l/40331689_1-kisah-blue-regular-fit-kurta.jpg"
+                            width="80" alt="Kids">
+                    </div>
+                </div>
+
+                <!-- Accessories -->
+                <div class="col-6 col-md-3">
+                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center rounded">
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-1">Accessories</h6>
+                            <p class="small text-muted mb-0">Trendy</p>
+                        </div>
+                        <img src="https://www.bbassets.com/media/uploads/p/l/40331689_1-kisah-blue-regular-fit-kurta.jpg"
+                            width="80" alt="Kids">
+                    </div>
+                </div>
+
+                <!-- Footwear -->
+                <div class="col-6 col-md-3">
+                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center rounded">
+                        <div class="text-start">
+                            <h6 class="fw-bold mb-1">Footwear</h6>
+                            <p class="small text-muted mb-0">Shoes</p>
+                        </div>
+                        <img src="https://www.bbassets.com/media/uploads/p/l/40331689_1-kisah-blue-regular-fit-kurta.jpg"
+                            width="80" alt="Kids">
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <!-- NEW PRODUCTS ROW WITH HOVER EFFECT, RATINGS, AND ICONS -->
+            <h4 class="text-center my-4">TOP PRODUCTS</h4>
+            <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card border bg-white rounded h-100 position-relative p-2">
+
+                        <!-- Product Image -->
+                        <img src="https://www.ultraflexclothing.com/wp-content/uploads/2020/11/Img-1504.jpg"
+                            class="img-fluid w-100 rounded" alt="Product">
+
+                        <!-- Floating Wishlist Icon (Optional - can remove if not needed) -->
+                        <button class="btn btn-light border position-absolute top-0 end-0 m-2 rounded-circle"> <i
+                                class="bi bi-heart"></i> </button>
+
+                        <!-- Product Details -->
+                        <div class="p-2 text-center">
+                            <p class="small text-muted mb-1">Pepe Jeans Men Printed Boxer</p>
+                            <p class="mb-1"><strong>Sizes:</strong> XXL</p>
+
+                            <!-- Star Ratings -->
+                            <div class="mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                            </div>
+
+                            <!-- Price Section -->
+                            <p class="mb-2 fw-bold">
+                                Rs. 318
+                                <span class="text-muted text-decoration-line-through">Rs. 549</span>
+                                <span class="text-danger">(42% OFF)</span>
+                            </p>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex flex-column flex-md-row gap-2">
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#F48B1E; color:#fff; border:none;">
+                                    Add to Cart
+                                </button>
+
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#8EC243; color:#fff; border:none;">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card border bg-white rounded h-100 position-relative p-2">
+
+                        <!-- Product Image -->
+                        <img src="https://www.ultraflexclothing.com/wp-content/uploads/2020/11/Img-1504.jpg"
+                            class="img-fluid w-100 rounded" alt="Product">
+
+                        <!-- Floating Wishlist Icon (Optional - can remove if not needed) -->
+                        <button class="btn btn-light border position-absolute top-0 end-0 m-2 rounded-circle"> <i
+                                class="bi bi-heart"></i> </button>
+
+                        <!-- Product Details -->
+                        <div class="p-2 text-center">
+                            <p class="small text-muted mb-1">Pepe Jeans Men Printed Boxer</p>
+                            <p class="mb-1"><strong>Sizes:</strong> XXL</p>
+
+                            <!-- Star Ratings -->
+                            <div class="mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                            </div>
+
+                            <!-- Price Section -->
+                            <p class="mb-2 fw-bold">
+                                Rs. 318
+                                <span class="text-muted text-decoration-line-through">Rs. 549</span>
+                                <span class="text-danger">(42% OFF)</span>
+                            </p>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex flex-column flex-md-row gap-2">
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#F48B1E; color:#fff; border:none;">
+                                    Add to Cart
+                                </button>
+
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#8EC243; color:#fff; border:none;">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card border bg-white rounded h-100 position-relative p-2">
+
+                        <!-- Product Image -->
+                        <img src="https://www.ultraflexclothing.com/wp-content/uploads/2020/11/Img-1504.jpg"
+                            class="img-fluid w-100 rounded" alt="Product">
+
+                        <!-- Floating Wishlist Icon (Optional - can remove if not needed) -->
+                        <button class="btn btn-light border position-absolute top-0 end-0 m-2 rounded-circle"> <i
+                                class="bi bi-heart"></i> </button>
+
+                        <!-- Product Details -->
+                        <div class="p-2 text-center">
+                            <p class="small text-muted mb-1">Pepe Jeans Men Printed Boxer</p>
+                            <p class="mb-1"><strong>Sizes:</strong> XXL</p>
+
+                            <!-- Star Ratings -->
+                            <div class="mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                            </div>
+
+                            <!-- Price Section -->
+                            <p class="mb-2 fw-bold">
+                                Rs. 318
+                                <span class="text-muted text-decoration-line-through">Rs. 549</span>
+                                <span class="text-danger">(42% OFF)</span>
+                            </p>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex flex-column flex-md-row gap-2">
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#F48B1E; color:#fff; border:none;">
+                                    Add to Cart
+                                </button>
+
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#8EC243; color:#fff; border:none;">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card border bg-white rounded h-100 position-relative p-2">
+
+                        <!-- Product Image -->
+                        <img src="https://www.ultraflexclothing.com/wp-content/uploads/2020/11/Img-1504.jpg"
+                            class="img-fluid w-100 rounded" alt="Product">
+
+                        <!-- Floating Wishlist Icon (Optional - can remove if not needed) -->
+                        <button class="btn btn-light border position-absolute top-0 end-0 m-2 rounded-circle"> <i
+                                class="bi bi-heart"></i> </button>
+
+                        <!-- Product Details -->
+                        <div class="p-2 text-center">
+                            <p class="small text-muted mb-1">Pepe Jeans Men Printed Boxer</p>
+                            <p class="mb-1"><strong>Sizes:</strong> XXL</p>
+
+                            <!-- Star Ratings -->
+                            <div class="mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                            </div>
+
+                            <!-- Price Section -->
+                            <p class="mb-2 fw-bold">
+                                Rs. 318
+                                <span class="text-muted text-decoration-line-through">Rs. 549</span>
+                                <span class="text-danger">(42% OFF)</span>
+                            </p>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex flex-column flex-md-row gap-2">
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#F48B1E; color:#fff; border:none;">
+                                    Add to Cart
+                                </button>
+
+                                <button class="btn btn-sm flex-fill"
+                                    style="background-color:#8EC243; color:#fff; border:none;">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+<!-- Footer -->
+<footer class="mt-5" style="background-color: #212121; color: #fff;">
+              <asp:HiddenField ID="MasterhdnUserId" runat="server" Value="0" />
+  <div class="container py-5">
+    <div class="row text-start">
+      <!-- Column 1 -->
+      <div class="col-6 col-md-2 mb-3">
+        <h6 class="fw-bold mb-3">MEN</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">T-Shirts</a></li>
+          <li><a href="#" class="footer-link">Shirts</a></li>
+          <li><a href="#" class="footer-link">Jeans</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 2 -->
+      <div class="col-6 col-md-2 mb-3">
+        <h6 class="fw-bold mb-3">WOMEN</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">Dresses</a></li>
+          <li><a href="#" class="footer-link">Tops</a></li>
+          <li><a href="#" class="footer-link">Kurtas</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3 -->
+      <div class="col-6 col-md-2 mb-3">
+        <h6 class="fw-bold mb-3">KIDS</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">Boys Clothing</a></li>
+          <li><a href="#" class="footer-link">Girls Clothing</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4 -->
+      <div class="col-6 col-md-2 mb-3">
+        <h6 class="fw-bold mb-3">SUPPORT</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">Contact Us</a></li>
+          <li><a href="#" class="footer-link">FAQ</a></li>
+          <li><a href="#" class="footer-link">Shipping</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 5 -->
+      <div class="col-12 col-md-4 mb-3">
+        <h6 class="fw-bold mb-3">ABOUT US</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="footer-link">Company Info</a></li>
+          <li><a href="#" class="footer-link">Careers</a></li>
+          <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+          <li><a href="#" class="footer-link">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+     <div class="col-6 col-md-2 mb-3">
+        <h6 style="font-size: 14px;">FOLLOW US</h6>
+        <div class="d-flex gap-2 mt-2">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="text-center py-3" style="background-color: #212121; color: #fff;  font-size: 14px;">
+    &copy; 2025 Rahul Collection. All rights reserved.
+  </div>
+</footer>
+
+
+
+
+<div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content LoginPanel">
+                 
+                    <div class="modal-body">
+                        <div class="container">
+
+                            <div class="col-lg-4 col-md-4 col-xs-12 col-sm-12">
+                                <button type="button" id="btnModalClose" class="close" data-dismiss="modal">&times;</button>
+                                <div class="login-form" style="border: 1px solid #ccc; padding: 5%; height: 265px; border-radius: 5px; background-color: #fff;">
+                                    <div style="float: left; color: #666; font-size: 20px; margin-bottom: 10px;">Login </div>
+                                    <br />
+                                    <br />
+                                    <div class="form-group">
+
+                                        <asp:TextBox ID="txtUserName" runat="server" class="form-username form-control" placeholder="Username"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group">
+                                        <asp:TextBox ID="txtPassword" TextMode="Password" runat="server" class="form-password form-control" placeholder="Password"></asp:TextBox>
+                                    </div>
+                                    <asp:Button ID="btnSubmit" runat="server" OnClientClick="return CheckLoginDetails();" class="cambutton" Style="background-color: #F6861F; color: #fff; height: 35px; padding: 7px; width: 100%; text-align: center; border: none;" Text="Login"></asp:Button>
+                        
+
+
+
+                                     <div class="modal fade" id="myModalsignup" role="dialog" style="top: 10%;">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content LoginPanel">
+                    <div class="modal-header">
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <div class="login-form" style="background-color: #fff; border: 1px solid #ccc; padding: 5%; height: 405px; border-radius: 5px;">
+                                <div style="float: left; color: #666; font-size: 20px; margin-bottom: 10px;">sign up </div>
+
+                                <br />
+                                <br />
+                                <div class="form-group">
+
+                                    <asp:TextBox ID="txtFirstName" runat="server" MaxLength="10" class="form-username form-control" placeholder="FirstName"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:TextBox ID="txtLastName" runat="server" MaxLength="10" class="form-username form-control" placeholder="LastName"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:TextBox ID="txtMobile" runat="server" MaxLength="10" class="form-username form-control" placeholder="Mobile"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:TextBox ID="txtEmail" runat="server" MaxLength="25" class="form-username form-control" placeholder="Email"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:TextBox ID="txtPassword1" TextMode="Password" MaxLength="20" runat="server" class="form-password form-control" placeholder="Password"></asp:TextBox>
+                                </div>
+                                <asp:Button ID="btnSignup" runat="server" OnClientClick="return ValidateSignup();" class="cambutton" Style="background-color: #7C519B; height: 35px; color: #fff; padding: 7px; width: 100%; text-align: center; border: none;" Text="Submit"></asp:Button>
+                                <!-- <%--<asp:Button ID="btnSignup" runat="server" OnClick="btnSignup_Click1" Text="Submit"></asp:Button>--%> -->
+                                <br />
+                                <br />
+                            </div>
+                        </div>
+
+
+
+     <!-- <%-- cart --%> -->
+        <!-- Modal -->
+        <div class="Layout" style="display: none;"></div>
+        <div id="myCart" style="background-color: #fff; height: 100%; width: 450px; position: fixed; top: 0px; right: 0px; z-index: 99999999; padding: 0px; border: 1px solid #ccc; display: none;">
+            <div style="width: 100%; background-color: #7C519B; color: #fff; padding: 0px; height: 45px; padding-left: 40px; padding-top: 10px; padding-right: 20px; font-size: 22px;">
+                My Cart(<span id="CartCtr"></span>) <a href="#" onclick="CloseCart();"><i class="fa fa-close" style="float: right; font-size: 16px; color: #fff;"></i></a>
+            </div>
+            <div style="float: left; width: 100%; padding: 15px; margin-left: 10px;">
+                <div class="container-fluid" id="CartItems" style="height: 350px; overflow: auto;">
+
+                    <div id="NoItem" style="margin-top: 15%; display: none;">
+                        <div class="col-md-12 text-center">
+                            <img src="../Images/System/Sadface.png" />
+                        </div>
+                        <div class="col-md-12 text-center" style="font-size: 20px; color: #999; padding-top: 20px;">
+                            Oops ! No Item Found in Cart.
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <a href="http://localhost:46692//Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
+                <input type="button" style="width: 100%; height: 60px; background-color: #F6861F; background-image: none; border-bottom: none;" class="btn btn-primary" value="Proceed to Checkout" /></a>
+        </div>
+
+
+
+
+   <script>
+            function OpenCart() {
+                BindCart();
+                $('#myCart').fadeIn(200);
+                $('.Layout').fadeIn(200);
+            }
+
+            function CloseCart() {
+                $('#myCart').fadeOut(200);
+                $('.Layout').fadeOut(200);
+            }
+
+            function MMWomen() {
+                $('#MegaMenuMen').fadeOut(200);
+                $('#MegaMenuWomen').fadeToggle(200);
+            }
+            function MMWomenOut() {
+
+                $('#MegaMenuWomen').hide();
+            }
+            function MMWomenIN() {
+                $('#MegaMenuWomen').show();
+            }
+
+            function MMMen() {
+                $('#MegaMenuWomen').fadeOut(200);
+                $('#MegaMenuMen').fadeToggle(200);
+            }
+
+            function MMMenOut() {
+
+                $('#MegaMenuMen').hide();
+            }
+            function MMMenIN() {
+
+                $('#MegaMenuMen').show();
+            }
+
+            function Logout() {
+                var Test_id = "1";
+                $.ajax({
+                    url: "http://localhost:46692//Front/index.aspx/Logout",
+                    async: true,
+                    data: '{TestId:"' + Test_id + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST", // data has to be Posted 
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+
+                    }
+                });
+            }
+
+            $(document).ready(function () {
+                //GetMenu();
+                BindCart()
+            });
+            function GetMenu() {
+                $.ajax({
+                    url: "../Front/Index.aspx/GetMenu",
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST", // data has to be Posted 
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+                        $('#divmenu').html(result.d);
+                    }
+                });
+            }
+            function BindCart() {
+                var UserId = $('[id$=MasterhdnUserId]').val();
+                if (UserId != "0") {
+                    $.ajax({
+                        url: "http://localhost:46692//Front/index.aspx/BindCart",
+                        async: true,
+                        data: '{UserId:"' + UserId + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST", // data has to be Posted 
+                        timeout: 120000,
+                        dataType: "json",
+                        success: function (result) {
+                            var ds = $.parseJSON(result.d)
+                            var CartCtr = parseInt(ds.Table[0].CartCtr);
+                            var CartData = ds.Table1;
+                            if (CartCtr > 0) {
+                                $('.Cart-Counter').html(CartCtr);
+                                $('#CartCtr').html(CartCtr);
+                                $('.Cart-Counter').show();
+
+                                var html = '';
+                                for (var i = 0; i < CartData.length; i++) {
+                                    html += '<div class="row" style="margin-bottom: 30px;">';
+                                    html += '<div class="col-md-5">';
+                                    html += '<img src="http://localhost:46692//Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
+                                    html += '<p style="padding: 15px;text-align: center;empty-cells: hide;color: red;"><a href="#" style="color:red;text-decoration:none;" onClick="RemoveCartItem(' + CartData[i].CartId + ',this);">Remove</a><p>';
+                                    html += '</div>';
+                                    html += '<div class="col-md-7">';
+                                    html += '<h4>' + CartData[i].ItemName + '</h4>';
+                                    html += '<strong>Quantity : </strong>';
+                                    html += '<input type="text" value="' + CartData[i].ItemQuantity + '" style="width: 75px;" class="form-control" />';
+                                    html += '<br />';
+                                    html += '<span style="font-size: 22px;"><strong><i class="fa fa-inr"></i>' + parseInt(CartData[i].ItemPrice) * parseInt(CartData[i].ItemQuantity) + ' </strong></span>';
+                                    html += '</div>';
+                                    html += '<hr />';
+                                    html += '</div>';
+                                }
+                                $('[id$=CartItems]').html(html);
+                                $('[id$=NoItem]').hide();
+                            }
+                            else {
+                                $('.Cart-Counter').html('');
+                                $('.Cart-Counter').hide();
+                                $('[id$=NoItem]').show();
+
+                            }
+                        }
+                    });
+                }
+                else {
+                    $('[id$=NoItem]').show();
+                }
+            }
+
+            function RemoveCartItem(CartId, ctrl) {
+                debugger;
+                $.ajax({
+                    url: "http://localhost:46692//Front/index.aspx/RemoveCartItem",
+                    async: false,
+                    data: '{CartId:"' + CartId + '"}',
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST", // data has to be Posted 
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+                        $(ctrl).parent().parent().parent().remove();
+                        BindCart();
+                    }
+                });
+            }
+
+
+            function ValidateSignup() {
+                var FName = $('[id$=txtFirstName]').val().trim();
+                var LName = $('[id$=txtLastName]').val().trim();
+                var Email = $('[id$=txtEmail]').val().trim();
+                var Mobile = $('[id$=txtMobile]').val().trim();
+                var Password = $('[id$=txtPassword1]').val().trim();
+                var flag = true;
+                if (FName == "") {
+                    flag = false;
+                    $('[id$=txtFirstName]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtFirstName]').css('border', '1px solid #ccc');
+                }
+
+                if (LName == "") {
+                    flag = false;
+                    $('[id$=txtLastName]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtLastName]').css('border', '1px solid #ccc');
+                }
+                if (Email == "") {
+                    flag = false;
+                    $('[id$=txtEmail]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtEmail]').css('border', '1px solid #ccc');
+                }
+                if (Mobile == "") {
+                    flag = false;
+                    $('[id$=txtEmail]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtEmail]').css('border', '1px solid #ccc');
+                }
+                if (Password == "") {
+                    flag = false;
+                    $('[id$=txtPassword1]').css('border', '1px solid red');
+                }
+                else {
+                    $('[id$=txtPassword1]').css('border', '1px solid #ccc');
+                }
+                if (flag) {
+                    //return true;
+                    $.ajax({
+                        url: "http://localhost:46692//Front/index.aspx/btnSignup",
+                        async: false,
+                        data: '{txtFirstName:"' + FName + '", txtLastName:"' + LName + '", txtMobile:"' + Mobile + '", txtEmail:"' + Email + '", txtPassword1:"' + Password + '"}',
+                        contentType: "application/json; charset=utf-8",
+                        type: "POST", // data has to be Posted 
+                        timeout: 120000,
+                        dataType: "json",
+                        success: function (result) {
+                            var dt = $.parseJSON(result.d);
+                            if (dt == '0') {
+                                alert('User not created.');
+                            }
+                            else {
+                                alert('User created successfully.');
+                                window.location.href = window.location.href;
+                            }
+                        }
+                    });
+                }
+                else {
+                    return false;
+                }
+            }
+
+            function Search() {
+                debugger;
+                var txtGlobalSearch = $('[id$=txtGlobalSearch]').val().trim();
+                if (txtGlobalSearch != "") {
+                    //window.location.href = "http://localhost:46692//Front/Search.aspx?Search=" + txtGlobalSearch;
+                    window.open("http://localhost:46692//Front/Search.aspx?Search=" + txtGlobalSearch);
+                }
+                else {
+                    return;
+                }
+            }
+        </script>
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "250px";
+            }
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
+
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+          <!-- <script src="../Js/bootstrap.min.js"></script> -->

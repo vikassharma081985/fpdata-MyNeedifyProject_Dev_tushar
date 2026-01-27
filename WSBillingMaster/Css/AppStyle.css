@@ -1,0 +1,898 @@
+﻿
+
+body {
+    BACKGROUND: white;
+    MARGIN: 0px 0px 0px 0px;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 10pt;
+    padding: 0px 0px 0px 0px;
+}
+
+.required {
+    color: red;
+}
+
+input[type="text"]:focus, textarea:focus, select:focus, input:focus {
+    outline: none;
+    border-color: #4299F3;
+    box-shadow: 0 0 2.5px #4299F3;
+}
+
+input[type="button"]:focus, input[type="submit"]:focus {
+    outline: solid;
+    border-color: blue;
+    border-width: 2px;
+}
+
+
+
+.ItDoseButton {
+    COLOR: #333;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+    BACKGROUND-IMAGE: url(../App_Images/1.gif);
+    cursor: pointer;
+}
+
+    .ItDoseButton:hover {
+        background-color: gray;
+    }
+
+.masterheader {
+    /*background-color:  #F3F7FA;*/
+    background-color:#FFB6C1;
+    
+}
+
+#body_box_inventory_o {
+}
+
+.Outer_Box_Inventory {
+    border: solid 1px #303e54;
+    float: left;
+    clear: both;
+    WIDTH: 800px;
+    margin: 1px 1px 1px 1px;
+    vertical-align: middle;
+}
+
+#body_box_Login {
+    background-color: #EAF3FD;
+    width: 700px;
+    padding: 2px 2px 2px 2px;
+}
+
+.Outer_Box_Login {
+    float: left;
+    clear: both;
+    WIDTH: 695px;
+    margin: 1px 1px 1px 1px;
+    vertical-align: middle;
+}
+
+#body_box_Pharmacy {
+    margin: 0px 5px 1px 5px;
+    font-size: 9pt;
+    background-color: #e7f3ed;
+    width: 440px;
+    padding: 1px 0px 1px 0px;
+    border: solid 1px #303e54;
+}
+
+.Outer_Box_Pharmacy {
+    float: left;
+    clear: both;
+    WIDTH: 430px;
+    margin: 1px 1px 1px 1px;
+    vertical-align: middle;
+    border: solid 1px #303e54;
+}
+
+.Content_Pharmacy {
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+#Pbody_box_inventory {
+    margin: 0px 10px 0px 10px;
+    background-color: #d7edff;
+    clear: both;
+    width: 1000px;
+    border: solid 1px #303e54;
+    padding: 1px 1px 1px 1px;
+    display: inline-block;
+}
+
+.PatientTypeColor {
+    margin: 0px 10px 0px 10px;
+    background-color: #d7edff !important;
+    clear: both;
+    width: 1000px;
+    border: solid 1px #303e54;
+    padding: 1px 1px 1px 1px;
+    display: inline-block;
+}
+
+.PatientTypeColorCorporate {
+    margin: 0px 10px 0px 10px;
+    background-color: #f6f6f6 !important;
+    clear: both;
+    width: 1000px;
+    border: solid 1px #303e54;
+    padding: 1px 1px 1px 1px;
+    display: inline-block;
+}
+
+.PatientTypeColorPUP {
+    margin: 0px 10px 0px 10px;
+    background-color: #ccc !important;
+    clear: both;
+    width: 1000px;
+    border: solid 1px #303e54;
+    padding: 1px 1px 1px 1px;
+    display: inline-block;
+}
+.PatientTypeColorHLM {
+    margin: 0px 10px 0px 10px;
+    background-color: #e6e6e6 !important;
+    clear: both;
+    width: 1000px;
+    border: solid 1px #303e54;
+    padding: 1px 1px 1px 1px;
+    display: inline-block;
+}
+
+#body_box_inventory {
+    margin: 0px 10px 0px 10px;
+    background-color: #d7edff;
+    clear: both;
+    width: 1000px;
+    border: solid 1px #303e54;
+    padding: 1px 1px 1px 1px;
+    display: inline-block;
+}
+
+.POuter_Box_Inventory {
+    border: solid 1px #303e54;
+    float: left;
+    clear: both;
+    WIDTH: 995px;
+    margin: 1px 1px 1px 1px;
+    vertical-align: middle;
+}
+
+.Outer_Box_Inventory {
+    border: solid 1px #303e54;
+    float: left;
+    clear: both;
+    WIDTH: 995px;
+    margin: 1px 1px 1px 1px;
+    vertical-align: middle;
+}
+
+.Search_Outer_Box {
+    padding-left: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    WIDTH: 450px;
+    margin: 1px 1px 1px 1px;
+    vertical-align: middle;
+}
+
+#Pbody_box_MIS {
+    margin: 0px 2px 2px 2px;
+    background-color: #EAF3FD;
+    width: 995px;
+    border: solid 1px #303e54;
+    padding: 1px 1px 1px 1px;
+}
+
+.POuter_Box_MIS {
+    border: solid 1px #303e54;
+    float: left;
+    clear: both;
+    WIDTH: 990px;
+    margin: 1px 1px 1px 1px;
+    vertical-align: middle;
+}
+
+.Outer_Box_MIS {
+    float: left;
+    clear: right;
+    margin: 2px 2px 2px 2px;
+    vertical-align: middle;
+    WIDTH: 327px;
+}
+
+.Content_MIS {
+    padding: 1px 1px 1px 1px;
+    float: left;
+    WIDTH: 320px;
+    margin: 5px 0px 2px 0px;
+}
+
+.MIS {
+    padding: 0px 1px 2px 2px;
+}
+
+.MISheader {
+    padding-left: 2px;
+    color: Maroon;
+    font-size: 10pt;
+    background-image: url(Image/bg.gif);
+    text-align: center;
+    font-weight: bold;
+}
+
+.content {
+    padding-left: 8px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.labelForTag {
+    width: 90px;
+    float: left;
+    padding-top: 4px;
+}
+
+.labelForTag2 {
+    width: 90px;
+    padding-top: 4px;
+}
+
+.labelForTax {
+    width: 50px;
+    float: left;
+    padding-top: 2px;
+}
+
+.labelForPO {
+    width: 65px;
+    float: left;
+    padding-top: 2px;
+}
+
+.labelForSearch {
+    width: 125px;
+    float: left;
+    padding-top: 4px;
+}
+
+.Purchaseheader {
+    font-weight: bold;
+    padding-left: 5px;
+    color: maroon;
+    font-size: 10pt;
+    text-align: left;
+    margin-bottom: 4px;
+    background-image: url(../App_Images/1.gif);
+}
+
+.forItemLabel {
+    width: 60px;
+    float: left;
+    padding-top: 4px;
+    font-size: 9pt;
+}
+
+
+
+.ItDoseLinkButton {
+    color: Navy;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+    font-weight: bold;
+}
+
+.ItDoseDropdownbox {
+    color: Navy;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+
+
+.ItDoseRadiobuttonlist {
+    color: Navy;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+.ItDoseRadiobutton {
+    color: Navy;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+.ItDoseCheckboxlistSpl {
+    color: Blue;
+    height: 2px;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+    font-weight: bold;
+}
+
+.ItDoseCheckboxlist {
+    color: Navy;
+    height: 2px;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+.ItDoseCheckbox {
+    color: Navy;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+.ItDoseTextinputNum {
+    color: Navy;
+    border: solid 1 black;
+    text-align: right;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+.ItDoseTextinputText {
+    color: Navy;
+    border: solid 1 black;
+    text-align: left;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+.ItDoseLblError {
+    color: red;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+    font-weight: bold;
+}
+
+.ItDoseLabel {
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+}
+
+.ItDoseLabelSp {
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+    color: Blue;
+}
+
+.ItDoseLabelBl {
+    font-size: 8.5pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+    color: Maroon;
+    font-weight: bold;
+}
+
+.ItDoseTxtLabel {
+    background-color: white;
+    color: navy;
+    border: solid 1px navy;
+    padding: 2px 2px 2px 4px;
+    margin: 2px 2px 2px 0px;
+}
+
+.ItDoseLblSpBl {
+    color: Maroon;
+    font-size: 9pt;
+    font-family: Verdana, Arial, sans-serif, sans-serif;
+    font-weight: bold;
+}
+
+.pnlFilter {
+    width: 230px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.pnlFileFilter {
+    width: 325px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.pnlVendorItemsFilter {
+    width: 500px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.pnlItemsFilter {
+    width: 175px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.pnlRequestItemsFilter {
+    width: 425px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.pnlLabItemsFilter {
+    width: 850px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.pnlOrderItemsFilter {
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.pnlSurgeryItemsFilter {
+    width: 525px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.filterOpDiv {
+    padding: 3px 0px 3px 0px;
+    clear: left;
+    width: 100%;
+    border-top: solid 1px maroon;
+    text-align: right;
+}
+
+.filterPupupBackground {
+    background-color: #C6DFF9;
+    filter: alpha(opacity=70);
+    opacity: 0.7;
+}
+
+.exporttoexcelheader {
+    font-family: Verdana;
+    background-color: CaptionText;
+    color: white;
+}
+
+.exporttoexcel {
+    background-color: white;
+    border: solid 2px black;
+}
+
+.pnlAddLocation {
+    width: 335px;
+    background-color: #EAF3FD;
+    border: solid 1px maroon;
+}
+
+.GridViewStyleDiv {
+    border: solid 1px #9b0000;
+    font-size: 9pt;
+}
+
+.GridViewStyle {
+    border: solid 1px #C6DFF9;
+    font-size: 9pt;
+}
+
+    .GridViewStyle .row {
+        border: solid 1px #C6DFF9;
+        font-size: 9pt;
+        padding-left: 5px;
+    }
+
+    .GridViewStyle .altrow {
+        border: solid 1px #C6DFF9;
+        font-size: 9pt;
+        padding-left: 5px;
+        background-color: #FFE0C0;
+    }
+
+.GridViewHeaderStyle {
+    border: solid 1px #C6DFF9;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 8.5pt;
+    background-image: url(../App_Images/headerBg.gif);
+    background-repeat: repeat-x;
+}
+
+.GridViewHeaderStyleDiv {
+    border: solid 1px #9b0000;
+    font-weight: bold;
+    color: #FFFFFF;
+    font-size: 8.5pt;
+    background-image: url(Image/headerBgDiv.png);
+    background-repeat: repeat-x;
+}
+
+
+.GridViewScrollHeaderStyle {
+    border: solid 1px #C6DFF9;
+    font-weight: bold;
+    color: #765;
+    font-size: 9.5pt;
+    background-image: url(Image/headerBg.gif);
+    background-repeat: repeat-x;
+    position: relative;
+    top: expression(this.offsetParent.scrollTop);
+    z-index: 10;
+}
+
+.GridViewItemStyle {
+    border: solid 1px #C6DFF9;
+    padding-left: 3px;
+    font-size: 8.0pt;
+}
+
+.GridViewAltItemStyle {
+    border: solid 1px #C6DFF9;
+    padding-left: 3px;
+    font-size: 8.0pt;
+    background-color: #eee9e9;
+}
+
+.GridViewLabItemStyle {
+    border: solid 1px #C6DFF9;
+    padding-left: 3px;
+    font-size: 8.0pt;
+}
+
+.GridViewResultItemStyle {
+    border: solid 1px #C6DFF9;
+    padding-left: 5px;
+    font-size: 8.75pt;
+    background-color: #fafad2;
+}
+
+.GridViewHeaderStyleMIS {
+    border: solid 1px #C6DFF9;
+    font-weight: bold;
+    color: #765;
+    font-size: 9.5pt;
+    background-image: url(Image/headerBg.gif);
+    background-repeat: repeat-x;
+}
+
+.GridViewAltStyleMIS {
+    border: solid 1px #C6DFF9;
+    font-size: 8.75pt;
+    background-color: #f0fff0;
+}
+
+.GridViewItemStyleMIS {
+    border: solid 1px #C6DFF9;
+    padding-left: 5px;
+    font-size: 9pt;
+}
+
+.SearchPrompt {
+    border: solid 1px #C6DFF9;
+    padding-left: 5px;
+    font-size: 9pt;
+}
+
+.HeaderTab {
+    font: normal 11px Tahoma;
+    float: left;
+    LINE-HEIGHT: normal;
+    background: #bfdbff url(Image/TabstripBackground.gif) repeat-x 100% bottom;
+    white-space: nowrap;
+}
+
+    .HeaderTab ul {
+        padding: 2px;
+        MARGIN: 0px;
+        LIST-STYLE-TYPE: none;
+        white-space: nowrap;
+    }
+
+    .HeaderTab LI {
+        PADDING-RIGHT: 0px;
+        PADDING-LEFT: 5px;
+        BACKGROUND: transparent url(Image/tabMiddleOff.gif) no-repeat left top;
+        FLOAT: left;
+        PADDING-BOTTOM: 0px;
+        MARGIN: 0px;
+        PADDING-TOP: 0px;
+    }
+
+    .HeaderTab A {
+        PADDING-RIGHT: 10px;
+        DISPLAY: block;
+        PADDING-LEFT: 10px;
+        FONT-WEIGHT: bold;
+        BACKGROUND: transparent url(Image/tabMiddleOn.gif) no-repeat right top;
+        FLOAT: none;
+        PADDING-BOTTOM: 4px;
+        COLOR: #203b78;
+        PADDING-TOP: 5px;
+        TEXT-DECORATION: none;
+    }
+
+        .HeaderTab A:hover {
+            COLOR: #333;
+            BACKGROUND-IMAGE: url(Image/tabMiddleOff.gif);
+        }
+
+    .HeaderTab #current {
+        BACKGROUND-IMAGE: url(Image/tabLeftOn.gif);
+    }
+
+        .HeaderTab #current A {
+            BACKGROUND-IMAGE: url(Image/tabRightOn.gif);
+            PADDING-BOTTOM: 5px;
+            COLOR: #333;
+        }
+
+    .HeaderTab A.wrap {
+        padding-right: 6px;
+        background: transparent url(Image/tabMiddleOff.gif) right 0px no-repeat;
+    }
+
+.bottomborder {
+    border-bottom: #000000 thick solid;
+}
+
+.hover {
+    text-decoration: underline overline blink none;
+    color: green;
+    cursor: wait;
+}
+
+.GridViewDragItemStyle {
+    border: solid 1px #C6DFF9;
+    padding-left: 5px;
+    font-size: 9pt;
+    background-color: #BCEE68;
+}
+
+.GridViewChkHeaderStyle {
+    border: solid 1px #C6DFF9;
+    font-weight: bold;
+    color: #000000;
+    font-size: 9.5pt;
+    color: #006400;
+}
+
+
+
+
+div.grid {
+    width: 1275px;
+}
+
+    div.grid div {
+        float: left;
+    }
+
+div.SearchName {
+    width: 130px;
+    padding-right: 20px;
+    text-align: right;
+}
+
+div.SearchData {
+    width: 230px;
+}
+
+div.SearchDateImg {
+    width: 30px;
+}
+
+div.SearchTime {
+    width: 100px;
+}
+
+div.SearchName_Data {
+    width: 350px;
+    padding-left: 30px;
+}
+
+div.SearchData_DateImg_Time {
+    width: 360px;
+}
+
+
+
+div.RefRange {
+    width: 180px;
+}
+
+div.RefRangeWide {
+    width: 340px;
+}
+
+
+
+div.grey {
+    background-color: #cccccc;
+}
+
+div.red {
+    background-color: #e14e32;
+}
+
+div.clear {
+    clear: both;
+    display: none;
+}
+
+/* popup*/
+#popup_box {
+    display: none; /* Hide the DIV */
+    position: fixed;
+    _position: absolute; /* hack for internet explorer 6 */
+    height: 300px;
+    width: 300px;
+    background: #FFFFFF;
+    left: 400px;
+    top: 150px;
+    z-index: 100; /* Layering ( on-top of others), if you have lots of layers: I just maximized, you can change it yourself */
+    margin-left: 15px;
+    /* additional features, can be omitted */
+    border: 2px solid #ff0000;
+    padding: 15px;
+    font-size: 15px;
+    -moz-box-shadow: 0 0 5px #ff0000;
+    -webkit-box-shadow: 0 0 5px #ff0000;
+    box-shadow: 0 0 5px #ff0000;
+}
+
+#popupBoxClose {
+    font-size: 20px;
+    line-height: 15px;
+    right: 5px;
+    top: 5px;
+    position: absolute;
+    color: #6fa5e2;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.savebutton {
+    cursor: pointer;
+    background-color: lightgreen;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.resetbutton {
+    cursor: pointer;
+    background-color: lightcoral;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.searchbutton {
+    cursor: pointer;
+    background-color: blue;
+    font-weight: bold;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+
+
+/* feedback*/
+.modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 15px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }        
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .model-header {
+            height: 37px;
+            border-bottom: 1px solid #ccc;
+        }
+        .model-body {
+            height: 470px;
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+        }
+        .model-footer {
+            text-align: right;
+            margin-top: 10px;
+        }        
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+
+
+
+
+ #feedback {
+            height: 0px;
+            width: 65px;
+            position: fixed;
+            right: 0;
+            top: 50%;
+            z-index: 1000;
+            transform: rotate(-90deg);
+            -webkit-transform: rotate(-90deg);
+            -moz-transform: rotate(-90deg);
+            -o-transform: rotate(-90deg);
+            filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+               
+        }
+        #feedback a {
+                display: block;
+                background: #06c;
+                height: 15px;                
+                padding: 8px 16px;
+                color: #fff;
+                font-family: Arial, sans-serif;
+                font-size: 17px;
+                font-weight: bold;
+                text-decoration: none;
+                border-bottom: solid 1px #333;
+                border-left: solid 1px #333;
+                border-right: solid 1px #fff;
+                 border-radius: 10px 10px 0px 0;
+                 width: 84px;
+            }
+       #feedback a:hover {
+                    background: #ccc;
+                }
+       .btnFeed {
+            -moz-box-shadow: inset 0px 1px 0px 0px #ffffff;
+            -webkit-box-shadow: inset 0px 1px 0px 0px #ffffff;
+            box-shadow: inset 0px 1px 0px 0px #ffffff;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f9f9f9), color-stop(1, #e9e9e9));
+            background: -moz-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background: -webkit-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background: -o-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background: -ms-linear-gradient(top, #f9f9f9 5%, #e9e9e9 100%);
+            background: linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#e9e9e9',GradientType=0);
+            background-color: #f9f9f9;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            border: 1px solid #dcdcdc;
+            display: inline-block;
+            cursor: pointer;
+            color: #666666;
+            font-family: Arial;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #ffffff;
+        }
+       .btnFeed:hover {
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e9e9e9), color-stop(1, #f9f9f9));
+                background: -moz-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+                background: -webkit-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+                background: -o-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+                background: -ms-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
+                background: linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e9e9e9', endColorstr='#f9f9f9',GradientType=0);
+                background-color: #e9e9e9;
+            }
