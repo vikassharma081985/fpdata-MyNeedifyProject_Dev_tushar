@@ -62,6 +62,35 @@ namespace FaduPrice.Front
                 return "0";
             }
         }
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string SetPassword(string email, string password)
+        {
+            string rtrn = "0";
+            string passEncryp = PasswordHelper.HashPasswordSHA256(password);
+            int userId = GetUserIdByEmail(email);
+            if (userId == 0)
+                return "Email not registered";
+
+            using (BusinessLogicLayer objFp = new BusinessLogicLayer())
+            {
+                objFp.UserId = userId.ToString();
+                objFp.Password = passEncryp;
+                using (DataTable dt = objFp.SetPassword())
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        rtrn = "SUCCESS";
+                    }
+                    else
+                    {
+                        rtrn = "0";
+
+                    }
+                }
+            }
+            return rtrn;
+        }
         private static int GetUserIdByEmail(string email)
         {
             using (BusinessLogicLayer objBLL = new BusinessLogicLayer())

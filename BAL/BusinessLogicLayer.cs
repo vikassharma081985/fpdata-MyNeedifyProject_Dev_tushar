@@ -427,6 +427,22 @@ namespace BLL
                 }
             }
         }
+        public DataTable SetPassword()
+        {
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    dbSqlCommand.CommandText = "Proc_ResetUserPassword";
+                    dbSqlCommand.Parameters.AddWithValue("@UserId", UserId);
+                    dbSqlCommand.Parameters.AddWithValue("@Password", Password);
+
+                    return objDALCIILibrary.GetDataTable(dbSqlCommand);
+
+                }
+            }
+        }
         public DataSet GetUserIdByEmail(string email)
         {
 
