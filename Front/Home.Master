@@ -34,7 +34,7 @@
     <%--<link href='https://fonts.googleapis.com/css?family=Raleway:800' rel='stylesheet' type='text/css'>--%>
 
     <script>
-
+        var appURL = "<%= appURL %>";
 
         function CheckLoginDetails() {
             var UserName = $('[id$=txtUserName]').val().trim();
@@ -67,7 +67,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost:46692/Front/index.aspx/LoginDetails",
+                    url: appURL+"Front/index.aspx/LoginDetails",
                     //url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
                     //url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails",
                     data: JSON.stringify({
@@ -79,7 +79,6 @@
                     success: function (data) {
                         var UserInfo = $.parseJSON(data.d);
                         if (UserInfo.length > 0) {
-                            
                             $('[id$=lblUserName]').text('Hi, ' + UserInfo[0].FirstName);
                             $('[id$=LoggedinUser]').show();
                             $('[id$=NotLoggedIn]').hide();    // login/signup not display when user login
@@ -1081,7 +1080,6 @@ margin-left: 0px;                    font-size: 13px;
     <!---------------------------sahil code--------------------------------------------->
 
 
-
       <%--  <div class="topnav">
             <div id="mySidenav" class="sidenav">
                 <div style="width: 100%; float: left; margin-top: -20%; border-bottom: 1px solid #666;">
@@ -1405,7 +1403,7 @@ margin-left: 0px;                    font-size: 13px;
             <div class="form-group">
               <input
                 type="email"
-                id="email"
+                id="forgotEmail"
                 class="form-control"
                 placeholder="Enter Your Email"
               />
@@ -1439,10 +1437,10 @@ margin-left: 0px;                    font-size: 13px;
         <p style="color:#777;">Please enter the 4-digit OTP sent to your email.</p>
 
         <div id="otpInputs" style="display:flex; justify-content:center; gap:10px; margin:20px 0;">
-          <input type="text" maxlength="1" class="otp-box" />
-          <input type="text" maxlength="1" class="otp-box" />
-          <input type="text" maxlength="1" class="otp-box" />
-          <input type="text" maxlength="1" class="otp-box" />
+          <input type="number" maxlength="1" class="otp-box" />
+          <input type="number" maxlength="1" class="otp-box" />
+          <input type="number" maxlength="1" class="otp-box" />
+          <input type="number" maxlength="1" class="otp-box" />
         </div>
 
         <button type="button"  style="background-color: #F6861F; color: #fff; height: 35px; padding: 7px; width: 100%; text-align: center; border: none; width:100%;" onclick="verifyOtp()">
@@ -1501,6 +1499,7 @@ margin-left: 0px;                    font-size: 13px;
 <script>
     // Open OTP Modal
     function openOtpModal() {
+        sendOtp();
         $("#forgotPass").modal("hide");
         setTimeout(() => {
             $("#otpModal").modal("show");
@@ -1519,16 +1518,34 @@ margin-left: 0px;                    font-size: 13px;
 
     //  Verify OTP & Open Set Password Modal
     function verifyOtp() {
+        var email = $('[id$=forgotEmail]').val().trim();
         let otp = "";
         $(".otp-box").each(function () {
             otp += $(this).val();
         });
 
         if (otp.length === 4) {
-            $("#otpModal").modal("hide");
-            setTimeout(() => {
-                $("#setPasswordModal").modal("show");
-            }, 400);
+            $.ajax({
+                    type: "POST",
+                    url: appURL+"Front/ForgotPassword.aspx/VerifyOtp",
+                    data: JSON.stringify({ email: email, otp: otp }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.d) {
+                            $("#otpModal").modal("hide");
+                                setTimeout(() => {
+                                    $("#setPasswordModal").modal("show");
+                                }, 400);
+                        } else {
+                            alert(response.d);
+                        }
+                    },
+                    error: function (err) {
+                        alert(err.responseText);
+                    }
+                });
+            
         } else {
             alert("Please enter all 4 digits.");
         }
@@ -1548,6 +1565,34 @@ margin-left: 0px;                    font-size: 13px;
             $("#setPasswordModal").modal("hide");
         }
     }
+function sendOtp() {
+    var email = $('[id$=forgotEmail]').val().trim();
+    //var email = $("#txtForgotEmail").val();
+
+    if (!email) {
+        alert("Please enter email");
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: appURL+"Front/ForgotPassword.aspx/SendOtp",
+        data: JSON.stringify({ email: email }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.d === "SUCCESS") {
+                openOtpModal();
+            } else {
+                alert(response.d);
+            }
+        },
+        error: function (err) {
+            alert(err.responseText);
+        }
+    });
+}
+
 </script>
 
 
@@ -1772,8 +1817,8 @@ margin-left: 0px;                    font-size: 13px;
                 if (flag) {
                     //return true;
                     $.ajax({
-                        url: "http://198.38.88.185:8082/Front/index.aspx/btnSignup",
-                        //url: "http://localhost:46692//Front/index.aspx/btnSignup",
+                        //url: "http://trendzshopping.in//Front/index.aspx/btnSignup",
+                        url: appURL+"Front/index.aspx/btnSignup",
                         async: false,
                         data: '{txtFirstName:"' + FName + '", txtLastName:"' + LName + '", txtMobile:"' + Mobile + '", txtEmail:"' + Email + '", txtPassword1:"' + Password + '"}',
                         contentType: "application/json; charset=utf-8",

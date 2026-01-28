@@ -130,7 +130,9 @@ namespace FaduPrice.Front
             using (BusinessLogicLayer objFp = new BusinessLogicLayer())
             {
                 objFp.UserName = UserName;
-                objFp.Password = Password;
+                //objFp.Password = Password;
+                string passEncryp = PasswordHelper.HashPasswordSHA256(Password);
+                objFp.Password = passEncryp;
                 using (DataSet dsMain = objFp.GetLoginFrontDetails())
                 {
                     using (DataTable LoginDetails = dsMain.Tables[0])
@@ -212,13 +214,14 @@ namespace FaduPrice.Front
         public static string btnSignup(string txtFirstName, string txtLastName, string txtMobile, string txtEmail, string txtPassword1)
         {
             string rtrn = "0";
+            string passEncryp = PasswordHelper.HashPasswordSHA256(txtPassword1); ;
             using (BusinessLogicLayer objFp = new BusinessLogicLayer())
             {
                 objFp.FirstName = txtFirstName;
                 objFp.LastName = txtLastName;
                 objFp.Mobile = txtMobile;
                 objFp.Email = txtEmail;
-                objFp.Password = txtPassword1;
+                objFp.Password = passEncryp;
                 using (DataTable dt = objFp.SaveSignUp())
                 {
                     if (dt.Rows.Count > 0)

@@ -1,6 +1,7 @@
 ﻿using BLL;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -13,8 +14,10 @@ namespace FaduPrice.Pages
 {
     public partial class Site1 : System.Web.UI.MasterPage
     {
+        protected string appURL;
         protected void Page_Load(object sender, EventArgs e)
         {
+            appURL = ConfigurationManager.AppSettings["appURL"];
             //Session["UserId"] ="1";
             //Session["UserName"] = "Apoorv";
 

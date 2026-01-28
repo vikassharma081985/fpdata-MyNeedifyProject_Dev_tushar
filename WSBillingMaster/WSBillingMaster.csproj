@@ -236,6 +236,9 @@
     <Content Include="Pages\UserDashboard.aspx" />
     <Content Include="Pages\VendorItemReport.aspx" />
     <Content Include="Web.config">
+    <Content Include="Global.asax" />
+    <Compile Include="Global.asax.cs" />
+
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>

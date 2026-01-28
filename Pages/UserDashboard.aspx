@@ -32,7 +32,6 @@
             .the-icons {
                 font-size: 25px;
             }
-
             #services h2 {
                 margin-top: 40px;
                 margin-bottom: auto;

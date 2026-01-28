@@ -58,19 +58,70 @@ namespace DAL
                 ConStr = ConfigurationManager.ConnectionStrings["WsBilling"].ConnectionString;
                 con.ConnectionString = ConStr;
                 cmd.Connection = con;
-                con.Open();
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                try
                 {
-                    using (DataTable dt = new DataTable())
+                    con.Open();
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
-                        da.Fill(dt);
-                        return dt;
+                        using (DataTable dt = new DataTable())
+                        {
+                            da.Fill(dt);
+                            return dt;
+                        }
                     }
                 }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine($"Error Number: {ex.Number}");
+                    Console.WriteLine($"Message: {ex.Message}");
+                    return null;
+                }
+                
 
             }
 
         }
+
+        public bool ExecuteProcedureWithOutput(string procedureName, SqlParameter[] inputParams, string outputParamName)
+        {
+            using (SqlConnection con = new SqlConnection())
+            {
+                con.ConnectionString = ConfigurationManager.ConnectionStrings["WsBilling"].ConnectionString;
+
+                using (SqlCommand cmd = new SqlCommand(procedureName, con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Add input parameters
+                    if (inputParams != null)
+                    {
+                        cmd.Parameters.AddRange(inputParams);
+                    }
+
+                    // Define output parameter
+                    SqlParameter outputParam = new SqlParameter(outputParamName, SqlDbType.Bit)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outputParam);
+
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+
+                        // Return output parameter value
+                        return Convert.ToBoolean(outputParam.Value);
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine($"SQL Error: {ex.Message}");
+                        return false; // or throw
+                    }
+                }
+            }
+        }
+
 
         public int ExecuteNonQuery_RetInt(SqlCommand cmd)
         {

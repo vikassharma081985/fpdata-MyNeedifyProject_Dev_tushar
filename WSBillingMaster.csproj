@@ -204,6 +204,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\WSBillingMaster.dll</HintPath>
     </Reference>
+    <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
+      <HintPath>packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Extensions.Logging.8.0.1\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include=".nuget\NuGet.exe" />
@@ -230,6 +242,12 @@
     <Content Include="Css\snowflakes.css" />
     <Content Include="Front\AboutUs.aspx" />
     <Content Include="Front\Account.aspx" />
+    <Content Include="Front\AsyncUploadFile.ashx" />
+    <Content Include="Front\CheckBrowser.html" />
+    <Content Include="Front\Checkout.aspx" />
+    <Content Include="Front\ContactUs.aspx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Front\Appointment1.aspx" />
     <Content Include="Front\AppointmentMaster.aspx" />
     <Content Include="Front\AsyncUploadFile.ashx" />
@@ -543,6 +561,10 @@
     <Content Include="WSBillingMaster\Js\Snowflakes\snowflakes.css" />
     <Content Include="WSBillingMaster\Uploads\Expense\logo_1.PNG" />
     <Content Include="WSBillingMaster\WSBillingMaster.sln" />
+    <Content Include="Global.asax" />
+    <Content Include="Front\ForgotPassword.aspx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BAL\BundleConfig.cs" />
@@ -1018,6 +1040,17 @@
     <Compile Include="WSBillingMaster\Reports\PrintBarcode.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="BAL\PasswordHelper.cs" />
+    <Compile Include="Front\ForgotPassword.aspx.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Front\ForgotPassword.designer.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="AjaxResponsePages\AsyAttachement_HandlerFile.ashx" />
@@ -1111,6 +1144,11 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="46692" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
   </ProjectExtensions>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

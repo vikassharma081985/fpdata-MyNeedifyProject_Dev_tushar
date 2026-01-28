@@ -427,6 +427,68 @@ namespace BLL
                 }
             }
         }
+        public DataSet GetUserIdByEmail(string email)
+        {
+
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    dbSqlCommand.CommandText = "Proc_GetUserIdByEmail";
+                    dbSqlCommand.Parameters.AddWithValue("@Email", Email);
+
+                    return objDALCIILibrary.GetDataSet(dbSqlCommand);
+
+                }
+            }
+        }
+
+        public DataTable saveOTP()
+        {
+
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    dbSqlCommand.CommandText = "Proc_SavePasswordResetOtp";
+                    dbSqlCommand.Parameters.AddWithValue("@UserId", UserId);
+                    dbSqlCommand.Parameters.AddWithValue("@Otp", Password);
+
+                    return objDALCIILibrary.GetDataTable(dbSqlCommand);
+
+                }
+            }
+        }
+
+        public bool verifyOTP()
+        {
+
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    SqlParameter[] inputParams = new SqlParameter[]
+                    {
+                        new SqlParameter("@UserId", UserId),
+                        new SqlParameter("@Otp", Password)
+                    };
+                    //dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    //dbSqlCommand.CommandText = "Proc_VerifyPasswordResetOtp";
+                    //dbSqlCommand.Parameters.AddWithValue("@UserId", UserId);
+                    //dbSqlCommand.Parameters.AddWithValue("@Otp", Password);
+                    //SqlParameter isValidParam = new SqlParameter("@IsValid", SqlDbType.Bit)
+                    //{
+                    //    Direction = ParameterDirection.Output
+                    //};
+                    //dbSqlCommand.Parameters.Add(isValidParam);
+                    return objDALCIILibrary.ExecuteProcedureWithOutput("Proc_VerifyPasswordResetOtp", inputParams, "@IsValid");
+                    //return objDALCIILibrary.GetDataTable(dbSqlCommand);
+
+                }
+            }
+        }
 
 
         //------Homepage data fetch-----------
