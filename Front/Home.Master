@@ -711,6 +711,7 @@ margin-left: 0px;                    font-size: 13px;
     }
 }
     </style>
+
     <script>
         function AddToCart(ItemId) {
 
@@ -1042,7 +1043,7 @@ margin-left: 0px;                    font-size: 13px;
                     <ul class="list-unstyled">
                         <li><a href="#" class="footer-link">Company Info</a></li>
                         <li><a href="#" class="footer-link">Careers</a></li>
-                        <li><a href="#" class="footer-link">Terms & Conditions</a></li>
+                        <li><a href="../Front/TermandCondition.aspx" class="footer-link">Terms & Conditions</a></li>
                         <li><a href="#" class="footer-link">Privacy Policy</a></li>
                     </ul>
                 </div>
