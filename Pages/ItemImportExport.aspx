@@ -142,7 +142,11 @@
         <div class="Header mb-3 fw-bold fs-4">
             Import/Export Items
         </div>
-
+        <div class="mb-3">
+            <label for="ddlSeller" class="form-label fw-bold">Select Vendor</label>
+            <asp:DropDownList ID="ddlSeller" runat="server" CssClass="form-control form-select">
+            </asp:DropDownList>
+        </div>
         <!-- ✅ Step Section -->
         <div class="Content mb-2">
             <div class="table-responsive">

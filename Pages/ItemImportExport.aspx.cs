@@ -271,7 +271,7 @@ namespace WSBillingMaster.Pages
                 objBLL.XML = hdnXML.Value;
                 objBLL.Ip = objBLL.GetVisitorsIPAddresss();
                 objBLL.UserId = Convert.ToString(Session["EmployeeId"]);
-                objBLL.SellerId = Convert.ToInt32(hdnSellerId.Value);
+                objBLL.SellerId = Convert.ToInt32(ddlSeller.SelectedValue);
                 using (DataTable dt = objBLL.ImportItems())
                 {
                     int RowsInserted = dt.Rows.Count;
