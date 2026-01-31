@@ -1555,14 +1555,33 @@ margin-left: 0px;                    font-size: 13px;
     function setPassword() {
         let newPass = $("#newPassword").val();
         let confirmPass = $("#confirmPassword").val();
-
+        var email = $('[id$=forgotEmail]').val().trim();
         if (newPass === "" || confirmPass === "") {
             alert("Please fill in both fields.");
         } else if (newPass !== confirmPass) {
             alert("Passwords do not match!");
         } else {
-            alert("Password successfully set!");
-            $("#setPasswordModal").modal("hide");
+            $.ajax({
+        type: "POST",
+        url: appURL+"Front/ForgotPassword.aspx/SetPassword",
+        data: JSON.stringify({ email: email, password: newPass }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            if (response.d === "SUCCESS") {
+                alert("Password successfully set!");
+                $("#setPasswordModal").modal("hide");
+            }
+            else{
+                alert("Password change failed !");
+                $("#setPasswordModal").modal("hide");
+            }
+        },
+        error: function (err) {
+            alert(err.responseText);
+        }
+    });
+            
         }
     }
 function sendOtp() {
