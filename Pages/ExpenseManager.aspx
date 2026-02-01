@@ -20,7 +20,7 @@
 
                     <div class="form-group">
                         <label>Expense On :</label>
-                        <select id="ddlExpense" class="form-control"></select>
+                        <select id="ddlExpense" class="form-control"></select> 
                     </div>
                     <div class="form-group">  <!-- NEW: Added for sub-category -->
                         <label>Sub Expense :</label>
@@ -86,6 +86,8 @@
                 <div class="form-row center">
                     <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
                     <input type="button" class="btn btn-primary" value="Submit for Reimbursement" onclick="OpenRbmPopup();">
+<input type="button" class="btn btn-danger" value="Reimbursement History" onclick="openHistoryModal();">
+
                 </div>
 
 
@@ -142,6 +144,29 @@
 
         </div>
     </div>
+
+
+    <!-- ====================== Reimbursement History Modal ====================== -->
+<div id="historyModal" class="modal">
+    <div class="modal-content" style="max-width:1100px;">
+        <span class="close" onclick="closeHistoryModal()">&times;</span>
+        <h3 style="text-align:center;">Reimbursement History</h3>
+
+        <div class="table-responsive">
+            <table id="tblHistory" class="table table-bordered">
+                <tr>
+                    <th>SNo.</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>View</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -635,6 +660,69 @@
     <link href="../Css/jquery-ui.css" rel="stylesheet" />
     <script src="../Js/jquery-ui.js"></script>
     <script>
+        function openHistoryModal() {
+            document.getElementById("historyModal").style.display = "block";
+            renderHistoryFromExpenseData();
+        }
+
+        function closeHistoryModal() {
+            document.getElementById("historyModal").style.display = "none";
+        }
+
+        function renderHistoryFromExpenseData() {
+
+            // Clear old rows (keep header)
+            $('#tblHistory tr:gt(0)').remove();
+
+            // Filter reimbursement-created expenses
+            var historyData = expenseData.filter(x => x.Status === "Reimbursement Created");
+
+            if (historyData.length === 0) {
+                $('#tblHistory').append(
+                    '<tr><td colspan="5" style="text-align:center;color:gray;">No reimbursement history found</td></tr>'
+                );
+                return;
+            }
+
+            $.each(historyData, function (index, value) {
+
+                var html = '<tr>';
+
+                // SNo
+                html += '<td>' + (index + 1) + '</td>';
+
+                // Date + Expense Details
+                html += '<td>';
+                html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
+                html += '<strong>Expense:</strong> ' + value.Expense +
+                    (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+                html += '<strong>Rate:</strong> ' + value.Rate + '<br>';
+                html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';
+                html += '<strong>Description:</strong> ' + (value.Description || '-');
+                html += '</td>';
+
+                // Total Amount
+                html += '<td>' + value.Amount + '</td>';
+
+                // Status
+                html += '<td>' + value.Status + '</td>';
+
+                // View
+                html += '<td>';
+                if (value.PdfPath) {
+                    html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">View</a>';
+                } else {
+                    html += '<span style="color:gray;">N/A</span>';
+                }
+                html += '</td>';
+
+                html += '</tr>';
+
+                $('#tblHistory').append(html);
+            });
+        }
+
+
         // ------------------- Mobile Table/Card View Toggle -------------------
         function showTableView() {
             $('#tblExpense').parent().show(); // show table
