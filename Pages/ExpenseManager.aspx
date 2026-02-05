@@ -172,6 +172,28 @@
 
 
 
+            <!-- ====================== Reimbursement History Modal ====================== -->
+<div id="historyModal" class="modal">
+    <div class="modal-content" style="max-width:1100px;">
+        <span class="close" onclick="closeHistoryModal()">&times;</span>
+        <h3 style="text-align:center;">Reimbursement History</h3>
+
+        <div class="table-responsive">
+            <table id="tblHistory" class="table table-bordered">
+                <tr>
+                    <th>SNo.</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>View</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
 
         <!-- ====================== Modal ====================== -->
         <div id="submitModal" class="modal">
@@ -677,6 +699,70 @@
         <link href="../Css/jquery-ui.css" rel="stylesheet" />
         <script src="../Js/jquery-ui.js"></script>
         <script>
+
+            function openHistoryModal() {
+    document.getElementById("historyModal").style.display = "block";
+    renderHistoryFromExpenseData();
+}
+
+function closeHistoryModal() {
+    document.getElementById("historyModal").style.display = "none";
+}
+
+function renderHistoryFromExpenseData() {
+
+    // Clear old rows (keep header)
+    $('#tblHistory tr:gt(0)').remove();
+
+    // Filter reimbursement-created expenses
+    var historyData = expenseData.filter(x => x.Status === "Reimbursement Created");
+
+    if (historyData.length === 0) {
+        $('#tblHistory').append(
+            '<tr><td colspan="5" style="text-align:center;color:gray;">No reimbursement history found</td></tr>'
+        );
+        return;
+    }
+
+    $.each(historyData, function (index, value) {
+
+        var html = '<tr>';
+
+        // SNo
+        html += '<td>' + (index + 1) + '</td>';
+
+        // Date + Expense Details
+        html += '<td>';
+        html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
+        html += '<strong>Expense:</strong> ' + value.Expense +
+            (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+        html += '<strong>Rate:</strong> ' + value.Rate + '<br>';
+        html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';
+        html += '<strong>Description:</strong> ' + (value.Description || '-');
+        html += '</td>';
+
+        // Total Amount
+        html += '<td>' + value.Amount + '</td>';
+
+        // Status
+        html += '<td>' + value.Status + '</td>';
+
+        // View
+        html += '<td>';
+        if (value.PdfPath) {
+            html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">View</a>';
+        } else {
+            html += '<span style="color:gray;">N/A</span>';
+        }
+        html += '</td>';
+
+        html += '</tr>';
+
+        $('#tblHistory').append(html);
+    });
+}
+
+
             // ------------------- Mobile Table/Card View Toggle -------------------
             function showTableView() {
                 $('#tblExpense').parent().show(); // show table
@@ -1484,252 +1570,73 @@
                     return;
                 }
 
-                var obj = {
-                    ID: currentEditingId,
-                    Date: Date,
-                    ExpenseId: ExpenseId,
-                    SubExpenseId: SubExpenseId,
-                    File: File,
-                    Description: Description,
-                    Amount: Amount,
-                    userId: hdnUserId,
-                    Quantity: Quantity,
-                    Rate: Rate
-                };
-                showLoader();
-                $.ajax({
-                    url: "ExpenseManager.aspx/UpdateExpense",
-                    async: true,
-                    data: JSON.stringify({ data: [obj] }),
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    dataType: "json",
-                    success: function (result) {
-                        hideLoader();
-                        if (result.d == "1") {
-                            alert('Expense updated successfully!');
-                            closeEditExpenseModal();
-                            Search(); // Refresh table
-                        } else {
-                            alert('Error updating expense.');
-                        }
-                    },
-                    error: function () {
-                        hideLoader();
-                        alert('Server error during update.');
+            var obj = {
+                ID: currentEditingId,
+                Date: Date,
+                ExpenseId: ExpenseId,
+                SubExpenseId: SubExpenseId,
+                File: File,
+                Description: Description,
+                Amount: Amount,
+                userId: hdnUserId,
+                Quantity: Quantity,
+                Rate: Rate
+            };
+            showLoader();
+            $.ajax({
+                url: "ExpenseManager.aspx/UpdateExpense",
+                async: true,
+                data: JSON.stringify({ data: [obj] }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    hideLoader();
+                    if (result.d == "1") {
+                        alert('Expense updated successfully!');
+                        closeEditExpenseModal();
+                        Search(); // Refresh table
+                    } else {
+                        alert('Error updating expense.');
                     }
-                });
+                },
+                error: function () {
+                    hideLoader();
+                    alert('Server error during update.');
+                }
+            });
+        }
+        function BindSubExpense(categoryId, targetDdlId, selectedSubId = null) {
+            if (categoryId == "" || categoryId == "0") {
+                $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
+                return;
             }
-            function BindSubExpense(categoryId, targetDdlId, selectedSubId = null) {
-                if (categoryId == "" || categoryId == "0") {
+            $.ajax({
+                url: "ExpenseManager.aspx/BindExpenseSubCategory",
+                async: false,
+                data: JSON.stringify({ categoryId: parseInt(categoryId) }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                timeout: 120000,
+                dataType: "json",
+                success: function (result) {
+                    var data = $.parseJSON(result.d);
                     $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
-                    return;
-                }
-                $.ajax({
-                    url: "ExpenseManager.aspx/BindExpenseSubCategory",
-                    async: false,
-                    data: JSON.stringify({ categoryId: parseInt(categoryId) }),
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    timeout: 120000,
-                    dataType: "json",
-                    success: function (result) {
-                        var data = $.parseJSON(result.d);
-                        $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
-                        $.each(data, function (index, value) {
-                            if (value.Id > 0) {  // Assuming data has SubExpenseId and SubExpense
-                                $('#' + targetDdlId).append('<option value="' + value.Id + '">' + value.ExpenseSubMaster + '</option>');
-                            }
-                        });
-                        if (selectedSubId) {
-                            $('#' + targetDdlId).val(selectedSubId);
+                    $.each(data, function (index, value) {
+                        if (value.Id > 0) {  // Assuming data has SubExpenseId and SubExpense
+                            $('#' + targetDdlId).append('<option value="' + value.Id + '">' + value.ExpenseSubMaster + '</option>');
                         }
+                    });
+                    if (selectedSubId) {
+                        $('#' + targetDdlId).val(selectedSubId);
                     }
-                });
-            }
-
-            // ------------------- Chart Rendering Logic -------------------
-            var categoryChart = null;
-            var monthChart = null;
-
-            function renderCharts() {
-                if (!expenseData || expenseData.length === 0) {
-                    $('#chartsContainer').hide();
-                    return;
                 }
-                $('#chartsContainer').show();
-
-                // 1. Process Data for Category Wise
-                var categoryMap = {};
-                $.each(expenseData, function (index, item) {
-                    // Use Expense name as key. 
-                    var key = item.Expense;
-                    if (!categoryMap[key]) categoryMap[key] = 0;
-                    categoryMap[key] += item.Amount;
-                });
-
-                var catLabels = Object.keys(categoryMap);
-                var catValues = Object.values(categoryMap);
-                var catColors = generateColors(catLabels.length);
-
-                // 2. Process Data for Month Wise
-                var monthMap = {};
-                // Helper to get month index for sorting
-                var getMonthIndex = function (monStr) {
-                    return new Date(monStr + " 1, 2000").getMonth();
-                };
-
-                $.each(expenseData, function (index, item) {
-                    var parts = item.ExpenseDate.split('-');
-                    if (parts.length === 3) {
-                        var monthStr = parts[1]; // MMM
-                        var yearStr = parts[2];
-                        var key = monthStr + "-" + yearStr;
-
-                        if (!monthMap[key]) monthMap[key] = { amount: 0, sortValue: getMonthIndex(monthStr) + parseInt(yearStr) * 12 };
-                        monthMap[key].amount += item.Amount;
-                    }
-                });
-
-                // Sort months chronologically
-                var monthKeys = Object.keys(monthMap).sort(function (a, b) {
-                    return monthMap[a].sortValue - monthMap[b].sortValue;
-                });
-
-                var monthLabels = monthKeys;
-                var monthValues = monthKeys.map(function (k) { return monthMap[k].amount; });
-                // var monthColors = generateColors(monthLabels.length); // Not strictly needed for line chart but helpful for points
-
-                // 3. Render/Update Category Chart (Pie)
-                var ctxCat = document.getElementById('pieChartCategory').getContext('2d');
-                if (categoryChart) {
-                    categoryChart.destroy();
-                }
-                categoryChart = new Chart(ctxCat, {
-                    type: 'pie',
-                    data: {
-                        labels: catLabels,
-                        datasets: [{
-                            data: catValues,
-                            backgroundColor: catColors,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    generateLabels: function (chart) {
-                                        var data = chart.data;
-                                        if (data.labels.length && data.datasets.length) {
-                                            return data.labels.map(function (label, i) {
-                                                var meta = chart.getDatasetMeta(0);
-                                                var style = meta.controller.getStyle(i);
-                                                var value = data.datasets[0].data[i];
-                                                var formattedValue = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value);
-
-                                                return {
-                                                    text: label + ' (' + formattedValue + ')',
-                                                    fillStyle: style.backgroundColor,
-                                                    strokeStyle: style.borderColor,
-                                                    lineWidth: style.borderWidth,
-                                                    hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
-                                                    index: i
-                                                };
-                                            });
-                                        }
-                                        return [];
-                                    }
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        var label = context.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed !== null) {
-                                            label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(context.parsed);
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-
-                // 4. Render/Update Month Chart (Line)
-                var ctxMonth = document.getElementById('pieChartMonth').getContext('2d');
-                if (monthChart) {
-                    monthChart.destroy();
-                }
-                monthChart = new Chart(ctxMonth, {
-                    type: 'line',
-                    data: {
-                        labels: monthLabels,
-                        datasets: [{
-                            label: 'Monthly Expense',
-                            data: monthValues,
-                            borderColor: '#36A2EB',
-                            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Fill color
-                            fill: true,
-                            tension: 0.1, // Smooth curve
-                            borderWidth: 2,
-                            pointBackgroundColor: '#FF6384',
-                            pointRadius: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        var label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(context.parsed.y);
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: function (value, index, values) {
-                                        return '₹' + value; // Simple formatting
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            function generateColors(count) {
-                var colors = [];
-                var baseColors = [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
-                    '#E7E9ED', '#71B37C', '#E67E22', '#34495E', '#16A085', '#27AE60'
-                ];
-                for (var i = 0; i < count; i++) {
-                    colors.push(baseColors[i % baseColors.length]);
-                }
-                return colors;
-            }
+            });
+        }
         </script>
-        <div id="loaderOverlay" style="display:none;">
-            <div class="loader"></div>
-            <div class="loader-text">Please wait...</div>
-        </div>
-    </asp:Content>
+
+    <div id="loaderOverlay" style="display:none;">
+    <div class="loader"></div>
+    <div class="loader-text">Please wait...</div>
+</div>
+</asp:Content>

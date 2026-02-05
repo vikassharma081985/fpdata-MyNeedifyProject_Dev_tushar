@@ -8,7 +8,6 @@
         }
     </style>
     <div class="container">
-
         <div class="basket-section">
             <div class="container-fluid">
                 <!-- basket heading -->
