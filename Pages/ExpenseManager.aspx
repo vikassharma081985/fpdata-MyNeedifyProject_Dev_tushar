@@ -91,6 +91,8 @@
                         <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
                         <input type="button" class="btn btn-primary" value="Submit for Reimbursement"
                             onclick="OpenRbmPopup();">
+                        <input type="button" class="btn btn-danger" value="Reimbursement History" onclick="openHistoryModal();">
+
                     </div>
 
 
