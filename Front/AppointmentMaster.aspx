@@ -128,14 +128,11 @@ body {
 
 <div class="container my-3">
 
-    <div class="header d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div class="header">
         <div>
             <h4 class="mb-1">Book Your <span>Perfect Cut</span></h4>
             <small class="text-muted">Choose barber, date & time</small>
         </div>
-        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBarberModal">
-            ➕ Add Barber
-        </button>
     </div>
 
     <div class="card-box">
@@ -163,23 +160,6 @@ body {
         </button>
     </div>
 
-</div>
-
-<div class="modal fade" id="addBarberModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h6 class="modal-title">Add New Barber</h6>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-            <input id="bName" class="form-control mb-2" placeholder="Barber Name">
-            <input id="bSpec" class="form-control mb-2" placeholder="Specialty">
-            <input id="bImg" class="form-control mb-3" placeholder="Image URL">
-            <button class="btn btn-primary w-100" onclick="addBarber()">Add Barber</button>
-        </div>
-    </div>
-  </div>
 </div>
 
 <div class="modal fade" id="confirmModal">
@@ -217,13 +197,13 @@ body {
             let col = document.createElement('div');
             col.className = 'col-12';
             col.innerHTML = `
-        <div class="barber ${i === 0 ? 'active' : ''}" onclick="selectBarber(this,'${b.name}')">
-            <img src="${b.img}">
-            <div>
-                <strong>${b.name}</strong><br>
-                <small class="text-muted">${b.spec}</small>
-            </div>
-        </div>`;
+                <div class="barber ${i === 0 ? 'active' : ''}" onclick="selectBarber(this,'${b.name}')">
+                    <img src="${b.img}">
+                    <div>
+                        <strong>${b.name}</strong><br>
+                        <small class="text-muted">${b.spec}</small>
+                    </div>
+                </div>`;
             barberList.appendChild(col);
         });
         selectedBarber = barbers[0].name;
@@ -233,12 +213,6 @@ body {
         document.querySelectorAll('.barber').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
         selectedBarber = name;
-    }
-
-    function addBarber() {
-        barbers.push({ name: bName.value, spec: bSpec.value, img: bImg.value || 'https://via.placeholder.com/100' });
-        renderBarbers();
-        bootstrap.Modal.getInstance(addBarberModal).hide();
     }
 
     function renderCalendar() {
