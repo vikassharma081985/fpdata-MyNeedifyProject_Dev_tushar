@@ -855,7 +855,7 @@ function renderHistoryFromExpenseData() {
 
             var expenseData = [];
             var currentPage = 1;
-            var pageSize = 10;
+            var pageSize = 50;
             var dateSortAsc = true;
             function EditExpense() {
                 document.getElementById("editModal").style.display = "block";

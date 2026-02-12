@@ -15,11 +15,15 @@ namespace WSBillingMaster.Pages
         public string RoleId = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["EmployeeName"] != null)
+            if (Session["EmployeeId"] != null && Session["RoleId"] != null)
             {
                 lblEmployeeName.Text = Session["EmployeeName"].ToString();
                 RoleId = Session["RoleId"].ToString();
                 BindRoleWiseMenu(Convert.ToInt32(RoleId));
+            }
+            else
+            {
+                Response.Redirect("Login.aspx");
             }
         }
         protected void BindRoleWiseMenu(int RoleID)

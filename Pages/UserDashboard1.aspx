@@ -42,6 +42,12 @@
             .the-icons {
                 font-size: 25px;
             }
+            h4 {
+                font-weight: bold !important;
+                    margin-top: 10px;
+                    font-size: 14px;
+                    color: #303030;
+            }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -60,9 +66,8 @@
                     <ItemTemplate>
 
                         <a class="Admin Booking" href="<%# Eval("MenuUrl")%>">
-                            <div class="col-sm-4">
-                                <%--<span class="glyphicon <%# Eval("MenuClass")%> logo-small"></span>--%>
-                                <span class="glyphicon logo-small"></span>
+                            <div class="col-xs-6 col-sm-4 col-md-3">
+                                <span class="glyphicon <%# Eval("MenuClass")%> logo-small"></span>
                                 <h4><%# Eval("MenuName")%></h4>
                             </div>
                         </a>
@@ -73,187 +78,6 @@
             </div>
 
             
-            <a class="Admin" href="ItemImportExport.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Import/Export Product</h4>
-
-                </div>
-            </a>
-
-            <a class="Admin" href="ManageItems.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-leaf logo-small"></span>
-                    <h4>Manage Product</h4>
-
-                </div>
-            </a>
-
-            <a class="Admin Booking Reporting" href="AllTransactions.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-certificate logo-small"></span>
-                    <h4>Previous Transactions</h4>
-
-                </div>
-            </a>
-            <a class="Admin Reporting" href="SalesSummary.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-indent-left logo-small"></span>
-                    <h4 style="color: #303030;">Sales Summary</h4>
-
-                </div>
-            </a>
-            <a class="Admin Reporting" href="StockInHand.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-wrench logo-small"></span>
-                    <h4 style="color: #303030;">Stock Reports</h4>
-
-                </div>
-            </a>
-
-            <a class="Admin Booking" href="DuplicateBill.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-print logo-small"></span>
-                    <h4>Duplicate Bill</h4>
-
-                </div>
-            </a>
-            <a class="Admin" href="SendSMS.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-fire logo-small"></span>
-                    <h4 style="color: #303030;">Send Promotions/Offers</h4>
-
-                </div>
-            </a>
-            <a class="Admin" href="DiscountMaster.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-align-center logo-small"></span>
-                    <h4 style="color: #303030;">Manage Discount</h4>
-
-                </div>
-            </a>
-
-
-            <a class="Admin Booking" href="Refund.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-list-alt logo-small"></span>
-                    <h4>Product Refund</h4>
-
-                </div>
-            </a>
-
-            <a class="Admin Reporting" href="ExpenseManager.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-indent-right logo-small"></span>
-                    <h4>Expense Manager</h4>
-
-                </div>
-            </a>
-
-            <a class="Admin Reporting" href="ProfitLossReport.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-indent-left logo-small"></span>
-                    <h4>Profit/Loss Report</h4>
-
-                </div>
-            </a>
-
-
-            <a class="Admin" href="EmployeeMaster.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Employee Master</h4>
-
-                </div>
-            </a>
-            <a class="Admin" href="PhysicalVerification.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Physical Stock Verification</h4>
-
-                </div>
-            </a>
-            <a class="Admin" href="stockreports.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Physical Stock Reports</h4>
-
-                </div>
-            </a>
-            <a class="Admin" href="AddItem.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Add New Product</h4>
-                </div>
-            </a>
-            <a class="Admin" href="SupplierList.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Manage Supplier</h4>
-                </div>
-            </a>
-            <a class="Admin" href="VendorItemReport.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Vendor Item Report</h4>
-                </div>
-            </a>
-            <a class="Admin" href="AdminList.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Manage Product</h4>
-                </div>
-            </a>
-            <a class="Admin" href="PendingOrderList.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Pending Order List</h4>
-                </div>
-            </a>
-            <a class="Admin" href="SliderManagement.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon glyphicon-ok logo-small"></span>
-                    <h4>Banner Management</h4>
-                </div>
-            </a>
-            <a class="Admin" href="stateMaster.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Add/Edit/View StateMaster</h4>
-                </div>
-            </a>
-            <a class="Admin" href="cityMaster.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Add/Edit/View CityMaster</h4>
-                </div>
-            </a>
-            <a class="Admin" href="areaMaster.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Add/Edit/View AreaMaster</h4>
-                </div>
-            </a>
-
-            <a class="Admin" href="AddCategory.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Add/Edit/View Category </h4>
-                </div>
-            </a>
-
-            <a class="Admin" href="AddSubCategory.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Add/Edit/View Sub Category</h4>
-                </div>
-            </a>
-            <a class="Admin" href="AddSubSubCategory.aspx">
-                <div class="col-sm-4">
-                    <span class="glyphicon glyphicon-plus-sign logo-small"></span>
-                    <h4>Add/Edit/View Sub Sub Category</h4>
-                </div>
-            </a>
         </div>
 
         <%-- <div class="row slideanim">
@@ -263,21 +87,7 @@
 
     <script>
         $(document).ready(function () {
-            var RoleId = '<%=RoleId%>';
-            if (RoleId == '1') {
-                $('.Admin').show();
-
-            } else if (RoleId == '2') {
-                $('.Booking').show();
-
-            } else if (RoleId == '3') {
-                $('.Reporting').show();
-
-            }
-            else if (RoleId == '4') {
-                $('.Admin').show();
-
-            }
+            // Role-based visibility is now handled by the server-side ListView binding
         });
 
     </script>
