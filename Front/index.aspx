@@ -472,7 +472,7 @@ style="border-radius: 20px;">
 
 
 <!-- Trending Collections (Static) -->
-<div class="container new-arrival" style="margin-top:-250px;">
+<%--<div class="container new-arrival" style="margin-top:-250px; visibility:hidden;">
 
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -542,7 +542,7 @@ style="border-radius: 20px;">
 
     </div>
 </div>
-
+--%>
 
 <hr />
 
