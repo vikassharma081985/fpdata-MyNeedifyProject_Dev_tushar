@@ -1,201 +1,4 @@
-﻿<%--<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="WSBillingMaster.Pages.Registration" %>
-
-<!DOCTYPE html>
-
-<html>
-<head runat="server">
-    <title>Job Registration</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body class="bg-light">
-    <form id="form1" runat="server" class="container py-4">
-        <div class="card">
-            <div class="card-header bg-primary text-white">Job Registration</div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label>Aadhar No</label>
-                        <asp:TextBox ID="txtAadhar" runat="server" CssClass="form-control" />
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Upload Aadhar</label>
-                        <input type="file"
-                            class="form-control">
-                    </div>
-                    <div class="col-md-4">
-                        <label>Skill</label>
-                        <asp:DropDownList ID="ddlSkills" runat="server" CssClass="form-select"></asp:DropDownList>
-                    </div>
-                    <div class="col-md-4">
-                        <label>First Name</label>
-                        <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>Last Name</label>
-                        <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>Phone No</label>
-                        <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label>Password</label>
-                        <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password"></asp:TextBox>
-                    </div>
-
-                    <div class="col-md-12">
-                        <label>Address</label>
-                        <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="2"></asp:TextBox>
-                    </div>
-
-
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Father's Name</label>
-                        <input type="text"
-                            class="form-control">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Gender</label>
-                    <select class="form-select">
-                        <option>Male</option>
-                        <option>Female</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Birth Place</label>
-                    <input type="text"
-                        class="form-control" placeholder="Enter area name">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Marital Status</label>
-                    <select class="form-select">
-                        <option>Single</option>
-                        <option>Married</option>
-                        <option>Divorced</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Upload Photo</label>
-                    <input type="file"
-                        class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Address</label>
-                    <textarea class="form-control"
-                        rows="2"></textarea>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Height</label>
-                        <input type="text"
-                            class="form-control">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Weight</label>
-                        <input type="text"
-                            class="form-control">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Emergency Contact Details</label>
-                    <input type="text"
-                        class="form-control mb-2" placeholder="Contact Number">
-                    <input type="text"
-                        class="form-control mb-2" placeholder="Name">
-                    <input type="text" class="form-control mb-2"
-                        placeholder="Relationship">
-                    <button class="btn btn-outline-secondary btn-sm">
-                        Send
-                            OTP</button>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Languages Known</label>
-                    <input type="text"
-                        class="form-control" placeholder="e.g., Hindi, English">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Experience</label>
-                    <textarea class="form-control"
-                        rows="2"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Education Details (Upload Certificates)</label>
-                    <input
-                        type="file" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Bank Details</label>
-                    <input type="text"
-                        class="form-control mb-2" placeholder="Account Number">
-                    <input type="text"
-                        class="form-control mb-2" placeholder="IFSC Code">
-                    <input type="text" class="form-control"
-                        placeholder="Bank Name">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Phone Number (used as Login ID)</label>
-                    <input
-                        type="text" class="form-control" placeholder="Enter mobile number">
-                </div>
-                <h5 class="mt-4">Login Options</h5>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="login" id="otpLogin"
-                        checked>
-                    <label class="form-check-label" for="otpLogin">OTP</label>
-                </div>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="login"
-                        id="passwordLogin">
-                    <label class="form-check-label" for="passwordLogin">Password</label>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Set Password (if applicable)</label>
-                    <input
-                        type="password" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Expected Demand</label>
-                    <select class="form-select">
-                        <option>Per Day</option>
-                        <option>Monthly</option>
-                    </select>
-                </div>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="consent">
-                    <label
-                        class="form-check-label" for="consent">
-                        I hereby give my consent for data verification and
-                            job placement.
-                    </label>
-                </div>
-                <div class="text-center">
-                    <button class="btn btn-success btn-lg px-4">Submit Registration</button>
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="col-md-12 text-end">
-            <asp:Button ID="btnSubmit" runat="server" Text="Register" CssClass="btn btn-success" OnClick="btnSubmit_Click" />
-            &nbsp;
-                       
-            <asp:Label ID="lblStatus" runat="server" CssClass="text-danger"></asp:Label>
-        </div>
-     
-   
-    </form>
-</body>
-</html>
---%>
-
-
-
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="WSBillingMaster.Pages.Registration" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="WSBillingMaster.Pages.Registration" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -445,7 +248,20 @@
     <form id="form1" runat="server" enctype="multipart/form-data" class="container py-4">
 
         <div class="card">
-            <div class="card-header  text-white" style="background-color: #F48B1E">Job Registration</div>
+
+            <div class="d-flex justify-content-between align-items-center p-3 text-white"
+        style="background-color:#F48B1E;">
+                <h4 class="mb-0">Job Registration</h4>
+
+        <!-- Hamburger -->
+        <button class="btn text-white" type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#editPanel">
+            <span style="font-size:26px;">&#9776;</span>
+        </button>
+    </div>
+
+
             <div class="card-body">
                 <div id="successMessage" class="alert alert-success" style="display: none;">
                     Registration submitted successfully!
@@ -629,6 +445,11 @@
                 <option value="years">Years</option>
             </select>
         </div>
+    </div>
+
+        <div class="col-md-4">
+        <label>Upload Resume</label>
+        <asp:FileUpload ID="FileUpload3" runat="server" CssClass="form-control" />
     </div>
 
 </div>
@@ -850,6 +671,183 @@
 
 
             </div>
+
+
+
+
+
+                 <!-- OFFCANVAS EDIT PANEL -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="editPanel">
+        <div class="offcanvas-header bg-light">
+            <h5>Edit Your Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+
+        <div class="offcanvas-body">
+
+            <asp:Label ID="lblEditMessage" runat="server" CssClass="text-success fw-bold"></asp:Label>
+
+                               <!-- Aadhaar Number -->
+                    <div class="col-12">
+                        <label>Aadhar Number</label>
+                        <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control"
+                            MaxLength="12" placeholder="Enter 12-digit Aadhaar number"
+                            onkeypress="allowOnlyNumbers(event)" />
+                    </div>
+
+              
+
+                    <!-- Skilled In -->
+                    <div class="col-12">
+                        <label>Skilled In</label>
+                        <asp:DropDownList ID="DropDownList2" runat="server" CssClass="form-select">
+                            <asp:ListItem Text="Select your skill" Value="" />
+                        </asp:DropDownList>
+                    </div>
+
+                    <!-- First Name -->
+                    <div class="col-12">
+                        <label>First Name</label>
+                        <asp:TextBox ID="TextBox4" runat="server" CssClass="form-control"
+                            onkeypress="allowOnlyLetters(event)" />
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="col-12">
+                        <label>Last Name</label>
+                        <asp:TextBox ID="TextBox5" runat="server" CssClass="form-control"
+                            onkeypress="allowOnlyLetters(event)" />
+                    </div>
+
+                    <!-- Father's Name -->
+                    <div class="col-12">
+                        <label>Father's Name</label>
+                        <asp:TextBox ID="TextBox6" runat="server" CssClass="form-control"
+                            placeholder="Enter Father's Name" onkeypress="allowOnlyLetters(event)" />
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="col-12">
+                        <label>Phone Number </label>
+                        <asp:TextBox ID="TextBox7" runat="server" CssClass="form-control" MaxLength="10"
+                            placeholder="Enter mobile number" onkeypress="allowOnlyNumbers(event)" />
+                    </div>
+
+
+
+
+
+                    <!-- Gender -->
+                    <div class="col-12">
+                        <label>Gender</label>
+                        <asp:DropDownList ID="DropDownList3" runat="server" CssClass="form-select">
+                            <asp:ListItem Text="Select" Value="" />
+                            <asp:ListItem>Male</asp:ListItem>
+                            <asp:ListItem>Female</asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+
+                    <!-- Birth Place -->
+                    <div class="col-12">
+                        <label>Birth Place</label>
+                        <asp:TextBox ID="TextBox8" runat="server" CssClass="form-control"
+                            placeholder="Enter area name" onkeypress="allowOnlyLetters(event)" />
+                    </div>
+
+                  
+
+               
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- Address -->
+                    <div class="col-12">
+                        <label>Age</label>
+                        <asp:TextBox ID="TextBox9" runat="server" CssClass="form-control"
+                            Rows="2"></asp:TextBox>
+                    </div>
+
+
+              
+
+
+
+                   
+
+
+    <!-- Candidate Experience -->
+    <div class="col-12">
+        <label class="form-label">Experience Type</label>
+        <select id="experienceType" class="form-select">
+            <option value="" selected disabled>Select</option>
+            <option value="fresher">Fresher</option>
+            <option value="experienced">Experienced</option>
+            <option value="exservice">Ex-Service</option>
+        </select>
+    </div>
+
+    <!-- Experience Duration -->
+    <div class="col-12 hidden" id="experienceDuration">
+        <label class="form-label">Duration</label>
+        <div class="input-group">
+            <input type="number" class="form-control" id="experienceYears" placeholder="Enter number" min="0">
+            <select class="form-select" id="experienceUnit">
+                <option value="months">Months</option>
+                <option value="years">Years</option>
+            </select>
+        </div>
+    </div>
+
+        <div class="col-12">
+        <label>Upload Resume</label>
+        <asp:FileUpload ID="FileUpload4" runat="server" CssClass="form-control" />
+    </div>
+
+
+
+
+                        <h5>Education Details</h5>
+
+             <asp:TextBox ID="TextBox10" runat="server" CssClass="form-control mb-2"
+     placeholder="School/University Name" onkeypress="allowOnlyLetters(event)" />
+ <label>Qualification</label>
+ <asp:DropDownList ID="DropDownList4" runat="server" CssClass="form-select mb-2">
+     <asp:ListItem>10th</asp:ListItem>
+     <asp:ListItem>12th</asp:ListItem>
+     <asp:ListItem>Graduate</asp:ListItem>
+     <asp:ListItem>Post Graduate</asp:ListItem>
+ </asp:DropDownList>
+
+
+
+
+                                    <h5>Bank Details</h5>
+
+
+             <asp:TextBox ID="TextBox11" runat="server" CssClass="form-control mb-2"
+     placeholder="Account Number" onkeypress="allowOnlyNumbers(event)" />
+ <asp:TextBox ID="TextBox12" runat="server" CssClass="form-control mb-2"
+     placeholder="IFSC Code" />
+ <asp:TextBox ID="TextBox13" runat="server" CssClass="form-control"
+     placeholder="Bank Name" onkeypress="allowOnlyLetters(event)" />
+
+ <button type="button" class="btn w-100" Style="background-color: #8EC243">
+    Save Changes
+</button>
+
+
+
+        </div>
+    </div>
 
 
     </form>

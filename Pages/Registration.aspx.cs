@@ -1,85 +1,4 @@
-﻿//using System;
-//using System.Data;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Web;
-//using System.Web.UI;
-//using System.Web.UI.WebControls;
-//using WSBillingMaster.BAL;
-//using BLL;
-
-//namespace WSBillingMaster.Pages
-//{
-
-//    public partial class Registration : System.Web.UI.Page
-//    {
-//        JobBAL bll = new JobBAL();
-
-//        protected void Page_Load(object sender, EventArgs e)
-//        {
-//            if (!IsPostBack)
-//                BindSkills();
-//        }
-
-//        private void BindSkills()
-//        {
-//            var dt = bll.GetSkills();
-//            ddlSkills.DataSource = dt;
-//            ddlSkills.DataTextField = "SkillName";
-//            ddlSkills.DataValueField = "SkillID";
-//            ddlSkills.DataBind();
-//            ddlSkills.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select Skill --", "0"));
-//        }
-
-//        protected void btnSubmit_Click(object sender, EventArgs e)
-//        {
-//            try
-//            {
-//                if (ddlSkills.SelectedValue == "0") { lblStatus.Text = "Please select skill"; return; }
-
-//                var ent = new JobRegistrationEntity
-//                {
-//                    AadharNo = txtAadhar.Text.Trim(),
-//                    SkillID = int.Parse(ddlSkills.SelectedValue),
-//                    FirstName = txtFirstName.Text.Trim(),
-//                    LastName = txtLastName.Text.Trim(),
-//                    PhoneNo = txtPhone.Text.Trim(),
-//                    LoginPassword = txtPassword.Text,
-//                    Address = txtAddress.Text.Trim(),
-//                    Consent = true // or from checkbox if present
-//                };
-
-//                int newId = bll.AddJobRegistration(ent);
-//                if (newId > 0)
-//                {
-//                    lblStatus.CssClass = "text-success";
-//                    lblStatus.Text = "Registered successfully. ID: " + newId;
-//                    ClearForm();
-//                }
-//                else
-//                {
-//                    lblStatus.Text = "Error saving record.";
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                lblStatus.Text = ex.Message;
-//            }
-//        }
-
-//        private void ClearForm()
-//        {
-//            txtAadhar.Text = txtFirstName.Text = txtLastName.Text = txtPhone.Text = txtPassword.Text = txtAddress.Text = "";
-//            ddlSkills.SelectedIndex = 0;
-//        }
-//    }
-
-//}
-
-
-
-
-using System;
+﻿using System;
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -93,19 +12,54 @@ namespace WSBillingMaster.Pages
             if (!IsPostBack)
             {
                 BindSkills();
+                LoadUserData();   // NEW
             }
         }
 
         private void BindSkills()
         {
-            // Example: Replace this with actual DB call
             ddlSkills.Items.Clear();
             ddlSkills.Items.Add(new ListItem("-- Select Skill --", ""));
             ddlSkills.Items.Add(new ListItem("Plumber", "1"));
             ddlSkills.Items.Add(new ListItem("Electrician", "2"));
             ddlSkills.Items.Add(new ListItem("Carpenter", "3"));
+
+            // Also bind edit dropdown if exists
+            if (ddlEditSkills != null)
+            {
+                ddlEditSkills.Items.Clear();
+                ddlEditSkills.Items.Add(new ListItem("-- Select Skill --", ""));
+                ddlEditSkills.Items.Add(new ListItem("Plumber", "1"));
+                ddlEditSkills.Items.Add(new ListItem("Electrician", "2"));
+                ddlEditSkills.Items.Add(new ListItem("Carpenter", "3"));
+            }
         }
 
+        // =========================
+        // LOAD USER DATA (DEMO)
+        // Replace with DB Fetch
+        // =========================
+        private void LoadUserData()
+        {
+            // Example demo data
+            txtFirstName.Text = "Rahul";
+            txtLastName.Text = "Sharma";
+            txtLoginPhone.Text = "9876543210";
+            ddlSkills.SelectedValue = "2";
+
+            // Load into edit panel
+            if (txtEditFirstName != null)
+            {
+                txtEditFirstName.Text = txtFirstName.Text;
+                txtEditLastName.Text = txtLastName.Text;
+                txtEditPhone.Text = txtLoginPhone.Text;
+                ddlEditSkills.SelectedValue = ddlSkills.SelectedValue;
+            }
+        }
+
+        // =========================
+        // MAIN SUBMIT (Registration)
+        // =========================
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             try
@@ -113,13 +67,7 @@ namespace WSBillingMaster.Pages
                 lblStatus.Text = "";
                 lblStatus.CssClass = "fw-bold d-block mb-2";
 
-                // ===== Server-side Validation =====
-                if (txtAadhar == null || txtFirstName == null || txtLoginPhone == null)
-                {
-                    ShowError("Form controls not loaded correctly.");
-                    return;
-                }
-
+                // ===== Validation =====
                 if (txtAadhar.Text.Trim().Length != 12)
                 {
                     ShowError("Enter a valid 12-digit Aadhaar number.");
@@ -156,7 +104,7 @@ namespace WSBillingMaster.Pages
                     return;
                 }
 
-                // ===== File Upload Handling =====
+                // ===== File Upload =====
                 string uploadFolder = Server.MapPath("~/Uploads/");
                 if (!Directory.Exists(uploadFolder))
                     Directory.CreateDirectory(uploadFolder);
@@ -165,9 +113,7 @@ namespace WSBillingMaster.Pages
                 string photoFile = fuPhoto.HasFile ? SaveFile(fuPhoto, uploadFolder) : "";
                 string eduFile = SaveFile(fuEducation, uploadFolder);
 
-                // ===== Save Registration Data =====
-                // Example: Here you can call your BLL/DB to save data
-                // For now, just show success
+                // TODO: Save to Database Here
 
                 lblStatus.Text = "Registration submitted successfully!";
                 lblStatus.CssClass = "text-success fw-bold";
@@ -180,9 +126,33 @@ namespace WSBillingMaster.Pages
             }
         }
 
+        // =========================
+        // EDIT PANEL UPDATE
+        // =========================
+        protected void btnUpdate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Update main form fields
+                txtFirstName.Text = txtEditFirstName.Text;
+                txtLastName.Text = txtEditLastName.Text;
+                txtLoginPhone.Text = txtEditPhone.Text;
+                ddlSkills.SelectedValue = ddlEditSkills.SelectedValue;
+
+                // TODO: Update database here
+
+                lblStatus.Text = "Details updated successfully!";
+                lblStatus.CssClass = "text-success fw-bold";
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
+            }
+        }
+
         private string SaveFile(FileUpload fu, string folder)
         {
-            string fileName = DateTime.Now.Ticks + "_" + fu.FileName;
+            string fileName = DateTime.Now.Ticks + "_" + Path.GetFileName(fu.FileName);
             string fullPath = Path.Combine(folder, fileName);
             fu.SaveAs(fullPath);
             return fileName;
@@ -196,32 +166,11 @@ namespace WSBillingMaster.Pages
 
         private void ClearForm()
         {
-            //txtAadhar.Text =
-            //txtFirstName.Text =
-            //txtLastName.Text =
-            //txtFatherName.Text =
-            //txtBirthPlace.Text =
-            //txtAddress.Text =
-            //txtHeight.Text =
-            //txtWeight.Text =
-            //txtEmergencyPhone.Text =
-            //txtEmergencyName.Text =
-            //txtEmergencyRelation.Text =
-            //txtLanguages.Text =
-            ////txtExperience.Text =
-            //txtAccountNumber.Text =
-            //txtIFSC.Text =
-            //txtBankName.Text =
-            //txtLoginPhone.Text =
-            //txtPassword.Text = "";
-
-            //ddlSkills.SelectedIndex = 0;
-            //ddlGender.SelectedIndex = 0;
-            //ddlMarital.SelectedIndex = 0;
-            //ddlDemand.SelectedIndex = 0;
-
-            //rbOTP.Checked = true;
-            //rbPassword.Checked = false;
+            txtAadhar.Text = "";
+            txtFirstName.Text = "";
+            txtLastName.Text = "";
+            txtLoginPhone.Text = "";
+            ddlSkills.SelectedIndex = 0;
         }
     }
 }
