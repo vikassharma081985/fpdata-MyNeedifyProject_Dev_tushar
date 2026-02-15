@@ -141,7 +141,7 @@
                             </th>
                             <th class="MyHeader">SNo.</th>
                             <th class="MyHeader" style="cursor:pointer;" onclick="sortByDate()">Date <span
-                                    id="dateSortIcon">▲</span></th>
+                                    id="dateSortIcon">&#9650;</span></th>
                             <%--<th class="MyHeader">Expense On</th>--%>
                                 <th class="MyHeader">Expense On (Sub)</th>
                                 <th class="MyHeader">Rate</th>
@@ -174,25 +174,25 @@
 
 
 
-            <!-- ====================== Reimbursement History Modal ====================== -->
-<div id="historyModal" class="modal">
-    <div class="modal-content" style="max-width:1100px;">
-        <span class="close" onclick="closeHistoryModal()">&times;</span>
-        <h3 style="text-align:center;">Reimbursement History</h3>
+        <!-- ====================== Reimbursement History Modal ====================== -->
+        <div id="historyModal" class="modal">
+            <div class="modal-content" style="max-width:1100px;">
+                <span class="close" onclick="closeHistoryModal()">&times;</span>
+                <h3 style="text-align:center;">Reimbursement History</h3>
 
-        <div class="table-responsive">
-            <table id="tblHistory" class="table table-bordered">
-                <tr>
-                    <th>SNo.</th>
-                    <th>Date</th>
-                    <th>Total Amount</th>
-                    <th>Status</th>
-                    <th>View</th>
-                </tr>
-            </table>
+                <div class="table-responsive">
+                    <table id="tblHistory" class="table table-bordered">
+                        <tr>
+                            <th>SNo.</th>
+                            <th>Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>View</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
 
 
@@ -703,66 +703,66 @@
         <script>
 
             function openHistoryModal() {
-    document.getElementById("historyModal").style.display = "block";
-    renderHistoryFromExpenseData();
-}
+                document.getElementById("historyModal").style.display = "block";
+                renderHistoryFromExpenseData();
+            }
 
-function closeHistoryModal() {
-    document.getElementById("historyModal").style.display = "none";
-}
+            function closeHistoryModal() {
+                document.getElementById("historyModal").style.display = "none";
+            }
 
-function renderHistoryFromExpenseData() {
+            function renderHistoryFromExpenseData() {
 
-    // Clear old rows (keep header)
-    $('#tblHistory tr:gt(0)').remove();
+                // Clear old rows (keep header)
+                $('#tblHistory tr:gt(0)').remove();
 
-    // Filter reimbursement-created expenses
-    var historyData = expenseData.filter(x => x.Status === "Reimbursement Created");
+                // Filter reimbursement-created expenses
+                var historyData = expenseData.filter(x => x.Status === "Reimbursement Created");
 
-    if (historyData.length === 0) {
-        $('#tblHistory').append(
-            '<tr><td colspan="5" style="text-align:center;color:gray;">No reimbursement history found</td></tr>'
-        );
-        return;
-    }
+                if (historyData.length === 0) {
+                    $('#tblHistory').append(
+                        '<tr><td colspan="5" style="text-align:center;color:gray;">No reimbursement history found</td></tr>'
+                    );
+                    return;
+                }
 
-    $.each(historyData, function (index, value) {
+                $.each(historyData, function (index, value) {
 
-        var html = '<tr>';
+                    var html = '<tr>';
 
-        // SNo
-        html += '<td>' + (index + 1) + '</td>';
+                    // SNo
+                    html += '<td>' + (index + 1) + '</td>';
 
-        // Date + Expense Details
-        html += '<td>';
-        html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
-        html += '<strong>Expense:</strong> ' + value.Expense +
-            (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
-        html += '<strong>Rate:</strong> ' + value.Rate + '<br>';
-        html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';
-        html += '<strong>Description:</strong> ' + (value.Description || '-');
-        html += '</td>';
+                    // Date + Expense Details
+                    html += '<td>';
+                    html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
+                    html += '<strong>Expense:</strong> ' + value.Expense +
+                        (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+                    html += '<strong>Rate:</strong> ' + value.Rate + '<br>';
+                    html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';
+                    html += '<strong>Description:</strong> ' + (value.Description || '-');
+                    html += '</td>';
 
-        // Total Amount
-        html += '<td>' + value.Amount + '</td>';
+                    // Total Amount
+                    html += '<td>' + value.Amount + '</td>';
 
-        // Status
-        html += '<td>' + value.Status + '</td>';
+                    // Status
+                    html += '<td>' + value.Status + '</td>';
 
-        // View
-        html += '<td>';
-        if (value.PdfPath) {
-            html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">View</a>';
-        } else {
-            html += '<span style="color:gray;">N/A</span>';
-        }
-        html += '</td>';
+                    // View
+                    html += '<td>';
+                    if (value.PdfPath) {
+                        html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">View</a>';
+                    } else {
+                        html += '<span style="color:gray;">N/A</span>';
+                    }
+                    html += '</td>';
 
-        html += '</tr>';
+                    html += '</tr>';
 
-        $('#tblHistory').append(html);
-    });
-}
+                    $('#tblHistory').append(html);
+                });
+            }
 
 
             // ------------------- Mobile Table/Card View Toggle -------------------
@@ -1053,10 +1053,10 @@ function renderHistoryFromExpenseData() {
                     return dateSortAsc ? d1 - d2 : d2 - d1;
                 });
 
-                dateSortAsc = !dateSortAsc;
+                // Update icon BEFORE toggling dateSortAsc for next click
+                $('#dateSortIcon').html(dateSortAsc ? '&#9660;' : '&#9650;');
 
-                // Update icon
-                $('#dateSortIcon').text(dateSortAsc ? '▲' : '▼');
+                dateSortAsc = !dateSortAsc;
 
                 currentPage = 1;
                 renderExpenseTable();
@@ -1065,12 +1065,30 @@ function renderHistoryFromExpenseData() {
             function parseDate(dateStr) {
                 if (!dateStr) return 0;
 
-                var parts = dateStr.split('-'); // dd-MMM-yyyy
-                var day = parseInt(parts[0], 10);
-                var month = new Date(Date.parse(parts[1] + " 1, 2000")).getMonth();
-                var year = parseInt(parts[2], 10);
+                // Handle dd-MMM-yyyy or dd-MM-yyyy (e.g. 15-Feb-2026 or 15-02-2026)
+                if (dateStr.indexOf('-') > 0) {
+                    var parts = dateStr.split('-');
+                    if (parts.length === 3) {
+                        // Check if the middle part is a month name or number
+                        var day = parseInt(parts[0], 10);
+                        var monthStr = parts[1];
+                        var year = parseInt(parts[2], 10);
 
-                return new Date(year, month, day).getTime();
+                        // If it's an ISO format yyyy-MM-dd (starts with year)
+                        if (parts[0].length === 4) {
+                            return new Date(dateStr).getTime();
+                        }
+
+                        // Try parsing month: Feb -> 1, 02 -> 1
+                        var month = isNaN(monthStr) ? new Date(Date.parse(monthStr + " 1, 2000")).getMonth() : parseInt(monthStr, 10) - 1;
+
+                        return new Date(year, month, day).getTime();
+                    }
+                }
+
+                // Fallback to native Date parser for everything else (ISO, etc.)
+                var d = new Date(dateStr);
+                return isNaN(d.getTime()) ? 0 : d.getTime();
             }
 
             function Search() {
@@ -1572,73 +1590,73 @@ function renderHistoryFromExpenseData() {
                     return;
                 }
 
-            var obj = {
-                ID: currentEditingId,
-                Date: Date,
-                ExpenseId: ExpenseId,
-                SubExpenseId: SubExpenseId,
-                File: File,
-                Description: Description,
-                Amount: Amount,
-                userId: hdnUserId,
-                Quantity: Quantity,
-                Rate: Rate
-            };
-            showLoader();
-            $.ajax({
-                url: "ExpenseManager.aspx/UpdateExpense",
-                async: true,
-                data: JSON.stringify({ data: [obj] }),
-                contentType: "application/json; charset=utf-8",
-                type: "POST",
-                dataType: "json",
-                success: function (result) {
-                    hideLoader();
-                    if (result.d == "1") {
-                        alert('Expense updated successfully!');
-                        closeEditExpenseModal();
-                        Search(); // Refresh table
-                    } else {
-                        alert('Error updating expense.');
-                    }
-                },
-                error: function () {
-                    hideLoader();
-                    alert('Server error during update.');
-                }
-            });
-        }
-        function BindSubExpense(categoryId, targetDdlId, selectedSubId = null) {
-            if (categoryId == "" || categoryId == "0") {
-                $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
-                return;
-            }
-            $.ajax({
-                url: "ExpenseManager.aspx/BindExpenseSubCategory",
-                async: false,
-                data: JSON.stringify({ categoryId: parseInt(categoryId) }),
-                contentType: "application/json; charset=utf-8",
-                type: "POST",
-                timeout: 120000,
-                dataType: "json",
-                success: function (result) {
-                    var data = $.parseJSON(result.d);
-                    $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
-                    $.each(data, function (index, value) {
-                        if (value.Id > 0) {  // Assuming data has SubExpenseId and SubExpense
-                            $('#' + targetDdlId).append('<option value="' + value.Id + '">' + value.ExpenseSubMaster + '</option>');
+                var obj = {
+                    ID: currentEditingId,
+                    Date: Date,
+                    ExpenseId: ExpenseId,
+                    SubExpenseId: SubExpenseId,
+                    File: File,
+                    Description: Description,
+                    Amount: Amount,
+                    userId: hdnUserId,
+                    Quantity: Quantity,
+                    Rate: Rate
+                };
+                showLoader();
+                $.ajax({
+                    url: "ExpenseManager.aspx/UpdateExpense",
+                    async: true,
+                    data: JSON.stringify({ data: [obj] }),
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        hideLoader();
+                        if (result.d == "1") {
+                            alert('Expense updated successfully!');
+                            closeEditExpenseModal();
+                            Search(); // Refresh table
+                        } else {
+                            alert('Error updating expense.');
                         }
-                    });
-                    if (selectedSubId) {
-                        $('#' + targetDdlId).val(selectedSubId);
+                    },
+                    error: function () {
+                        hideLoader();
+                        alert('Server error during update.');
                     }
+                });
+            }
+            function BindSubExpense(categoryId, targetDdlId, selectedSubId = null) {
+                if (categoryId == "" || categoryId == "0") {
+                    $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
+                    return;
                 }
-            });
-        }
+                $.ajax({
+                    url: "ExpenseManager.aspx/BindExpenseSubCategory",
+                    async: false,
+                    data: JSON.stringify({ categoryId: parseInt(categoryId) }),
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+                        var data = $.parseJSON(result.d);
+                        $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
+                        $.each(data, function (index, value) {
+                            if (value.Id > 0) {  // Assuming data has SubExpenseId and SubExpense
+                                $('#' + targetDdlId).append('<option value="' + value.Id + '">' + value.ExpenseSubMaster + '</option>');
+                            }
+                        });
+                        if (selectedSubId) {
+                            $('#' + targetDdlId).val(selectedSubId);
+                        }
+                    }
+                });
+            }
         </script>
 
-    <div id="loaderOverlay" style="display:none;">
-    <div class="loader"></div>
-    <div class="loader-text">Please wait...</div>
-</div>
-</asp:Content>
+        <div id="loaderOverlay" style="display:none;">
+            <div class="loader"></div>
+            <div class="loader-text">Please wait...</div>
+        </div>
+    </asp:Content>
