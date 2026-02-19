@@ -235,7 +235,7 @@ namespace WSBillingMaster.Pages
                 if (!Directory.Exists(folderPath))
                     Directory.CreateDirectory(folderPath);
 
-                string fileName = "SIGN_" + expenseIds + ".png";
+                string fileName = "SIGN_" + Guid.NewGuid() + ".png";
                 string[] existingFiles = Directory.GetFiles(folderPath, fileName);
                 foreach (string file in existingFiles)
                 {
