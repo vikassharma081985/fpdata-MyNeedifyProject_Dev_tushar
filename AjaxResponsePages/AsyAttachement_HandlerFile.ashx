@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.SessionState;
 using BLL;
 using System.Data;
+using PdfiumViewer;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
 {
     public void ProcessRequest(HttpContext context)
@@ -57,14 +61,51 @@ public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
                     System.IO.File.Delete(Path);
                 Path = PerPath;
             }
+            //if (callFor == "Expense")
+            //{
+            //    string ext = System.IO.Path.GetExtension(imgName);
+            //    string uniqueName = System.DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_" + Guid.NewGuid().ToString("N") + ext;
+            //    imgName = uniqueName;
+            //    Path = context.Request.PhysicalApplicationPath + "Uploads/Expense/" + imgName;
+            //    PerPath = Path;
+            //    if (System.IO.File.Exists(Path))
+            //        System.IO.File.Delete(Path);
+            //    Path = PerPath;
+
+            //}
+
             if (callFor == "Expense")
             {
-                Path = context.Request.PhysicalApplicationPath + "Uploads/Expense/" + imgName;
-                PerPath = Path;
-                if (System.IO.File.Exists(Path))
-                    System.IO.File.Delete(Path);
-                Path = PerPath;
+                string uploadDir = context.Request.PhysicalApplicationPath + "Uploads/Expense/";
+                if (!Directory.Exists(uploadDir))
+                    Directory.CreateDirectory(uploadDir);
 
+                string ext = System.IO.Path.GetExtension(imgName).ToLower();
+                string uniqueName = GetUniqueName(ext);
+                string savedPath = System.IO.Path.Combine(uploadDir, uniqueName);
+                if (System.IO.File.Exists(savedPath))
+                    System.IO.File.Delete(savedPath);
+                file.SaveAs(savedPath);
+
+                // PDF → IMAGE
+                if (ext == ".pdf")
+                {
+                    string imageName = ConvertPdfToImage(savedPath, uploadDir);
+                    string imagePath = System.IO.Path.Combine(uploadDir, imageName);
+
+                    // delete pdf
+                    if (System.IO.File.Exists(savedPath))
+                        System.IO.File.Delete(savedPath);
+
+                    context.Response.ContentType = "text/plain";
+                    context.Response.Write(imageName + "|" + imagePath);
+                    return;
+                }
+
+                // Normal image
+                context.Response.ContentType = "text/plain";
+                context.Response.Write(uniqueName + "|" + savedPath);
+                return;
             }
 
 
@@ -78,6 +119,29 @@ public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
 
 
 
+    }
+    private string GetUniqueName(string extension)
+    {
+        return DateTime.Now.ToString("yyyyMMddHHmmssfff")
+               + "_" + Guid.NewGuid().ToString("N")
+               + extension;
+    }
+
+    private string ConvertPdfToImage(string pdfPath, string outputFolder)
+    {
+        using (var document = PdfDocument.Load(pdfPath))
+        {
+            // Convert FIRST PAGE only
+            using (var image = document.Render(0, 300, 300, true))
+            {
+                string imgName = Path.GetFileNameWithoutExtension(pdfPath) + ".png";
+                string imgPath = Path.Combine(outputFolder, imgName);
+                if (System.IO.File.Exists(imgPath))
+                    System.IO.File.Delete(imgPath);
+                image.Save(imgPath, ImageFormat.Png);
+                return imgName;
+            }
+        }
     }
 
     public bool IsReusable

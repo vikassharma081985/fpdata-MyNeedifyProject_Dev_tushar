@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\PdfiumViewer.Native.x86_64.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.no_v8-no_xfa.props" Condition="Exists('packages\PdfiumViewer.Native.x86_64.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.no_v8-no_xfa.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -23,6 +24,8 @@
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
     <WebGreaseLibPath>packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,28 +48,45 @@
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="CKEditor.NET, Version=3.6.4.0, Culture=neutral, PublicKeyToken=e379cdf2f8354999, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\CKEditor.NET.dll</HintPath>
+    <Reference Include="CKEditor.NET, Version=3.6.6.2, Culture=neutral, PublicKeyToken=e379cdf2f8354999, processorArchitecture=MSIL">
+      <HintPath>packages\CKEditor.NET.3.6.6.2.3.6.6.2\lib\CKEditor.NET.dll</HintPath>
     </Reference>
-    <Reference Include="ClosedXML, Version=0.76.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\ClosedXML.dll</HintPath>
+    <Reference Include="ClosedXML, Version=0.105.0.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>packages\ClosedXML.0.105.0\lib\netstandard2.0\ClosedXML.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
-    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="ClosedXML.Parser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1d5f7376574c51ec, processorArchitecture=MSIL">
+      <HintPath>packages\ClosedXML.Parser.2.0.0\lib\netstandard2.0\ClosedXML.Parser.dll</HintPath>
     </Reference>
-    <Reference Include="HiQPdf, Version=8.10.0.0, Culture=neutral, PublicKeyToken=acd8b62594985b24, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\HiQPdf.dll</HintPath>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>packages\CrystalDecisions.CrystalReports.Engine.1.0.0\lib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>packages\CrystalDecisions.ReportSource.1.0.0\lib\CrystalDecisions.ReportSource.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>packages\CrystalDecisions.Shared.1.0.0\lib\CrystalDecisions.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.Web, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <HintPath>packages\CrystalDecisions.Web.1.0.1\lib\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>packages\DocumentFormat.OpenXml.3.1.1\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml.Framework, Version=3.1.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>packages\DocumentFormat.OpenXml.Framework.3.1.1\lib\net46\DocumentFormat.OpenXml.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="HiQPdf, Version=17.0.0.0, Culture=neutral, PublicKeyToken=acd8b62594985b24, processorArchitecture=MSIL">
+      <HintPath>packages\HiQPdf.17.0.0\lib\net40\HiQPdf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -93,6 +113,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL">
+      <HintPath>packages\PdfiumViewer.2.13.0.0\lib\net20\PdfiumViewer.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=6.2.3.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>packages\PDFsharp.6.2.3\lib\netstandard2.0\PdfSharp.dll</HintPath>
@@ -121,6 +144,12 @@
     <Reference Include="PdfSharp.WPFonts, Version=6.2.3.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>packages\PDFsharp.6.2.3\lib\netstandard2.0\PdfSharp.WPFonts.dll</HintPath>
     </Reference>
+    <Reference Include="RBush, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c77e27b81f4d0187, processorArchitecture=MSIL">
+      <HintPath>packages\RBush.Signed.4.0.0\lib\net47\RBush.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
+    </Reference>
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
@@ -131,6 +160,7 @@
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -177,49 +207,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".nuget\NuGet.exe" />
-    <Content Include=".vs\WSBillingMaster\v17\HierarchyCache.v1.txt" />
     <Content Include="BAL\bin\Release\BAL.dll" />
     <Content Include="BAL\bin\Release\BAL.pdb" />
     <Content Include="BAL\bin\Release\DAL.dll" />
     <Content Include="BAL\bin\Release\DAL.pdb" />
-    <Content Include="BAL\obj\Debug\BLL.csproj.CopyComplete" />
-    <Content Include="BAL\obj\Debug\BLL.csproj.FileListAbsolute.txt" />
-    <Content Include="BAL\obj\Debug\BLL.csprojAssemblyReference.cache" />
-    <Content Include="BAL\obj\Debug\BLL.csprojResolveAssemblyReference.cache" />
-    <Content Include="BAL\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="BAL\obj\Release\BAL.dll" />
-    <Content Include="BAL\obj\Release\BAL.pdb" />
-    <Content Include="BAL\obj\Release\BLL.csproj.FileListAbsolute.txt" />
-    <Content Include="BAL\obj\Release\BLL.csprojResolveAssemblyReference.cache" />
-    <Content Include="BAL\obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="Barcode\obj\Debug\Barcode.csproj.FileListAbsolute.txt" />
-    <Content Include="bin\BAL.dll" />
-    <Content Include="bin\BAL.pdb" />
-    <Content Include="bin\Barcode.dll" />
-    <Content Include="bin\Barcode.pdb" />
-    <Content Include="bin\CkEditor.dll" />
-    <Content Include="bin\CKEditor.NET.dll" />
-    <Content Include="bin\ClosedXML.dll" />
-    <Content Include="bin\CrystalDecisions.CrystalReports.Engine.dll" />
-    <Content Include="bin\CrystalDecisions.ReportSource.dll" />
-    <Content Include="bin\CrystalDecisions.Shared.dll" />
-    <Content Include="bin\CrystalDecisions.Web.dll" />
-    <Content Include="bin\DAL.dll" />
-    <Content Include="bin\DAL.pdb" />
-    <Content Include="bin\DLL  Backup\WSBillingMaster.dll" />
-    <Content Include="bin\DLL  Backup\WSBillingMaster.pdb" />
-    <Content Include="bin\DocumentFormat.OpenXml.dll" />
-    <Content Include="bin\HiQPdf.dll" />
-    <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\stdole.dll" />
-    <Content Include="bin\WSBillingMaster.dll" />
-    <Content Include="bin\WSBillingMaster.pdb" />
     <Content Include="DAL\bin\Release\DAL.dll" />
     <Content Include="DAL\bin\Release\DAL.pdb" />
-    <Content Include="DAL\obj\Debug\DAL.csproj.FileListAbsolute.txt" />
-    <Content Include="DAL\obj\Release\DAL.csproj.FileListAbsolute.txt" />
-    <Content Include="DAL\obj\Release\DAL.dll" />
-    <Content Include="DAL\obj\Release\DAL.pdb" />
     <Content Include="Css\admin.css" />
     <Content Include="Css\AppStyle.css" />
     <Content Include="Css\bootstrap.min.css" />
@@ -290,6 +283,7 @@
     <Content Include="Images\logo_0.PNG" />
     <Content Include="Images\logo_1.PNG" />
     <Content Include="Images\logo_2.PNG" />
+    <Content Include="Images\mylogo.png" />
     <Content Include="Images\Slider.gif" />
     <Content Include="Indexresp.html" />
     <Content Include="Jscript\AddItem.js" />
@@ -341,6 +335,7 @@
     <Content Include="Pages\ExportToExcel.aspx" />
     <Content Include="Pages\Invoice.aspx" />
     <Content Include="Pages\ItemImportExport.aspx" />
+    <Content Include="Pages\Job.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\ManageItems.aspx" />
     <Content Include="Pages\ManageRoleWiseManu.aspx" />
@@ -369,14 +364,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v17\HierarchyCache.v1.txt" />
-    <Content Include="WSBillingMaster\bin\CkEditor.dll" />
-    <Content Include="WSBillingMaster\bin\CKEditor.NET.dll" />
-    <Content Include="WSBillingMaster\bin\ClosedXML.dll" />
-    <Content Include="WSBillingMaster\bin\DocumentFormat.OpenXml.dll" />
-    <Content Include="WSBillingMaster\bin\HiQPdf.dll" />
-    <Content Include="WSBillingMaster\bin\Newtonsoft.Json.dll" />
-    <Content Include="WSBillingMaster\bin\WSBillingMaster.dll" />
     <Content Include="WSBillingMaster\Css\admin.css" />
     <Content Include="WSBillingMaster\Css\AppStyle.css" />
     <Content Include="WSBillingMaster\Css\bootstrap.min.css" />
@@ -548,287 +535,20 @@
     <Content Include="WSBillingMaster\Js\Snowflakes\maxresdefault.jpg" />
     <Content Include="WSBillingMaster\Js\Snowflakes\snowfall.jquery.js" />
     <Content Include="WSBillingMaster\Js\Snowflakes\snowflakes.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\BAL.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\BAL.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\Barcode.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\Barcode.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\CKEditor.NET.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\ClosedXML.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\DAL.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\DAL.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\DocumentFormat.OpenXml.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\HiQPdf.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\Newtonsoft.Json.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\WSBillingMaster.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\WSBillingMaster.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\admin.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\AppStyle.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\bootstrap.min.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\chosen.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\Common.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\easyzoom.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\example.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\jquery-ui.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\jquery.alerts.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\jquery.autocomplete.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\jquery.Jcrop.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\multiple-select.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\MyStyle.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\pygments.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Css\snowflakes.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\AboutUs.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\CheckBrowser.html" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\Checkout.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\ContactUs.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\Feedback.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\index.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\index_Demo.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\ItemDescription.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\MyAccount.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\MyOrders.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\OrderSuccess.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\PlaceOrder.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\Search.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\SellOnFaduPrice.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\ajax-loader.gif" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\fonts\slick.svg" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick-theme.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\WebForm2.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\Wishlist.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\Delete.gif" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\details_close.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\details_open.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\Items\2_jqtz5lpbivpa3yhsq5pabu1u_Plain-Red-T-Shirt-PNG-Transparent-Image.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\logoRC.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\logo_0.PNG" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\logo_1.PNG" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\logo_2.PNG" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Images\Slider.gif" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Indexresp.html" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Jscript\AddItem.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Jscript\AddSupplier.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Jscript\easyzoom.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Jscript\Slider.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\bootstrap-slider.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\bootstrap-slider.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\bootstrap.min.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\bootstrap.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Checkout.txt" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Combobox.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\font-awesome.min.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\jquery-1.4.1.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\jquery-latest.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\jquery-ui.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\jquery.autocomplete.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\jquery.elevateZoom-3.0.8.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\jquery.elevatezoom.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\jquery.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Raleway-bold.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Raleway.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\snowfall.jquery.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Snowflakes\baby-wallpaper-preview.jpg" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Snowflakes\Christmas-Hat-PNG-Image.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Snowflakes\jquery-latest.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Snowflakes\maxresdefault.jpg" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Snowflakes\snowfall.jquery.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Js\Snowflakes\snowflakes.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AddCategory.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AddItem.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AddMenu.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AddRole.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AddSubCategory.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AddSubSubCategory.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AddSupplier.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AdminList.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AllTransactions.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\AreaMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\Billing.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\CityMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\DiscountMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\DuplicateBill.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\EmployeeMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\ExpenseManager.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\ExportToExcel.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\ItemImportExport.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\Login.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\ManageItems.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\ManageRoleWiseManu.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\ManageSlider.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\PendingOrderList.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\PhysicalVerification.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\ProfitLossReport.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\PromoMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\Refund.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\SalesSummary.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\SendSMS.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\Settlement.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\SliderManagement.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\StateMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\StockInHand.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\StockReports.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\SupplierList.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\UserDashboard.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\VendorItemReport.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\BAL.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\BAL.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\Barcode.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\Barcode.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\CKEditor.NET.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\ClosedXML.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\DAL.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\DAL.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\DocumentFormat.OpenXml.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\HiQPdf.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\Newtonsoft.Json.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\WSBillingMaster.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\WSBillingMaster.pdb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\admin.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\AppStyle.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\bootstrap.min.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\chosen.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\Common.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\easyzoom.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\example.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\jquery-ui.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\jquery.alerts.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\jquery.autocomplete.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\jquery.Jcrop.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\multiple-select.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\MyStyle.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\pygments.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Css\snowflakes.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\AboutUs.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\CheckBrowser.html" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\Checkout.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\ContactUs.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\Feedback.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\index.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\index_Demo.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\ItemDescription.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\MyAccount.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\MyOrders.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\OrderSuccess.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\PlaceOrder.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\Search.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\SellOnFaduPrice.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\ajax-loader.gif" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\fonts\slick.svg" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick-theme.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\WebForm2.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\Wishlist.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\Delete.gif" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\details_close.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\details_open.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\Items\2_jqtz5lpbivpa3yhsq5pabu1u_Plain-Red-T-Shirt-PNG-Transparent-Image.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\logoRC.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\logo_0.PNG" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\logo_1.PNG" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\logo_2.PNG" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Images\Slider.gif" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Indexresp.html" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Jscript\AddItem.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Jscript\AddSupplier.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Jscript\easyzoom.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Jscript\Slider.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\bootstrap-slider.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\bootstrap-slider.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\bootstrap.min.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\bootstrap.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Checkout.txt" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Combobox.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\font-awesome.min.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\jquery-1.4.1.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\jquery-latest.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\jquery-ui.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\jquery.autocomplete.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\jquery.elevateZoom-3.0.8.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\jquery.elevatezoom.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\jquery.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Raleway-bold.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Raleway.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\snowfall.jquery.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Snowflakes\baby-wallpaper-preview.jpg" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Snowflakes\Christmas-Hat-PNG-Image.png" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Snowflakes\jquery-latest.min.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Snowflakes\maxresdefault.jpg" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Snowflakes\snowfall.jquery.js" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Js\Snowflakes\snowflakes.css" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AddCategory.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AddItem.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AddMenu.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AddRole.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AddSubCategory.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AddSubSubCategory.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AddSupplier.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AdminList.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AllTransactions.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\AreaMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\Billing.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\CityMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\DiscountMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\DuplicateBill.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\EmployeeMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\ExpenseManager.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\ExportToExcel.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\ItemImportExport.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\Login.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\ManageItems.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\ManageRoleWiseManu.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\ManageSlider.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\PendingOrderList.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\PhysicalVerification.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\ProfitLossReport.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\PromoMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\Refund.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\SalesSummary.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\SendSMS.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\Settlement.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\SliderManagement.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\StateMaster.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\StockInHand.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\StockReports.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\SupplierList.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\UserDashboard.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\VendorItemReport.aspx" />
-    <Content Include="WSBillingMaster\obj\Debug\TempPE\Reports.BillReceipt.cs.dll" />
-    <Content Include="WSBillingMaster\obj\Debug\WSBillingMaster.csproj.FileListAbsolute.txt" />
-    <Content Include="WSBillingMaster\Properties\PublishProfiles\WSBilling.pubxml.user" />
     <Content Include="WSBillingMaster\Uploads\Expense\logo_1.PNG" />
-    <Content Include="WSBillingMaster\WSBillingMaster.csproj.user" />
     <Content Include="WSBillingMaster\WSBillingMaster.sln" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BAL\BundleConfig.cs" />
     <Compile Include="BAL\BusinessLogicLayer.cs" />
     <Compile Include="App_Code\JobBAL.cs" />
-    <Compile Include="BAL\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
-    <Compile Include="BAL\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="BAL\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="BAL\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="BAL\obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="BAL\obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="BAL\obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="BAL\Properties\AssemblyInfo.cs" />
     <Compile Include="BAL\Supplier.cs" />
     <Compile Include="Barcode\Code128Content.cs" />
     <Compile Include="Barcode\GenerateBarcode.cs" />
-    <Compile Include="Barcode\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Barcode\Properties\AssemblyInfo.cs" />
     <Compile Include="App_Code\JobDAL.cs" />
     <Compile Include="DAL\DataAccessLayer.cs" />
-    <Compile Include="DAL\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
-    <Compile Include="DAL\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="DAL\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="DAL\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
-    <Compile Include="DAL\obj\Release\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="DAL\obj\Release\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="DAL\obj\Release\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="DAL\Properties\AssemblyInfo.cs" />
     <Compile Include="Front\AboutUs.aspx.cs">
       <DependentUpon>AboutUs.aspx</DependentUpon>
@@ -957,7 +677,6 @@
     <Compile Include="Front\Wishlist.aspx.designer.cs">
       <DependentUpon>Wishlist.aspx</DependentUpon>
     </Compile>
-    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Pages\AddCategory.aspx.cs">
       <DependentUpon>AddCategory.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1104,6 +823,13 @@
     </Compile>
     <Compile Include="Pages\ItemImportExport.aspx.designer.cs">
       <DependentUpon>ItemImportExport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Job.aspx.cs">
+      <DependentUpon>Job.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Job.aspx.designer.cs">
+      <DependentUpon>Job.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -1267,10 +993,6 @@
       <DependentUpon>Registration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WSBillingMaster\obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
-    <Compile Include="WSBillingMaster\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="WSBillingMaster\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="WSBillingMaster\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="WSBillingMaster\Properties\AssemblyInfo.cs" />
     <Compile Include="WSBillingMaster\Reports\BillReceipt.cs">
       <SubType>Component</SubType>
@@ -1283,20 +1005,9 @@
     <Content Include="AjaxResponsePages\AsyAttachement_HandlerFile.ashx" />
     <Content Include="AjaxResponsePages\Search.ashx" />
     <Content Include="DAL\DAL.csproj" />
-    <Content Include="DAL\obj\Debug\DAL.csprojAssemblyReference.cache" />
-    <Content Include="DAL\obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
-    <Content Include="DAL\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="DAL\obj\Release\DesignTimeResolveAssemblyReferencesInput.cache" />
     <Content Include="BAL\BLL.csproj" />
     <Content Include="BAL\BusinessLogicLayer_bk.zip" />
     <Content Include="Barcode\Barcode.csproj" />
-    <Content Include="Barcode\obj\Debug\Barcode.csprojAssemblyReference.cache" />
-    <Content Include="Barcode\obj\Debug\Barcode.csprojResolveAssemblyReference.cache" />
-    <Content Include="Barcode\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="bin\BAL_bk.zip" />
-    <Content Include="bin\HiQPdf.dep" />
-    <Content Include="bin\WSBillingMaster.dll.config" />
-    <Content Include="bin\WSBillingMaster_bk.zip" />
     <Content Include=".nuget\NuGet.Config" />
     <Content Include=".nuget\NuGet.targets" />
     <Content Include=".vs\config\applicationhost.config" />
@@ -1305,10 +1016,6 @@
     <Content Include=".vs\WSBillingMaster\FileContentIndex\d22c9b58-a74a-431b-86ef-bbb27c19bc56.vsidx" />
     <Content Include=".vs\WSBillingMaster\FileContentIndex\read.lock" />
     <Content Include=".vs\WSBillingMaster\v15\.suo" />
-    <Content Include=".vs\WSBillingMaster\v15\Server\sqlite3\db.lock" />
-    <Content Include=".vs\WSBillingMaster\v15\Server\sqlite3\storage.ide" />
-    <Content Include=".vs\WSBillingMaster\v15\Server\sqlite3\storage.ide-shm" />
-    <Content Include=".vs\WSBillingMaster\v15\Server\sqlite3\storage.ide-wal" />
     <Content Include=".vs\WSBillingMaster\v17\.suo" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\WSBilling.pubxml" />
@@ -1322,62 +1029,8 @@
     <Content Include="WSBillingMaster\.vs\WSBillingMaster\config\applicationhost.config" />
     <Content Include="WSBillingMaster\.vs\WSBillingMaster\FileContentIndex\06713af3-a3eb-47bb-9d47-066841b88705.vsidx" />
     <Content Include="WSBillingMaster\.vs\WSBillingMaster\v15\.suo" />
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v15\Server\sqlite3\db.lock" />
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v15\Server\sqlite3\storage.ide" />
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v15\Server\sqlite3\storage.ide-shm" />
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v15\Server\sqlite3\storage.ide-wal" />
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v17\.suo" />
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v17\DocumentLayout.backup.json" />
-    <Content Include="WSBillingMaster\.vs\WSBillingMaster\v17\DocumentLayout.json" />
     <Content Include="WSBillingMaster\AjaxResponsePages\AsyAttachement_HandlerFile.ashx" />
     <Content Include="WSBillingMaster\AjaxResponsePages\Search.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\AjaxResponsePages\AsyAttachement_HandlerFile.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\AjaxResponsePages\Search.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\HiQPdf.dep" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\bin\WSBillingMaster.dll.config" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\AsyncUploadFile.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\Home.Master" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\HomePages.rar" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\ItemDescription.rar" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\Reports\Invoice.rpt" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\config.rb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\fonts\slick.eot" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\fonts\slick.ttf" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\fonts\slick.woff" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick-theme.less" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick-theme.scss" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick.less" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Front\slick\slick.scss" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\Search.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Pages\SiteMaster.Master" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\Source\Web.config" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\AjaxResponsePages\AsyAttachement_HandlerFile.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\AjaxResponsePages\Search.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\HiQPdf.dep" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\bin\WSBillingMaster.dll.config" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\AsyncUploadFile.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\Home.Master" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\HomePages.rar" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\ItemDescription.rar" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\Reports\Invoice.rpt" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\config.rb" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\fonts\slick.eot" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\fonts\slick.ttf" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\fonts\slick.woff" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick-theme.less" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick-theme.scss" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick.less" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Front\slick\slick.scss" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\Search.ashx" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Pages\SiteMaster.Master" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\PrecompiledApp.config" />
-    <Content Include="WSBillingMaster\obj\Debug\AspnetCompileMerge\TempBuildDir\Web.config" />
-    <Content Include="WSBillingMaster\obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
-    <Content Include="WSBillingMaster\obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="WSBillingMaster\obj\Debug\WSBillingMaster.csproj.AssemblyReference.cache" />
-    <Content Include="WSBillingMaster\obj\Debug\WSBillingMaster.csproj.CopyComplete" />
-    <Content Include="WSBillingMaster\obj\Debug\WSBillingMaster.csprojAssemblyReference.cache" />
-    <Content Include="WSBillingMaster\obj\Debug\WSBillingMaster.csprojResolveAssemblyReference.cache" />
     <None Include="WSBillingMaster\Properties\PublishProfiles\WSBilling.pubxml" />
     <Content Include="WSBillingMaster\Reports\BillReceipt.rpt" />
     <Content Include="WSBillingMaster\Reports\BillReceipt_BAK.zip" />
@@ -1393,25 +1046,25 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".vs\WSBillingMaster\FileContentIndex\merges\" />
+    <Folder Include=".vs\WSBillingMaster\v15\Server\" />
     <Folder Include=".vs\WSBillingMaster\v16\" />
     <Folder Include="App_Code\Entities\" />
     <Folder Include="BAL\bin\Debug\" />
-    <Folder Include="BAL\obj\Debug\TempPE\" />
-    <Folder Include="BAL\obj\Release\TempPE\" />
+    <Folder Include="BAL\obj\" />
     <Folder Include="Barcode\bin\Debug\" />
     <Folder Include="Barcode\bin\Release\" />
-    <Folder Include="Barcode\obj\Debug\TempPE\" />
+    <Folder Include="Barcode\obj\" />
     <Folder Include="DAL\bin\Debug\" />
-    <Folder Include="DAL\obj\Debug\TempPE\" />
-    <Folder Include="DAL\obj\Release\TempPE\" />
+    <Folder Include="DAL\obj\" />
     <Folder Include="Images\Items\Temp\" />
     <Folder Include="Images\Slider\Temp\" />
+    <Folder Include="obj\" />
     <Folder Include="Reports\" />
     <Folder Include="Uploads\Expense\" />
+    <Folder Include="WSBillingMaster\.vs\WSBillingMaster\v15\Server\" />
     <Folder Include="WSBillingMaster\App_Code\" />
     <Folder Include="WSBillingMaster\Images\Items\Temp\" />
     <Folder Include="WSBillingMaster\Images\Slider\Temp\" />
-    <Folder Include="WSBillingMaster\obj\Debug\Package\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
@@ -1441,6 +1094,12 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\PdfiumViewer.Native.x86_64.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.no_v8-no_xfa.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\PdfiumViewer.Native.x86_64.no_v8-no_xfa.2018.4.8.256\build\PdfiumViewer.Native.x86_64.no_v8-no_xfa.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

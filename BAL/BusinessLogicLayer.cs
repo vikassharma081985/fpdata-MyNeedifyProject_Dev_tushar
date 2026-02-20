@@ -62,7 +62,9 @@ namespace BLL
         public int SubSubCategoryId { get; set; }
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
+        public decimal Rate { get; set; }
+        public Int32 Id { get; set; }
         public int MRP { get; set; }
 
         public int IsCoupanAvailable { get; set; }
@@ -127,8 +129,8 @@ namespace BLL
         public string PriceOrder { get; set; }
         public string Ip { get; set; }
         //public Int32 SellerId { get; set; }
-		//public int OrgId { get; set;  }
-		public float SettlementAmt { get; set; }
+        //public int OrgId { get; set;  }
+        public float SettlementAmt { get; set; }
 
         public int ManageDiscount()
         {
@@ -229,7 +231,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@PaymentMode", PaymentMode);
                     sqlCommand.Parameters.AddWithValue("@XML", XML);
                     sqlCommand.Parameters.AddWithValue("@AddedBy", UserId);
-					sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
 
                     return objDAL.GetDataTable(sqlCommand).Rows[0][0].ToString();
 
@@ -304,7 +306,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@FromDate", FromDate);
                     sqlCommand.Parameters.AddWithValue("@ToDate", ToDate);
                     sqlCommand.Parameters.AddWithValue("@Keyword", Keyword);
-					sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"].ToString()));
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"].ToString()));
 
                     return objDAL.GetDataTable(sqlCommand);
                 }
@@ -1349,60 +1351,119 @@ namespace BLL
                 }
             }
         }
-		//Expense
-		public int OrgId { get; set; }
-		public int EmpId { get; set; }
-		public int ExpenseStatus { get; set; }
-		public string FetchUserId{get; set;}
+
+        public DataTable BindExpenseSubCategoryByCategoryId(int CategoryId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "usp_GetExpenseSubMasterByExpenseId";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@ExpenseMasterId", CategoryId);
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        //Expense
+        public int OrgId { get; set; }
+        public int EmpId { get; set; }
+        public int ExpenseStatus { get; set; }
+        public string FetchUserId { get; set; }
+        public string ExpenseDataStatus { get; set; }
         public int SaveExpense()
-		{
-			using (DataAccessLayer objDAL = new DataAccessLayer())
-			{
-				using (SqlCommand sqlCommand = new SqlCommand())
-				{
-					sqlCommand.CommandText = "Proc_SaveExpense";
-					sqlCommand.CommandType = CommandType.StoredProcedure;
-					sqlCommand.CommandTimeout = 100;
-					sqlCommand.Parameters.AddWithValue("@ExpenseDate", ExpenseDate);
-					sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
-					sqlCommand.Parameters.AddWithValue("@File", ExpenseFile);
-					sqlCommand.Parameters.AddWithValue("@Description", ExpenseDescription);
-					sqlCommand.Parameters.AddWithValue("@Amount", Amount);
-					sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
-					sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
-					sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
-					//sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
-		
-		
-					return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
-				}
-			}
-		}
-		
-		public DataTable SearchExpense()
-		{
-			using (DataAccessLayer objDAL = new DataAccessLayer())
-			{
-				using (SqlCommand sqlCommand = new SqlCommand())
-				{
-					sqlCommand.CommandText = "Proc_SearchExpense";
-					sqlCommand.CommandType = CommandType.StoredProcedure;
-					sqlCommand.CommandTimeout = 100;
-					sqlCommand.Parameters.AddWithValue("@FromDate", FromDate);
-					sqlCommand.Parameters.AddWithValue("@ToDate", ToDate);
-					sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
-					sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
-					sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
-					sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
-					sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
-		
-		
-					return objDAL.GetDataTable(sqlCommand);
-				}
-			}
-		}
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "Proc_SaveExpense";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@ExpenseDate", ExpenseDate);
+                    sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
+                    sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
+                    sqlCommand.Parameters.AddWithValue("@File", ExpenseFile);
+                    sqlCommand.Parameters.AddWithValue("@Description", ExpenseDescription);
+                    sqlCommand.Parameters.AddWithValue("@Amount", Amount);
+                    sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
+                    sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
+                    sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.Parameters.AddWithValue("@Rate", Rate);
+                    sqlCommand.Parameters.AddWithValue("@Quantity", Quantity);
+                    //sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
 
 
+                    return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                }
+            }
+        }
+
+        public DataTable SearchExpense()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "Proc_SearchExpense";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@FromDate", FromDate);
+                    sqlCommand.Parameters.AddWithValue("@ToDate", ToDate);
+                    sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
+                    sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
+                    sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
+                    sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.Parameters.AddWithValue("@ExpenseDataStatus", ExpenseDataStatus);
+                    sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
+
+
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public int UpdateExpense()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "Proc_UpdateExpense";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+
+                    // Required for UPDATE
+                    sqlCommand.Parameters.AddWithValue("@ID", Id); // Make sure you have public int ID { get; set; } in BLL
+
+                    sqlCommand.Parameters.AddWithValue("@ExpenseDate", ExpenseDate ?? (object)DBNull.Value);
+                    sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
+                    sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
+                    sqlCommand.Parameters.AddWithValue("@File", string.IsNullOrEmpty(ExpenseFile) ? (object)DBNull.Value : ExpenseFile);
+                    sqlCommand.Parameters.AddWithValue("@Description", string.IsNullOrEmpty(ExpenseDescription) ? (object)DBNull.Value : ExpenseDescription);
+                    sqlCommand.Parameters.AddWithValue("@Amount", Amount);
+                    sqlCommand.Parameters.AddWithValue("@Rate", Rate);
+                    sqlCommand.Parameters.AddWithValue("@Quantity", Quantity);
+                    sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
+                    // EmpId and OrgId usually don't change during edit, but included for completeness
+                    sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
+                    sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+
+                    // Use your existing GetDataTable method
+                    DataTable dt = objDAL.GetDataTable(sqlCommand);
+
+                    // Check if any row was returned
+                    if (dt.Rows.Count > 0)
+                    {
+                        return Convert.ToInt32(dt.Rows[0]["Id"]);
+                    }
+
+                    return 0; // No record updated
+                }
+            }
+        }
         #endregion
 
 
@@ -1754,7 +1815,7 @@ namespace BLL
                 using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
                 {
                     dbSqlCommand.CommandText = "Proc_AllGetCategory";
-                    dbSqlCommand.CommandType = CommandType.StoredProcedure;                    
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
                     return objDALCIILibrary.GetDataTable(dbSqlCommand);
 
                 }
@@ -1817,7 +1878,7 @@ namespace BLL
                 }
             }
         }
-        public DataTable GetBINDROLEWISEMENU(int  RoleID)
+        public DataTable GetBINDROLEWISEMENU(int RoleID)
         {
             using (SqlCommand dbSqlCommand = new SqlCommand())
             {
@@ -1866,7 +1927,7 @@ namespace BLL
                 }
             }
         }
-        public int CityMaster_CRUD(int id,int stateID, string CityName, int IsActive, string CreatedBy, string Action)
+        public int CityMaster_CRUD(int id, int stateID, string CityName, int IsActive, string CreatedBy, string Action)
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
             {
@@ -1886,7 +1947,7 @@ namespace BLL
                 }
             }
         }
-        public int AreaMaster_CRUD(int id, int CityID, string AreaName,int pincode, int IsActive, string CreatedBy, string Action)
+        public int AreaMaster_CRUD(int id, int CityID, string AreaName, int pincode, int IsActive, string CreatedBy, string Action)
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
             {
@@ -1935,17 +1996,17 @@ namespace BLL
                 using (SqlCommand sqlCommand = new SqlCommand())
                 {
                     sqlCommand.CommandText = "proc_AddSettlementAmount";
-					sqlCommand.CommandText = "SubCategory_master_CRUD";
+                    sqlCommand.CommandText = "SubCategory_master_CRUD";
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@SubCategoryID", id);
                     sqlCommand.Parameters.AddWithValue("@CategoryID", CategoryID);
-					sqlCommand.Parameters.AddWithValue("@CustomerId", CustomerId);
+                    sqlCommand.Parameters.AddWithValue("@CustomerId", CustomerId);
                     sqlCommand.Parameters.AddWithValue("@SubCategoryName", SubCategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
                     sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
-					sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
+                    sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
                     sqlCommand.Parameters.AddWithValue("@Name", FirstName);
                     sqlCommand.Parameters.AddWithValue("@TransactionId", TransactionId);
 
@@ -1969,7 +2030,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
                     sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
-					sqlCommand.Parameters.AddWithValue("@SettlementAmount", SettlementAmt);
+                    sqlCommand.Parameters.AddWithValue("@SettlementAmount", SettlementAmt);
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
             }
@@ -1990,14 +2051,14 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@MenuUrl", MenuUrl);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
                     //sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
-                   // sqlCommand.Parameters.AddWithValue("@Action", Action);
+                    // sqlCommand.Parameters.AddWithValue("@Action", Action);
 
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
             }
         }
         //add Role
-        public int Role_master_CRUD(int RoleId, string Role,  int IsActive, string CreatedBy, string Action)
+        public int Role_master_CRUD(int RoleId, string Role, int IsActive, string CreatedBy, string Action)
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
             {
@@ -2016,7 +2077,7 @@ namespace BLL
                 }
             }
         }
-	#region Get Due Amount Details
+        #region Get Due Amount Details
         public DataTable GetDueAmountDetails()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -2033,9 +2094,9 @@ namespace BLL
                 }
             }
         }
-		#endregion
-		
-		#region Add Settlement Amount with Remarks
+        #endregion
+
+        #region Add Settlement Amount with Remarks
         public Int32 CustomerId { get; set; }
         public string AddSettlementAmount()
         {
@@ -2061,7 +2122,7 @@ namespace BLL
             }
         }
         #endregion
-		#region Bind Caregory
+        #region Bind Caregory
         public DataTable BindWSCategory()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -2077,7 +2138,7 @@ namespace BLL
             }
         }
         #endregion
-		public DataTable FetchTransactionDetail()
+        public DataTable FetchTransactionDetail()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
             {
@@ -2096,7 +2157,7 @@ namespace BLL
 
 
         //add/update menu
-		#region Insert update rolewise menu
+        #region Insert update rolewise menu
         public int INSERTUPDATEROLEWISEMENU(int RoleId, int MenuID, bool IsChecked)
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
