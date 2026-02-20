@@ -24,6 +24,7 @@ namespace WSBillingMaster.Pages
             ddlSkills.Items.Add(new ListItem("Electrician", "2"));
             ddlSkills.Items.Add(new ListItem("Carpenter", "3"));
 
+
             // Also bind edit dropdown if exists
             if (ddlEditSkills != null)
             {
