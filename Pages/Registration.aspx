@@ -45,7 +45,7 @@
 
         //for experience
 
-        
+
 
 
 
@@ -122,115 +122,7 @@
 
             document.querySelectorAll('.invalid-feedback').forEach(f => f.style.display = 'none');
 
-            // Aadhaar
-            let aadhar = document.getElementById('<%= txtAadhar.ClientID %>');
-            if (aadhar.value.trim().length !== 12) {
-                showError(aadhar, "Enter 12-digit Aadhaar Number");
-                isValid = false;
-            }
-
-            // File Aadhaar
-           <%-- let fuAadhar = document.getElementById('<%= fuAadhar.ClientID %>');
-            if (fuAadhar.files.length === 0) {
-                showError(fuAadhar, "Upload Aadhaar document");
-                isValid = false;
-            }--%>
-
-            // Skilled In
-            let skill = document.getElementById('<%= ddlSkills.ClientID %>');
-            if (skill.value === "") {
-                showError(skill, "Please select a skill");
-                isValid = false;
-            }
-
-            // First Name
-            let fname = document.getElementById('<%= txtFirstName.ClientID %>');
-            if (fname.value.trim() === "") {
-                showError(fname, "Enter First Name");
-                isValid = false;
-            }
-
-            // Last Name
-            let lname = document.getElementById('<%= txtLastName.ClientID %>');
-            if (lname.value.trim() === "") {
-                showError(lname, "Enter Last Name");
-                isValid = false;
-            }
-
-            // Father's Name
-            let father = document.getElementById('<%= txtFatherName.ClientID %>');
-            if (father.value.trim() === "") {
-                showError(father, "Enter Father's Name");
-                isValid = false;
-            }
-
-            // Gender
-            let gender = document.getElementById('<%= ddlGender.ClientID %>');
-            if (gender.value === "") {
-                showError(gender, "Select Gender");
-                isValid = false;
-            }
-
-            // Birth Place
-            let bplace = document.getElementById('<%= txtBirthPlace.ClientID %>');
-            if (bplace.value.trim() === "") {
-                showError(bplace, "Enter Birth Place");
-                isValid = false;
-            }
-
-            // Marital Status
-            let marital = document.getElementById('<%= ddlMarital.ClientID %>');
-            if (marital.value === "") {
-                showError(marital, "Select Marital Status");
-                isValid = false;
-            }
-
-            // Address
-            let address = document.getElementById('<%= txtAddress.ClientID %>');
-            if (address.value.trim() === "") {
-                showError(address, "Enter Age");
-                isValid = false;
-            }
-
-            // Height
-            let height = document.getElementById('<%= txtHeight.ClientID %>');
-            if (height.value.trim() === "") {
-                showError(height, "Enter Height");
-                isValid = false;
-            }
-
-            // Weight
-            let weight = document.getElementById('<%= txtWeight.ClientID %>');
-            if (weight.value.trim() === "") {
-                showError(weight, "Enter Weight");
-                isValid = false;
-            }
-
-            // Emergency Phone
-            let ephone = document.getElementById('<%= txtEmergencyPhone.ClientID %>');
-            if (ephone.value.trim() === "") {
-                showError(ephone, "Enter Emergency Phone");
-                isValid = false;
-            }
-
-
-
-
-
-
-            // Education File
-          <%--  let fuEdu = document.getElementById('<%= fuEducation.ClientID %>');
-            if (fuEdu.files.length === 0) {
-                showError(fuEdu, "Upload Educational Certificate");
-                isValid = false;
-            }--%>
-
-            // Phone Number
-            let phone = document.getElementById('<%= txtLoginPhone.ClientID %>');
-            if (phone.value.trim().length !== 10) {
-                showError(phone, "Enter 10-digit Phone Number");
-                isValid = false;
-            }
+            
 
             // If Valid → Show Success Message
             if (isValid) {
@@ -248,21 +140,21 @@
     <form id="form1" runat="server" enctype="multipart/form-data" class="container py-4">
 
         <div class="card">
+<div class="card-header text-white d-flex justify-content-between align-items-center"
+     style="background-color: #F48B1E">
 
-            <div class="d-flex justify-content-between align-items-center p-3 text-white"
-        style="background-color:#F48B1E;">
-                <h4 class="mb-0">Job Registration</h4>
+    <span>Job Registration</span>
 
-        <!-- Hamburger -->
-        <button class="btn text-white" type="button"
+    <!-- Three Line Menu -->
+    <button type="button"
+            class="btn text-white"
             data-bs-toggle="offcanvas"
-            data-bs-target="#editPanel">
-            <span style="font-size:26px;">&#9776;</span>
-        </button>
-    </div>
+            data-bs-target="#editPanel"
+            style="font-size:22px; border:none;">
+        &#9776;
+    </button>
 
-
-            <div class="card-body">
+</div>            <div class="card-body">
                 <div id="successMessage" class="alert alert-success" style="display: none;">
                     Registration submitted successfully!
                 </div>
@@ -447,10 +339,11 @@
         </div>
     </div>
 
-        <div class="col-md-4">
-        <label>Upload Resume</label>
-        <asp:FileUpload ID="FileUpload3" runat="server" CssClass="form-control" />
-    </div>
+    
+     <div class="col-md-4">
+     <label>Upload Resume</label>
+     <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-control" />
+ </div>
 
 </div>
 
@@ -674,184 +567,170 @@
 
 
 
+                <!-- ================= MY PROFILE SECTION ================= -->
+<asp:Panel ID="pnlMyDetails" runat="server" Visible="false" CssClass="card mt-4">
+    <div class="card-header bg-success text-white">
+        My Submitted Details
+    </div>
+    <div class="card-body">
+
+        <p><b>Aadhar:</b> <asp:Label ID="lblViewAadhar" runat="server" /></p>
+        <p><b>Name:</b> <asp:Label ID="lblViewName" runat="server" /></p>
+        <p><b>Phone:</b> <asp:Label ID="lblViewPhone" runat="server" /></p>
+        <p><b>Gender:</b> <asp:Label ID="lblViewGender" runat="server" /></p>
+        <p><b>Birth Place:</b> <asp:Label ID="lblViewBirthPlace" runat="server" /></p>
+        <p><b>Marital Status:</b> <asp:Label ID="lblViewMarital" runat="server" /></p>
+        <p><b>Height:</b> <asp:Label ID="lblViewHeight" runat="server" /></p>
+        <p><b>Weight:</b> <asp:Label ID="lblViewWeight" runat="server" /></p>
+        <p><b>Emergency Phone:</b> <asp:Label ID="lblViewEmergencyPhone" runat="server" /></p>
+
+        <%--<asp:Button ID="btnEditDetails" runat="server"
+            Text="Edit Details"
+            CssClass="btn btn-warning"
+            OnClick="btnEditDetails_Click" />--%>
+    </div>
+</asp:Panel>
+<!-- ======================================================= -->
 
 
-                 <!-- OFFCANVAS EDIT PANEL -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="editPanel">
-        <div class="offcanvas-header bg-light">
-            <h5>Edit Your Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+
+  
+
+
+    <!-- ================= OFFCANVAS PANEL ================= -->
+<div class="offcanvas offcanvas-end"
+     tabindex="-1"
+     id="editPanel"
+     style="width:450px;">
+
+    <div class="offcanvas-header bg-light">
+        <h5>Edit Your Details</h5>
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"></button>
+    </div>
+
+    <div class="offcanvas-body">
+
+    <asp:Label ID="lblEditMessage" runat="server" CssClass="text-success fw-bold"></asp:Label>
+
+    <div class="container-fluid">
+        <div class="row g-3">
+
+            <!-- Aadhaar Number -->
+            <div class="col-12">
+                <label class="form-label">Aadhar Number</label>
+                <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control"
+                    MaxLength="12" placeholder="Enter 12-digit Aadhaar number"
+                    onkeypress="allowOnlyNumbers(event)" />
+            </div>
+
+            <!-- Skilled In -->
+            <div class="col-12">
+                <label class="form-label">Skilled In</label>
+                <asp:DropDownList ID="DropDownList2" runat="server" CssClass="form-select">
+                    <asp:ListItem Text="Select your skill" Value="" />
+                </asp:DropDownList>
+            </div>
+
+            <!-- First Name -->
+            <div class="col-md-6">
+                <label class="form-label">First Name</label>
+                <asp:TextBox ID="TextBox4" runat="server" CssClass="form-control"
+                    onkeypress="allowOnlyLetters(event)" />
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6">
+                <label class="form-label">Last Name</label>
+                <asp:TextBox ID="TextBox5" runat="server" CssClass="form-control"
+                    onkeypress="allowOnlyLetters(event)" />
+            </div>
+
+            <!-- Father's Name -->
+            <div class="col-12">
+                <label class="form-label">Father's Name</label>
+                <asp:TextBox ID="TextBox6" runat="server" CssClass="form-control"
+                    placeholder="Enter Father's Name"
+                    onkeypress="allowOnlyLetters(event)" />
+            </div>
+
+            <!-- Phone -->
+            <div class="col-md-6">
+                <label class="form-label">Phone Number</label>
+                <asp:TextBox ID="TextBox7" runat="server" CssClass="form-control"
+                    MaxLength="10" placeholder="Enter mobile number"
+                    onkeypress="allowOnlyNumbers(event)" />
+            </div>
+
+            <!-- Gender -->
+            <div class="col-md-6">
+                <label class="form-label">Gender</label>
+                <asp:DropDownList ID="DropDownList3" runat="server" CssClass="form-select">
+                    <asp:ListItem Text="Select" Value="" />
+                    <asp:ListItem>Male</asp:ListItem>
+                    <asp:ListItem>Female</asp:ListItem>
+                </asp:DropDownList>
+            </div>
+
+            <!-- Birth Place -->
+            <div class="col-12">
+                <label class="form-label">Birth Place</label>
+                <asp:TextBox ID="TextBox8" runat="server" CssClass="form-control"
+                    placeholder="Enter area name"
+                    onkeypress="allowOnlyLetters(event)" />
+            </div>
+
+            <!-- Age -->
+            <div class="col-md-6">
+                <label class="form-label">Age</label>
+                <asp:TextBox ID="TextBox9" runat="server" CssClass="form-control" />
+            </div>
+
+            <!-- Experience Type -->
+            <div class="col-md-6">
+                <label class="form-label">Experience Type</label>
+                <select id="experienceType" class="form-select">
+                    <option value="" selected disabled>Select</option>
+                    <option value="fresher">Fresher</option>
+                    <option value="experienced">Experienced</option>
+                    <option value="exservice">Ex-Service</option>
+                </select>
+            </div>
+
+            <!-- Experience Duration -->
+            <div class="col-12 hidden" id="experienceDuration">
+                <label class="form-label">Duration</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="experienceYears"
+                        placeholder="Enter number" min="0">
+                    <select class="form-select" id="experienceUnit">
+                        <option value="months">Months</option>
+                        <option value="years">Years</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Upload Resume -->
+            <div class="col-12">
+                <label class="form-label">Upload Resume</label>
+                <asp:FileUpload ID="FileUpload4" runat="server" CssClass="form-control" />
+            </div>
+
         </div>
 
-        <div class="offcanvas-body">
-
-            <asp:Label ID="lblEditMessage" runat="server" CssClass="text-success fw-bold"></asp:Label>
-
-                               <!-- Aadhaar Number -->
-                    <div class="col-12">
-                        <label>Aadhar Number</label>
-                        <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control"
-                            MaxLength="12" placeholder="Enter 12-digit Aadhaar number"
-                            onkeypress="allowOnlyNumbers(event)" />
-                    </div>
-
-              
-
-                    <!-- Skilled In -->
-                    <div class="col-12">
-                        <label>Skilled In</label>
-                        <asp:DropDownList ID="DropDownList2" runat="server" CssClass="form-select">
-                            <asp:ListItem Text="Select your skill" Value="" />
-                        </asp:DropDownList>
-                    </div>
-
-                    <!-- First Name -->
-                    <div class="col-12">
-                        <label>First Name</label>
-                        <asp:TextBox ID="TextBox4" runat="server" CssClass="form-control"
-                            onkeypress="allowOnlyLetters(event)" />
-                    </div>
-
-                    <!-- Last Name -->
-                    <div class="col-12">
-                        <label>Last Name</label>
-                        <asp:TextBox ID="TextBox5" runat="server" CssClass="form-control"
-                            onkeypress="allowOnlyLetters(event)" />
-                    </div>
-
-                    <!-- Father's Name -->
-                    <div class="col-12">
-                        <label>Father's Name</label>
-                        <asp:TextBox ID="TextBox6" runat="server" CssClass="form-control"
-                            placeholder="Enter Father's Name" onkeypress="allowOnlyLetters(event)" />
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div class="col-12">
-                        <label>Phone Number </label>
-                        <asp:TextBox ID="TextBox7" runat="server" CssClass="form-control" MaxLength="10"
-                            placeholder="Enter mobile number" onkeypress="allowOnlyNumbers(event)" />
-                    </div>
-
-
-
-
-
-                    <!-- Gender -->
-                    <div class="col-12">
-                        <label>Gender</label>
-                        <asp:DropDownList ID="DropDownList3" runat="server" CssClass="form-select">
-                            <asp:ListItem Text="Select" Value="" />
-                            <asp:ListItem>Male</asp:ListItem>
-                            <asp:ListItem>Female</asp:ListItem>
-                        </asp:DropDownList>
-                    </div>
-
-                    <!-- Birth Place -->
-                    <div class="col-12">
-                        <label>Birth Place</label>
-                        <asp:TextBox ID="TextBox8" runat="server" CssClass="form-control"
-                            placeholder="Enter area name" onkeypress="allowOnlyLetters(event)" />
-                    </div>
-
-                  
-
-               
-
-
-
-
-
-
-
-
-
-
-
-
-                    <!-- Address -->
-                    <div class="col-12">
-                        <label>Age</label>
-                        <asp:TextBox ID="TextBox9" runat="server" CssClass="form-control"
-                            Rows="2"></asp:TextBox>
-                    </div>
-
-
-              
-
-
-
-                   
-
-
-    <!-- Candidate Experience -->
-    <div class="col-12">
-        <label class="form-label">Experience Type</label>
-        <select id="experienceType" class="form-select">
-            <option value="" selected disabled>Select</option>
-            <option value="fresher">Fresher</option>
-            <option value="experienced">Experienced</option>
-            <option value="exservice">Ex-Service</option>
-        </select>
+  
     </div>
 
-    <!-- Experience Duration -->
-    <div class="col-12 hidden" id="experienceDuration">
-        <label class="form-label">Duration</label>
-        <div class="input-group">
-            <input type="number" class="form-control" id="experienceYears" placeholder="Enter number" min="0">
-            <select class="form-select" id="experienceUnit">
-                <option value="months">Months</option>
-                <option value="years">Years</option>
-            </select>
-        </div>
-    </div>
-
-        <div class="col-12">
-        <label>Upload Resume</label>
-        <asp:FileUpload ID="FileUpload4" runat="server" CssClass="form-control" />
-    </div>
-
-
-
-
-                        <h5>Education Details</h5>
-
-             <asp:TextBox ID="TextBox10" runat="server" CssClass="form-control mb-2"
-     placeholder="School/University Name" onkeypress="allowOnlyLetters(event)" />
- <label>Qualification</label>
- <asp:DropDownList ID="DropDownList4" runat="server" CssClass="form-select mb-2">
-     <asp:ListItem>10th</asp:ListItem>
-     <asp:ListItem>12th</asp:ListItem>
-     <asp:ListItem>Graduate</asp:ListItem>
-     <asp:ListItem>Post Graduate</asp:ListItem>
- </asp:DropDownList>
-
-
-
-
-                                    <h5>Bank Details</h5>
-
-
-             <asp:TextBox ID="TextBox11" runat="server" CssClass="form-control mb-2"
-     placeholder="Account Number" onkeypress="allowOnlyNumbers(event)" />
- <asp:TextBox ID="TextBox12" runat="server" CssClass="form-control mb-2"
-     placeholder="IFSC Code" />
- <asp:TextBox ID="TextBox13" runat="server" CssClass="form-control"
-     placeholder="Bank Name" onkeypress="allowOnlyLetters(event)" />
-
- <button type="button" class="btn w-100" Style="background-color: #8EC243">
-    Save Changes
+    <button type="button"
+        class="btn btn-lg px-4 text-white"
+        style="background-color:#8EC243;">
+    Save
 </button>
 
-
-
-        </div>
-    </div>
-
-
-    </form>
-
+</div>
+<!-- =================================================== -->
+      </form>
 
 </body>
 
