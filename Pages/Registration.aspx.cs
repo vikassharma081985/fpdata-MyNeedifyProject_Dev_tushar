@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace WSBillingMaster.Pages
 {
@@ -12,113 +10,55 @@ namespace WSBillingMaster.Pages
             if (!IsPostBack)
             {
                 BindSkills();
-                LoadUserData();   // NEW
             }
         }
 
         private void BindSkills()
         {
             ddlSkills.Items.Clear();
-            ddlSkills.Items.Add(new ListItem("-- Select Skill --", ""));
-            ddlSkills.Items.Add(new ListItem("Plumber", "1"));
-            ddlSkills.Items.Add(new ListItem("Electrician", "2"));
-            ddlSkills.Items.Add(new ListItem("Carpenter", "3"));
-
-            // Also bind edit dropdown if exists
-            if (ddlEditSkills != null)
-            {
-                ddlEditSkills.Items.Clear();
-                ddlEditSkills.Items.Add(new ListItem("-- Select Skill --", ""));
-                ddlEditSkills.Items.Add(new ListItem("Plumber", "1"));
-                ddlEditSkills.Items.Add(new ListItem("Electrician", "2"));
-                ddlEditSkills.Items.Add(new ListItem("Carpenter", "3"));
-            }
+            ddlSkills.Items.Add(new System.Web.UI.WebControls.ListItem("-- Select Skill --", ""));
+            ddlSkills.Items.Add(new System.Web.UI.WebControls.ListItem("Plumber", "Plumber"));
+            ddlSkills.Items.Add(new System.Web.UI.WebControls.ListItem("Electrician", "Electrician"));
+            ddlSkills.Items.Add(new System.Web.UI.WebControls.ListItem("Carpenter", "Carpenter"));
         }
 
-        // =========================
-        // LOAD USER DATA (DEMO)
-        // Replace with DB Fetch
-        // =========================
-        private void LoadUserData()
-        {
-            // Example demo data
-            txtFirstName.Text = "Rahul";
-            txtLastName.Text = "Sharma";
-            txtLoginPhone.Text = "9876543210";
-            ddlSkills.SelectedValue = "2";
-
-            // Load into edit panel
-            if (txtEditFirstName != null)
-            {
-                txtEditFirstName.Text = txtFirstName.Text;
-                txtEditLastName.Text = txtLastName.Text;
-                txtEditPhone.Text = txtLoginPhone.Text;
-                ddlEditSkills.SelectedValue = ddlSkills.SelectedValue;
-            }
-        }
-
-        // =========================
-        // MAIN SUBMIT (Registration)
-        // =========================
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             try
             {
-                lblStatus.Text = "";
-                lblStatus.CssClass = "fw-bold d-block mb-2";
-
-                // ===== Validation =====
-                if (txtAadhar.Text.Trim().Length != 12)
+                if (string.IsNullOrEmpty(txtAadhar.Text) || txtAadhar.Text.Trim().Length != 12)
                 {
-                    ShowError("Enter a valid 12-digit Aadhaar number.");
+                    ShowError("Enter valid 12-digit Aadhaar.");
                     return;
                 }
 
-                if (ddlSkills.SelectedValue == "")
+                if (!fuAadhar.HasFile || !fuEducation.HasFile)
                 {
-                    ShowError("Please select a skill.");
+                    ShowError("Upload required documents.");
                     return;
                 }
 
-                if (txtFirstName.Text.Trim() == "" || txtLastName.Text.Trim() == "")
-                {
-                    ShowError("Enter First and Last Name.");
-                    return;
-                }
+                string uploadPath = Server.MapPath("~/Uploads/");
+                if (!Directory.Exists(uploadPath))
+                    Directory.CreateDirectory(uploadPath);
 
-                if (txtLoginPhone.Text.Trim().Length != 10)
-                {
-                    ShowError("Enter 10-digit Phone Number.");
-                    return;
-                }
-
-                if (!fuAadhar.HasFile)
-                {
-                    ShowError("Please upload Aadhaar document.");
-                    return;
-                }
-
-                if (!fuEducation.HasFile)
-                {
-                    ShowError("Please upload Educational Certificate.");
-                    return;
-                }
-
-                // ===== File Upload =====
-                string uploadFolder = Server.MapPath("~/Uploads/");
-                if (!Directory.Exists(uploadFolder))
-                    Directory.CreateDirectory(uploadFolder);
-
-                string aadharFile = SaveFile(fuAadhar, uploadFolder);
-                string photoFile = fuPhoto.HasFile ? SaveFile(fuPhoto, uploadFolder) : "";
-                string eduFile = SaveFile(fuEducation, uploadFolder);
-
-                // TODO: Save to Database Here
+                SaveFile(fuAadhar, uploadPath);
+                SaveFile(fuEducation, uploadPath);
 
                 lblStatus.Text = "Registration submitted successfully!";
                 lblStatus.CssClass = "text-success fw-bold";
 
-                ClearForm();
+                lblViewAadhar.Text = txtAadhar.Text;
+                lblViewName.Text = txtFirstName.Text + " " + txtLastName.Text;
+                lblViewPhone.Text = txtLoginPhone.Text;
+                lblViewGender.Text = ddlGender.SelectedValue;
+                lblViewBirthPlace.Text = txtBirthPlace.Text;
+                lblViewMarital.Text = ddlMarital.SelectedValue;
+                lblViewHeight.Text = txtHeight.Text + " cm";
+                lblViewWeight.Text = txtWeight.Text + " kg";
+                lblViewEmergencyPhone.Text = txtEmergencyPhone.Text;
+
+                pnlMyDetails.Visible = true;
             }
             catch (Exception ex)
             {
@@ -126,51 +66,36 @@ namespace WSBillingMaster.Pages
             }
         }
 
-        // =========================
-        // EDIT PANEL UPDATE
-        // =========================
-        protected void btnUpdate_Click(object sender, EventArgs e)
+        protected void btnEditDetails_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Update main form fields
-                txtFirstName.Text = txtEditFirstName.Text;
-                txtLastName.Text = txtEditLastName.Text;
-                txtLoginPhone.Text = txtEditPhone.Text;
-                ddlSkills.SelectedValue = ddlEditSkills.SelectedValue;
+            txtAadhar.Text = lblViewAadhar.Text;
 
-                // TODO: Update database here
+            string[] nameParts = lblViewName.Text.Split(' ');
+            if (nameParts.Length > 0) txtFirstName.Text = nameParts[0];
+            if (nameParts.Length > 1) txtLastName.Text = nameParts[1];
 
-                lblStatus.Text = "Details updated successfully!";
-                lblStatus.CssClass = "text-success fw-bold";
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex.Message);
-            }
+            txtLoginPhone.Text = lblViewPhone.Text;
+            ddlGender.SelectedValue = lblViewGender.Text;
+            txtBirthPlace.Text = lblViewBirthPlace.Text;
+            ddlMarital.SelectedValue = lblViewMarital.Text;
+
+            txtHeight.Text = lblViewHeight.Text.Replace(" cm", "");
+            txtWeight.Text = lblViewWeight.Text.Replace(" kg", "");
+            txtEmergencyPhone.Text = lblViewEmergencyPhone.Text;
+
+            pnlMyDetails.Visible = false;
         }
 
-        private string SaveFile(FileUpload fu, string folder)
+        private void SaveFile(System.Web.UI.WebControls.FileUpload fu, string folder)
         {
             string fileName = DateTime.Now.Ticks + "_" + Path.GetFileName(fu.FileName);
-            string fullPath = Path.Combine(folder, fileName);
-            fu.SaveAs(fullPath);
-            return fileName;
+            fu.SaveAs(Path.Combine(folder, fileName));
         }
 
         private void ShowError(string message)
         {
             lblStatus.Text = message;
             lblStatus.CssClass = "text-danger fw-bold";
-        }
-
-        private void ClearForm()
-        {
-            txtAadhar.Text = "";
-            txtFirstName.Text = "";
-            txtLastName.Text = "";
-            txtLoginPhone.Text = "";
-            ddlSkills.SelectedIndex = 0;
         }
     }
 }
