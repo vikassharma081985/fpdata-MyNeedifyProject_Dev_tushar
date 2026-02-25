@@ -47,6 +47,12 @@
             }
         }
     </style>
+
+    <style>
+    .order-summary-wrapper {
+        margin-bottom: 250px; /* spacing below section */
+    }
+</style>
     <div class="container frm" style="padding-bottom: 25px; margin-bottom:400px;">
         <div class="col-md-8 col-xs-12">
             <div class="Header">
@@ -131,7 +137,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 hidden-xs">
+        <div class="col-md-4 order-summary-wrapper">
             <div style="width: 100%; float: left;">
 
                 <div class="Header">
@@ -187,6 +193,7 @@
 
             </div>
         </div>
+
     </div>
     <script>
         function ValidateAddress() {
