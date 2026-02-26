@@ -1,200 +1,269 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.Master" AutoEventWireup="true" CodeBehind="PlaceOrder.aspx.cs" Inherits="FaduPrice.Pages.PlaceOrder" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.Master"
+    AutoEventWireup="true" CodeBehind="PlaceOrder.aspx.cs"
+    Inherits="FaduPrice.Pages.PlaceOrder" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%--<script src="../Js/jquery.min.js"></script>--%>
-    <style>
-        .Header {
-            text-align: left;
-            background-color: #f1f1f1;
-            color: #000;
-            padding: 10px;
-            font-size: 18px;
-            margin-top: 25px;
-            border: 1px solid #ccc;
-        }
 
-        .Section {
-            text-align: left;
-            padding: 25px;
-            color: #999;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            box-shadow: 1px 4px 5px #999;
-            margin-left: 0px !important;
-            margin-right: 0px !important;
-        }
+<style>
+body{
+    background:#f5f5f5;
+    font-family:'Segoe UI',sans-serif;
+}
 
-        .MyControl {
-            margin-top: 5px;
-            font-size: 14px;
-            color: #999;
-        }
+.container{
+    margin-top:20px;
+}
 
-        input[type='radio'] {
-            transform: scale(2);
-        }
+/* Section Title */
+.checkout-title{
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:15px;
+}
 
-        .DelAddress {
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
+/* Card Layout */
+.checkout-card{
+    background:#fff;
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
 
+/* Address box */
+.address-box{
+    border:1px solid #eee;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:15px;
+    transition:0.3s;
+    background:#fff;
+}
 
-        @media (max-width: 768px) {
+.address-box:hover{
+    background:#fafafa;
+}
 
-            .frm {
-                margin-bottom:600px !important;
-            }
-        }
-    </style>
+.address-name{
+    font-weight:600;
+    font-size:16px;
+}
 
-    <style>
-    .order-summary-wrapper {
-        margin-bottom: 250px; /* spacing below section */
+.address-text{
+    font-size:14px;
+    color:#555;
+    line-height:22px;
+}
+
+/* Buttons */
+.btn-primary-custom{
+    background:#e30613;
+    border:none;
+    border-radius:10px;
+    padding:14px;
+    width:100%;
+    color:#fff;
+    font-weight:600;
+    font-size:15px;
+}
+
+.btn-primary-custom:hover{
+    background:#c80510;
+}
+
+/* Inputs */
+.form-control{
+    border-radius:10px;
+    height:48px;
+    margin-bottom:12px;
+    font-size:14px;
+}
+
+/* Summary */
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.summary-total{
+    font-size:18px;
+    font-weight:700;
+}
+
+input[type="radio"]{
+    transform:scale(1.2);
+}
+
+/* ---------------- MOBILE DESIGN ---------------- */
+
+@media (max-width: 768px){
+
+    .row{
+        display:flex;
+        flex-direction:column-reverse;
     }
+
+    .col-md-8,
+    .col-md-4{
+        width:100%;
+        max-width:100%;
+        flex:100%;
+    }
+
+    .checkout-card{
+        border-radius:14px;
+        padding:15px;
+    }
+
+    .address-box{
+        border-radius:14px;
+    }
+
+    .checkout-title{
+        font-size:18px;
+    }
+
+    /* Sticky bottom order button */
+    #PaymentSection{
+        position:fixed;
+        bottom:0;
+        left:0;
+        right:0;
+        background:#fff;
+        padding:15px;
+        box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+        z-index:999;
+    }
+
+    body{
+        padding-bottom:120px;
+    }
+
+}
 </style>
-    <div class="container frm" style="padding-bottom: 25px; margin-bottom:400px;">
-        <div class="col-md-8 col-xs-12">
-            <div class="Header">
-                Delivery Address
-            </div>
-            <div class="row">
-                <asp:Repeater runat="server" ID="rptUserAddress">
-                    <ItemTemplate>
-                        <div class="col-md-6 col-xs-12 DelAddress">
-                            <div style="border: 1px solid #ccc; background-color: #fff; padding: 15px;">
-                                <p><strong><span id="<%#"spName_"+Eval("ContactId") %>"><%#Eval("Name") %> </span></strong></p>
-                                <p><span id="<%#"spBuilding_"+Eval("ContactId") %>"><%#Eval("Building") %></span></p>
-                                <p><span id="<%#"spLocality_"+Eval("ContactId") %>"><%#Eval("Locality") %></span></p>
-                                <p><span id="<%#"spCity_"+Eval("ContactId") %>"><%#Eval("City") %></span>, <span id="<%#"spState_"+Eval("ContactId") %>"><%#Eval("State") %></span>-<span id="<%#"spPincode_"+Eval("ContactId") %>"><%#Eval("Pincode") %></span></p>
-                                <p><span id="<%#"spMobile_"+Eval("ContactId") %>"><%# Convert.ToString(Eval("Mobile")) %> </p>
-                                <p>
-                                    <input type="button" style="background-color: #7C519B; color: #fff" class="btn" onclick="return DeliverHere(<%#Eval("ContactId") %>, this);" value="Deliver Here" />
-                                    <input type="hidden" value="<%#Eval("ContactId") %>" />
-                                </p>
-                            </div>
-                        </div>
-                    </ItemTemplate>
-                </asp:Repeater>
 
+<div class="container">
 
+<div class="row">
 
-            </div>
+<!-- LEFT SIDE -->
+<div class="col-md-8">
 
-            <div id="AddressSection" class="row Section">
-                <div class="col-md-6 col-xs-12">
-                    <asp:TextBox runat="server" ID="txtName" class="form-control MyControl" placeholder="Full Name" />
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    <asp:TextBox runat="server" ID="txtMobile" class="form-control MyControl" placeholder="Mobile" />
+<div class="checkout-title">Delivery Address</div>
 
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    <asp:TextBox runat="server" ID="txtBuilding" class="form-control MyControl" placeholder="House Number/Building/Apartment" />
+<asp:Repeater runat="server" ID="rptUserAddress">
+<ItemTemplate>
+<div class="address-box">
 
-                </div>
+<div class="address-name">
+<span id="<%#"spName_"+Eval("ContactId") %>"><%#Eval("Name") %></span>
+</div>
 
-                <div class="col-md-6 col-xs-12">
-                    <%--<asp:TextBox runat="server" ID="txtCity" class="form-control MyControl" placeholder="City" />--%>
+<div class="address-text">
+<span id="<%#"spBuilding_"+Eval("ContactId") %>"><%#Eval("Building") %></span><br />
+<span id="<%#"spLocality_"+Eval("ContactId") %>"><%#Eval("Locality") %></span><br />
+<span id="<%#"spCity_"+Eval("ContactId") %>"><%#Eval("City") %></span>,
+<span id="<%#"spState_"+Eval("ContactId") %>"><%#Eval("State") %></span> -
+<span id="<%#"spPincode_"+Eval("ContactId") %>"><%#Eval("Pincode") %></span><br />
+📞 <span id="<%#"spMobile_"+Eval("ContactId") %>"><%#Eval("Mobile") %></span>
+</div>
 
-                    <select id="ddlStateMaster" class="form-control MyControl">
-                    </select>
+<br />
 
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    <select id="ddlCityMaster" class="form-control MyControl">
-                    </select>
-                    <%--<asp:TextBox runat="server" ID="txtState" class="form-control MyControl" placeholder="State" />--%>
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    <%--<asp:TextBox runat="server" ID="txtLocality" class="form-control MyControl" placeholder="Street/Locality/Area" />--%>
-                    <select id="ddlLocality" class="form-control MyControl">
-                    </select>
-                </div>
-                <div class="col-md-6 col-xs-12">
-                    <asp:TextBox runat="server" ID="txtPincode" class="form-control MyControl" placeholder="Pincode" />
-                </div>
-                <div class="col-md-6 col-xs-12" style="text-align: center;">
-                    <asp:Button runat="server" ID="btnAddress" class="btn btn-warning" OnClientClick="return ValidateAddress();" Style="margin-top: 5px; font-weight: 500; width: 100%;" Text="Deliver Here" />
+<input type="button"
+class="btn-primary-custom"
+onclick="return DeliverHere(<%#Eval("ContactId") %>, this);"
+value="Deliver Here" />
 
-                </div>
-            </div>
+</div>
+</ItemTemplate>
+</asp:Repeater>
 
-            <div id="PaymentSection" style="display: none;">
-                <div class="Header">
-                    Payment Option
-                </div>
-                <div class="row Section">
-                    <div class="col-md-6 col-xs-12">
-                        <input type="radio" checked="checked" id="rdbCOD" />
-                        <span style="margin-left: 15px;">Cash on delivery</span>
-                        <p style="font-size: 12px; color: #09f; margin-top: 5px; margin-left: 30px;">Delivery by Monday, 22nd jan</p>
-                    </div>
-                    <div class="col-md-6 col-xs-12">
-                        <asp:Button runat="server" ID="btnPlaceOrder" class="btn btn-primary" OnClientClick="return PlaceOrder();" Style="margin-top: 5px; font-weight: 500; width: 100%; background-color: #7c519b; background-image: none; border: 1px solid #7c519b" Text="Place Order" />
+<!-- ADD ADDRESS FORM -->
+<div id="AddressSection" class="checkout-card">
 
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 order-summary-wrapper">
-            <div style="width: 100%; float: left;">
+<div class="checkout-title">Add New Address</div>
 
-                <div class="Header">
-                    Order Summary
-                </div>
-                <div class="row Section" style="min-height: 250px; font-size: 14px; color: #000;">
-                    <asp:Repeater runat="server" ID="rptItems">
-                        <ItemTemplate>
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <p><%#Eval("ItemName") %></p>
-                                    <p>Quantity : <%#Eval("ItemQuantity") %></p>
+<asp:TextBox runat="server" ID="txtName" CssClass="form-control" placeholder="Full Name" />
+<asp:TextBox runat="server" ID="txtMobile" CssClass="form-control" placeholder="Mobile Number" />
+<asp:TextBox runat="server" ID="txtBuilding" CssClass="form-control" placeholder="House / Building" />
 
-                                </div>
-                                <div class="col-md-3" style="text-align: right;">
-                                    <p><i class="fa fa-inr"></i><%#Eval("ItemPrice") %> </p>
-                                </div>
-                                <div class="col-md-12">
-                                    <hr style="margin-top: 0px; margin-bottom: 10px;" />
-                                </div>
-                            </div>
-                        </ItemTemplate>
-                    </asp:Repeater>
+<select id="ddlStateMaster" class="form-control"></select>
+<select id="ddlCityMaster" class="form-control"></select>
+<select id="ddlLocality" class="form-control"></select>
 
+<asp:TextBox runat="server" ID="txtPincode" CssClass="form-control" placeholder="Pincode" />
 
-                    <div class="row">
-                        <div class="col-md-9">
-                            <p style="font-weight: 500">Delivery Charges</p>
+<asp:Button runat="server"
+ID="btnAddress"
+CssClass="btn-primary-custom"
+OnClientClick="return ValidateAddress();"
+Text="Save & Deliver Here" />
 
-                        </div>
-                        <div class="col-md-3" style="text-align: right;">
-                            <p style="color: green">Free</p>
-                        </div>
-                        <div class="col-md-12">
-                            <hr style="margin-top: 0px; margin-bottom: 10px;" />
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 20px;">
-                        <div class="col-md-9">
-                            <p><strong>Amount Payable</strong></p>
+</div>
 
-                        </div>
-                        <div class="col-md-3" style="text-align: right;">
-                            <p>
-                                <strong><i class="fa fa-inr"></i>
-                                    <asp:Label Text="0" ID="lblTotal" runat="server" />
-                                </strong>
-                            </p>
-                        </div>
+<!-- PAYMENT SECTION -->
+<div id="PaymentSection" style="display:none;" class="checkout-card">
 
-                    </div>
-                </div>
+<div class="checkout-title">Payment Option</div>
 
-            </div>
-        </div>
+<div style="display:flex; justify-content:space-between; align-items:center;">
+<div>
+<input type="radio" checked="checked" id="rdbCOD" />
+<span style="margin-left:8px;">Cash on Delivery</span>
+</div>
 
-    </div>
+<asp:Button runat="server"
+ID="btnPlaceOrder"
+CssClass="btn-primary-custom"
+OnClientClick="return PlaceOrder();"
+Text="Place Order" />
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE SUMMARY -->
+<div class="col-md-4">
+
+<div class="checkout-card">
+
+<div class="checkout-title">Order Summary</div>
+
+<asp:Repeater runat="server" ID="rptItems">
+<ItemTemplate>
+<div class="summary-row">
+<div>
+<%#Eval("ItemName") %><br />
+Qty: <%#Eval("ItemQuantity") %>
+</div>
+<div>₹ <%#Eval("ItemPrice") %></div>
+</div>
+<hr />
+</ItemTemplate>
+</asp:Repeater>
+
+<div class="summary-row">
+<div>Delivery</div>
+<div style="color:green;">Free</div>
+</div>
+
+<hr />
+
+<div class="summary-row summary-total">
+<div>Total</div>
+<div>₹ <asp:Label ID="lblTotal" runat="server" /></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
     <script>
         function ValidateAddress() {
              
