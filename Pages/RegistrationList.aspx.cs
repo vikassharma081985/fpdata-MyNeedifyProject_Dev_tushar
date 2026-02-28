@@ -81,8 +81,9 @@ namespace WSBillingMaster.Pages
                     }
                     else
                     {
-                        lblMessage.Text = "Error deleting registration.";
-                        lblMessage.CssClass = "text-danger";
+                        BindRegistrationList();
+                        //lblMessage.Text = "Error deleting registration.";
+                        //lblMessage.CssClass = "text-danger";
                     }
                 }
             }

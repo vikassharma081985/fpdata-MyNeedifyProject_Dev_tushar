@@ -2465,7 +2465,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@PhoneNumber", Mobile);
                     sqlCommand.Parameters.AddWithValue("@Gender", Gender);
                     sqlCommand.Parameters.AddWithValue("@BirthPlace", BirthPlace);
-                    sqlCommand.Parameters.AddWithValue("@Age", Convert.ToInt32(Age));
+                    sqlCommand.Parameters.AddWithValue("@Age", int.TryParse(Age, out var age) ? age : 0);
                     sqlCommand.Parameters.AddWithValue("@ExperienceType", ExperienceType);
                     sqlCommand.Parameters.AddWithValue("@ResumePath", ResumePath);
                     sqlCommand.Parameters.AddWithValue("@UserId", IntUserId);
