@@ -39,9 +39,14 @@
             <div class="card bg-white">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
                     <h4 class="mb-0 fw-bold">Job Registrations</h4>
-                    <asp:HyperLink ID="lnkAddNew" runat="server" NavigateUrl="Registration.aspx" CssClass="btn btn-add">
-                        <i class="fas fa-plus me-2"></i>New Registration
-                    </asp:HyperLink>
+                    <div class="d-flex gap-2">
+                        <asp:HyperLink ID="lnkBack" runat="server" NavigateUrl="/Front/index.aspx" CssClass="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back
+                        </asp:HyperLink>
+                        <asp:HyperLink ID="lnkAddNew" runat="server" NavigateUrl="Registration.aspx" CssClass="btn btn-add">
+                            <i class="fas fa-plus me-2"></i>New Registration
+                        </asp:HyperLink>
+                    </div>
                 </div>
                 <div class="card-body">
                     <asp:Label ID="lblMessage" runat="server" CssClass="d-block mb-3"></asp:Label>

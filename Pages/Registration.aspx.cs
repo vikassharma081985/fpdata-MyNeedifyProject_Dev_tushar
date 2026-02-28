@@ -229,10 +229,9 @@ namespace WSBillingMaster.Pages
 
                 if (result > 0)
                 {
-                    lblStatus.Text = objBLL.RegId == 0 ? "Registration submitted successfully!" : "Registration updated successfully!";
-                    lblStatus.CssClass = "text-success fw-bold";
+                    string msg = objBLL.RegId == 0 ? "Registration submitted successfully!" : "Registration updated successfully!";
+                    ShowAlert(msg, "RegistrationList.aspx");
                     ClearForm();
-                    Response.Redirect("RegistrationList.aspx");
                 }
                     else if (result == -1)
                     {
@@ -372,8 +371,19 @@ namespace WSBillingMaster.Pages
 
         private void ShowError(string message)
         {
+            ShowAlert(message);
             lblStatus.Text = message;
             lblStatus.CssClass = "text-danger fw-bold";
+        }
+
+        private void ShowAlert(string message, string redirectTo = null)
+        {
+            string script = "alert('" + message.Replace("'", "\\'") + "');";
+            if (!string.IsNullOrEmpty(redirectTo))
+            {
+                script += "window.location.href='" + redirectTo + "';";
+            }
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", script, true);
         }
     }
 }
