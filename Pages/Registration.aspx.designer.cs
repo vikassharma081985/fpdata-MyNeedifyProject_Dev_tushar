@@ -24,6 +24,15 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// hdnUserId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnUserId;
+
+        /// <summary>
         /// txtAadhar control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,16 @@ namespace WSBillingMaster.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload fuAadhar;
+
+        /// <summary>
+        /// hlAadhar control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.HyperLink hlAadhar;
+
+        /// <summary>
+        /// btnRemoveAadhar control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.LinkButton btnRemoveAadhar;
 
         /// <summary>
         /// ddlSkills control.
@@ -123,13 +142,23 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.FileUpload fuPhoto;
 
         /// <summary>
-        /// txtAddress control.
+        /// hlPhoto control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.HyperLink hlPhoto;
+
+        /// <summary>
+        /// btnRemovePhoto control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.LinkButton btnRemovePhoto;
+
+        /// <summary>
+        /// txtAge control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAddress;
+        protected global::System.Web.UI.WebControls.TextBox txtAge;
 
         /// <summary>
         /// txtLanguages control.
@@ -150,13 +179,61 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.DropDownList ddlDemand;
 
         /// <summary>
-        /// TextBox3 control.
+        /// txtAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtAmount;
+
+        /// <summary>
+        /// txtExpDuration control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtExpDuration;
+
+        /// <summary>
+        /// ddlExpUnit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlExpUnit;
+
+        /// <summary>
+        /// txtFullAddress control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.TextBox txtFullAddress;
+
+        /// <summary>
+        /// txtState control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.TextBox txtState;
+
+        /// <summary>
+        /// txtCity control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.TextBox txtCity;
+
+        /// <summary>
+        /// txtLocation control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.TextBox txtLocation;
+
+        /// <summary>
+        /// txtLandmark control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.TextBox txtLandmark;
+
+        /// <summary>
+        /// txtPincode control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.TextBox txtPincode;
 
         /// <summary>
         /// txtHeight control.
@@ -177,13 +254,32 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.TextBox txtWeight;
 
         /// <summary>
-        /// FileUpload3 control.
+        /// ddlExperienceType control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload3;
+        protected global::System.Web.UI.WebControls.DropDownList ddlExperienceType;
+
+        /// <summary>
+        /// fuResume control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload fuResume;
+
+        /// <summary>
+        /// hlResume control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.HyperLink hlResume;
+
+        /// <summary>
+        /// btnRemoveResume control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.LinkButton btnRemoveResume;
 
         /// <summary>
         /// txtEmergencyPhone control.
@@ -213,22 +309,22 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.TextBox txtEmergencyRelation;
 
         /// <summary>
-        /// TextBox1 control.
+        /// txtSchoolUniversity control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtSchoolUniversity;
 
         /// <summary>
-        /// DropDownList1 control.
+        /// ddlQualification control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlQualification;
 
         /// <summary>
         /// fuEducation control.
@@ -238,6 +334,16 @@ namespace WSBillingMaster.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload fuEducation;
+
+        /// <summary>
+        /// hlEducation control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.HyperLink hlEducation;
+
+        /// <summary>
+        /// btnRemoveEducation control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.LinkButton btnRemoveEducation;
 
         /// <summary>
         /// txtAccountNumber control.
@@ -266,6 +372,17 @@ namespace WSBillingMaster.Pages
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBankName;
 
+
+        /// <summary>
+        /// chkConsent control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.CheckBox chkConsent;
+
+        /// <summary>
+        /// btnBack control.
+        /// </summary>
+        protected global::System.Web.UI.WebControls.Button btnBack;
+
         /// <summary>
         /// lblStatus control.
         /// </summary>
@@ -283,6 +400,96 @@ namespace WSBillingMaster.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmit;
+
+        /// <summary>
+        /// pnlMyDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlMyDetails;
+
+        /// <summary>
+        /// lblViewAadhar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewAadhar;
+
+        /// <summary>
+        /// lblViewName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewName;
+
+        /// <summary>
+        /// lblViewPhone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewPhone;
+
+        /// <summary>
+        /// lblViewGender control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewGender;
+
+        /// <summary>
+        /// lblViewBirthPlace control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewBirthPlace;
+
+        /// <summary>
+        /// lblViewMarital control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewMarital;
+
+        /// <summary>
+        /// lblViewHeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewHeight;
+
+        /// <summary>
+        /// lblViewWeight control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewWeight;
+
+        /// <summary>
+        /// lblViewEmergencyPhone control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblViewEmergencyPhone;
 
         /// <summary>
         /// lblEditMessage control.
@@ -375,57 +582,12 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.TextBox TextBox9;
 
         /// <summary>
-        /// FileUpload4 control.
+        /// fuResumeEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload4;
-
-        /// <summary>
-        /// TextBox10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox10;
-
-        /// <summary>
-        /// DropDownList4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList4;
-
-        /// <summary>
-        /// TextBox11 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox11;
-
-        /// <summary>
-        /// TextBox12 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox12;
-
-        /// <summary>
-        /// TextBox13 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox13;
+        protected global::System.Web.UI.WebControls.FileUpload fuResumeEdit;
     }
 }

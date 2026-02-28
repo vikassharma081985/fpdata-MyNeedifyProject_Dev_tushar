@@ -360,6 +360,7 @@
     <Content Include="Pages\Invoice.aspx" />
     <Content Include="Pages\ItemImportExport.aspx" />
     <Content Include="Pages\Job.aspx" />
+    <Content Include="Pages\Jobtusharmain.aspx" />
     <Content Include="Pages\Login.aspx" />
     <Content Include="Pages\ManageItems.aspx" />
     <Content Include="Pages\ManageRoleWiseManu.aspx" />
@@ -371,6 +372,8 @@
     <Content Include="Pages\ProfitLossReport.aspx" />
     <Content Include="Pages\PromoMaster.aspx" />
     <Content Include="Pages\Refund.aspx" />
+    <Content Include="Pages\RegistrationList.aspx" />
+    <Content Include="Pages\Registrationtusharmain.aspx" />
     <Content Include="Pages\SalesSummary.aspx" />
     <Content Include="Pages\Search.ashx" />
     <Content Include="Pages\SendSMS.aspx" />
@@ -871,6 +874,13 @@
     <Compile Include="Pages\Job.aspx.designer.cs">
       <DependentUpon>Job.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Jobtusharmain.aspx.cs">
+      <DependentUpon>Jobtusharmain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Jobtusharmain.aspx.designer.cs">
+      <DependentUpon>Jobtusharmain.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -947,6 +957,20 @@
     </Compile>
     <Compile Include="Pages\Refund.aspx.designer.cs">
       <DependentUpon>Refund.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RegistrationList.aspx.cs">
+      <DependentUpon>RegistrationList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\RegistrationList.aspx.designer.cs">
+      <DependentUpon>RegistrationList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Registrationtusharmain.aspx.cs">
+      <DependentUpon>Registrationtusharmain.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Registrationtusharmain.aspx.designer.cs">
+      <DependentUpon>Registrationtusharmain.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SalesSummary.aspx.cs">
       <DependentUpon>SalesSummary.aspx</DependentUpon>

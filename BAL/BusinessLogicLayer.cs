@@ -132,6 +132,45 @@ namespace BLL
         //public int OrgId { get; set;  }
         public float SettlementAmt { get; set; }
 
+        public int RegId { get; set; }
+        public string AadharNumber { get; set; }
+        public string Skill { get; set; }
+        public string FatherName { get; set; }
+        public string BirthPlace { get; set; }
+        public string ExperienceType { get; set; }
+        public string ResumePath { get; set; }
+        public int IntUserId { get; set; }
+
+        public string EmergencyPhone { get; set; }
+        public string EmergencyName { get; set; }
+        public string EmergencyRelation { get; set; }
+
+        public string SchoolUniversity { get; set; }
+        public string Qualification { get; set; }
+        public string EducationPath { get; set; }
+
+        public string AccountNumber { get; set; }
+        public string IFSC { get; set; }
+        public string BankName { get; set; }
+
+        public string AadharPath { get; set; }
+        public string PhotoPath { get; set; }
+
+        public string ExpDuration { get; set; }
+        public string ExpUnit { get; set; }
+
+        public string Height { get; set; }
+        public string Weight { get; set; }
+        public string Languages { get; set; }
+        public string MaritalStatus { get; set; }
+        public string ExpectedDemand { get; set; }
+        public string FullAddress { get; set; }
+        public string StateName { get; set; }
+        public string CityName { get; set; }
+        public string LocationName { get; set; }
+        public string Landmark { get; set; }
+        public string PincodeVal { get; set; }
+
         public int ManageDiscount()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -2406,8 +2445,124 @@ namespace BLL
                     return objDAL.GetDataTable(sqlCommand);
                 }
             }
+        }*/
+
+        #region "Job Registration"
+        public int ManageRegistration()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_ManageRegistration";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@RegId", RegId);
+                    sqlCommand.Parameters.AddWithValue("@AadharNumber", AadharNumber);
+                    sqlCommand.Parameters.AddWithValue("@Skill", Skill);
+                    sqlCommand.Parameters.AddWithValue("@FirstName", FirstName);
+                    sqlCommand.Parameters.AddWithValue("@LastName", LastName);
+                    sqlCommand.Parameters.AddWithValue("@FatherName", FatherName);
+                    sqlCommand.Parameters.AddWithValue("@PhoneNumber", Mobile);
+                    sqlCommand.Parameters.AddWithValue("@Gender", Gender);
+                    sqlCommand.Parameters.AddWithValue("@BirthPlace", BirthPlace);
+                    sqlCommand.Parameters.AddWithValue("@Age", Convert.ToInt32(Age));
+                    sqlCommand.Parameters.AddWithValue("@ExperienceType", ExperienceType);
+                    sqlCommand.Parameters.AddWithValue("@ResumePath", ResumePath);
+                    sqlCommand.Parameters.AddWithValue("@UserId", IntUserId);
+
+                    sqlCommand.Parameters.AddWithValue("@EmergencyPhone", EmergencyPhone);
+                    sqlCommand.Parameters.AddWithValue("@EmergencyName", EmergencyName);
+                    sqlCommand.Parameters.AddWithValue("@EmergencyRelation", EmergencyRelation);
+
+                    sqlCommand.Parameters.AddWithValue("@SchoolUniversity", SchoolUniversity);
+                    sqlCommand.Parameters.AddWithValue("@Qualification", Qualification);
+                    sqlCommand.Parameters.AddWithValue("@EducationPath", EducationPath);
+
+                    sqlCommand.Parameters.AddWithValue("@AccountNumber", AccountNumber);
+                    sqlCommand.Parameters.AddWithValue("@IFSC", IFSC);
+                    sqlCommand.Parameters.AddWithValue("@BankName", BankName);
+
+                    sqlCommand.Parameters.AddWithValue("@AadharPath", AadharPath);
+                    sqlCommand.Parameters.AddWithValue("@PhotoPath", PhotoPath);
+
+                    sqlCommand.Parameters.AddWithValue("@ExpDuration", ExpDuration);
+                    sqlCommand.Parameters.AddWithValue("@ExpUnit", ExpUnit);
+                    sqlCommand.Parameters.AddWithValue("@Amount", Amount);
+
+                    sqlCommand.Parameters.AddWithValue("@Height", Height);
+                    sqlCommand.Parameters.AddWithValue("@Weight", Weight);
+                    sqlCommand.Parameters.AddWithValue("@Languages", Languages);
+                    sqlCommand.Parameters.AddWithValue("@MaritalStatus", MaritalStatus);
+                    sqlCommand.Parameters.AddWithValue("@ExpectedDemand", ExpectedDemand);
+                    sqlCommand.Parameters.AddWithValue("@FullAddress", FullAddress);
+                    sqlCommand.Parameters.AddWithValue("@StateName", StateName);
+                    sqlCommand.Parameters.AddWithValue("@CityName", CityName);
+                    sqlCommand.Parameters.AddWithValue("@LocationName", LocationName);
+                    sqlCommand.Parameters.AddWithValue("@Landmark", Landmark);
+                    sqlCommand.Parameters.AddWithValue("@Pincode", PincodeVal);
+
+                    return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                }
+            }
         }
-        #endregion*/
+
+        public DataTable GetRegistrationList()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_GetRegistrationList";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public DataTable GetRegistrationById()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_GetRegistrationById";
+                    sqlCommand.Parameters.AddWithValue("@RegId", RegId);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public int DeleteRegistration()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_DeleteRegistration";
+                    sqlCommand.Parameters.AddWithValue("@RegId", RegId);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                }
+            }
+        }
+
+        public DataTable GetJobRegistrations(string skill, string location, string experience)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_SearchJobRegistrations";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@Skill", string.IsNullOrEmpty(skill) ? (object)DBNull.Value : skill);
+                    sqlCommand.Parameters.AddWithValue("@Location", string.IsNullOrEmpty(location) ? (object)DBNull.Value : location);
+                    sqlCommand.Parameters.AddWithValue("@Experience", string.IsNullOrEmpty(experience) ? (object)DBNull.Value : experience);
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+        #endregion
     }
 
 
