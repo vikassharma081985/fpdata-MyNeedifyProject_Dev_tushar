@@ -2501,7 +2501,12 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@Landmark", Landmark);
                     sqlCommand.Parameters.AddWithValue("@Pincode", PincodeVal);
 
-                    return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                    DataTable dt = objDAL.GetDataTable(sqlCommand);
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        return Convert.ToInt32(dt.Rows[0][0]);
+                    }
+                    return 0;
                 }
             }
         }

@@ -229,7 +229,7 @@ namespace WSBillingMaster.Pages
 
                 if (result > 0)
                 {
-                    string msg = objBLL.RegId == 0 ? "Registration submitted successfully!" : "Registration updated successfully!";
+                    string msg = ViewState["RegId"] == null ? "Registration submitted successfully! Your Job Registration ID is: " + result : "Registration updated successfully!";
                     ShowAlert(msg, "RegistrationList.aspx");
                     ClearForm();
                 }
