@@ -123,6 +123,15 @@ namespace FaduPrice.Pages
         protected global::System.Web.UI.WebControls.ListView rptUserAddresss;
 
         /// <summary>
+        /// divNewAdress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNewAdress;
+
+        /// <summary>
         /// txtName control.
         /// </summary>
         /// <remarks>
@@ -186,13 +195,13 @@ namespace FaduPrice.Pages
         protected global::System.Web.UI.WebControls.TextBox txtPincode;
 
         /// <summary>
-        /// btnAddress control.
+        /// Repeater1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddress;
+        protected global::System.Web.UI.WebControls.Repeater Repeater1;
 
         /// <summary>
         /// txtCurrentPassword control.
