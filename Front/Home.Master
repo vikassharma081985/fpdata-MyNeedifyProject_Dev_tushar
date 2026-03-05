@@ -792,10 +792,20 @@ margin-left: 0px;                    font-size: 13px;
             </div>
         </div>
 
-        <div><i class="bi bi-heart"></i>Wishlist</div>
+        <div><i class="bi bi-heart"></i>Wishlistt</div>
         <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
 
-        
+        <!-- NOTIFICATION -->
+<div class="dropdown">
+    <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown">
+        <i class="bi bi-bell"></i>
+    </span>
+
+    <div class="dropdown-menu  mt-2 " style="width:250px;">
+              <a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
+<a href="../Pages/NewHire.aspx" class="dropdown-item">New offer Notification 2 </a>
+    </div>
+</div>
 </div>
 
             </div>
@@ -824,6 +834,17 @@ margin-left: 0px;                    font-size: 13px;
 
             <div><i class="bi bi-heart"></i>Wishlist</div>
             <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
+            <!-- NOTIFICATION -->
+<div class="dropdown">
+    <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown">
+        <i class="bi bi-bell"></i>
+    </span>
+
+    <div class="dropdown-menu  mt-2" style="width:250px;">
+         <a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
+<a href="../Pages/NewHire.aspx" class="dropdown-item">New offer Notification 2 </a>
+    </div>
+</div>
 
             <div class="login-buttons d-flex ms-3 gap-2">
                 <a target="_blank" class="btn btn-admin btn-sm" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>

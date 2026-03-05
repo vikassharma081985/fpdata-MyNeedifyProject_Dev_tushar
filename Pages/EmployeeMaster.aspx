@@ -138,19 +138,43 @@
     </div>
 
     <div class="form-row">
-        <input type="button" class="btn-save" onclick="Save();" value="Save" />
-    </div>
+<input type="button" class="btn-save" value="Save" onclick="Save()" />    </div>
 </div>
+
+
+
+
+    <div style="max-width:900px;margin:30px auto;">
+
+    <table class="table table-bordered" id="employeeTable" style="background:white;">
+        <thead style="background:#6a8fe8;color:white;">
+            <tr>
+                <th>User Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+
+        <tbody id="employeeBody">
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
      <script>
          function Save() {
+
              var Name = $('#txtUserName').val().trim();
              var Mobile = $('#txtMobile').val().trim();
              var Email = $('#txtEmail').val().trim();
-
-             var RoleID = $('[id$=ddlRole]').val().trim();
+             var RoleID = $('[id$=ddlRole]').val();
+             var RoleText = $('[id$=ddlRole] option:selected').text();
              var Password = $('#txtPassword').val().trim();
-
-
 
              if (Name == '') {
                  alert('Enter User Name');
@@ -160,60 +184,37 @@
              if (Email == '') {
                  alert('Enter User Email');
                  return;
-             } else {
-
-                 if (Email != '') {
-                     if (!ValidateEmail(Email)) {
-                         alert('Invalid email id');
-                         return;
-                     }
-                 }
              }
 
+             if (!ValidateEmail(Email)) {
+                 alert('Invalid email id');
+                 return;
+             }
 
-             if (RoleID == '0') {
+             if (RoleID == '0' || RoleID == null) {
                  alert('Select Role');
                  return;
              }
+
              if (Password == '') {
                  alert('Enter Password');
                  return;
              }
 
+             // Create Table Row
+             var row = "<tr>" +
+                 "<td>" + Name + "</td>" +
+                 "<td>" + Mobile + "</td>" +
+                 "<td>" + Email + "</td>" +
+                 "<td>" + RoleText + "</td>" +
+                 "<td>" + Password + "</td>" +
+                 "</tr>";
 
+             // Append row to table
+             $("#employeeBody").append(row);
 
-
-             $.ajax({
-                 url: "EmployeeMaster.aspx/Save",
-                 async: true,
-                 data: JSON.stringify({ Name: Name, Mobile: Mobile, Email: Email, RoleID: RoleID, Password: Password }),
-                 contentType: "application/json; charset=utf-8",
-                 type: "POST", // data has to be Posted 
-                 timeout: 120000,
-                 dataType: "json",
-                 success: function (result) {
-                     if (result.d == "1") {
-                         alert("Record Saved Successfully");
-                         ClearForm();
-
-                     } else if (result.d == "-1") {
-                         alert("Email already exists");
-                     } else if (result.d == "-2") {
-                         alert("Mobile already exists");
-                     }
-                 }
-             });
-
+             ClearForm();
          }
-
-         function ClearForm() {
-             $('input[type=text]').val('');
-             $('select').val('0');
-
-         }
-
-
-
 
          function ValidateEmail(email) {
              var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
