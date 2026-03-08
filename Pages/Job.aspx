@@ -216,7 +216,7 @@
                       Hire Now
                     </asp:LinkButton>--%>
                       <asp:LinkButton ID="btnHire" runat="server"
-    PostBackUrl="~/Pages/Hire.aspx"
+    PostBackUrl='<%# "~/Pages/Hire.aspx?RegId=" + Eval("RegId") %>'
     CssClass="btn btn-sm text-white px-3"
     Style="background:#F48B1E; border-radius:40px;">
     Hire Now

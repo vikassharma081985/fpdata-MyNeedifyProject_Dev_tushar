@@ -133,6 +133,8 @@ namespace BLL
         public float SettlementAmt { get; set; }
 
         public int RegId { get; set; }
+        public string CompanyName { get; set; }
+        public string ContactPerson { get; set; }
         public string AadharNumber { get; set; }
         public string Skill { get; set; }
         public string FatherName { get; set; }
@@ -2564,6 +2566,47 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@Location", string.IsNullOrEmpty(location) ? (object)DBNull.Value : location);
                     sqlCommand.Parameters.AddWithValue("@Experience", string.IsNullOrEmpty(experience) ? (object)DBNull.Value : experience);
                     return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public DataTable GetJobRegistrationForHire()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_GetJobRegistrationForHire";
+                    sqlCommand.Parameters.AddWithValue("@RegId", RegId);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public int ManageHireDetail()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_SaveHireDetail";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.Parameters.AddWithValue("@RegId", RegId);
+                    sqlCommand.Parameters.AddWithValue("@CompanyName", CompanyName);
+                    sqlCommand.Parameters.AddWithValue("@ContactPerson", ContactPerson);
+                    sqlCommand.Parameters.AddWithValue("@ContactPhone", Mobile);
+                    sqlCommand.Parameters.AddWithValue("@SalaryOffered", Amount);
+                    sqlCommand.Parameters.AddWithValue("@HireDate", string.IsNullOrEmpty(FromDate) ? (object)DateTime.Now : FromDate);
+                    sqlCommand.Parameters.AddWithValue("@Remarks", Remarks);
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", IntUserId);
+
+                    DataTable dt = objDAL.GetDataTable(sqlCommand);
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        return Convert.ToInt32(dt.Rows[0][0]);
+                    }
+                    return 0;
                 }
             }
         }

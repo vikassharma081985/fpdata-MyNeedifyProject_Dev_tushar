@@ -357,6 +357,7 @@
     <Content Include="Pages\ExpenseManager.aspx" />
     <Content Include="Pages\ExpenseManager1.aspx" />
     <Content Include="Pages\ExportToExcel.aspx" />
+    <Content Include="Pages\Hire.aspx" />
     <Content Include="Pages\Invoice.aspx" />
     <Content Include="Pages\ItemImportExport.aspx" />
     <Content Include="Pages\Job.aspx" />
@@ -852,6 +853,13 @@
     </Compile>
     <Compile Include="Pages\ExportToExcel.aspx.designer.cs">
       <DependentUpon>ExportToExcel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Hire.aspx.cs">
+      <DependentUpon>Hire.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Hire.aspx.designer.cs">
+      <DependentUpon>Hire.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Invoice.aspx.cs">
       <DependentUpon>Invoice.aspx</DependentUpon>
