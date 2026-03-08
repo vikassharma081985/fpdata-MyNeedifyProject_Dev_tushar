@@ -73,7 +73,72 @@
             -o-transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
             transition: border-color ease-in-out 0.15s,box-shadow ease-in-out 0.15s;
         }
+
     </style>
+
+
+<style>
+.address-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.address-card {
+    width: 320px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background: #fff;
+    position: relative;
+    transition: 0.3s;
+}
+
+.address-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.default-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e7f3ff;
+    color: #007185;
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.address-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.address-actions {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.address-actions a {
+    color: #007185;
+    text-decoration: none;
+    margin-right: 8px;
+}
+
+
+.address-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f8f9fa;
+    padding: 10px;
+    transition: 0.3s ease;
+}
+
+.address-card:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+</style>
 
     <div class="container" style="margin-top: 1%;">
 
@@ -137,14 +202,10 @@
             </div>
             <h3>My Address</h3>
             <div class="MyClass">
-                <div class="row">
+<%--                <div class="row">
                     <div class="col-xs-12">
                         <asp:ListView ID="rptUserAddresss" runat="server">
-                            <%-- <LayoutTemplate>
-                                <ul>
-                                    <asp:PlaceHolder runat="server" ID="itemPlaceholder"></asp:PlaceHolder>
-                                </ul>
-                            </LayoutTemplate>--%>
+                        
                             <ItemTemplate>
                                 <div class="col-md-8">
                                     <div style="border: 1px solid #ccc; background-color: #f1f1f1; padding: 2px;">
@@ -159,8 +220,44 @@
                         </asp:ListView>
                     </div>
                 </div>
+--%>
 
-                <div id="divNewAdress" style="display: none;">
+
+
+                <div class="row">
+    <div class="col-xs-12">
+        <asp:ListView ID="rptUserAddresss" runat="server">
+            <LayoutTemplate>
+                <div class="row">
+                    <asp:PlaceHolder ID="itemPlaceholder" runat="server"></asp:PlaceHolder>
+                </div>
+            </LayoutTemplate>
+
+            <ItemTemplate>
+                <div class="col-md-4 col-sm-6 col-xs-12 mb-3">
+                    <div class="card address-card">
+                        <div class="card-body">
+                            <input type="hidden" id="hdnUserContactId" value="<%#Eval("ContactId") %>" />
+
+                            <h5 class="card-title"><%#Eval("Name") %></h5>
+
+                            <p class="card-text">
+                                <%#Eval("Building") %>, 
+                                <%#Eval("Locality") %>, 
+                                <%#Eval("City") %>, 
+                                <%#Eval("State") %> - <%#Eval("Pincode") %>
+                                <br />
+                                <%# Convert.ToString(Eval("Mobile")) %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </ItemTemplate>
+
+        </asp:ListView>
+    </div>
+</div>
+                <%--<div id="divNewAdress" style="display: visible !important;">
                     <div class="row" style="padding: 10px; font-size: 14px; font-weight: bold">
                         Your Address Book
                     </div>
@@ -200,8 +297,105 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>--%>
+
+
+
+
+<div class="address-wrapper">
+
+    <!-- ADD ADDRESS CARD -->
+    <div class="address-card add-card" onclick="openAddressForm()">
+        <div style="font-size:40px;">+</div>
+        <div>Add address</div>
+    </div>
+
+
+    <!-- ADDRESS FORM -->
+    <div id="divNewAdress" runat="server" ClientIDMode="Static"
+         class="address-card"
+         style="display:none; width:650px;">
+
+        <div style="font-weight:600; margin-bottom:10px;">
+            Add New Address
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-2">
+                <asp:TextBox runat="server" ID="txtName" class="form-control" placeholder="Full Name" />
             </div>
+
+            <div class="col-md-6 mb-2">
+                <asp:TextBox runat="server" ID="txtAddressMobile" class="form-control" placeholder="Mobile" />
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <asp:TextBox runat="server" ID="txtBuilding" class="form-control" placeholder="House / Building" />
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <asp:TextBox runat="server" ID="txtLocality" class="form-control" placeholder="Locality" />
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <asp:TextBox runat="server" ID="txtCity" class="form-control" placeholder="City" />
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <asp:TextBox runat="server" ID="txtState" class="form-control" placeholder="State" />
+            </div>
+
+            <div class="col-md-6 mb-2">
+                <asp:TextBox runat="server" ID="txtPincode" class="form-control" placeholder="Pincode" />
+            </div>
+  <div class="col-12 mt-3">
+             <button type="button"
+    class="btn"
+    style="background-color:#7C519B; width:200px; color:#fff;"
+    onclick="saveAddress()">
+    Save Address
+</button>
+
+        </div>
+    </div>
+
+
+    <!-- DATABASE ADDRESSES -->
+    <asp:Repeater ID="Repeater1" runat="server">
+        <ItemTemplate>
+
+            <div class="address-card">
+
+                <%# Container.ItemIndex == 0 ? "<div class='default-badge'>Default</div>" : "" %>
+
+                <div class="address-name">
+                    <%# Eval("FullName") %>
+                </div>
+
+                <div>
+                    <%# Eval("Building") %><br />
+                    <%# Eval("Locality") %><br />
+                    <%# Eval("City") %>, <%# Eval("State") %> - <%# Eval("Pincode") %><br />
+                    India<br />
+                    Phone: <%# Eval("Mobile") %>
+                </div>
+
+                <div class="address-actions">
+                    <a href="#">Edit</a> |
+                    <a href="#">Remove</a>
+                </div>
+
+            </div>
+
+        </ItemTemplate>
+    </asp:Repeater>
+
+</div>
+
+            </div>
+
+
             <h3>Change Password</h3>
             <div class="MyClass">
                 <div class="row" style="padding: 10px; margin-top: 10px; font-size: 14px; font-weight: bold">
@@ -240,6 +434,67 @@
         </div>
 
     </div>
+
+
+    <script>
+    function openAddressForm() {
+        document.getElementById("divNewAdress").style.display = "block";
+    }
+</script>
+    <script>
+
+function saveAddress() {
+
+    // Get values
+    var name = document.getElementById('<%= txtName.ClientID %>').value;
+    var mobile = document.getElementById('<%= txtAddressMobile.ClientID %>').value;
+    var building = document.getElementById('<%= txtBuilding.ClientID %>').value;
+    var locality = document.getElementById('<%= txtLocality.ClientID %>').value;
+    var city = document.getElementById('<%= txtCity.ClientID %>').value;
+    var state = document.getElementById('<%= txtState.ClientID %>').value;
+    var pincode = document.getElementById('<%= txtPincode.ClientID %>').value;
+
+    if (name == "") {
+        alert("Please enter name");
+        return;
+    }
+
+    // Create card
+    var card = document.createElement("div");
+    card.className = "address-card";
+
+    card.innerHTML =
+        "<div class='address-name'>" + name + "</div>" +
+        "<div>" +
+        building + "<br>" +
+        locality + "<br>" +
+        city + ", " + state + " - " + pincode + "<br>" +
+        "India<br>" +
+        "Phone: " + mobile +
+        "</div>" +
+        "<div class='address-actions'>" +
+        "<a href='#'>Edit</a> | <a href='#'>Remove</a>" +
+        "</div>";
+
+    // Append after form
+    document.querySelector(".address-wrapper").appendChild(card);
+
+    // Clear form
+    document.getElementById('<%= txtName.ClientID %>').value = "";
+    document.getElementById('<%= txtAddressMobile.ClientID %>').value = "";
+    document.getElementById('<%= txtBuilding.ClientID %>').value = "";
+    document.getElementById('<%= txtLocality.ClientID %>').value = "";
+    document.getElementById('<%= txtCity.ClientID %>').value = "";
+    document.getElementById('<%= txtState.ClientID %>').value = "";
+    document.getElementById('<%= txtPincode.ClientID %>').value = "";
+
+    // Hide form
+    document.getElementById("divNewAdress").style.display = "none";
+}
+
+    </script>
+
+
     <script>
         function ChangePassword() {
             var OldPassword = $('[id$=hdnPassword]').val();
@@ -357,7 +612,7 @@
     <script>
         $(document).ready(function () {
 
-            $('#divNewAdress').css('display', 'none');
+            $('#divNewAdress').css('display', 'visible');
         });
     </script>
 
