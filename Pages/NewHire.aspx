@@ -91,6 +91,15 @@
                                 ❌ Reject
                             </button>
                         </form>
+
+
+                       <div class="w-50">
+    <a href="../Pages/RescheduleRequest.aspx" target="_blank"
+       class="btn btn-warning w-100">
+       🔄 Reschedule Request
+    </a>
+</div>
+</div>
                     </div>
 
                 </div>
