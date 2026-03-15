@@ -38,6 +38,9 @@
 
 <!-- Responsive CSS -->
 <style>
+    .title{
+        font-size:20px;
+    }
    /* Responsive Fixes for Item Tiles */
 .Tile img {
     width: 100%;
@@ -101,7 +104,6 @@
     width: 100%;
     height: auto;
 }
-/*Sahil Code for Slider */
 
 /*For Search Button*/
     .input-group-btn {
@@ -149,160 +151,295 @@
         margin-left: 10px;
         }
     }
-    /*Sahil Code for four icons complete */
 </style>
 
-<!-- Sahil Code for four icons Section-->
-        </div>
+  
     
     <div class="container">
-        <div class="container my-1">
-            <h5 class="text-center mb-3 fw-bold">What are you looking for?
-</h5>
-            <div class="row g-3">
-                <!-- Kids -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                                <a href="../Pages/ExpenseManager.aspx" target="_blank" style="color: blue;">
-
-                            <h5 class="fw-bold mb-1">Daily</h5>
-                            <p class="small text-muted mb-0">Expenses</p>
-                        </div>
-                        <img src="../Images/System/calc.JPEG"
-                            width="50" alt="Kids"></a>
-                    </div>
-                </div>
-
-                <!-- Grooming -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                            <h5 class="fw-bold mb-1">Looking For Job?</h5>
-                            <p class="small text-muted mb-0">Registration</p>
-                        </div>
-                      <img src="../Images/System/calc.JPEG"
-    width="50" alt="Kids">
-                    </div>
-                </div>
-
-                <!-- Accessories -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                            <h5 class="fw-bold mb-1">Manpower Required?</h5>
-                            <p class="small text-muted mb-0">Search here</p>
-                        </div>
-                        <img src="../Images/System/calc.JPEG"
-    width="50" alt="Kids">
-                    </div>
-                </div>
-
-                <!-- Footwear -->
-                <div class="col-6 col-md-3">
-<%--                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center rounded">--%>
-                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-     style="border-radius: 20px;">
-
-                        <div class="text-start">
-                            <h5 class="fw-bold mb-1">Looking for Desi Products?</h5>
-                            <p class="small text-muted mb-0"> Here I am</p>
-                        </div>
-                        <img src="../Images/System/calc.JPEG"
-    width="50" alt="Kids">
-                    </div>
-                                        </div>
-
-
-
-
-
-     <!-- NEW PRODUCTS ROW WITH HOVER EFFECT, RATINGS, AND ICONS -->
-        </div>
-
-                </div>
-
-
-
 
 <div class="container my-4">
-    <h5 class="text-center mb-3 fw-bold">WOMEN COLLECTION</h5>
-    
-    <div class="row g-3">
-        <asp:Repeater ID="rptWomenCollection" runat="server">
-            <ItemTemplate>
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="product-card border bg-white rounded h-100 position-relative p-2 shadow-sm">
+<div class="row">
 
-                        <!-- Product Image -->
-                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
-                            <img src='<%# "../Images/Items/" + Eval("ImageName") %>' 
-                                 class="img-fluid w-100 rounded" 
-                                 alt='<%# Eval("ItemName") %>' style="height:200px;" />
-                        </a>
+<!-- MOBILE FILTER BUTTON -->
+<div class="d-lg-none mb-3">
+<button class="btn w-100"
+style="background:#F48B1E;color:white;"
+data-bs-toggle="offcanvas"
+data-bs-target="#mobileFilter">
 
-                        <!-- Floating Wishlist Icon -->
-                        <button class="btn btn-light border position-absolute top-0 end-0 m-2 rounded-circle">
-                            <i class="bi bi-heart"></i>
-                        </button>
-
-                        <!-- Product Details -->
-                        <div class="p-2 text-center">
-                            <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>' 
-                               class="text-decoration-none text-dark">
-                                <p class="small text-muted mb-1">
-                                    <%# Eval("ItemName").ToString().Length > 35 
-                                        ? Eval("ItemName").ToString().Substring(0, 35) + "..." 
-                                        : Eval("ItemName") %>
-                                </p>
-                            </a>
-
-                            <!-- Star Ratings -->
-                            <div class="mb-2">
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star text-warning"></i>
-                            </div>
-
-                            <!-- Price Section -->
-                            <p class="mb-2 fw-bold">
-                                ₹ <%# Eval("OfferPrice") %>
-                                <span class="text-muted text-decoration-line-through">₹ <%# Eval("ItemPrice") %></span>
-                            </p>
-
-                            <!-- Action Buttons -->
-                            <div class="d-flex flex-column flex-md-row gap-2">
-                                <button class="btn btn-sm flex-fill"
-                                    style="background-color:#F48B1E; color:#fff; border:none;">
-                                    Add to Cart
-                                </button>
-
-                                <button class="btn btn-sm flex-fill"
-                                    style="background-color:#8EC243; color:#fff; border:none;">
-                                    Buy Now
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ItemTemplate>
-        </asp:Repeater>
-    </div>
-
-    <div id="divWomenCollNoRecord" runat="server" 
-         style="padding: 15px; border: 1px solid #ccc; display:none;">
-        No Item Available!
-    </div>
+<i class="fa fa-filter"></i> Filter
+</button>
 </div>
 
 
+<!-- DESKTOP FILTER SIDEBAR -->
+<div class="col-lg-3 col-md-4 mb-3 d-none d-lg-block">
+
+<div class="card shadow-sm">
+
+<div class="card-header fw-bold">
+Filters
 </div>
 
+<div class="card-body">
+
+<!-- Price Filter -->
+<div class="mb-3">
+<h6 class="fw-bold">Price</h6>
+
+<input type="range" class="form-range" min="100" max="5000">
+
+<div class="d-flex justify-content-between small">
+<span>₹100</span>
+<span>₹5000</span>
+</div>
+</div>
+
+
+<!-- Color Filter -->
+<div class="mb-3">
+<h6 class="fw-bold">Color</h6>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Red</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Blue</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Black</label>
+</div>
+
+</div>
+
+
+<!-- Size Filter -->
+<div class="mb-3">
+<h6 class="fw-bold">Size</h6>
+
+<div class="d-flex flex-wrap gap-2">
+<button class="btn btn-outline-secondary btn-sm">S</button>
+<button class="btn btn-outline-secondary btn-sm">M</button>
+<button class="btn btn-outline-secondary btn-sm">L</button>
+<button class="btn btn-outline-secondary btn-sm">XL</button>
+</div>
+</div>
+
+
+<!-- Category Filter -->
+<div class="mb-3">
+<h6 class="fw-bold">Category</h6>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Kurti</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Saree</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Dress</label>
+</div>
+
+</div>
+
+<button class="btn w-100"
+style="background:#F48B1E;color:white;">
+Apply Filter
+</button>
+
+</div>
+</div>
+
+</div>
+
+
+
+<!-- PRODUCT LIST -->
+<div class="col-lg-9 col-md-8">
+
+<p class="title text-center mb-3">Latest Collection</p>
+
+<div class="row g-3">
+<asp:Repeater ID="rptWomenCollection" runat="server">
+<ItemTemplate>
+
+<div class="col-6 col-md-4 col-lg-3">
+<div class="product-card border bg-white rounded h-100 position-relative p-2 shadow-sm">
+
+<!-- Product Image -->
+<a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+<img src='<%# "../Images/Items/" + Eval("ImageName") %>'
+class="img-fluid w-100 rounded"
+alt='<%# Eval("ItemName") %>' style="height:200px;" />
+</a>
+
+<!-- Wishlist -->
+<button class="btn btn-light border position-absolute top-0 end-0 m-2 rounded-circle">
+<i class="bi bi-heart"></i>
+</button>
+
+<!-- Product Details -->
+<div class="p-2 text-center">
+
+<a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'
+class="text-decoration-none text-dark">
+
+<p class="small text-muted mb-1">
+<%# Eval("ItemName").ToString().Length > 35 
+? Eval("ItemName").ToString().Substring(0,35) + "..." 
+: Eval("ItemName") %>
+</p>
+
+</a>
+
+<!-- Rating -->
+<div class="mb-2">
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star-fill text-warning"></i>
+<i class="bi bi-star text-warning"></i>
+</div>
+
+<!-- Price -->
+<p class="mb-2 fw-bold">
+₹ <%# Eval("OfferPrice") %>
+<span class="text-muted text-decoration-line-through">₹ <%# Eval("ItemPrice") %></span>
+</p>
+
+<!-- Buttons -->
+<div class="d-flex flex-column flex-md-row gap-2">
+
+<button class="btn btn-sm flex-fill"
+style="background-color:#F48B1E;color:#fff;border:none;">
+Add to Cart
+</button>
+
+<button class="btn btn-sm flex-fill"
+style="background-color:#8EC243;color:#fff;border:none;">
+Buy Now
+</button>
+
+</div>
+</div>
+</div>
+</div>
+
+</ItemTemplate>
+</asp:Repeater>
+</div>
+
+
+<div id="divWomenCollNoRecord" runat="server"
+style="padding:15px;border:1px solid #ccc;display:none;">
+No Item Available!
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+
+<!-- MOBILE FILTER OFFCANVAS -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileFilter">
+
+<div class="offcanvas-header">
+<h5 class="offcanvas-title">Filters</h5>
+<button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+</div>
+
+<div class="offcanvas-body">
+
+<!-- Price -->
+<div class="mb-3">
+<h6 class="fw-bold">Price</h6>
+<input type="range" class="form-range" min="100" max="5000">
+
+<div class="d-flex justify-content-between small">
+<span>₹100</span>
+<span>₹5000</span>
+</div>
+</div>
+
+
+<!-- Color -->
+<div class="mb-3">
+<h6 class="fw-bold">Color</h6>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Red</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Blue</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Black</label>
+</div>
+
+</div>
+
+
+<!-- Size -->
+<div class="mb-3">
+<h6 class="fw-bold">Size</h6>
+
+<div class="d-flex flex-wrap gap-2">
+<button class="btn btn-outline-secondary btn-sm">S</button>
+<button class="btn btn-outline-secondary btn-sm">M</button>
+<button class="btn btn-outline-secondary btn-sm">L</button>
+<button class="btn btn-outline-secondary btn-sm">XL</button>
+</div>
+
+</div>
+
+
+<!-- Category -->
+<div class="mb-3">
+<h6 class="fw-bold">Category</h6>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Kurti</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Saree</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Dress</label>
+</div>
+
+</div>
+
+
+<button class="btn w-100"
+style="background:#F48B1E;color:white;">
+Apply Filter
+</button>
+
+</div>
+</div>
+        </div>
 
 <!-- Sahil Code for four icons Section Complete -->
 
@@ -326,24 +463,6 @@ style="border-radius: 20px;">
 
 
 
-<!-- Trending Collections (Static) -->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="text-uppercase">TRENDING COLLECTIONS</h2>
-        </div>
-
-        <%-- Static Items --%>
-        <div class="col-md-2 col-xs-6">
-            <a href="/Search.aspx" target="_blank">
-                <img src="../Images/Items/old images/Max-PC-1-231017.jpg" class="img-responsive img-thumbnail" />
-            </a>
-        </div>
-        <!-- Repeat for other items -->
-    </div>
-</div>
-
-<hr />
 
 <!-- WOMEN COLLECTION -->
 
@@ -373,7 +492,7 @@ style="border-radius: 20px;">
 
 
 <!-- MEN COLLECTION -->
-<div class="container-fluid">
+<div class="container-fluid" style="visibility:hidden;">
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-uppercase">MEN COLLECTIONS</h2>
@@ -409,7 +528,7 @@ style="border-radius: 20px;">
 </div>
 
 <!-- ELECTRONIC APPLIANCES -->
-<div class="container-fluid">
+<div class="container-fluid" style="visibility:hidden;">
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-uppercase">Electronic Appliances</h2>

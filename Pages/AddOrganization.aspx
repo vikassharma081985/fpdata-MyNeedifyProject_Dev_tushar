@@ -112,6 +112,39 @@
                             <input type="text" id="txtLongitude" class="form-control" placeholder="Enter Longitude" tabindex="13" autocomplete="off" />
                         </div>
                     </div>
+
+                    <div class="col-md-3">
+    <div class="form-group">
+        <label>State</label>
+        <input type="text" id="txtstate" class="form-control" placeholder="Enter State" tabindex="13" autocomplete="off" />
+    </div>
+</div>
+
+
+                                        <div class="col-md-3">
+    <div class="form-group">
+        <label>City</label>
+        <input type="text" id="txtcity" class="form-control" placeholder="Enter City" tabindex="13" autocomplete="off" />
+    </div>
+</div>
+
+
+                                                            <div class="col-md-3">
+    <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="txtloc" class="form-control" placeholder="Enter Location" tabindex="13" autocomplete="off" />
+    </div>
+</div>
+
+
+                                                            <div class="col-md-3">
+    <div class="form-group">
+        <label>Pincode</label>
+        <input type="text" id="txtpincode" class="form-control" placeholder="Enter Pincode" tabindex="13" autocomplete="off" />
+    </div>
+</div>
+
+
                 </div>
                 <!-- End Added Fields -->
                 <div class="row">

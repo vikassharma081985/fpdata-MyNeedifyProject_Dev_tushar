@@ -834,7 +834,7 @@ margin-left: 0px;                    font-size: 13px;
 
             <div><i class="bi bi-heart"></i>Wishlist</div>
             <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
-            <!-- NOTIFICATION -->
+            <!-- NOTIFICATION ICON -->
 <div class="dropdown">
     <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown">
         <i class="bi bi-bell"></i>

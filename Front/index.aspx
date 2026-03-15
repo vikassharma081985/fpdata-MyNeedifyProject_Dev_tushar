@@ -345,7 +345,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                        <a href="http://198.38.88.185:8082/Front/appointment1.aspx" target="_blank" style="color: blue;">
+                        <a href="http://198.38.88.185:8082/Front/appointmentmaster.aspx" target="_blank" style="color: blue;">
                             <h5 class="fw-bold mb-1">Salon Appointment</h5>
                             <p class="small text-muted mb-0">Schedule Your Visit</p></a>
                         </div>
@@ -376,8 +376,10 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
+                                               <a href="../Front/indexShubh.aspx" target="_blank" style="color: blue;">
+
                             <h5 class="fw-bold mb-1">Apparels</h5>
-                            <p class="small text-muted mb-0">Search here</p>
+                            <p class="small text-muted mb-0">Search here</p></a>
                         </div>
                         <img src="../Images/System/fashion.PNG"
     width="50" alt="Kids">
@@ -395,7 +397,7 @@ style="border-radius: 20px;">
 
 
 
-<div class="container my-4">
+<div class="container my-4" style="visibility:hidden; display: none;">
     <p class="title text-center mb-3">Latest Collection</p>    
     <div class="row g-3">
         <asp:Repeater ID="rptWomenCollection" runat="server">
@@ -481,7 +483,7 @@ style="border-radius: 20px;">
 
 
 <!-- Carousel Section (Use Bootstrap Carousel if JS is added) -->
-<div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: -10px; visibility:hidden">
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: -10px; visibility:hidden; display: none;" >
     <ol class="carousel-indicators">
         <asp:Literal runat="server" ID="litBullets"></asp:Literal>
     </ol>
@@ -588,7 +590,7 @@ style="border-radius: 20px;">
 
 
 
-        <div class="container-fluid px-0" > 
+       <%-- <div class="container-fluid px-0" > 
     
   <div id="twoImageCarousel" class="carousel slide"
        data-bs-ride="carousel"
@@ -675,7 +677,7 @@ style="border-radius: 20px;">
 
   </div>
 </div>
-       
+       --%>
 
 
 
@@ -719,7 +721,7 @@ style="border-radius: 20px;">
 
 
 <!-- MEN COLLECTION -->
-<div class="container-fluid" style="visibility:hidden;">
+<div class="container-fluid" style="visibility:hidden; display: none;">
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-uppercase">MEN COLLECTIONS</h2>
