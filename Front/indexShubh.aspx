@@ -38,6 +38,9 @@
 
 <!-- Responsive CSS -->
 <style>
+    .title{
+        font-size:20px;
+    }
    /* Responsive Fixes for Item Tiles */
 .Tile img {
     width: 100%;
@@ -101,7 +104,6 @@
     width: 100%;
     height: auto;
 }
-/*Sahil Code for Slider */
 
 /*For Search Button*/
     .input-group-btn {
@@ -149,87 +151,16 @@
         margin-left: 10px;
         }
     }
-    /*Sahil Code for four icons complete */
 </style>
 
-<!-- Sahil Code for four icons Section-->
-        </div>
+  
     
     <div class="container">
-        <div class="container my-1">
-            <h5 class="text-center mb-3 fw-bold">What are you looking for?
-</h5>
-            <div class="row g-3">
-                <!-- Kids -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                                <a href="../Pages/ExpenseManager.aspx" target="_blank" style="color: blue;">
-
-                            <h5 class="fw-bold mb-1">Daily</h5>
-                            <p class="small text-muted mb-0">Expenses</p>
-                        </div>
-                        <img src="../Images/System/calc.JPEG"
-                            width="50" alt="Kids"></a>
-                    </div>
-                </div>
-
-                <!-- Grooming -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                            <h5 class="fw-bold mb-1">Looking For Job?</h5>
-                            <p class="small text-muted mb-0">Registration</p>
-                        </div>
-                      <img src="../Images/System/calc.JPEG"
-    width="50" alt="Kids">
-                    </div>
-                </div>
-
-                <!-- Accessories -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                            <h5 class="fw-bold mb-1">Manpower Required?</h5>
-                            <p class="small text-muted mb-0">Search here</p>
-                        </div>
-                        <img src="../Images/System/calc.JPEG"
-    width="50" alt="Kids">
-                    </div>
-                </div>
-
-                <!-- Footwear -->
-                <div class="col-6 col-md-3">
-<%--                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center rounded">--%>
-                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-     style="border-radius: 20px;">
-
-                        <div class="text-start">
-                            <h5 class="fw-bold mb-1">Looking for Desi Products?</h5>
-                            <p class="small text-muted mb-0"> Here I am</p>
-                        </div>
-                        <img src="../Images/System/calc.JPEG"
-    width="50" alt="Kids">
-                    </div>
-                                        </div>
-
-
-
-
-
-     <!-- NEW PRODUCTS ROW WITH HOVER EFFECT, RATINGS, AND ICONS -->
-        </div>
-
-                </div>
-
-
+    
 
 
 <div class="container my-4">
-    <h5 class="text-center mb-3 fw-bold">WOMEN COLLECTION</h5>
+    <p class="title text-center mb-3">Latest Collection</p>    
     
     <div class="row g-3">
         <asp:Repeater ID="rptWomenCollection" runat="server">
@@ -326,24 +257,6 @@ style="border-radius: 20px;">
 
 
 
-<!-- Trending Collections (Static) -->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="text-uppercase">TRENDING COLLECTIONS</h2>
-        </div>
-
-        <%-- Static Items --%>
-        <div class="col-md-2 col-xs-6">
-            <a href="/Search.aspx" target="_blank">
-                <img src="../Images/Items/old images/Max-PC-1-231017.jpg" class="img-responsive img-thumbnail" />
-            </a>
-        </div>
-        <!-- Repeat for other items -->
-    </div>
-</div>
-
-<hr />
 
 <!-- WOMEN COLLECTION -->
 
@@ -373,7 +286,7 @@ style="border-radius: 20px;">
 
 
 <!-- MEN COLLECTION -->
-<div class="container-fluid">
+<div class="container-fluid" style="visibility:hidden;">
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-uppercase">MEN COLLECTIONS</h2>
@@ -409,7 +322,7 @@ style="border-radius: 20px;">
 </div>
 
 <!-- ELECTRONIC APPLIANCES -->
-<div class="container-fluid">
+<div class="container-fluid" style="visibility:hidden;">
     <div class="row">
         <div class="col-md-12">
             <h2 class="text-uppercase">Electronic Appliances</h2>

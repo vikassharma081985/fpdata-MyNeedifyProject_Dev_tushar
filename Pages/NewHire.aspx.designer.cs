@@ -9,5 +9,6 @@ namespace WSBillingMaster.Pages
     public partial class NewHire
     {
 
+
     }
 }
