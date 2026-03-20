@@ -8,7 +8,16 @@ namespace WSBillingMaster.Pages
 {
     public partial class NewHire
     {
-
-
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Literal litCompany;
+        protected global::System.Web.UI.WebControls.Literal litContactPerson;
+        protected global::System.Web.UI.WebControls.Literal litPhone;
+        protected global::System.Web.UI.WebControls.Literal litRemarks;
+        protected global::System.Web.UI.WebControls.Literal litDate;
+        protected global::System.Web.UI.WebControls.Literal litSalary;
+        protected global::System.Web.UI.WebControls.Literal litTime;
+        protected global::System.Web.UI.WebControls.Literal litStatus;
+        protected global::System.Web.UI.WebControls.Button btnAccept;
+        protected global::System.Web.UI.WebControls.Button btnReject;
     }
 }

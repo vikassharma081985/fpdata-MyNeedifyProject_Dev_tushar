@@ -37,6 +37,8 @@ namespace FaduPrice.Pages
                     lblUserName.InnerText = "Hi, " + Session["UserName"].ToString();// +" <span class='caret'></span> "; */
                     //UserName1.Text = "Welcome ,"+ Session["UserName"].ToString();
                     
+                    //UserName1.Text = "Welcome ,"+ Session["UserName"].ToString();
+                    BindNotifications(Convert.ToInt32(Session["UserId"]));
                 }
                 GetMenu();
 
@@ -84,6 +86,34 @@ namespace FaduPrice.Pages
             divmenu.InnerHtml = MenuString;
             //return MenuString;
             //dbo.GetMenus
+        }
+
+        public void BindNotifications(int userId)
+        {
+            string notificationHtml = "";
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.IntUserId = userId;
+                using (DataTable dt = objBll.GetHiringDetailsByUserId())
+                {
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string hireId = row["HireId"].ToString();
+                            string companyName = row["CompanyName"] != DBNull.Value ? row["CompanyName"].ToString() : "Service";
+                            string title = string.Format("New Request from {0}", companyName);
+                            notificationHtml += string.Format("<a href=\"../Pages/NewHire.aspx?HireId={0}\" class=\"dropdown-item\">{1}</a>", hireId, title);
+                        }
+                    }
+                    else
+                    {
+                        notificationHtml = "<span class=\"dropdown-item text-muted\">No notifications</span>";
+                    }
+                }
+            }
+            if (divNotificationsMobile != null) divNotificationsMobile.InnerHtml = notificationHtml;
+            if (divNotificationsDesktop != null) divNotificationsDesktop.InnerHtml = notificationHtml;
         }                
     }
 }

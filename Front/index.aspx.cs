@@ -211,6 +211,35 @@ namespace FaduPrice.Front
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GetNotificationsData(string UserId)
+        {
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.IntUserId = Convert.ToInt32(UserId);
+                using (DataTable dt = objBll.GetHiringDetailsByUserId())
+                {
+                    string notificationHtml = "";
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string hireId = row["HireId"].ToString();
+                            string companyName = row["CompanyName"] != DBNull.Value ? row["CompanyName"].ToString() : "Service";
+                            string title = string.Format("New Request from {0}", companyName);
+                            notificationHtml += string.Format("<a href=\"../Pages/NewHire.aspx?HireId={0}\" class=\"dropdown-item\">{1}</a>", hireId, title);
+                        }
+                    }
+                    else
+                    {
+                        notificationHtml = "<span class=\"dropdown-item text-muted\">No notifications</span>";
+                    }
+                    return notificationHtml;
+                }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string btnSignup(string txtFirstName, string txtLastName, string txtMobile, string txtEmail, string txtPassword1)
         {
             string rtrn = "0";

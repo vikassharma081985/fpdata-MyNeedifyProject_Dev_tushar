@@ -86,6 +86,20 @@
                             $('[id$=lnkLogout]').show();
                             $('[id$=MasterhdnUserId]').val(UserInfo[0].UserId);
                             BindCart();
+                            
+                            // Dynamically load notifications upon successful login
+                            $.ajax({
+                                type: "POST",
+                                url: appURL + "Front/index.aspx/GetNotificationsData",
+                                data: JSON.stringify({ UserId: UserInfo[0].UserId }),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (notifData) {
+                                    $('[id$=divNotificationsMobile]').html(notifData.d);
+                                    $('[id$=divNotificationsDesktop]').html(notifData.d);
+                                }
+                            });
+
                             $('#btnModalClose').click();
                             //location.reload();
 
@@ -801,9 +815,9 @@ margin-left: 0px;                    font-size: 13px;
         <i class="bi bi-bell"></i>
     </span>
 
-    <div class="dropdown-menu  mt-2 " style="width:250px;">
-              <a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
-<a href="../Pages/NewHire.aspx" class="dropdown-item">New offer Notification 2 </a>
+    <div class="dropdown-menu  mt-2 " style="width:250px;" id="divNotificationsMobile" runat="server">
+              <%--<a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
+<a href="../Pages/NewHire.aspx" class="dropdown-item">New offer Notification 2 </a>--%>
     </div>
 </div>
 </div>
@@ -840,9 +854,9 @@ margin-left: 0px;                    font-size: 13px;
         <i class="bi bi-bell"></i>
     </span>
 
-    <div class="dropdown-menu  mt-2" style="width:250px;">
-         <a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
-<a href="../Pages/NewHire.aspx" class="dropdown-item">New offer Notification 2 </a>
+    <div class="dropdown-menu  mt-2" style="width:250px;" id="divNotificationsDesktop" runat="server">
+         <%--<a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
+<a href="../Pages/NewHire.aspx" class="dropdown-item">New offer Notification 2 </a>--%>
     </div>
 </div>
 

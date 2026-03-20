@@ -110,9 +110,10 @@
       <section class="banner d-flex align-items-center justify-content-center">
         <h2 class="fw-bold display-6 text-center">ONLINE Job Search Portal<br />
 
-<span style="font-size:16px;">अपने आस-पास के लोगों को काम दें।
-हम वह मंच हैं जहाँ हम एक-दूसरे की मदद करते हुए लोगों को जोड़ते हैं।
-निस्वार्थ सेवा और राष्ट्र निर्माण के संकल्प के साथ कदम बढ़ा रहे हैं।</span></h2>
+          <span style="font-size:16px;">अपने आस-पास के लोगों को काम दें।
+            हम वह मंच हैं जहाँ हम एक-दूसरे की मदद करते हुए लोगों को जोड़ते हैं।
+            निस्वार्थ सेवा और राष्ट्र निर्माण के संकल्प के साथ कदम बढ़ा रहे हैं।</span>
+        </h2>
       </section>
 
       <!-- Search Box -->
@@ -210,17 +211,17 @@
                     <div class="status">
                       <span class="status-chip"><i class="fa-solid fa-clock"></i> Immediate Joining</span>
                     </div>
-                 <%--   <asp:LinkButton ID="btnHire" runat="server" CommandName="Hire"
-                      CommandArgument='<%# Eval("RegId") %>' CssClass="btn btn-sm text-white px-3"
-                      Style="background:#F48B1E; border-radius:40px;">
+                    <asp:LinkButton ID="btnHire" runat="server"
+                      PostBackUrl='<%# "~/Pages/Hire.aspx?RegId=" + Eval("RegId") %>'
+                      CssClass="btn btn-sm text-white px-3" Style="background:#F48B1E; border-radius:40px;"
+                      Visible='<%# !IsCandidateHired(Convert.ToInt32(Eval("RegId"))) %>'>
                       Hire Now
-                    </asp:LinkButton>--%>
-                      <asp:LinkButton ID="btnHire" runat="server"
-    PostBackUrl='<%# "~/Pages/Hire.aspx?RegId=" + Eval("RegId") %>'
-    CssClass="btn btn-sm text-white px-3"
-    Style="background:#F48B1E; border-radius:40px;">
-    Hire Now
-</asp:LinkButton>
+                    </asp:LinkButton>
+                    <span class="btn btn-sm text-white px-3"
+                      style="background:#28a745; border-radius:40px; cursor:default;" runat="server"
+                      visible='<%# IsCandidateHired(Convert.ToInt32(Eval("RegId"))) %>'>
+                      <i class="fa-solid fa-check"></i> Selected
+                    </span>
                   </div>
                 </div>
               </div>

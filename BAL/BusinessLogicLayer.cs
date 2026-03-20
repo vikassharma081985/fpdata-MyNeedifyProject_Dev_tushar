@@ -172,6 +172,7 @@ namespace BLL
         public string LocationName { get; set; }
         public string Landmark { get; set; }
         public string PincodeVal { get; set; }
+        public int HireId { get; set; }
 
         public int ManageDiscount()
         {
@@ -2570,6 +2571,20 @@ namespace BLL
             }
         }
 
+        public DataTable GetHiredRegIdsByUser()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "SELECT DISTINCT RegId FROM tblHire WHERE CreatedBy = @UserId";
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.Parameters.AddWithValue("@UserId", IntUserId);
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
         public DataTable GetJobRegistrationForHire()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -2610,6 +2625,52 @@ namespace BLL
                 }
             }
         }
+        public DataTable GetHiringDetailsByUserId()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_GETHIRINGDETAILSBYUSERID";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@UserId", IntUserId); // Need to check if there is UserId int. 
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public DataTable GetHiringDetailsByHireId()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "SELECT h.*, jr.FirstName, jr.LastName FROM tblHire h INNER JOIN tblJobRegistration jr ON h.RegId = jr.RegId WHERE h.HireId = @HireId";
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@HireId", HireId);
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public int UpdateHireStatus()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "UPDATE tblHire SET Status = @Status WHERE HireId = @HireId";
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@Status", Status);
+                    sqlCommand.Parameters.AddWithValue("@HireId", HireId);
+                    return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                }
+            }
+        }
+
         #endregion
     }
 

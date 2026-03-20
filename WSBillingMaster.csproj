@@ -366,6 +366,7 @@
     <Content Include="Pages\ManageItems.aspx" />
     <Content Include="Pages\ManageRoleWiseManu.aspx" />
     <Content Include="Pages\ManageSlider.aspx" />
+    <Content Include="Pages\NewHire.aspx" />
     <Content Include="Pages\OrganizationMaster.aspx" />
     <Content Include="Pages\PendingOrderList.aspx" />
     <Content Include="Pages\PhysicalVerification.aspx" />
@@ -916,6 +917,13 @@
     </Compile>
     <Compile Include="Pages\ManageSlider.aspx.designer.cs">
       <DependentUpon>ManageSlider.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NewHire.aspx.cs">
+      <DependentUpon>NewHire.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\NewHire.aspx.designer.cs">
+      <DependentUpon>NewHire.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\OrganizationMaster.aspx.cs">
       <DependentUpon>OrganizationMaster.aspx</DependentUpon>
