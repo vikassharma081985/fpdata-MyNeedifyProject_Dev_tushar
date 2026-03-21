@@ -22,11 +22,18 @@ namespace WSBillingMaster.Pages
         //public static string apiBaseUrl = "https://localhost:7089/api/";
         //public static string apiBaseUrl = "https://198.38.88.185/api/";
         public static string apiKey = "nQuWK7pMKI@";
+        private static int OrgId = 0;
+        private static int EmployeeId = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         
         {
-            if (Session["UserName"] == null || Session["UserId"] == null)
+            if (Session["OrgId"] != null)
+            {
+
+            }
+
+            else if (Session["UserName"] == null || Session["UserId"] == null)
             {
                 Session.Clear();
                 Session.Abandon();
@@ -45,9 +52,22 @@ namespace WSBillingMaster.Pages
 
             if (!IsPostBack)
             {
-                string userName = Session["UserName"].ToString();
-                string userId = Session["UserId"].ToString();
-                hdnUserId.Value = userId;
+                if (Session["OrgId"] != null)
+                {
+                    string userName = Session["EmployeeName"].ToString();
+                    string userId = Session["EmployeeId"].ToString();
+                    hdnUserId.Value = userId;
+                    OrgId = Convert.ToInt32(Session["OrgId"]);
+                    EmployeeId = Convert.ToInt32(Session["EmployeeId"]);
+                }
+                else
+                {
+                    string userName = Session["UserName"].ToString();
+                    string userId = Session["UserId"].ToString();
+                    hdnUserId.Value = userId;
+                    OrgId = 0;
+                    EmployeeId = 0;
+                }
             }
             //if (!IsPostBack)
             //{
@@ -120,9 +140,9 @@ namespace WSBillingMaster.Pages
                     string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
 					int idx = url.IndexOf('?');
 					string query = idx >= 0 ? url.Substring(idx) : "";
-                    obj.FetchUserId = Convert.ToString(data[0].userId); // (HttpUtility.ParseQueryString(query).Get("UserId"));
-                    obj.OrgId = 0;//Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("OrgId"));
-                    obj.EmpId = 0;// Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("EmpId"));
+                    obj.FetchUserId = OrgId > 0 ? "0" : Convert.ToString(data[0].userId); // (HttpUtility.ParseQueryString(query).Get("UserId"));
+                    obj.OrgId = OrgId;//Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("OrgId"));
+                    obj.EmpId = EmployeeId;// Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("EmpId"));
                     
 
                     int a = obj.SaveExpense();

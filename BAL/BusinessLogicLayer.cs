@@ -2671,6 +2671,34 @@ namespace BLL
             }
         }
 
+        public DataTable GetSellerLogoBySellerId(int OrgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "proc_GETSellerLogoBySellerId";
+                    sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public DataTable GetEmployeeByOrgId(int OrgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_GETEMPLOYEEBYORGID";
+                    sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
         #endregion
     }
 

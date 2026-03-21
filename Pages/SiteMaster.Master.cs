@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using BLL;
+using Microsoft.VisualBasic.Logging;
 
 namespace WSBillingMaster.Pages
 {
@@ -17,21 +20,49 @@ namespace WSBillingMaster.Pages
             //    if (Request.Url.AbsolutePath.ToLower().Contains("index.aspx"))
             //        return;
 
-            //    if (Session["UserName"] == null || Session["UserId"] == null)
-            //    {
-            //        Session.Clear();
-            //        Session.Abandon();
+                //    if (Session["UserName"] == null || Session["UserId"] == null)
+                //    {
+                //        Session.Clear();
+                //        Session.Abandon();
 
-            //        ScriptManager.RegisterStartupScript(
-            //            this,
-            //            this.GetType(),
-            //            "SessionExpired",
-            //            "alert('Please login first to use this tool.'); window.location.href='/Front/Index.aspx';",
-            //            true
-            //        );
-            //    }
-            //}
+                //        ScriptManager.RegisterStartupScript(
+                //            this,
+                //            this.GetType(),
+                //            "SessionExpired",
+                //            "alert('Please login first to use this tool.'); window.location.href='/Front/Index.aspx';",
+                //            true
+                //        );
+                //    }
+                //}
 
+            if (Session["OrgId"] != null)
+            {
+                bindSellerLogo(Convert.ToInt32(Session["OrgId"]));
+            }            
+            
+            else if (Session["UserName"] != null || Session["UserId"] != null)
+            {
+                imgSellerLogo.Src = "../Images/system/mylogo.png";
+            }
+
+            else
+            {
+                Response.Redirect("Login.aspx");
+            }
+
+        }
+
+        public void bindSellerLogo(int OrgId)
+        {
+            using (BusinessLogicLayer objBLL = new BusinessLogicLayer())
+            {
+                DataTable dt = objBLL.GetSellerLogoBySellerId(OrgId);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow dr = dt.Rows[0];
+                    imgSellerLogo.Src = dr["Logo"]?.ToString();
+                }
+            }
         }
 
         protected void lnkLogout_Click(object sender, EventArgs e)
