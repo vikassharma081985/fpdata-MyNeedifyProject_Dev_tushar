@@ -155,6 +155,10 @@ namespace WSBillingMaster
             }
         }
 
+        protected void btnDisplayOrgPopup_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("AddOrganization.aspx");
+        }
 
-    }
+        }
 }

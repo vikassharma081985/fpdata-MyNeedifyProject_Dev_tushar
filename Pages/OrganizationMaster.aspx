@@ -24,7 +24,7 @@
         <div>
             <div class="row">
                 <div class="col-sm-12">
-                    <button type="button" class="btn btn-primary text-uppercase" id="btnDisplayOrgPopup">Add Organization</button>
+                    <asp:Button CssClass="btn btn-primary text-uppercase" runat="server" onclick="btnDisplayOrgPopup_Click"  ID="btnDisplayOrgPopup" Text="Add Organization"></asp:Button>
                 </div>
             </div>
             <div style="padding-top: 1em;"></div>

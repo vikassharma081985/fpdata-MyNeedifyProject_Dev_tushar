@@ -2116,20 +2116,20 @@ namespace BLL
             {
                 using (SqlCommand sqlCommand = new SqlCommand())
                 {
-                    sqlCommand.CommandText = "proc_AddSettlementAmount";
+                    //sqlCommand.CommandText = "proc_AddSettlementAmount";
                     sqlCommand.CommandText = "SubCategory_master_CRUD";
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@SubCategoryID", id);
                     sqlCommand.Parameters.AddWithValue("@CategoryID", CategoryID);
-                    sqlCommand.Parameters.AddWithValue("@CustomerId", CustomerId);
+                    //sqlCommand.Parameters.AddWithValue("@CustomerId", CustomerId);
                     sqlCommand.Parameters.AddWithValue("@SubCategoryName", SubCategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
                     sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
-                    sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
-                    sqlCommand.Parameters.AddWithValue("@Name", FirstName);
-                    sqlCommand.Parameters.AddWithValue("@TransactionId", TransactionId);
+                    //sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
+                    //sqlCommand.Parameters.AddWithValue("@Name", FirstName);
+                    //sqlCommand.Parameters.AddWithValue("@TransactionId", TransactionId);
 
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
@@ -2151,7 +2151,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
                     sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
-                    sqlCommand.Parameters.AddWithValue("@SettlementAmount", SettlementAmt);
+                    //sqlCommand.Parameters.AddWithValue("@SettlementAmount", SettlementAmt);
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
             }
@@ -2365,6 +2365,7 @@ namespace BLL
                     sqlCommand.CommandText = "Proc_OrganizationMaster";
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@Id", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
                     sqlCommand.Parameters.AddWithValue("@Action", 2);
                     return objDAL.GetDataTable(sqlCommand);
                 }

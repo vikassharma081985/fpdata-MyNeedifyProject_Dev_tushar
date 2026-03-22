@@ -235,7 +235,7 @@
 </p>
             <div class="row g-3">
 
-                                <div class="col-6 col-md-3">
+                                <%--<div class="col-6 col-md-3">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
@@ -247,8 +247,8 @@ style="border-radius: 20px;">
                         <img src="../Images/System/calculators.PNG"
                             width="50" alt="Kids"></a>
                     </div>
-                </div>
-                                <div class="col-6 col-md-3">
+                </div>--%>
+                                <%--<div class="col-6 col-md-3">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
@@ -260,7 +260,7 @@ style="border-radius: 20px;">
                         <img src="../Images/System/calculators.PNG"
                             width="50" alt="Kids"></a>
                     </div>
-                </div>
+                </div>--%>
 
                 <!-- Kids -->
                 <div class="col-6 col-md-3">
@@ -282,11 +282,12 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
+                       <a href="../Pages/RegistrationList.aspx" target="_blank" style="color: blue;">
                             <h5 class="fw-bold mb-1">Looking For Job?</h5>
                             <p class="small text-muted mb-0">Registration</p>
                         </div>
                       <img src="../Images/System/posting.PNG"
-    width="50" alt="Kids">
+    width="50" alt="Kids"></a>
                     </div>
                 </div>
 
@@ -295,11 +296,12 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
+                       <a href="../Pages/Job.aspx" target="_blank" style="color: blue;">
                             <h5 class="fw-bold mb-1">Manpower Required?</h5>
                             <p class="small text-muted mb-0">Search here</p>
                         </div>
                         <img src="../Images/System/electrician.PNG"
-    width="50" alt="Kids">
+    width="50" alt="Kids"></a>
                     </div>
                 </div>
 
