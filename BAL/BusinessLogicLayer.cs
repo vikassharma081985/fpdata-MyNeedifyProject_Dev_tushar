@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -2344,6 +2344,10 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@ProfileImage", OrgProfileImage);
                     sqlCommand.Parameters.AddWithValue("@Latitude", Latitude);
                     sqlCommand.Parameters.AddWithValue("@Longitude", Longitude);
+                    sqlCommand.Parameters.AddWithValue("@State", State);
+                    sqlCommand.Parameters.AddWithValue("@City", City);
+                    sqlCommand.Parameters.AddWithValue("@Locality", Locality);
+                    sqlCommand.Parameters.AddWithValue("@Pincode", Pincode);
                     sqlCommand.Parameters.AddWithValue("@Action", 1);
                     sqlCommand.Parameters.AddWithValue("@ReturnId", SqlDbType.Int);
                     sqlCommand.Parameters["@ReturnId"].Direction = ParameterDirection.Output;
@@ -2401,6 +2405,10 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@ProfileImage", OrgProfileImage);
                     sqlCommand.Parameters.AddWithValue("@Latitude", Latitude);
                     sqlCommand.Parameters.AddWithValue("@Longitude", Longitude);
+                    sqlCommand.Parameters.AddWithValue("@State", State);
+                    sqlCommand.Parameters.AddWithValue("@City", City);
+                    sqlCommand.Parameters.AddWithValue("@Locality", Locality);
+                    sqlCommand.Parameters.AddWithValue("@Pincode", Pincode);
                     sqlCommand.Parameters.AddWithValue("@Action", 3);
                     sqlCommand.Parameters.AddWithValue("@ReturnId", SqlDbType.Int);
                     sqlCommand.Parameters["@ReturnId"].Direction = ParameterDirection.Output;

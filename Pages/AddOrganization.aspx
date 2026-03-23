@@ -114,35 +114,29 @@
                     </div>
 
                     <div class="col-md-3">
-    <div class="form-group">
-        <label>State</label>
-        <input type="text" id="txtstate" class="form-control" placeholder="Enter State" tabindex="13" autocomplete="off" />
-    </div>
-</div>
-
-
-                                        <div class="col-md-3">
-    <div class="form-group">
-        <label>City</label>
-        <input type="text" id="txtcity" class="form-control" placeholder="Enter City" tabindex="13" autocomplete="off" />
-    </div>
-</div>
-
-
-                                                            <div class="col-md-3">
-    <div class="form-group">
-        <label>Location</label>
-        <input type="text" id="txtloc" class="form-control" placeholder="Enter Location" tabindex="13" autocomplete="off" />
-    </div>
-</div>
-
-
-                                                            <div class="col-md-3">
-    <div class="form-group">
-        <label>Pincode</label>
-        <input type="text" id="txtpincode" class="form-control" placeholder="Enter Pincode" tabindex="13" autocomplete="off" />
-    </div>
-</div>
+                        <div class="form-group">
+                            <label>State</label>
+                            <select id="ddlStateMaster" class="form-control" tabindex="13"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>City</label>
+                            <select id="ddlCityMaster" class="form-control" tabindex="13"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Location</label>
+                            <select id="ddlLocality" class="form-control" tabindex="13"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Pincode</label>
+                            <input type="text" id="txtpincode" class="form-control" placeholder="Enter Pincode" tabindex="13" autocomplete="off" />
+                        </div>
+                    </div>
 
 
                 </div>

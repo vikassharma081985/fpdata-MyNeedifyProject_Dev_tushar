@@ -1,5 +1,67 @@
 $(document).ready(function () {
     BindCategory();
+    BindState();
+});
+
+function BindState() {
+    $.ajax({
+        type: "POST",
+        url: "AddOrganization.aspx/GetStateMaster",
+        data: '{}',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (r) {
+            var ddlStateMaster = $("[id*=ddlStateMaster]");
+            ddlStateMaster.empty().append('<option selected="selected" value="0">Please select state</option>');
+
+            $.each(r.d, function () {
+                ddlStateMaster.append($("<option></option>").val(this['Value']).html(this['Text']));
+            });
+        }
+    });
+}
+
+$("[id*=ddlStateMaster]").change(function () {
+    var stateID = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: "AddOrganization.aspx/GetCityMasterByStateID",
+        data: JSON.stringify({ stateID: stateID }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (r) {
+            var ddlCityMaster = $("[id*=ddlCityMaster]");
+            ddlCityMaster.empty().append('<option selected="selected" value="0">Please select</option>');
+
+            $.each(r.d, function () {
+                ddlCityMaster.append($("<option></option>").val(this['Value']).html(this['Text']));
+            });
+        }
+    });
+});
+
+$("[id*=ddlCityMaster]").change(function () {
+    var CityID = $(this).val();
+    $.ajax({
+        type: "POST",
+        url: "AddOrganization.aspx/GetAreaMasterByCityID",
+        data: JSON.stringify({ CityID: CityID }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (r) {
+            var ddlLocality = $("[id*=ddlLocality]");
+            ddlLocality.empty().append('<option selected="selected" value="0">Please select</option>');
+
+            $.each(r.d, function () {
+                ddlLocality.append($("<option></option>").val(this['Value']).html(this['Text']));
+            });
+        }
+    });
+});
+
+$("[id*=ddlLocality]").change(function () {
+    var pincode = $(this).val();
+    $('[id$=txtpincode]').val(pincode);
 });
 
 function BindCategory() {
@@ -127,6 +189,16 @@ $('#btnSaveDetails').click(function () {
     var businessid = parseInt($('#ddlCategory').val());
     var latitude = $('#txtLatitude').val();
     var longitude = $('#txtLongitude').val();
+
+    var state = $("#ddlStateMaster option:selected").val();
+    var city = $("#ddlCityMaster option:selected").val();
+    var locality = $("#ddlLocality option:selected").val();
+    var pincode = $("#txtpincode").val();
+
+    if ($("#ddlStateMaster").val() == "0") state = "";
+    if ($("#ddlCityMaster").val() == "0") city = "";
+    if ($("#ddlLocality").val() == "0") locality = "";
+
     var username = '';
     if ($('#chkmobile').is(':checked')) {
         username = $('#txtMobile').val();
@@ -144,7 +216,7 @@ $('#btnSaveDetails').click(function () {
     $.ajax({
         url: "AddOrganization.aspx/AddOrganizationMaster",
         async: false,
-        data: JSON.stringify({ SellerName: sellername, LastName: lastname, BrandName: brandname, DisplayName: displayname, GST: gst, SellerAddress: selleraddress, Mobile: mobile, LandLineNumber: landline, Email: emailid, Website: website, Password: password, BusinessId: businessid, SellerId: sellerId, Username: username, ProfileImage: getpath, Latitude: latitude, Longitude: longitude }),
+        data: JSON.stringify({ SellerName: sellername, LastName: lastname, BrandName: brandname, DisplayName: displayname, GST: gst, SellerAddress: selleraddress, Mobile: mobile, LandLineNumber: landline, Email: emailid, Website: website, Password: password, BusinessId: businessid, SellerId: sellerId, Username: username, ProfileImage: getpath, Latitude: latitude, Longitude: longitude, State: state, City: city, Locality: locality, Pincode: pincode }),
         contentType: "application/json; charset=utf-8",
         type: "POST", // data has to be Posted 
         timeout: 120000,
