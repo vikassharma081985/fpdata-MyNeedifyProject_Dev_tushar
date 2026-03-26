@@ -10,6 +10,15 @@
 
 
     <style>
+
+        @media (max-width: 768px) {
+            #easy_zoom {
+                width: 170px !important;
+                height: 300px !important;
+                top: 180px !important;
+            }
+
+        }
         /*.jcf-number .jcf-btn-dec:before, .jcf-number .jcf-btn-dec:after, .jcf-number .jcf-btn-inc:before, .jcf-number .jcf-btn-inc:after {
             background: #fff;
             background-color: white;
