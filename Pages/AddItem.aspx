@@ -280,31 +280,32 @@
                 <asp:FileUpload ID="flUpload" runat="server" CssClass="form-control" />
             </div>
 
-            <div class="col-lg-5 col-md-6 col-sm-12 form-group">
+        <%--    <div class="col-lg-5 col-md-6 col-sm-12 form-group">
                 <label>Info</label>
                 <div style="font-size:13px;color:#888;">
                     (only jpeg, jpg, png, pdf files are allowed)<br>
                     (max size 5MB)
                 </div>
                 <asp:Label ID="lblalertmsg" runat="server"></asp:Label>
-            </div>
+            </div>--%>
 
             <!-- Row 5 -->
-            <div class="col-lg-2 col-md-3 col-sm-6 form-group mt-4">
+            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
                 <asp:CheckBox ID="chkIscoupan" runat="server" Text="Is Coupon Applicable" />
             </div>
 
-            <div class="col-lg-2 col-md-3 col-sm-6 form-group mt-4">
+            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
                 <asp:CheckBox ID="chkIsActive" runat="server" Text="Is Active" />
             </div>
 
-            <div class="col-lg-3 col-md-6 col-sm-6 form-group mt-3">
+            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
                 <asp:Button runat="server"
                     CssClass="btn btn-primary w-100"
                     OnClick="btnSubmitData_Click"
                     OnClientClick="return ValidateSave();"
                     ID="btnSubmitData"
-                    Text="Save" />
+                    Text="Save"
+                    style="width:200px;"/>
             </div>
 
         </div>
