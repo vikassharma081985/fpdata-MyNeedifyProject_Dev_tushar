@@ -49,20 +49,19 @@
                             <input type="file" id="fpUpload" onchange="FileChange(this);" />
                         </div>
 
-                        <div class="form-group">
-                            <label>Description :</label>
-                            <input type="text" class="form-control" id="txtExpenseDescription" />
-                        </div>
-                    </div>
+           <div class="form-group" style="flex:2;">
+    <label>Description :</label>
+    <input type="text" class="form-control" id="txtExpenseDescription" />
+</div>
 
-                    <div class="form-row center">
-                        <input type="button" class="btn btn-danger" value="Save" onclick="Save();" />
-                    </div>
+<div class="form-group" style="width:100px; margin-top:25px;">
+    <input type="button" class="btn btn-danger w-100" value="Save" onclick="Save();" />
+</div>
                 </div>
             </div>
 
             <!-- ======================== All Expenses Section ========================= -->
-            <div class="Header" style="margin-top: 20px;">
+<%--            <div class="Header" style="margin-top: 20px;">
                 <div class="section-title">All Expenses</div>
                 <div class="section-title">Total Expense : Rs. <span id="lblExpenseAmt"
                         style="color: LawnGreen; font-size: Large;">0</span> </div>
@@ -97,11 +96,60 @@
 
 
 
-                </div>
+                </div>--%>
+
+                <div class="Header" style="margin-top: 20px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+    
+    <!-- Row 1 -->
+    <div style="display:flex; gap:20px; align-items:center;">
+        <div class="section-title">All Expenses</div>
+        <div class="section-title">
+            Total Expense : Rs.
+            <span id="lblExpenseAmt" style="color: LawnGreen; font-size: Large;">0</span>
+        </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="responsive-form" style="width:100%; margin-top:10px;">
+        <div class="form-row" style="display:flex; align-items:end; gap:10px; flex-wrap:nowrap;">
+            
+            <div class="form-group">
+                <label>From Date :</label>
+                <input type="text" class="form-control datepicker" id="txtFromDate" />
+            </div>
+
+            <div class="form-group">
+                <label>To Date :</label>
+                <input type="text" class="form-control datepicker" id="txtToDate" />
+            </div>
+
+            <div class="form-group">
+                <label>Expense On :</label>
+                <select id="ddlExpenseSearch" class="form-control"></select>
+            </div>
+
+            <div class="form-group" style="margin-top:22px;">
+                <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
+            </div>
+
+            <div class="form-group" style="margin-top:22px;">
+                <input type="button" class="btn btn-primary" value="Submit for Reimbursement"
+                    onclick="OpenRbmPopup();">
+            </div>
+
+            <div class="form-group" style="margin-top:22px;">
+                <input type="button" class="btn btn-danger" value="Reimbursement History"
+                    onclick="openHistoryModal();">
+            </div>
+
+        </div>
+    </div>
+
+</div>
 
                 <!-- Charts Section -->
-                <div id="chartsContainer"
-                    style="display:none; margin-top: 20px; margin-bottom: 20px; text-align: center;">
+            <%--    <div id="chartsContainer"
+                    style="display:visible; margin-top: 20px; margin-bottom: 20px; text-align: center;">
                     <div class="form-row center" style="flex-wrap: wrap; gap: 20px; justify-content: center;">
                         <div class="chart-box"
                             style="width: 35%; min-width: 250px; background: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
@@ -118,7 +166,30 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>--%>
+
+                <p class="show-charts-text">Hover here to view expense charts</p>
+
+<div id="chartsContainer"
+    style="margin-top: 20px; margin-bottom: 20px; text-align: center;">
+    <div class="form-row center" style="flex-wrap: wrap; gap: 20px; justify-content: center;">
+        <div class="chart-box"
+            style="width: 35%; min-width: 250px; background: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+            <h5>Category Wise Expense</h5>
+            <div style="height: 300px; position: relative;">
+                <canvas id="pieChartCategory"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-box"
+            style="width: 35%; min-width: 250px; background: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+            <h5>Month Wise Expense</h5>
+            <div style="height: 300px; position: relative;">
+                <canvas id="pieChartMonth"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <div id="mobileViewToggle" style="display:none; margin-bottom:10px;">
                     <span id="btnTableView" onclick="showTableView()" class="toggle-text active">Table View</span> |
@@ -185,6 +256,7 @@
                         <tr>
                             <th>SNo.</th>
                             <th>Date</th>
+                             <th>Reimbursement ID</th>
                             <th>Total Amount</th>
                             <th>Status</th>
                             <th>View</th>
@@ -198,7 +270,7 @@
 
 
         <!-- ====================== Modal ====================== -->
-        <div id="submitModal" class="modal">
+       <%-- <div id="submitModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeSubmitModal();">&times;</span>
                 <h3>Details which needs to be displayed on header </h3>
@@ -217,7 +289,7 @@
 
                     <%--<label>Signature (Upload)</label>
                         <input type="file" id="fpSignature" onchange="UploadSignature();" />--%>
-                        <label style="cursor:pointer;color:#007bff;" onclick="openSignatureModal()">
+                       <%-- <label style="cursor:pointer;color:#007bff;" onclick="openSignatureModal()">
                             Signature (Click to Sign)
                         </label>
                         <label id="lblSignatureFile" style="display:none;color:green;font-weight:600;">
@@ -228,7 +300,98 @@
                 </div>
 
             </div>
+        </div>--%>
+
+
+
+
+
+
+        <div id="submitModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSubmitModal();">&times;</span>
+        <h3>Details which needs to be displayed on header</h3>
+
+        <div id="rbmPopup" title="Submit Reimbursement" style="display: visible;">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Reporting Manager</label>
+                    <input type="text" id="txtManager" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Employee Code</label>
+                    <input type="text" id="txtEmpCode" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" id="txtCompany" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Plant Code</label>
+                    <input type="text" id="txtPlant" class="form-control" />
+                </div>
+
+                <!-- Upload Option -->
+                <div class="form-group">
+                    <label>Upload Logo</label>
+                    <input type="file" id="fileUploadDoc" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label style="cursor:pointer;color:#007bff;" onclick="openSignatureModal()">
+                        Signature (Click to Sign)
+                    </label>
+                    <label id="lblSignatureFile" style="display:none;color:green;font-weight:600;"></label>
+                    <input type="hidden" id="hfSignaturePath" />
+                </div>
+
+            </div>
+
+            <input type="button" class="btn btn-success" value="Generate Document"
+                onclick="GenerateReimbursementDoc();" />
+
         </div>
+    </div>
+</div>
+
+<style>
+    #chartsContainer {
+    display: none;
+}
+
+.show-charts-text:hover + #chartsContainer,
+#chartsContainer:hover {
+    display: block;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    padding: 8px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
 
 
         <!-------------------------edit modal-------------------------->
@@ -329,6 +492,17 @@
 
         <!-- ======================== Styles ========================= -->
         <style>
+            .section-title {
+     width: auto !important;
+    max-width: none !important;
+}
+
+            .Header {
+    margin-top: 5%;
+}
+
+
+
             @media (max-width: 576px) {
                 .btnn {
                     width: 30% !important;
@@ -736,11 +910,11 @@
                     // Date + Expense Details
                     html += '<td>';
                     html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
-                    html += '<strong>Expense:</strong> ' + value.Expense +
-                        (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
-                    html += '<strong>Rate:</strong> ' + value.Rate + '<br>';
-                    html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';
-                    html += '<strong>Description:</strong> ' + (value.Description || '-');
+                    //html += '<strong>Expense:</strong> ' + value.Expense +
+                    //    (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+                   /* html += '<strong>Rate:</strong> ' + value.Rate + '<br>';*/
+                    /*html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';*/
+                   /* html += '<strong>Description:</strong> ' + (value.Description || '-');*/
                     html += '</td>';
 
                     // Total Amount
