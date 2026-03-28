@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WSBillingMaster.Pages {
-    
-    
-    public partial class AddItem {
-        
+namespace WSBillingMaster.Pages
+{
+
+
+    public partial class AddItem
+    {
+
         /// <summary>
         /// hdnAttachmentXML control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnAttachmentXML;
-        
+
         /// <summary>
         /// hdnPhysicalPath control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPhysicalPath;
-        
+
         /// <summary>
         /// hdnMemberDetails control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnMemberDetails;
-        
+
         /// <summary>
         /// hdnsize control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnsize;
-        
+
         /// <summary>
         /// hdnCategory control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnCategory;
-        
+
         /// <summary>
         /// hdnSupplier control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSupplier;
-        
+
         /// <summary>
         /// hdnSubCategory control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSubCategory;
-        
+
         /// <summary>
         /// hdnSubSubCategory control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnSubSubCategory;
-        
+
         /// <summary>
         /// hdnItemId control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnItemId;
-        
+
         /// <summary>
         /// ddlSupplier control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSupplier;
-        
+
         /// <summary>
         /// ddlCategory control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCategory;
-        
+
         /// <summary>
         /// ddlSubCatgeory control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSubCatgeory;
-        
+
         /// <summary>
         /// ddlSubSubCategory control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlSubSubCategory;
-        
+
         /// <summary>
         /// txtItemCode control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtItemCode;
-        
+
         /// <summary>
         /// txtItemName control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtItemName;
-        
+
         /// <summary>
         /// txtBrand control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBrand;
-        
+
         /// <summary>
         /// txtModel control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtModel;
-        
+
         /// <summary>
         /// txtDepartment control.
         /// </summary>
@@ -173,43 +175,16 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDepartment;
-        
+
         /// <summary>
-        /// txtItemDescription control.
+        /// TextBox1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CKEditor.NET.CKEditorControl txtItemDescription;
-        
-        /// <summary>
-        /// rptSizenStock control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptSizenStock;
-        
-        /// <summary>
-        /// ddlColor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlColor;
-        
-        /// <summary>
-        /// txtMRP control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMRP;
-        
+        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+
         /// <summary>
         /// txtAmount control.
         /// </summary>
@@ -218,7 +193,34 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAmount;
-        
+
+        /// <summary>
+        /// CKEditorControl1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::CKEditor.NET.CKEditorControl CKEditorControl1;
+
+        /// <summary>
+        /// rptSizenStock control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptSizenStock;
+
+        /// <summary>
+        /// ddlColor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlColor;
+
         /// <summary>
         /// txtCashback control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCashback;
-        
+
         /// <summary>
         /// txtVendor control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtVendor;
-        
+
         /// <summary>
         /// ddlCOD control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCOD;
-        
+
         /// <summary>
         /// txtVolume control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtVolume;
-        
+
         /// <summary>
         /// txtLength control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtLength;
-        
+
         /// <summary>
         /// txtWidth control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWidth;
-        
+
         /// <summary>
         /// txtHeight control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtHeight;
-        
+
         /// <summary>
         /// txtShippingWeight control.
         /// </summary>
@@ -290,7 +292,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtShippingWeight;
-        
+
         /// <summary>
         /// txtShippingPrice control.
         /// </summary>
@@ -299,25 +301,16 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtShippingPrice;
-        
+
         /// <summary>
-        /// txtHSNCode control.
+        /// TextBox3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtHSNCode;
-        
-        /// <summary>
-        /// divUploadAttac control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divUploadAttac;
-        
+        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+
         /// <summary>
         /// txtDisplay control.
         /// </summary>
@@ -326,7 +319,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDisplay;
-        
+
         /// <summary>
         /// flUpload control.
         /// </summary>
@@ -335,34 +328,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload flUpload;
-        
-        /// <summary>
-        /// lblalertmsg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblalertmsg;
-        
-        /// <summary>
-        /// divAttachement control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAttachement;
-        
-        /// <summary>
-        /// rptAttachment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptAttachment;
-        
+
         /// <summary>
         /// chkIscoupan control.
         /// </summary>
@@ -371,7 +337,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkIscoupan;
-        
+
         /// <summary>
         /// chkIsActive control.
         /// </summary>
@@ -380,7 +346,7 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkIsActive;
-        
+
         /// <summary>
         /// btnSubmitData control.
         /// </summary>
