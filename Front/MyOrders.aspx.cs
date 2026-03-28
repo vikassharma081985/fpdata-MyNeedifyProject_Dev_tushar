@@ -1,4 +1,4 @@
-﻿using BLL;
+using BLL;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -41,8 +41,6 @@ namespace FaduPrice.Pages
                         {
                             rptItems.DataSource = dt;
                             rptItems.DataBind();
-
-                           
                         }
                         else
                         {
@@ -53,6 +51,21 @@ namespace FaduPrice.Pages
 
                 }
 
+                // Bind Hired Data
+                obj.IntUserId = Convert.ToInt32(UserId);
+                using (DataTable dtHired = obj.GetHiringDetailsByUserId("ALL"))
+                {
+                    if (dtHired != null && dtHired.Rows.Count > 0)
+                    {
+                        rptHiringRequests.DataSource = dtHired;
+                        rptHiringRequests.DataBind();
+                    }
+                    else
+                    {
+                        rptHiringRequests.DataSource = null;
+                        rptHiringRequests.DataBind();
+                    }
+                }
             }
         }
 

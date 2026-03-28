@@ -94,7 +94,7 @@ namespace FaduPrice.Pages
             using (BusinessLogicLayer objBll = new BusinessLogicLayer())
             {
                 objBll.IntUserId = userId;
-                using (DataTable dt = objBll.GetHiringDetailsByUserId())
+                using (DataTable dt = objBll.GetHiringDetailsByUserId("Requested"))
                 {
                     if (dt != null && dt.Rows.Count > 0)
                     {

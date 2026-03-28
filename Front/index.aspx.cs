@@ -216,7 +216,7 @@ namespace FaduPrice.Front
             using (BusinessLogicLayer objBll = new BusinessLogicLayer())
             {
                 objBll.IntUserId = Convert.ToInt32(UserId);
-                using (DataTable dt = objBll.GetHiringDetailsByUserId())
+                using (DataTable dt = objBll.GetHiringDetailsByUserId("Requested"))
                 {
                     string notificationHtml = "";
                     if (dt != null && dt.Rows.Count > 0)

@@ -2634,7 +2634,7 @@ namespace BLL
                 }
             }
         }
-        public DataTable GetHiringDetailsByUserId()
+        public DataTable GetHiringDetailsByUserId(string Status = "")
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
             {
@@ -2644,6 +2644,7 @@ namespace BLL
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@UserId", IntUserId); // Need to check if there is UserId int. 
+                    sqlCommand.Parameters.AddWithValue("@Status", Status); // Need to check if there is UserId int. 
                     return objDAL.GetDataTable(sqlCommand);
                 }
             }
