@@ -953,7 +953,7 @@
 
                     // Date + Expense Details
                     html += '<td>';
-                    html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
+                    html += value.ExpenseDate + '<br>';
                     html += '<td>' + value.ID + '</td>';
                     //html += '<strong>Expense:</strong> ' + value.Expense +
                     //    (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
