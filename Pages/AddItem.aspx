@@ -4,19 +4,14 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script src="../Jscript/AddItem.js"></script>
     <script src="../Js/Combobox.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body{
             color:black;
         }        
-        .container-fluid {
-     padding: 0px 0px; 
-    width: 100%;
-}
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div style=" margin: 0 auto; margin-top: 3%; background-color: #fff; padding: 30px; min-height: 1300px;">
+    <div style="max-width: 1170px; margin: 0 auto; margin-top: 3%; background-color: #fff; padding: 30px; min-height: 1300px;">
         <asp:HiddenField ID="hdnAttachmentXML" runat="server" />
         <asp:HiddenField ID="hdnPhysicalPath" runat="server" />
         <asp:HiddenField ID="hdnMemberDetails" runat="server" />
@@ -57,264 +52,281 @@
 
             </div>--%>
 
-   <div class="container-fluid">
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
+            Supplier<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <asp:DropDownList ID="ddlSupplier" onchange="bindcategory1()" CssClass="BoxText" runat="server">
+            </asp:DropDownList>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 ">
+            Category<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <asp:DropDownList ID="ddlCategory" onchange="bindSubcategory()" CssClass="BoxText" runat="server">
+            </asp:DropDownList>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
+            Sub Category<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <asp:DropDownList ID="ddlSubCatgeory" onchange="bindSubSubcategory()" CssClass="BoxText" runat="server">
+            </asp:DropDownList>
+        </div>
 
-   <div class="row">
+        <%--<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 row top-buffer">--%>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Sub Sub Category<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:DropDownList ID="ddlSubSubCategory" CssClass="BoxText" runat="server">
+            </asp:DropDownList>
+        </div>        
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Product Code <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtItemCode" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Product Name <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtItemName" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
 
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Supplier <font color="red">*</font></label>
-        <asp:DropDownList ID="ddlSupplier" onchange="bindcategory1()" CssClass="form-control BoxText" runat="server"></asp:DropDownList>
-    </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Brand <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtBrand" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
 
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Category <font color="red">*</font></label>
-        <asp:DropDownList ID="ddlCategory" onchange="bindSubcategory()" CssClass="form-control BoxText" runat="server"></asp:DropDownList>
-    </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Model No <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtModel" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
 
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Sub Category <font color="red">*</font></label>
-        <asp:DropDownList ID="ddlSubCatgeory" onchange="bindSubSubcategory()" CssClass="form-control BoxText" runat="server"></asp:DropDownList>
-    </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Department <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtDepartment" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>        
 
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Sub Sub Category <font color="red">*</font></label>
-        <asp:DropDownList ID="ddlSubSubCategory" CssClass="form-control BoxText" runat="server"></asp:DropDownList>
-    </div>
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 TopSpace ">
+            Product Description<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <%--<asp:TextBox runat="server" onblur="return Validate(this);" class=" BoxText" ID="txtItemDescription"></asp:TextBox>--%>
+            <CKEditor:CKEditorControl ID="txtItemDescription" BasePath="/ckeditor/" runat="server">
+            </CKEditor:CKEditorControl>
+        </div>        
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 TopSpace ">
+            Product Size & Available Stock<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <%-- <asp:CheckBoxList ID="chkSizeList" RepeatColumns="2" CssClass="BoxText" runat="server">
+                </asp:CheckBoxList>--%>
 
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Product Code <font color="red">*</font></label>
-        <asp:TextBox ID="txtItemCode" onblur="return Validate(this);" CssClass="form-control BoxText" runat="server"></asp:TextBox>
-    </div>
-
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Product Name <font color="red">*</font></label>
-        <asp:TextBox ID="txtItemName" onblur="return Validate(this);" CssClass="form-control BoxText" runat="server"></asp:TextBox>
-    </div>
-
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Brand <font color="red">*</font></label>
-        <asp:TextBox ID="txtBrand" onblur="return Validate(this);" CssClass="form-control BoxText" runat="server"></asp:TextBox>
-    </div>
-
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Model No <font color="red">*</font></label>
-        <asp:TextBox ID="txtModel" onblur="return Validate(this);" CssClass="form-control BoxText" runat="server"></asp:TextBox>
-    </div>
-
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Department <font color="red">*</font></label>
-        <asp:TextBox ID="txtDepartment" onblur="return Validate(this);" CssClass="form-control BoxText" runat="server"></asp:TextBox>
-    </div>
-
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>MRP <font color="red">*</font></label>
-        <asp:TextBox ID="TextBox1" MaxLength="15" onblur="return Validate(this);" runat="server" class="form-control BoxText"></asp:TextBox>
-    </div>
-
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 form-group">
-        <label>Online Amount <font color="red">*</font></label>
-        <asp:TextBox ID="txtAmount" MaxLength="15" onblur="return Validate(this);" runat="server" class="form-control BoxText"></asp:TextBox>
-    </div>
-
-    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
-        <label>Product Description <font color="red">*</font></label>
-        <CKEditor:CKEditorControl ID="CKEditorControl1" BasePath="/ckeditor/" runat="server"></CKEditor:CKEditorControl>
-    </div>
-
-</div>
-
-
-    <!-- Size and Stock -->
-    <div class="row TopSpace">
-
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <label>Product Size & Available Stock <font color="red">*</font></label>
-
-            <table id="tblSizenStock" class="table table-bordered" width="80%">
+            <table id="tblSizenStock" width="80%">
                 <tr>
-                    <th>SKU (Batch No)</th>
-                    <th>Size</th>
-                    <th>Color</th>
-                    <th>Stock</th>
-                </tr>
+                    <th>SKU(Batch No)
+                    </th>
+                    <th>Size
+                    </th>
+                    <th>Color
+                    </th>
+                    <th>Stock
+                    </th>
 
+                </tr>
                 <asp:Repeater ID="rptSizenStock" runat="server" OnItemDataBound="rptSizenStock_ItemDataBound">
                     <ItemTemplate>
                         <tr>
-
-                            <td>
-                                <asp:TextBox ID="txtBatchNo" runat="server"
-                                    CssClass="form-control"
-                                    Text='<%#Eval("BatchNo") %>'>
-                                </asp:TextBox>
+                            <td style="width: 25%">
+                                <asp:TextBox ID="txtBatchNo" runat="server" Width="100px" CssClass="form-control" Text='<%#Eval("BatchNo") %>'></asp:TextBox>
                             </td>
-
-                            <td>
-                                <asp:HiddenField ID="hdnSizeId" runat="server"
-                                    Value='<%#Eval("SizeId") %>' />
-                                <asp:DropDownList ID="ddlSize"
-                                    runat="server"
-                                    CssClass="form-control" />
+                            <td style="width: 25%">
+                                <asp:HiddenField ID="hdnSizeId" runat="server" Value='<%#Eval("SizeId") %>' />
+                                <asp:DropDownList ID="ddlSize" runat="server" CssClass="form-control" />
                             </td>
-
-                            <td>
-                                <asp:HiddenField ID="hdnColorId"
-                                    runat="server"
-                                    Value='<%#Eval("ColorId") %>' />
-                                <asp:DropDownList ID="ddlColor"
-                                    runat="server"
-                                    CssClass="form-control" />
+                            <td style="width: 25%">
+                                <asp:HiddenField ID="hdnColorId" runat="server" Value='<%#Eval("ColorId") %>' />
+                                <asp:DropDownList ID="ddlColor" CssClass="form-control" runat="server" />
                             </td>
-
-                            <td>
-                                <asp:TextBox ID="txtStock"
-                                    runat="server"
-                                    CssClass="form-control"
-                                    Text='<%#Eval("Stock") %>'>
-                                </asp:TextBox>
+                            <td style="width: 25%">
+                                <asp:TextBox ID="txtStock" runat="server" Width="50px" CssClass="form-control" Text='<%#Eval("Stock") %>'></asp:TextBox>
                             </td>
 
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>
-
             </table>
-
-            <a href="#" onclick="return AddRow();" style="color:#09f; text-decoration:none;">
-                Add More
-            </a>
-
+            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+                <a href="#" onclick="return AddRow();" style="color: #09f; text-decoration: none;">Add More</a>
+                <script>
+                    function AddRow() {
+                        var MyRow = $('#tblSizenStock').find('tr').eq(1).clone();
+                        $('#tblSizenStock').append(MyRow);
+                        return false;
+                    }
+                </script>
+            </div>
         </div>
 
-    </div>
 
-</div>
-
-
-<script>
-    function AddRow() {
-        var MyRow = $('#tblSizenStock').find('tr').eq(1).clone();
-        $('#tblSizenStock').append(MyRow);
-        return false;
-    }
-</script>
-
-<!-- Toggle Button -->
-
-
-<!-- Collapsible Section -->
-<div id="productDetails" style="display:block;">
-    <div class="card card-body">
-
-        <div class="row TopSpace">
-
-            <!-- Row 1 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Product Color</label>
-                <asp:DropDownList ID="ddlColor" CssClass="form-control" runat="server"></asp:DropDownList>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace ">
+            Product Color<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:DropDownList ID="ddlColor" CssClass="BoxText" runat="server">
+            </asp:DropDownList>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            MRP<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtMRP" MaxLength="15" onblur="return Validate(this);" runat="server" class="BoxText"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Online Amount<font color="red"> *</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtAmount" MaxLength="15" onblur="return Validate(this);" runat="server" class="BoxText"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Cashback in % 
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtCashback" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <%--<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 TopSpace">
+                Stock<font color="red"> *</font>
             </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Cashback in %</label>
-                <asp:TextBox ID="txtCashback" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Vendor</label>
-                <asp:TextBox ID="txtVendor" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Cash on Delivery</label>
-                <asp:DropDownList ID="ddlCOD" CssClass="form-control" runat="server">
-                    <asp:ListItem>Yes</asp:ListItem>
-                    <asp:ListItem>No</asp:ListItem>
-                </asp:DropDownList>
-            </div>
-
-            <!-- Row 2 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Product Volume</label>
-                <asp:TextBox ID="txtVolume" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Product Length</label>
-                <asp:TextBox ID="txtLength" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Product Width</label>
-                <asp:TextBox ID="txtWidth" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Product Height</label>
-                <asp:TextBox ID="txtHeight" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <!-- Row 3 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Shipping Weight</label>
-                <asp:TextBox ID="txtShippingWeight" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Shipping Price</label>
-                <asp:TextBox ID="txtShippingPrice" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>HSN Code</label>
-                <asp:TextBox ID="TextBox3" CssClass="form-control" runat="server"></asp:TextBox>
-            </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Attachment Title</label>
-                <asp:TextBox ID="txtDisplay" CssClass="form-control" placeholder="Attachment Title" runat="server"></asp:TextBox>
-            </div>
-
-            <!-- Row 4 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <label>Select File</label>
-                <asp:FileUpload ID="flUpload" runat="server" CssClass="form-control" />
-            </div>
-
-        <%--    <div class="col-lg-5 col-md-6 col-sm-12 form-group">
-                <label>Info</label>
-                <div style="font-size:13px;color:#888;">
-                    (only jpeg, jpg, png, pdf files are allowed)<br>
-                    (max size 5MB)
-                </div>
-                <asp:Label ID="lblalertmsg" runat="server"></asp:Label>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <asp:TextBox ID="txtStock" MaxLength="15" onblur="return Validate(this);" runat="server" class="BoxText"></asp:TextBox>
             </div>--%>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Vendor <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtVendor" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Cash on Delivery 
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:DropDownList ID="ddlCOD" CssClass="form-control" runat="server">
+                <asp:ListItem>Yes</asp:ListItem>
+                <asp:ListItem>No</asp:ListItem>
+            </asp:DropDownList>
+        </div>
 
-            <!-- Row 5 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <asp:CheckBox ID="chkIscoupan" runat="server" Text="Is Coupon Applicable" />
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Product Volume <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtVolume" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Product Length <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtLength" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Product Width <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtWidth" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Product Height <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtHeight" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Shipping Weight <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtShippingWeight" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2 TopSpace">
+            Shipping Price <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 TopSpace">
+            <asp:TextBox ID="txtShippingPrice" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 TopSpace">
+            HSN Code <font color="red">*</font>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <asp:TextBox ID="txtHSNCode" onblur="return Validate(this);" CssClass="BoxText" runat="server"></asp:TextBox>
+        </div>
+        <div id="divUploadAttac" runat="server">
+            <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12 TopSpace">
+                Upload Images<font color="red"> *</font>
             </div>
-
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <asp:CheckBox ID="chkIsActive" runat="server" Text="Is Active" />
+            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                <div style="float: left; width: 100%; margin-bottom: 10px;">
+                    <asp:TextBox ID="txtDisplay" runat="server" Style="float: left; margin-right: 10px;" placeholder="Attachment Title" CssClass="BoxText" Width="211"></asp:TextBox>
+                    <asp:FileUpload ID="flUpload" runat="server" Style="margin-top: 5px; width: 230px; border-radius: 5px; padding: 4px; margin-top: 0px;"
+                        onchange="UpdatePreview(this,'MoudLetter')" />
+                    <asp:Label ID="lblalertmsg" runat="server"></asp:Label><br />
+                    <div style="font-size: 13px; color: #ccc; margin-top: -10px;">(only jpeg, jpg, png, pdf files are allowed)</div>
+                    <div style="font-size: 13px; color: #ccc">(max size 5MB)</div>
+                    <img id="imgLoad" src="../Images/Loding1.gif" style="display: none;" />
+                </div>
+                <div id="divAttachement" runat="server" style="display: none; text-align: left;">
+                    <table id="tblAttachment" class="table" style="width: 86%; border: 1px solid #ccc; margin-top: 2%; margin-bottom: 1%;">
+                        <tr style="background-color: #f5f5f5;">
+                            <th class="td" style="text-align: left;">Attachment Name</th>
+                            <th class="td" style="text-align: left;">Remove</th>
+                        </tr>
+                    </table>
+                </div>
             </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="border: 1px solid #ccc; padding: 10px;">
+                <asp:Repeater ID="rptAttachment" runat="server">
+                    <ItemTemplate>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="font-size: 15px; margin-bottom: 20px; border-radius: 2px; padding: 0px;">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <asp:Image ID="Image2" ImageUrl='<%#Eval("ImagePath") %>' runat="server" Height="150px" Width="150px" />
+                                <asp:HiddenField ID="hdnItemId" runat="server" Value='<%#Eval("ItemId") %>' />
+                            </div>
 
-            <div class="col-lg-3 col-md-4 col-sm-6 form-group">
-                <asp:Button runat="server"
-                    CssClass="btn btn-primary w-100"
-                    OnClick="btnSubmitData_Click"
-                    OnClientClick="return ValidateSave();"
-                    ID="btnSubmitData"
-                    Text="Save"
-                    style="width:200px;"/>
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                                <img src="../Images/Delete.gif" onclick="DeleteImage('<%#Eval("ImageId") %>')" />'
+                            </div>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+            <asp:CheckBox ID="chkIscoupan" runat="server" Text="IsCoupanAppplicable" />
+        </div>
+
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+            <asp:CheckBox ID="chkIsActive" runat="server" Text="Is Active" />
+        </div>
+
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 TopSpace">
+            <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6" style="padding-left: 0px;">
+                <asp:Button runat="server" class="btnPrimary" OnClick="btnSubmitData_Click" OnClientClick="return ValidateSave();" Style="width: 120px; border-radius: 5px; margin-right: 10px; border: none; float: left; height: 35px;" ID="btnSubmitData" Text="Save " />
             </div>
 
         </div>
-
-    </div>
-</div>
         <%--</div>--%>
     </div>
-
     <script>
         //$(document).ready(function () {
         //    alert('this value save');

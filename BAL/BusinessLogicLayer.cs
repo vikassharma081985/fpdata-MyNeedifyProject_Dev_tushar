@@ -1544,6 +1544,21 @@ namespace BLL
                 }
             }
         }
+        public DataTable ReimbursementHistoryData(string LoggedInUSerID)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "Proc_ReimbursementHistoryData";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@UserId", Convert.ToInt32(LoggedInUSerID));
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
 
         public int UpdateExpense()
         {

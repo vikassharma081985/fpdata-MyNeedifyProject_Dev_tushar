@@ -177,31 +177,13 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.TextBox txtDepartment;
 
         /// <summary>
-        /// TextBox1 control.
+        /// txtItemDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
-
-        /// <summary>
-        /// txtAmount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAmount;
-
-        /// <summary>
-        /// CKEditorControl1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::CKEditor.NET.CKEditorControl CKEditorControl1;
+        protected global::CKEditor.NET.CKEditorControl txtItemDescription;
 
         /// <summary>
         /// rptSizenStock control.
@@ -220,6 +202,24 @@ namespace WSBillingMaster.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlColor;
+
+        /// <summary>
+        /// txtMRP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMRP;
+
+        /// <summary>
+        /// txtAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAmount;
 
         /// <summary>
         /// txtCashback control.
@@ -303,13 +303,22 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.TextBox txtShippingPrice;
 
         /// <summary>
-        /// TextBox3 control.
+        /// txtHSNCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox3;
+        protected global::System.Web.UI.WebControls.TextBox txtHSNCode;
+
+        /// <summary>
+        /// divUploadAttac control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divUploadAttac;
 
         /// <summary>
         /// txtDisplay control.
@@ -328,6 +337,33 @@ namespace WSBillingMaster.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload flUpload;
+
+        /// <summary>
+        /// lblalertmsg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblalertmsg;
+
+        /// <summary>
+        /// divAttachement control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAttachement;
+
+        /// <summary>
+        /// rptAttachment control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptAttachment;
 
         /// <summary>
         /// chkIscoupan control.

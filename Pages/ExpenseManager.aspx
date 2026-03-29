@@ -885,13 +885,58 @@
                 document.getElementById("historyModal").style.display = "none";
             }
 
-            function renderHistoryFromExpenseData() {
+            function GetExpenseHistoryHistoryData() {
+                var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+                var UserId = hdnUserId;//localStorage.getItem("UserId");
+                $.ajax({
+                    url: "ExpenseManager.aspx/ReimbursementHistoryData",
+                    async: false,
+                    data: JSON.stringify({ LoggedInUserID: UserId }),
+                    contentType: "application/json; charset=utf-8",
+                    type: "POST",
+                    timeout: 120000,
+                    dataType: "json",
+                    success: function (result) {
+                        ReimbursmentHistoryData = $.parseJSON(result.d);
+                    },
+                    error: function (xhr, status, error) {
+                        // This is where ACTUAL exceptions and errors are caught
+                        hideLoader();
 
+                        var errorMessage = "An error occurred while searching expenses.";
+
+                        console.error("AJAX Error Details:");
+                        console.error("Status:", status);                    // e.g., "timeout", "error", "abort", "parsererror"
+                        console.error("Error Thrown:", error);               // e.g., exception message
+                        console.error("HTTP Status Code:", xhr.status);      // e.g., 500, 404, 0
+                        console.error("Response Text:", xhr.responseText);   // Full server response (very useful!)
+                        console.error("Full XHR Object:", xhr);
+
+                        if (status === "timeout") {
+                            errorMessage = "Request timed out. Please try again.";
+                        } else if (status === "parsererror") {
+                            errorMessage = "Failed to parse server response. Invalid JSON returned.";
+                        } else if (xhr.status === 500) {
+                            errorMessage = "Server error occurred. Check logs or contact admin.";
+                        } else if (xhr.status === 404) {
+                            errorMessage = "Search endpoint not found.";
+                        } else if (xhr.status === 0) {
+                            errorMessage = "No network connection or server unreachable.";
+                        }
+
+                        alert(errorMessage + "\nCheck browser console (F12) for detailed error logs.");
+                    }
+
+                });
+            }
+
+            function renderHistoryFromExpenseData() {
+                GetExpenseHistoryHistoryData();
                 // Clear old rows (keep header)
                 $('#tblHistory tr:gt(0)').remove();
 
                 // Filter reimbursement-created expenses
-                var historyData = expenseData.filter(x => x.Status === "Reimbursement Created");
+                var historyData = ReimbursmentHistoryData;
 
                 if (historyData.length === 0) {
                     $('#tblHistory').append(
@@ -899,7 +944,6 @@
                     );
                     return;
                 }
-
                 $.each(historyData, function (index, value) {
 
                     var html = '<tr>';
@@ -910,6 +954,7 @@
                     // Date + Expense Details
                     html += '<td>';
                     html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
+                    html += '<td>' + value.ID + '</td>';
                     //html += '<strong>Expense:</strong> ' + value.Expense +
                     //    (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
                    /* html += '<strong>Rate:</strong> ' + value.Rate + '<br>';*/
@@ -1028,6 +1073,7 @@
 
 
             var expenseData = [];
+            var ReimbursmentHistoryData = [];
             var currentPage = 1;
             var pageSize = 50;
             var dateSortAsc = true;
@@ -1284,7 +1330,7 @@
                         expenseData = $.parseJSON(result.d);
                         currentPage = 1;
                         renderExpenseTable();
-                        renderCharts(); // Render charts after data is loaded
+                        //renderCharts(); // Render charts after data is loaded
                     },
                     error: function (xhr, status, error) {
                         // This is where ACTUAL exceptions and errors are caught

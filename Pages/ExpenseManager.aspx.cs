@@ -208,6 +208,37 @@ namespace WSBillingMaster.Pages
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string ReimbursementHistoryData(string LoggedInUserID = null)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
+                    int idx = url.IndexOf('?');
+                    string query = idx >= 0 ? url.Substring(idx) : "";
+                    string uID = LoggedInUserID;
+                    //if (uID != null && uID != "")
+                    //    obj.FetchUserId = (uID);
+                    //obj.FetchUserId = uID;
+                    //obj.ExpenseDataStatus = "Reimbursement Created";
+                    using (DataTable dt = obj.ReimbursementHistoryData(uID))
+                    {
+                        string rtrn = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
+                        return rtrn;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    return ex.Message;
+                }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string CallSaveReimbursementAPI(object payload)
         {
             var handler = new HttpClientHandler
