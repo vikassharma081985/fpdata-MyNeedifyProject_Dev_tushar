@@ -203,12 +203,12 @@
                             <asp:Repeater ID="rptMenCollection" runat="server">
                                 <ItemTemplate>
                                     <div class="col-md-2 col-xs-6 col-sm-3"  style="margin:0px;">
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
                                             <div class="Tile">
                                                 <img class="img-responsive img-thumbnail"  style="max-width:250px;max-height: 150px;" src="<%#"~/Images/Items/"+Eval("ImageName") %>" />
                                             </div>
                                         </a>
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
                                             <span class="ItemName"><%#Eval("ItemName").ToString().Length >35?Eval("ItemName").ToString().Substring(0,35):Eval("ItemName") %></span>
                                         </a>
                                         <div class="ItemPrice">
@@ -250,12 +250,12 @@
                             <asp:Repeater ID="rptElectronics" runat="server">
                                 <ItemTemplate>
                                     <div class="col-md-2 col-xs-6 col-sm-3"  style="margin:0px;">
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>"  target="_blank">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>"  target="_blank">
                                             <div class="Tile">
-                                                <img class="img-responsive img-thumbnail"  style="max-width:250px;max-height: 150px;" src="<%#"http://trendzshopping.in//Images/Item/"+Eval("ImageName") %>" />
+                                                <img class="img-responsive img-thumbnail"  style="max-width:250px;max-height: 150px;" src="<%#"https://myneedify.com//Images/Item/"+Eval("ImageName") %>" />
                                             </div>
                                         </a>
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>"  target="_blank">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>"  target="_blank">
                                             <span class="ItemName"><%#Eval("ItemName").ToString().Length >35?Eval("ItemName").ToString().Substring(0,35):Eval("ItemName") %></span>
                                         </a>
                                         <div class="ItemPrice">
@@ -285,7 +285,7 @@
     
 
      <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-    <script src="http://trendzshopping.in//Front/slick/slick.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://myneedify.com//Front/slick/slick.js" type="text/javascript" charset="utf-8"></script>
     
 
    

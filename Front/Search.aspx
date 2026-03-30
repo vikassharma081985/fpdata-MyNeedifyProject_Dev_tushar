@@ -81,7 +81,7 @@
                         for (var i = 0; i < data.length; i++) {
                             html += '<div class="col-md-3 col-xs-6 col-sm-3" style="margin-bottom: 20px;">';
                             html += '<div style="height: 250px !important; width: 100%;">';
-                            html += '<a href="http://trendzshopping.in//Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + '"  target="_blank" >';
+                            html += '<a href="https://myneedify.com//Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + '"  target="_blank" >';
                             html += '<div class="Tile">';
                             html += ' <img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="../Images/Items/' + data[i].ImageName + '" />';
                             html += '</div>';
@@ -242,14 +242,14 @@
                             <div class="col-md-3 col-xs-6 col-sm-3" style="margin-bottom: 20px;">
                                 <div style="height: 250px !important; width: 100%;">
 
-                                    <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                    <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
                                         <div class="Tile">
-                                            <%--<img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"http://trendzshopping.in//Images/Items/"+Eval("ImageName") %>" />--%>
+                                            <%--<img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"https://myneedify.com//Images/Items/"+Eval("ImageName") %>" />--%>
                                             <img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"http://198.38.88.185:8082/Images/Items/"+Eval("ImageName") %>" />
                                         </div>
                                     </a>
 
-                                    <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                    <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
                                         <span class="ItemName"><%#Eval("ItemName") %></span>
                                     </a>
 

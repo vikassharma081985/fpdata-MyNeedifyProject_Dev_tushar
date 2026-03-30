@@ -34,7 +34,7 @@
                     <table width="100%">
                         <tr>
                             <td style="text-align: left;">
-                                <a href="http://trendzshopping.in//Pages/AddSupplier.aspx"><b>Add New Supplier</b></a>
+                                <a href="https://myneedify.com//Pages/AddSupplier.aspx"><b>Add New Supplier</b></a>
                                 <br />
                                 <br />
                                 <b>Supplier Name :</b>                                
@@ -160,7 +160,7 @@
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="width: 10%;font-size:12px;">' + TestData[i].PANCardNo + '</td>';
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="width: 10%;font-size:12px;">' + TestData[i].Status + '</td>';
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="width: 10%;font-size:12px;">' + TestData[i].CreateDate + '</td>';
-                            mydata += '<td class="GridViewLabItemStyle" align="left" style="width: 10%;font-size:12px;"><input type="hidden" id="hdnSupplierId" value=' + TestData[i].SupplierID + ' /><a href="http://trendzshopping.in//Pages/AddSupplier.aspx?SupId=' + TestData[i].SupplierID + '>Edit</a></td>';
+                            mydata += '<td class="GridViewLabItemStyle" align="left" style="width: 10%;font-size:12px;"><input type="hidden" id="hdnSupplierId" value=' + TestData[i].SupplierID + ' /><a href="https://myneedify.com//Pages/AddSupplier.aspx?SupId=' + TestData[i].SupplierID + '>Edit</a></td>';
                             mydata += "</tr>";
                             $('#tb_ItemList').append(mydata);                            
                         }

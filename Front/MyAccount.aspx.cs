@@ -25,7 +25,7 @@ namespace FaduPrice.Pages
                 }
                 else
                 {
-                    Response.Redirect("http://trendzshopping.in//Front/Index.aspx");
+                    Response.Redirect("https://myneedify.com//Front/Index.aspx");
                 }
             }
         }

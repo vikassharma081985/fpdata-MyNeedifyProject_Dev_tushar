@@ -57,7 +57,7 @@
                                 <div class="col-descr">
                                     <div class="text-holder">
                                         <strong class="title">
-                                            <a href='<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>' class="product-link"><%#Eval("ItemName") %>
+                                            <a href='<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>' class="product-link"><%#Eval("ItemName") %>
 
                                             </a></strong>
                                         <div class="item-options">

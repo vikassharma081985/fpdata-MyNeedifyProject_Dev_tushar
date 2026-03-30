@@ -27,12 +27,12 @@
                             <asp:Repeater ID="rptMenCollection" runat="server">
                                 <ItemTemplate>
                                     <div class="col-md-2 col-xs-6 col-sm-3">
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
                                             <div class="Tile">
                                                 <img class="img-responsive img-thumbnail" src="<%#"../Images/Item/"+Eval("ImageName") %>" />
                                             </div>
                                         </a>
-                                        <a href="<%#"http://trendzshopping.in//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
                                             <span class="ItemName"><%#Eval("ItemName").ToString().Length >50?Eval("ItemName").ToString().Substring(0,50):Eval("ItemName") %></span>
                                         </a>
                                         <div class="ItemPrice">

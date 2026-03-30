@@ -192,7 +192,7 @@ namespace FaduPrice.Front
             HttpContext.Current.Session.Abandon();
             HttpContext.Current.Session.Clear();
             HttpContext.Current.Session.RemoveAll();
-            HttpContext.Current.Response.Redirect("http://trendzshopping.in//Front/Index.aspx?Logout=1");
+            HttpContext.Current.Response.Redirect("https://myneedify.com//Front/Index.aspx?Logout=1");
             return "";   
         }
         

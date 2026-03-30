@@ -371,7 +371,7 @@ Edit width, height and placement of the dynamically created image zoom box.
 
                     <div class="col-md-2 col-6 text-center mb-3">
 
-                        <a href="<%#"http://trendzshopping.in/Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
+                        <a href="<%#"https://myneedify.com/Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>">
 
                              <img class="img-responsive img-thumbnail" src="<%#"../Images/Items/"+Eval("ImageName") %>" />
 

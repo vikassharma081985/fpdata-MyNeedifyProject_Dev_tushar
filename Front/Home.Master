@@ -68,7 +68,7 @@
                 $.ajax({
                     type: "POST",
                     url: appURL+"Front/index.aspx/LoginDetails",
-                    //url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
+                    //url: "https://myneedify.com/Front/index.aspx/LoginDetails",
                     //url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails",
                     data: JSON.stringify({
                         UserName: UserName, Password: Password
@@ -224,7 +224,8 @@
 
         function lnkLogout_ClickNew() {
             sessionStorage.clear();
-            window.open("http://198.38.88.185:8082/Front/Index.aspx");
+            window.open(appURL + "Front/Index.aspx");
+            //window.open(appURL + "/Front/Index.aspx");
         }
     </script>
 
@@ -733,7 +734,7 @@ margin-left: 0px;                    font-size: 13px;
                 UserId = "0";
 
             $.ajax({
-                url: "http://198.38.88.185:8082/Front/index.aspx/AddItemToCart",
+                url: appURL + "/Front/index.aspx/AddItemToCart",
                 async: true,
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -799,7 +800,7 @@ margin-left: 0px;                    font-size: 13px;
                     <span id="lblUserName"></span>
                 </span>
                 <div class="dropdown-menu mt-2 shadow-sm">
-                    <a class="dropdown-item" href="Account.aspx">My Account</a>
+                    <a class="dropdown-item" href="/Front/MyAccount.aspx">My Account</a>
                     <a class="dropdown-item" href="/Front/MyOrders.aspx">My Orders</a>
                     <a class="dropdown-item" href="#" id="lnkLogout2" onclick="return lnkLogout_ClickNew();">Logout</a>
                 </div>
@@ -861,7 +862,7 @@ margin-left: 0px;                    font-size: 13px;
 </div>
 
             <div class="login-buttons d-flex ms-3 gap-2">
-                <a target="_blank" class="btn btn-admin btn-sm" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>
+                <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
 
@@ -920,7 +921,7 @@ margin-left: 0px;                    font-size: 13px;
             <div class="d-lg-none mt-3 d-flex flex-column gap-2">
 
                
-                <a target="_blank" class="btn btn-admin btn-sm" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>
+                <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
                  <div class="btn btn-seller btn-sm" id="NotLoggedIn">
      <button class="btn btn-seller btn-sm" type="button" onclick="OpenLogin()">Login/Signup</button>
  </div>
@@ -1185,7 +1186,7 @@ margin-left: 0px;                    font-size: 13px;
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="http://198.38.88.185:8082/Front/index.aspx">Home</a>
+                    <a class="navbar-brand" href="<%=appURL%>Front/index.aspx">Home</a>
                 </div>
 
                 <div class="collapse navbar-collapse js-navbar-collapse">
@@ -1299,7 +1300,7 @@ margin-left: 0px;                    font-size: 13px;
                             Copyright © 2021 myNeedify
                         </div>
                         <div class="col-md-6" style="text-align: center;">
-                            Design & Developed by : <a href="http://198.38.88.185:8082/" style="color: #09f; text-decoration: none;">W Solution</a><br />
+                            Design & Developed by : <a href="<%=appURL%>" style="color: #09f; text-decoration: none;">W Solution</a><br />
                             <button id="btnLoginOpen" data-toggle="modal" data-target="#myModal" onclick="return false;" style="display: none;" value="click"></button>
                         </div>
                     </div>
@@ -1677,7 +1678,7 @@ function sendOtp() {
 
 
             </div>
-            <a href="http://198.38.88.185:8082/Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
+            <a href="<%=appURL%>Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
                 <input type="button" style="width: 100%; height: 60px; background-color: #F6861F; background-image: none; border-bottom: none;" class="btn btn-primary" value="Proceed to Checkout" /></a>
 
         </div>
@@ -1723,7 +1724,7 @@ function sendOtp() {
             function Logout() {
                 var Test_id = "1";
                 $.ajax({
-                    url: "http://198.38.88.185:8082/Front/index.aspx/Logout",
+                    url: appURL + "Front/index.aspx/Logout",
                     async: true,
                     data: '{TestId:"' + Test_id + '"}',
                     contentType: "application/json; charset=utf-8",
@@ -1756,7 +1757,7 @@ function sendOtp() {
                 var UserId = $('[id$=MasterhdnUserId]').val();
                 if (UserId != "0") {
                     $.ajax({
-                        url: "http://198.38.88.185:8082/Front/index.aspx/BindCart",
+                        url: appURL + "Front/index.aspx/BindCart",
                         //url: "http://localhost:46692/Front/index.aspx/BindCart",
                         async: true,
                         data: '{UserId:"' + UserId + '"}',
@@ -1777,7 +1778,7 @@ function sendOtp() {
                                 for (var i = 0; i < CartData.length; i++) {
                                     html += '<div class="row" style="margin-bottom: 30px;">';
                                     html += '<div class="col-md-5">';
-                                    html += '<img src="http://198.38.88.185:8082/Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
+                                    html += '<img src="'+ appURL + '/Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
                                     html += '<p style="padding: 15px;text-align: center;empty-cells: hide;color: red;"><a href="#" style="color:red;text-decoration:none;" onClick="RemoveCartItem(' + CartData[i].CartId + ',this);">Remove</a><p>';
                                     html += '</div>';
                                     html += '<div class="col-md-7">';
@@ -1808,9 +1809,8 @@ function sendOtp() {
             }
 
             function RemoveCartItem(CartId, ctrl) {
-                debugger;
                 $.ajax({
-                    url: "http://198.38.88.185:8082/Front/index.aspx/RemoveCartItem",
+                    url: appURL + "Front/index.aspx/RemoveCartItem",
                     async: false,
                     data: '{CartId:"' + CartId + '"}',
                     contentType: "application/json; charset=utf-8",
@@ -1871,7 +1871,7 @@ function sendOtp() {
                 if (flag) {
                     //return true;
                     $.ajax({
-                        //url: "http://trendzshopping.in//Front/index.aspx/btnSignup",
+                        //url: "https://myneedify.com//Front/index.aspx/btnSignup",
                         url: appURL+"Front/index.aspx/btnSignup",
                         async: false,
                         data: '{txtFirstName:"' + FName + '", txtLastName:"' + LName + '", txtMobile:"' + Mobile + '", txtEmail:"' + Email + '", txtPassword1:"' + Password + '"}',
@@ -1897,12 +1897,11 @@ function sendOtp() {
             }
 
             function Search() {
-                debugger;
                 var txtGlobalSearch = $('[id$=txtGlobalSearch]').val().trim();
                 if (txtGlobalSearch != "") {
-                    //window.location.href = "http://trendzshopping.in//Front/Search.aspx?Search=" + txtGlobalSearch;
-                    window.open("http://198.38.88.185:8082/Front/Search.aspx?Search=" + txtGlobalSearch);
-                    //window.open("http://trendzshopping.in/Front/Search.aspx?Search=" + txtGlobalSearch);
+                    //window.location.href = "https://myneedify.com//Front/Search.aspx?Search=" + txtGlobalSearch;
+                    window.open(appURL + "Front/Search.aspx?Search=" + txtGlobalSearch);
+                    //window.open("https://myneedify.com/Front/Search.aspx?Search=" + txtGlobalSearch);
                 }
                 else {
                     return;

@@ -48,7 +48,7 @@ namespace FaduPrice.Pages
         protected void lnkLogout_Click(object sender, EventArgs e)
         {
             Session.Abandon();
-            Response.Redirect("http://trendzshopping.in//Front/Index.aspx");
+            Response.Redirect("https://myneedify.com//Front/Index.aspx");
         }
                
         protected void btnSignup_Click(object sender, EventArgs e)

@@ -113,7 +113,7 @@ namespace WSBillingMaster.Pages
             string ItemId = e.CommandArgument.ToString();
             if (e.CommandName == "edit")
             {
-                Response.Redirect("http://trendzshopping.in//Pages/SliderManagement.aspx?ItemId=" + ItemId);
+                Response.Redirect("https://myneedify.com//Pages/SliderManagement.aspx?ItemId=" + ItemId);
             }
             if (e.CommandName == "Delete")
             {

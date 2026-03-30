@@ -408,7 +408,7 @@
                     type: "POST",
                     
                     //url: "http://localhost:46692/Front/index.aspx/LoginDetails",
-                    url: "http://trendzshopping.in/Front/index.aspx/LoginDetails",
+                    url: "https://myneedify.com/Front/index.aspx/LoginDetails",
                     data: JSON.stringify({
                         UserName: UserName, Password: Password
                     }),
@@ -636,7 +636,7 @@
                 <img src="../Images/System/logo.png" style="height: 100px;" /></span>
             &emsp;
             <a href="http://localhost:46692/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>
-		<%--<a href="http://trendzshopping.in/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>--%>
+		<%--<a href="https://myneedify.com/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>--%>
 		 <a href="../Pages/ExpenseManager.aspx" target="_blank" style="color: blue;">Expense Master</a>
         </div>
         <div style="width: 50%; float: right;">
@@ -656,8 +656,8 @@
                                 <label id="lblUserName" runat="server" style="float: left; text-align: left; font-size: 18px; color: black; font-weight: 500; margin-left: 0px; margin-top: -5px;"></label>
                                 <div style="padding-top: 17px;">
                                     <div class="dropdown-content">
-                                        <a href="http://trendzshopping.in//Front/MyAccount.aspx">My Account</a>
-                                        <a href="http://trendzshopping.in//Front/MyOrders.aspx">My Orders</a>
+                                        <a href="https://myneedify.com//Front/MyAccount.aspx">My Account</a>
+                                        <a href="https://myneedify.com//Front/MyOrders.aspx">My Orders</a>
                                         <%--<a href="#">Logout</a>--%>
                                           <asp:LinkButton ID="lnkLogout" OnClick="lnkLogout_Click" runat="server" Style="display: none;">Logout</asp:LinkButton>
                                     </div>
@@ -1037,7 +1037,7 @@
 
 
             </div>
-            <a href="http://trendzshopping.in//Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
+            <a href="https://myneedify.com//Front/Checkout.aspx" style="position: absolute; bottom: 0; left: 5%; width: 100%;">
                 <input type="button" style="width: 100%; height: 60px; background-color: #F6861F; background-image: none; border-bottom: none;" class="btn btn-primary" value="Proceed to Checkout" /></a>
 
         </div>
@@ -1083,7 +1083,7 @@
             function Logout() {
                 var Test_id = "1";
                 $.ajax({
-                    url: "http://trendzshopping.in//Front/index.aspx/Logout",
+                    url: "https://myneedify.com//Front/index.aspx/Logout",
                     async: true,
                     data: '{TestId:"' + Test_id + '"}',
                     contentType: "application/json; charset=utf-8",
@@ -1116,7 +1116,7 @@
                 var UserId = $('[id$=MasterhdnUserId]').val();
                 if (UserId != "0") {
                     $.ajax({
-                        url: "http://trendzshopping.in//Front/index.aspx/BindCart",
+                        url: "https://myneedify.com//Front/index.aspx/BindCart",
                         async: true,
                         data: '{UserId:"' + UserId + '"}',
                         contentType: "application/json; charset=utf-8",
@@ -1136,7 +1136,7 @@
                                 for (var i = 0; i < CartData.length; i++) {
                                     html += '<div class="row" style="margin-bottom: 30px;">';
                                     html += '<div class="col-md-5">';
-                                    html += '<img src="http://trendzshopping.in//Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
+                                    html += '<img src="https://myneedify.com//Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
                                     html += '<p style="padding: 15px;text-align: center;empty-cells: hide;color: red;"><a href="#" style="color:red;text-decoration:none;" onClick="RemoveCartItem(' + CartData[i].CartId + ',this);">Remove</a><p>';
                                     html += '</div>';
                                     html += '<div class="col-md-7">';
@@ -1169,7 +1169,7 @@
             function RemoveCartItem(CartId, ctrl) {
                 debugger;
                 $.ajax({
-                    url: "http://trendzshopping.in//Front/index.aspx/RemoveCartItem",
+                    url: "https://myneedify.com//Front/index.aspx/RemoveCartItem",
                     async: false,
                     data: '{CartId:"' + CartId + '"}',
                     contentType: "application/json; charset=utf-8",
@@ -1230,7 +1230,7 @@
                 if (flag) {
                     //return true;
                     $.ajax({
-                        url: "http://trendzshopping.in//Front/index.aspx/btnSignup",
+                        url: "https://myneedify.com//Front/index.aspx/btnSignup",
                         //url: "http://localhost:46692//Front/index.aspx/btnSignup",
                         async: false,
                         data: '{txtFirstName:"' + FName + '", txtLastName:"' + LName + '", txtMobile:"' + Mobile + '", txtEmail:"' + Email + '", txtPassword1:"' + Password + '"}',
@@ -1259,8 +1259,8 @@
                 debugger;
                 var txtGlobalSearch = $('[id$=txtGlobalSearch]').val().trim();
                 if (txtGlobalSearch != "") {
-                    //window.location.href = "http://trendzshopping.in//Front/Search.aspx?Search=" + txtGlobalSearch;
-                    window.open("http://trendzshopping.in//Front/Search.aspx?Search=" + txtGlobalSearch);
+                    //window.location.href = "https://myneedify.com//Front/Search.aspx?Search=" + txtGlobalSearch;
+                    window.open("https://myneedify.com//Front/Search.aspx?Search=" + txtGlobalSearch);
                 }
                 else {
                     return;

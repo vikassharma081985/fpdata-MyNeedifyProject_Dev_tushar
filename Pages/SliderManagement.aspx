@@ -22,7 +22,7 @@
 
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="text-align: right; font-weight: 600;">
-                    <a href="http://trendzshopping.in//Pages/ManageSlider.aspx">Manage Slider</a>
+                    <a href="https://myneedify.com//Pages/ManageSlider.aspx">Manage Slider</a>
                 </div>
 
             </div>

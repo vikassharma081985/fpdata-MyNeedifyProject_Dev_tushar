@@ -359,7 +359,7 @@
                 success: function (result) {
                     var data = $.parseJSON(result.d);
                     if (data.length > 0) {
-                        window.location.href = "http://trendzshopping.in//Front/OrderSuccess.aspx?OrderId=" + data[0].OrderId;
+                        window.location.href = "https://myneedify.com//Front/OrderSuccess.aspx?OrderId=" + data[0].OrderId;
                     }
                     else {
                         alert('Unable to process your request. Please try again later');

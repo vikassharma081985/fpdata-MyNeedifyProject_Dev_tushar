@@ -209,7 +209,7 @@ namespace WSBillingMaster.Pages
                 }
                 txtItemName.Text = "";
                 txtDisplay.Text = "";
-                Response.Redirect("http://trendzshopping.in//Pages/SliderManagement.aspx");
+                Response.Redirect("https://myneedify.com//Pages/SliderManagement.aspx");
             }
         }
 

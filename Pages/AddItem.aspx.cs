@@ -368,7 +368,7 @@ namespace WSBillingMaster.Pages
                 }
 
             }
-            // Response.Redirect("http://trendzshopping.in//Pages/AddItem.aspx");
+            // Response.Redirect("https://myneedify.com//Pages/AddItem.aspx");
             if (Convert.ToString(Request["ItemId"]) != "" && Convert.ToString(Request["ItemId"]) != null)
             {
                 ScriptManager.RegisterStartupScript(this, GetType(), "", "alert('Item Updated Successfully');", true);
