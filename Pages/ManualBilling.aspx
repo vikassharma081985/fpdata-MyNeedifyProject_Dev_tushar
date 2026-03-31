@@ -436,16 +436,34 @@ margin-top: 0px;
                             </asp:DropDownList>
                         </div>
                     </div>
+
+                    <div class="col-md-12 col-xs-12">
+    <div class="col-md-12 col-xs-12"><strong>Employee</strong> </div>
+    <div class="col-md-6 col-xs-12 text-center">
+        <asp:DropDownList ID="DropDownList1" class="form-control" runat="server">
+            <asp:ListItem Text="Sales" Value="Sales"></asp:ListItem>
+            <asp:ListItem Text="IT" Value="IT"></asp:ListItem>
+        </asp:DropDownList>
+    </div>
+</div>
                 </div>
             </div>
         </div>
         <div class="col-md-8">
             <div class="content" style="text-align: center;"><%--<div class="Header" style="padding: 0px; margin: 10px;text-align:left;padding-left:15px;"> <div>Billing (<asp:Label ID="lblTotalCount" Text="0" runat="server"></asp:Label>) </div> </div>--%>
-                <div style="text-align: left; margin-bottom: 10px; padding-right: 15px;">
-                    <strong>Barcode</strong>
-                    <input type="text" id="txtBarcode" class="form-control" style="width: 40%; display: inline-block; margin-left: 10px; margin-right: 10px;" />
-                    <input id="btnSearch" style="width:50%"; type="button" value="Search" class="btn btn-success" style="width: auto;" onclick="SearchData();" />&nbsp;
-                </div>
+             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    
+    <strong>Barcode</strong>
+
+    <input type="text" id="txtBarcode" class="form-control" style="width: 200px;" />
+
+    <input id="btnSearch" type="button" value="Search" 
+           class="btn btn-success" onclick="SearchData();" />
+
+    <input id="btnadd" type="button" value="Add" 
+           class="btn btn-primary" onclick="addData();" />
+
+</div>
                 <div class="col-md-12" style="padding: 0px; margin-top: 10px;">
                     <div class="table-responsive">
                         <table style="width: 100%" id="tb_ItemList" class="GridViewStyle">
