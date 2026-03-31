@@ -438,7 +438,7 @@ margin-top: 0px;
                     </div>
 
                     <div class="col-md-12 col-xs-12">
-    <div class="col-md-12 col-xs-12"><strong>Sales Person</strong> </div>
+    <div class="col-md-12 col-xs-12"><strong>Sales Man</strong> </div>
     <div class="col-md-6 col-xs-12 text-center">
         <asp:DropDownList ID="DropDownList1" class="form-control" runat="server">
             <asp:ListItem Text="Sales" Value="Sales"></asp:ListItem>
