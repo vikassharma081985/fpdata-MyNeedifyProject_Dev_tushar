@@ -436,16 +436,34 @@ margin-top: 0px;
                             </asp:DropDownList>
                         </div>
                     </div>
+
+                    <div class="col-md-12 col-xs-12">
+    <div class="col-md-12 col-xs-12"><strong>Sales Man</strong> </div>
+    <div class="col-md-6 col-xs-12 text-center">
+        <asp:DropDownList ID="DropDownList1" class="form-control" runat="server">
+            <asp:ListItem Text="Sales" Value="Sales"></asp:ListItem>
+            <asp:ListItem Text="IT" Value="IT"></asp:ListItem>
+        </asp:DropDownList>
+    </div>
+</div>
                 </div>
             </div>
         </div>
         <div class="col-md-8">
             <div class="content" style="text-align: center;"><%--<div class="Header" style="padding: 0px; margin: 10px;text-align:left;padding-left:15px;"> <div>Billing (<asp:Label ID="lblTotalCount" Text="0" runat="server"></asp:Label>) </div> </div>--%>
-                <div style="text-align: left; margin-bottom: 10px; padding-right: 15px;">
-                    <strong>Barcode</strong>
-                    <input type="text" id="txtBarcode" class="form-control" style="width: 40%; display: inline-block; margin-left: 10px; margin-right: 10px;" />
-                    <input id="btnSearch" style="width:50%"; type="button" value="Search" class="btn btn-success" style="width: auto;" onclick="SearchData();" />&nbsp;
-                </div>
+             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    
+    <strong>Barcode</strong>
+
+    <input type="text" id="txtBarcode" class="form-control" style="width: 200px;" />
+
+   <%-- <input id="btnSearch" type="button" value="Search" 
+           class="btn btn-success" onclick="SearchData();" />--%>
+
+    <input id="btnadd" type="button" value="Add" 
+           class="btn btn-primary" onclick="addData();" />
+
+</div>
                 <div class="col-md-12" style="padding: 0px; margin-top: 10px;">
                     <div class="table-responsive">
                         <table style="width: 100%" id="tb_ItemList" class="GridViewStyle">
@@ -458,7 +476,7 @@ margin-top: 0px;
                                 <th class="GridViewHeaderStyle" scope="col" style="text-align: center; font-size: 13px; width: 200px;">Total</th>
                             </tr>
                         </table>
-                    <div id="divDiscountsection" style="text-align: right; margin-top: 10px; display: visible;">
+                  <%--  <div id="divDiscountsection" style="text-align: right; margin-top: 10px; display: visible;">
                         <div style="margin-top: 12px; padding-right: 25px">
                             <div style="width: 90%; float: left; text-align: right"><b><span>Total :</span></b> </div>
                             <div style="width: 10%; float: left; text-align: right"><strong>₹ <span id="spanTotal"></span></strong></div>
@@ -509,7 +527,90 @@ margin-top: 0px;
                                 <input type="text" id="txtAmountRender" readonly style="font-weight: 100; width: 90px;" placeholder="0.00" />
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
+
+<div id="divDiscountsection" style="margin-top: 10px;">
+    <table style="width: 100%; border-collapse: collapse;" class="GridViewStyle">
+
+        <!-- Total -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Total :</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <strong>₹ <span id="spanTotal"></span></strong>
+            </td>
+        </tr>
+
+        <!-- Discount -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;">
+                <strong>Discount if Applicable:</strong>
+            </td>
+            <td style="text-align: right; padding: 8px;">
+                <asp:DropDownList ID="ddldiscount" onchange="DiscountChange();" runat="server"></asp:DropDownList>
+                ₹ 
+                <input type="text" id="txtManualDiscount" onkeypress="return validateNumbers();" maxlength="4"
+                       style="display: none; font-weight: bold; width: 50px; text-align: right;" />
+                <strong><span id="spnDiscountAmount">0.00</span></strong>
+            </td>
+        </tr>
+
+        <!-- Tax -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Tax:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <b>₹ <span id="spanTax">0.00</span></b>
+            </td>
+        </tr>
+
+        <!-- Grand Total -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Grand Total:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <b>₹ <span id="spanGrandTotal"></span></b>
+            </td>
+        </tr>
+
+        <!-- Payment Mode -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Payment Mode:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <select id="ddlPaymentMode" onchange="CheckTransactionType();" style="width: 140px;">
+                    <option value="1">Cash</option>
+                    <option value="2">Debit/Credit Card</option>
+                    <option value="3">Paytm</option>
+                </select>
+            </td>
+        </tr>
+
+        <!-- Transaction -->
+        <tr class="divTransaction">
+            <td colspan="5" style="text-align: right; padding: 8px;"><strong>Transaction No:</strong></td>
+            <td style="text-align: right; padding: 8px;">
+                <input type="text" id="txtTransactionId" style="width: 140px;" placeholder="Tnx. No" />
+            </td>
+        </tr>
+
+        <!-- Paid Amount -->
+        <tr class="divAmountRender">
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Paid Amount:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                ₹ 
+                <input type="text" id="txtPaidAmount" onkeypress="return validateNumbers();" maxlength="5"
+                       style="width: 140px;" placeholder="Amount Paid" />
+            </td>
+        </tr>
+
+        <!-- Amount Render -->
+        <tr class="divAmountRender">
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Amount Render:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                ₹ 
+                <input type="text" id="txtAmountRender" readonly style="width: 140px;" placeholder="0.00" />
+            </td>
+        </tr>
+
+    </table>
+</div>
                     <div class="promocode" style="text-align: right; margin-top: 10px; padding-right: 8px; width: 100%; float: left;">
                         <p id="pHavePromo" style="display: visible;"><a href="#" style="color: #09f" onclick="OpenPromoPop();">Have Promocode?</a></p>
                         <p style="color: green; display: visible;" id="pPromoApplied"><span id="spnPromoApplied"></span>Applied Successfully! <a href="#" style="color: red" onclick="RemovePromocode();">Remove?</a></p>
