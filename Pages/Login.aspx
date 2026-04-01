@@ -85,30 +85,29 @@
 
         <%-- jQuery --%>
         <script src="../Js/jquery.min.js"></script>
-
         <%-- Validation Script --%>
         <script>
+            var appURL = "<%= appURL %>";
             function Validate() {
                 var User = $('[id$=txtLogin]').val().trim();
                 var Pwd = $('[id$=txtPassword]').val().trim();
                 if (User != "" && Pwd != "") {
                     $.ajax({
-                        url: "Login.aspx/ValidateUser",
+                        url: appURL+ "Front/index.aspx/LoginDetails",
                         async: true,
-                        data: JSON.stringify({ User: User, Password: Pwd }),
+                        data: JSON.stringify({ UserName: User, Password: Pwd }),
                         contentType: "application/json; charset=utf-8",
                         type: "POST",
                         timeout: 120000,
                         dataType: "json",
                         success: function (result) {
-						debugger
                             var IsValid = result.d;
-                            if (IsValid == "1") {
+                            //if (IsValid == "1") {
                                 window.location.href = "UserDashboard.aspx";
-                            } else {
-                                alert('Invalid UserName/Password !');
-                                return false;
-                            }
+                            //} else {
+                            //    alert('Invalid UserName/Password !');
+                            //    return false;
+                            //}
                         }
                     });
                 } else {

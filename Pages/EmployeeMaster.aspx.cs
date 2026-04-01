@@ -84,6 +84,7 @@ namespace WSBillingMaster.Pages
 
             try
             {
+                string passEncryp = PasswordHelper.HashPasswordSHA256(Password);
                 StringBuilder sb = new StringBuilder();
                 DataAccessLayer objDAL = new DataAccessLayer();
 
@@ -95,7 +96,7 @@ namespace WSBillingMaster.Pages
                     sqlCommand.Parameters.AddWithValue("@EmployeeName", Name);
                     sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
                     sqlCommand.Parameters.AddWithValue("@Email", Email);
-                    sqlCommand.Parameters.AddWithValue("@Password", Password);
+                    sqlCommand.Parameters.AddWithValue("@Password", passEncryp);
                     sqlCommand.Parameters.AddWithValue("@RoleId", RoleID);
                     sqlCommand.Parameters.AddWithValue("@AddedBy", EmployeeId);
                     sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
