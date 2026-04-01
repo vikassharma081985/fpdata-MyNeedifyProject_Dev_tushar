@@ -142,6 +142,22 @@ namespace FaduPrice.Front
                             HttpContext context = HttpContext.Current;
                             context.Session["UserName"] = LoginDetails.Rows[0]["FirstName"].ToString();
                             context.Session["UserId"] = LoginDetails.Rows[0]["UserId"].ToString();
+                            string orgId = Convert.ToString(LoginDetails.Rows[0]["OrgId"]);
+
+                            if (!string.IsNullOrWhiteSpace(orgId))
+                            {
+                                context.Session["OrgId"] = orgId;
+                                context.Session["RoleId"] = LoginDetails.Rows[0]["RoleId"].ToString();
+                                context.Session["EmployeeName"] = LoginDetails.Rows[0]["EmployeeName"].ToString();
+                                context.Session["EmployeeId"] = LoginDetails.Rows[0]["EmployeeId"].ToString();
+                            }
+                            else
+                            {
+                                context.Session["OrgId"] = null;
+                                context.Session["RoleId"] = null;
+                                context.Session["EmployeeName"] = null;
+                                context.Session["EmployeeId"] = null;
+                            }
                             return Newtonsoft.Json.JsonConvert.SerializeObject(LoginDetails);
                         }
                         else

@@ -81,6 +81,12 @@
                         if (UserInfo.length > 0) {
                             $('[id$=lblUserName]').text('Hi, ' + UserInfo[0].FirstName);
                             $('[id$=LoggedinUser]').show();
+                            if (UserInfo[0].OrgId !== null && UserInfo[0].OrgId !== undefined && UserInfo[0].OrgId !== "") {
+                                $('[id$=SellerDashboard]').show();
+                            }
+                            else {
+                                $('[id$=SellerDashboard]').hide();
+                            }
                             $('[id$=NotLoggedIn]').hide();    // login/signup not display when user login
                             $('[id$=lnkLogin]').hide();
                             $('[id$=lnkLogout]').show();
@@ -112,6 +118,7 @@
                             $('[id*=btnSubmit]').val('Login');
                             $('[id*=lblAlert]').css('display', 'block');
                             $('[id$=LoggedinUser]').hide();
+                            $('[id$=SellerDashboard]').hide();
                             $('[id$=lnkLogin]').show();
                             $('[id$=lnkLogout]').hide();
                         }
@@ -863,10 +870,13 @@ margin-left: 0px;                    font-size: 13px;
 
             <div class="login-buttons d-flex ms-3 gap-2">
                 <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
-                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
-                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
-
-
+                <%--<a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
+                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>--%>
+                
+                <%--If LoggedIn user contains OrgId--%>
+                <div id="SellerDashboard" style="display:none;">
+                    <a href="../Pages/UserDashboard.aspx" target="_blank" class="btn btn-seller btn-sm">Seller</a>
+                </div>
 
                   <!-- LOGGED IN USER -->
   <div id="LoggedinUser" style="display:none;">
@@ -925,8 +935,8 @@ margin-left: 0px;                    font-size: 13px;
                  <div class="btn btn-seller btn-sm" id="NotLoggedIn">
      <button class="btn btn-seller btn-sm" type="button" onclick="OpenLogin()">Login/Signup</button>
  </div>
-                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
-                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>
+                <%--<a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
+                <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>--%>
 
                 <div id="logoutMobileSection" style="display:none;">
                     <button class="btn btn-login btn-sm" type="button" onclick="logoutUser()">Logout</button>
