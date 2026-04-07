@@ -838,7 +838,7 @@ margin-left: 0px;                    font-size: 13px;
         <!-- DESKTOP LOGO -->
         <a class="navbar-brand d-none d-lg-block" href="#">
                     <%--<img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">--%>
-            <img src="../Images/system/mylogo.png" width="80" alt="Logo">
+                    <img src="../Images/system/mylogo.png" width="80" alt="Logo">
         </a>
 
         <!-- SEARCH BAR -->

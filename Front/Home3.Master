@@ -10,6 +10,7 @@
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
     <%--<link href="../Js/bootstrap.min.css" rel="stylesheet" />--%>
     <script src="../Js/jquery.min.js"></script>
+
     <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
     <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>--%>
     <script src="../Js/bootstrap.min.js"></script>
@@ -560,7 +561,7 @@
           </button>
         </div>
         <a class="navbar-brand" href="#">
-          <img src="https://trendzshopping.in/Images/System/logo.png" width="80" alt="Rahul Logo">
+          <img src="../Images/System/mylogo.png" width="80" alt="Logo">
         </a>
         <div class="mobile-right">
           <div><i class="bi bi-person"></i></div>
@@ -571,7 +572,7 @@
 
       <!-- DESKTOP NAVBAR -->
       <a class="navbar-brand d-none d-lg-flex" href="#">
-        <img src="https://trendzshopping.in/Images/System/logo.png" width="120" alt="Rahul Logo">
+        <img src="../Images/System/mylogo.png" width="120" alt="Logo">
       </a>
 
       <div class="collapse navbar-collapse" id="mainNav">

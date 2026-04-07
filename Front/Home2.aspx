@@ -16,6 +16,7 @@
 
       <style>
     body {
+
       background-color: #f8f9fa;
       font-family: 'Poppins', sans-serif;
     }
@@ -550,7 +551,7 @@
           </button>
         </div>
         <a class="navbar-brand" href="#">
-          <img src="https://trendzshopping.in/Images/System/logo.png" width="80" alt="Rahul Logo">
+          <img src="../Images/System/mylogo.png" width="80" alt="Logo">
         </a>
         <div class="mobile-right">
           <div><i class="bi bi-person"></i></div>
@@ -561,7 +562,7 @@
 
       <!-- DESKTOP NAVBAR -->
       <a class="navbar-brand d-none d-lg-flex" href="#">
-        <img src="https://trendzshopping.in/Images/System/logo.png" width="120" alt="Rahul Logo">
+        <img src="../Images/System/mylogo.png" width="120" alt="Logo">
       </a>
 
       <div class="collapse navbar-collapse" id="mainNav">

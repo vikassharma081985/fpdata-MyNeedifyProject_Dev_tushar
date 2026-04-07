@@ -286,6 +286,7 @@ namespace WSBillingMaster.Pages
                 if (hdnCategory.Value != "")
                     objfp.CategoryId = Convert.ToInt32(hdnCategory.Value.ToString());
                 if (hdnSubCategory.Value != "")
+
                     objfp.SubCategoryId = Convert.ToInt32(hdnSubCategory.Value.ToString());
                 if (hdnSubSubCategory.Value != "")
                     objfp.SubSubCategoryId = Convert.ToInt32(hdnSubSubCategory.Value.ToString());

@@ -476,59 +476,6 @@ margin-top: 0px;
                                 <th class="GridViewHeaderStyle" scope="col" style="text-align: center; font-size: 13px; width: 200px;">Total</th>
                             </tr>
                         </table>
-                  <%--  <div id="divDiscountsection" style="text-align: right; margin-top: 10px; display: visible;">
-                        <div style="margin-top: 12px; padding-right: 25px">
-                            <div style="width: 90%; float: left; text-align: right"><b><span>Total :</span></b> </div>
-                            <div style="width: 10%; float: left; text-align: right"><strong>₹ <span id="spanTotal"></span></strong></div>
-                        </div>
-                        <div style="padding-right: 8px;">
-                            <div style="width: 90%; float: left; text-align: right"><strong>Discount if Applicable: </strong>
-                                <asp:DropDownList ID="ddldiscount" Style=" margin-right: 15px; margin-top: 10px;" onchange="DiscountChange();" runat="server"></asp:DropDownList>
-                            </div>
-                            <div style="width: 10%; float: left; text-align: right"><b>₹ </b>
-                                <input type="text" id="txtManualDiscount" onkeypress="return validateNumbers();" maxlength="4" style="padding-right: 5px; display: none; font-weight: bold; width: 50px; text-align: right;" />
-                                <strong><span style="padding-right: 6px; font-weight: bold" id="spnDiscountAmount">0.00</span></strong> </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 25px">
-                            <div style="width: 90%; float: left; text-align: right"><b>Tax: </b></div>
-                            <div style="width: 10%; float: left; text-align: right"><b>₹ <span id="spanTax">0.00</span></b> </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 25px">
-                            <div style="width: 90%; float: left; text-align: right"><b>Grand Total:</b> </div>
-                            <div style="width: 10%; float: left; text-align: right"><b>₹ <span id="spanGrandTotal"></span></b></div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px">
-                            <div style="width: 90%; float: left; text-align: right"><b>Payment Mode: </b></div>
-                            <div style="width: 10%; float: left; text-align: right">
-                                <select id="ddlPaymentMode" onchange="CheckTransactionType();" style="font-weight: 100; width: 90px;">
-                                    <option value="1">Cash</option>
-                                    <option value="2">Debit/Credit Card</option>
-                                    <option value="3">Paytm</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px">
-                            <div class="divTransaction" style="display: visible;">
-                                <div style="width: 90%; float: left; text-align: right"><strong>Transaction No:</strong> </div>
-                                <div style="width: 10%; float: left; text-align: right">
-                                    <input type="text" id="txtTransactionId" style="font-weight: 100; width: 90px;" placeholder="Tnx. No" />
-                                </div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px; text-align: right;" class="divAmountRender">
-                            <div style="width: 90%; float: left; text-align: right"><b>Paid Amount: </b></div>
-                            <div style="width: 10%; float: left; text-align: right">₹
-                                <input type="text" id="txtPaidAmount" onkeypress="return validateNumbers();" maxlength="5" style="font-weight: 100; width: 140px; width: 90px;" placeholder="Amount Paid" />
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px; text-align: right;" class="divAmountRender">
-                            <div style="width: 90%; float: left; text-align: right"><b>Amount Render: </b></div>
-                            <div style="width: 10%; float: left; text-align: right">₹
-                                <input type="text" id="txtAmountRender" readonly style="font-weight: 100; width: 90px;" placeholder="0.00" />
-                            </div>
-                        </div>
-                    </div>--%>
-
 <div id="divDiscountsection" style="margin-top: 10px;">
     <table style="width: 100%; border-collapse: collapse;" class="GridViewStyle">
 

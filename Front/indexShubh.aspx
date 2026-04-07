@@ -10,6 +10,124 @@
 
 
     <script>
+        $(document).ready(function () {
+
+            // PRICE SLIDER
+            $('#ex1').slider({
+                formatter: function (value) {
+                    $('[id$=hdnSearchByPrice]').val(value);
+                    SetSearchData();
+                    return 'Rs. : ' + value;
+                }
+            });
+
+        });
+
+        // SIZE CLICK
+        function SelectSize(ctrl) {
+            $(ctrl).toggleClass('SelectedSize');
+            SetSearchData();
+        }
+
+        // COLOR CLICK
+        function SelectColor(ctrl) {
+            $(ctrl).toggleClass('SelectedColor');
+            SetSearchData();
+        }
+
+        function SetSearchData() {
+
+            var SelectedSize = [];
+            var SelectedColor = [];
+
+            // ✅ GET SELECTED SIZE
+            $('.SelectedSize input[type=hidden]').each(function () {
+                SelectedSize.push($(this).val());
+            });
+
+            // ✅ GET SELECTED COLOR
+            $('.SelectedColor input[type=hidden]').each(function () {
+                SelectedColor.push($(this).val());
+            });
+
+            // CONVERT TO STRING
+            SelectedSize = SelectedSize.join(',');
+            SelectedColor = SelectedColor.join(',');
+
+            // SET HIDDEN FIELDS (IMPORTANT)
+            $('[id$=hdnSearchBySize]').val(SelectedSize);
+            $('[id$=hdnSearchByColor]').val(SelectedColor);
+
+            var SearchText = $('[id$=hdnSearchText]').val();
+            var SubSubCategory = $('[id$=hdnSubSubCategory]').val();
+            var Price = $('[id$=hdnSearchByPrice]').val();
+            var PriceOrder = $('#sort-field option:selected').val();
+
+            // LOADING (OPTIONAL)
+            $('[id$=divSearchData]').html('<p>Loading...</p>');
+
+            $.ajax({
+                url: "Search.aspx/SearchData",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    SubSubCategory: SubSubCategory,
+                    SearchText: SearchText,
+                    SelectedSize: SelectedSize,
+                    SelectedColor: SelectedColor,
+                    Price: Price,
+                    PriceOrder: PriceOrder
+                }),
+
+                success: function (result) {
+
+                    var data = typeof result.d === "string"
+                        ? JSON.parse(result.d)
+                        : result.d;
+
+                    var html = '';
+
+                    if (data && data.length > 0) {
+
+                        for (var i = 0; i < data.length; i++) {
+
+                            html += '<div class="col-md-3 col-xs-6 col-sm-3" style="margin-bottom:20px;">';
+                            html += '<div style="height:250px;width:100%;">';
+
+                            html += '<a href="https://myneedify.com/Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + '" target="_blank">';
+                            html += '<img class="img-responsive img-thumbnail" style="height:250px;width:100%;" src="http://198.38.88.185:8082/Images/Items/' + data[i].ImageName + '" />';
+                            html += '</a>';
+
+                            html += '<a href="https://myneedify.com/Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + '" target="_blank">';
+                            html += '<span class="ItemName">' + data[i].ItemName + '</span>';
+                            html += '</a>';
+
+                            html += '<div class="ItemPrice"><span><i class="fa fa-inr"></i>' + data[i].OldPrice + '</span></div>';
+                            html += '<div class="ItemPriceOffer"><span><i class="fa fa-inr"></i>' + data[i].ItemPrice + '</span></div>';
+
+                            html += '</div></div>';
+                        }
+
+                        $('[id$=divSearchData]').html(html);
+                        $('[id$=lblTotalCount]').text(data.length);
+
+                    } else {
+                        $('[id$=divSearchData]').html('No products found');
+                        $('[id$=lblTotalCount]').text('0');
+                    }
+                },
+
+                error: function () {
+                    $('[id$=divSearchData]').html('Error loading data');
+                }
+            });
+
+            return false;
+        }
+    </script>
+
+    <script>
 
 
         $('.carousel').carousel({
@@ -151,6 +269,14 @@
         margin-left: 10px;
         }
     }
+
+      .SelectedSize {
+      border: 1px solid #09f;
+  }
+
+  .SelectedColor {
+      border: 1px solid #09f;
+  }
 </style>
 
   
@@ -161,7 +287,7 @@
 <div class="row">
 
 <!-- MOBILE FILTER BUTTON -->
-<div class="d-lg-none mb-3">
+<%--<div class="d-lg-none mb-3">
 <button class="btn w-100"
 style="background:#F48B1E;color:white;"
 data-bs-toggle="offcanvas"
@@ -169,98 +295,85 @@ data-bs-target="#mobileFilter">
 
 <i class="fa fa-filter"></i> Filter
 </button>
-</div>
+</div>--%>
 
 
 <!-- DESKTOP FILTER SIDEBAR -->
-<div class="col-lg-3 col-md-4 mb-3 d-none d-lg-block">
+  <!-- sidebar -->
+  <div class="sidebar col-md-2 col-sm-3">
 
-<div class="card shadow-sm">
+      <strong class="title hidden-xs">Results</strong>
+      <div class="block hidden-xs">
+          <ul class="list-unstyled sub-categories">
+              <li>
+                  <a href="#">
+                      <asp:Label ID="lblResultOf" runat="server" Text="All Results"></asp:Label>
+                  </a>
+              </li>
 
-<div class="card-header fw-bold">
-Filters
-</div>
+          </ul>
+      </div>
 
-<div class="card-body">
-
-<!-- Price Filter -->
-<div class="mb-3">
-<h6 class="fw-bold">Price</h6>
-
-<input type="range" class="form-range" min="100" max="5000">
-
-<div class="d-flex justify-content-between small">
-<span>₹100</span>
-<span>₹5000</span>
-</div>
-</div>
-
-
-<!-- Color Filter -->
-<div class="mb-3">
-<h6 class="fw-bold">Color</h6>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox">
-<label class="form-check-label">Red</label>
-</div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox">
-<label class="form-check-label">Blue</label>
-</div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox">
-<label class="form-check-label">Black</label>
-</div>
-
-</div>
+      <div class="block open-caret">
+          <strong class="title">Size - Numeric</strong>
+          <ul class="list-unstyled set-size">
+              <asp:Repeater runat="server" ID="rptSizeNum">
+                  <ItemTemplate>
+                      <li onclick="SelectSize(this)">
+                          <input type="hidden" id="hdnSizeId" value='<%#Eval("SizeId") %>' />
+                          <label>
+                              <%#Eval("Size") %>
+                          </label>
+                      </li>
+                  </ItemTemplate>
+              </asp:Repeater>
 
 
-<!-- Size Filter -->
-<div class="mb-3">
-<h6 class="fw-bold">Size</h6>
+          </ul>
+      </div>
+      <div class="block open-caret">
+          <strong class="title">Size - Alpha</strong>
+          <ul class="list-unstyled set-size">
+              <asp:Repeater runat="server" ID="rptSizeAlpha">
+                  <ItemTemplate>
+                      <li onclick="SelectSize(this)">
+                          <input type="hidden" id="hdnSizeId" value='<%#Eval("SizeId") %>' />
+                          <label>
+                              <%#Eval("Size") %>
+                          </label>
+                      </li>
+                  </ItemTemplate>
+              </asp:Repeater>
+          </ul>
+      </div>
+      <div class="block open-caret">
+          <strong class="title">Color</strong>
+          <ul class="list-unstyled color-set">
+              <asp:Repeater runat="server" ID="rptColor">
+                  <ItemTemplate>
+                      <li onclick="SelectColor(this)">
+                          <input type="hidden" id="hdnColorId" value='<%#Eval("ColorId") %>' />
+                          <label style='<%#"background-color:"+Eval("Code") %>'>
+                              <%#Eval("Color") %>
+                          </label>
+                      </li>
+                  </ItemTemplate>
+              </asp:Repeater>
 
-<div class="d-flex flex-wrap gap-2">
-<button class="btn btn-outline-secondary btn-sm">S</button>
-<button class="btn btn-outline-secondary btn-sm">M</button>
-<button class="btn btn-outline-secondary btn-sm">L</button>
-<button class="btn btn-outline-secondary btn-sm">XL</button>
-</div>
-</div>
+          </ul>
+      </div>
+      <div class="block" id="filter-form-block-05">
+          <strong class="title">Price</strong>
+          <div class="range-slider">
+              <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="50" data-slider-max="30000" data-slider-step="1" data-slider-value="30000" />
+          </div>
+      </div>
+      <div class="block" id="Div1" style="padding: 25px; padding-left: 0px; padding-right: 0px;">
+          <asp:Button ID="btnSearch" runat="server" Style="font-weight: 100; background-color: #7C519B; background-image: none; border: 1px solid  #7C519B;" class="btn btn-primary btn-block" OnClientClick="return SetSearchData();" Text="Search" />
+      </div>
 
+  </div>
 
-<!-- Category Filter -->
-<div class="mb-3">
-<h6 class="fw-bold">Category</h6>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox">
-<label class="form-check-label">Kurti</label>
-</div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox">
-<label class="form-check-label">Saree</label>
-</div>
-
-<div class="form-check">
-<input class="form-check-input" type="checkbox">
-<label class="form-check-label">Dress</label>
-</div>
-
-</div>
-
-<button class="btn w-100"
-style="background:#F48B1E;color:white;">
-Apply Filter
-</button>
-
-</div>
-</div>
-
-</div>
 
 
 
