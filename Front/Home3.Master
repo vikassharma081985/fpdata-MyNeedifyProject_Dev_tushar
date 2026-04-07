@@ -10,6 +10,7 @@
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--%>
     <%--<link href="../Js/bootstrap.min.css" rel="stylesheet" />--%>
     <script src="../Js/jquery.min.js"></script>
+
     <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
     <%--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>--%>
     <script src="../Js/bootstrap.min.js"></script>

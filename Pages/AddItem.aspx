@@ -14,6 +14,7 @@
     <div style=" margin: 0 auto; margin-top: 3%; background-color: #fff; padding: 30px; min-height: 1300px;">
         <asp:HiddenField ID="hdnAttachmentXML" runat="server" />
         <asp:HiddenField ID="hdnPhysicalPath" runat="server" />
+
         <asp:HiddenField ID="hdnMemberDetails" runat="server" />
         <asp:HiddenField ID="hdnsize" runat="server" />
         <asp:HiddenField ID="hdnCategory" runat="server" />
