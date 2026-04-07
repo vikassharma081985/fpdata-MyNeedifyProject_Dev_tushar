@@ -677,7 +677,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <a class="navbar-brand" href="#">
-                        <img src="https://trendzshopping.in/Images/System/logo.png" width="80" alt="Rahul Logo">
+                        <img src="../Images/System/mylogo.png" width="80" alt="Logo">
                     </a>
                 </div>
                 <div class="mobile-right d-flex align-items-center gap-3">
@@ -689,7 +689,7 @@
 
             <!-- DESKTOP NAVBAR -->
             <a class="navbar-brand d-none d-lg-block" href="#">
-                <img src="https://trendzshopping.in/Images/System/logo.png" width="120" alt="Rahul Logo">
+                <img src="../Images/System/mylogo.png" width="120" alt="Logo">
             </a>
 
             <!-- SEARCH BAR (centered) -->

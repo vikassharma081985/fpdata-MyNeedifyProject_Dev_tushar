@@ -843,7 +843,7 @@
         </div>
         <div style="width: 50%; float: left;">
             <span style="font-size: 30px; margin-left: 10px;">
-                <img src="../Images/System/logo.png" style="height: 100px;" /></span>
+                <img src="../Images/System/mylogo.png" style="height: 100px;" /></span>
             &emsp;
             <a href="http://localhost:46692/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>
 		<%--<a href="https://myneedify.com/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>--%>
