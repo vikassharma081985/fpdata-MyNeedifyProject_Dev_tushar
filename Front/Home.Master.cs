@@ -112,8 +112,8 @@ namespace FaduPrice.Pages
                     }
                 }
             }
-            if (divNotificationsMobile != null) divNotificationsMobile.InnerHtml = notificationHtml;
-            if (divNotificationsDesktop != null) divNotificationsDesktop.InnerHtml = notificationHtml;
+            //if (divNotificationsMobile != null) divNotificationsMobile.InnerHtml = notificationHtml;
+            //if (divNotificationsDesktop != null) divNotificationsDesktop.InnerHtml = notificationHtml;
         }                
     }
 }

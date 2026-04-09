@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true" CodeBehind="ManualBilling.aspx.cs" Inherits="WSBillingMaster.Pages.ManualBilling" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true" CodeBehind="ManualBillingBackup.aspx.cs" Inherits="WSBillingMaster.Pages.ManualBillingBackup" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,20 +29,20 @@
         }
 
 
-        .col-md-6 {
-            width: 75%;
-        }
-
+            .col-md-6 {
+        width: 75%;
+    }
+                                                                                                                                                    
 
         .Header {
             margin-top: 40px;
             margin-bottom: 02%;
             text-align: left;
-            margin-left: -10px;
-            margin-right: 124px;
+                    margin-left: -10px;
+                    margin-right: 124px;
         }
 
-        .content {
+        .content{
             margin-top: 40px;
         }
 
@@ -245,12 +245,11 @@
             }
 
 
-            .modal-dialog {
-                position: relative;
-                width: auto;
-                margin-top: 150px;
-            }
-
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin-top: 150px;
+}
             .ac_results {
                 width: 100% !important;
                 max-width: 300px;
@@ -288,7 +287,7 @@
         }
     </style>
     <style>
-        /* Keep original markup unchanged — these overrides just improve alignment */
+        /* Keep original markup unchanged — these overrides just improve alignment */ 
         .content .row {
             display: flex;
             flex-wrap: wrap;
@@ -333,57 +332,51 @@
             top: 0;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width:768px) {
             .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
-                float: none;
-            }
+    .content {
+margin-top: 0px;
 
-            .content {
-                margin-top: 0px;
-            }
-
-        .Header {
-            margin-top: 08%;
-            margin-bottom: 04%;
-            margin-left: -8px !important;
+             }
+            .Header {
+                margin-top: 08%;
+                margin-bottom: 04%;
+                 margin-left: -8px !important;
             margin-right: 8px !important;
-        }
-
-        .content .row {
-            display: block;
-        }
-
-            .content .row .col-md-3, .content .row .col-md-2, .content .row .col-md-1 {
-                text-align: left;
-                justify-content: flex-start;
-                padding-right: 0;
-                margin-bottom: 5px;
+            }
+            .content .row {
+                display: block;
             }
 
-        #btnSearch {
-            width: 97% !important;
-        }
+                .content .row .col-md-3, .content .row .col-md-2, .content .row .col-md-1 {
+                    text-align: left;
+                    justify-content: flex-start;
+                    padding-right: 0;
+                    margin-bottom: 5px;
+                }
 
-        .alert {
-            left: 5% !important;
-            width: 90% !important;
-        }
+            #btnSearch {
+                width: 97% !important;
+            }
 
-        .MyModal {
-            left: 0 !important;
-            width: 100% !important;
-        }
+            .alert {
+                left: 5% !important;
+                width: 90% !important;
+            }
 
-        .modal-content {
-            width: 95% !important;
-            margin: 10px auto !important;
-            top: 0 !important;
-        }
+            .MyModal {
+                left: 0 !important;
+                width: 100% !important;
+            }
 
-        .promocode {
-            text-align: center !important;
-        }
-
+            .modal-content {
+                width: 95% !important;
+                margin: 10px auto !important;
+                top: 0 !important;
+            }
+            .promocode{
+                text-align: center !important;
+            }
         }
     </style>
     <div class="alert fade" style="position: absolute; left: 30%; border-radius: 15px; z-index: 11111">
@@ -443,23 +436,34 @@
                             </asp:DropDownList>
                         </div>
                     </div>
+
                     <div class="col-md-12 col-xs-12">
-                        <div class="col-md-12 col-xs-12"><strong>Sales Man</strong> </div>
-                        <div class="col-md-6 col-xs-12 text-center">
-                            <asp:DropDownList ID="ddlEmployee" class="form-control" runat="server">
-                            </asp:DropDownList>
-                        </div>
-                    </div>
+    <div class="col-md-12 col-xs-12"><strong>Sales Man</strong> </div>
+    <div class="col-md-6 col-xs-12 text-center">
+        <asp:DropDownList ID="DropDownList1" class="form-control" runat="server">
+            <asp:ListItem Text="Sales" Value="Sales"></asp:ListItem>
+            <asp:ListItem Text="IT" Value="IT"></asp:ListItem>
+        </asp:DropDownList>
+    </div>
+</div>
                 </div>
             </div>
         </div>
         <div class="col-md-8">
             <div class="content" style="text-align: center;"><%--<div class="Header" style="padding: 0px; margin: 10px;text-align:left;padding-left:15px;"> <div>Billing (<asp:Label ID="lblTotalCount" Text="0" runat="server"></asp:Label>) </div> </div>--%>
-                <div style="text-align: left; margin-bottom: 10px; padding-right: 15px;">
-                    <strong>Item</strong>
-                    <input type="text" id="txtBarcode" class="form-control" style="width: 40%; display: inline-block; margin-left: 10px; margin-right: 10px;" />
-                    <input id="btnSearch" style="width:50%"; type="button" value="Search" class="btn btn-success" style="width: auto;" onclick="SearchData();" />&nbsp;
-                </div>
+             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+    
+    <strong>Barcode</strong>
+
+    <input type="text" id="txtBarcode" class="form-control" style="width: 200px;" />
+
+   <%-- <input id="btnSearch" type="button" value="Search" 
+           class="btn btn-success" onclick="SearchData();" />--%>
+
+    <input id="btnadd" type="button" value="Add" 
+           class="btn btn-primary" onclick="addData();" />
+
+</div>
                 <div class="col-md-12" style="padding: 0px; margin-top: 10px;">
                     <div class="table-responsive">
                         <table style="width: 100%" id="tb_ItemList" class="GridViewStyle">
@@ -472,63 +476,93 @@
                                 <th class="GridViewHeaderStyle" scope="col" style="text-align: center; font-size: 13px; width: 200px;">Total</th>
                             </tr>
                         </table>
-                    <div id="divDiscountsection" style="text-align: right; margin-top: 10px; display: visible;">
-                        <div style="margin-top: 12px; padding-right: 25px">
-                            <div style="width: 90%; float: left; text-align: right"><b><span>Total :</span></b> </div>
-                            <div style="width: 10%; float: left; text-align: right"><strong>&#8377; <span id="spanTotal"></span></strong></div>
-                        </div>
-                        <div style="padding-right: 8px;">
-                            <div style="width: 90%; float: left; text-align: right"><strong>Discount if Applicable: </strong>
-                                <asp:DropDownList ID="ddldiscount" Style=" margin-right: 15px; margin-top: 10px;" onchange="DiscountChange();" runat="server"></asp:DropDownList>
-                            </div>
-                            <div style="width: 10%; float: left; text-align: right"><b>&#8377; </b>
-                                <input type="text" id="txtManualDiscount" onkeypress="return validateNumbers();" maxlength="4" style="padding-right: 5px; display: none; font-weight: bold; width: 50px; text-align: right;" />
-                                <strong><span style="padding-right: 6px; font-weight: bold" id="spnDiscountAmount">0.00</span></strong> </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 25px">
-                            <div style="width: 90%; float: left; text-align: right"><b>Tax: </b></div>
-                            <div style="width: 10%; float: left; text-align: right"><b>&#8377; <span id="spanTax">0.00</span></b> </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 25px">
-                            <div style="width: 90%; float: left; text-align: right"><b>Grand Total:</b> </div>
-                            <div style="width: 10%; float: left; text-align: right"><b>&#8377; <span id="spanGrandTotal"></span></b></div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px">
-                            <div style="width: 90%; float: left; text-align: right"><b>Payment Mode: </b></div>
-                            <div style="width: 10%; float: left; text-align: right">
-                                <select id="ddlPaymentMode" onchange="CheckTransactionType();" style="font-weight: 100; width: 90px;">
-                                    <option value="1">Cash</option>
-                                    <option value="2">Debit/Credit Card</option>
-                                    <option value="3">Paytm</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px">
-                            <div class="divTransaction" style="display: visible;">
-                                <div style="width: 90%; float: left; text-align: right"><strong>Transaction No:</strong> </div>
-                                <div style="width: 10%; float: left; text-align: right">
-                                    <input type="text" id="txtTransactionId" style="font-weight: 100; width: 90px;" placeholder="Tnx. No" />
-                                </div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px; text-align: right;" class="divAmountRender">
-                            <div style="width: 90%; float: left; text-align: right"><b>Paid Amount: </b></div>
-                            <div style="width: 10%; float: left; text-align: right">&#8377;
-                                <input type="text" id="txtPaidAmount" onkeypress="return validateNumbers();" maxlength="5" style="font-weight: 100; width: 140px; width: 90px;" placeholder="Amount Paid" />
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-right: 8px; text-align: right;" class="divAmountRender">
-                            <div style="width: 90%; float: left; text-align: right"><b>Amount Render: </b></div>
-                            <div style="width: 10%; float: left; text-align: right">&#8377;
-                                <input type="text" id="txtAmountRender" readonly style="font-weight: 100; width: 90px;" placeholder="0.00" />
-                            </div>
-                        </div>
-                    </div>
+<div id="divDiscountsection" style="margin-top: 10px;">
+    <table style="width: 100%; border-collapse: collapse;" class="GridViewStyle">
+
+        <!-- Total -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Total :</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <strong>₹ <span id="spanTotal"></span></strong>
+            </td>
+        </tr>
+
+        <!-- Discount -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;">
+                <strong>Discount if Applicable:</strong>
+            </td>
+            <td style="text-align: right; padding: 8px;">
+                <asp:DropDownList ID="ddldiscount" onchange="DiscountChange();" runat="server"></asp:DropDownList>
+                ₹ 
+                <input type="text" id="txtManualDiscount" onkeypress="return validateNumbers();" maxlength="4"
+                       style="display: none; font-weight: bold; width: 50px; text-align: right;" />
+                <strong><span id="spnDiscountAmount">0.00</span></strong>
+            </td>
+        </tr>
+
+        <!-- Tax -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Tax:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <b>₹ <span id="spanTax">0.00</span></b>
+            </td>
+        </tr>
+
+        <!-- Grand Total -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Grand Total:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <b>₹ <span id="spanGrandTotal"></span></b>
+            </td>
+        </tr>
+
+        <!-- Payment Mode -->
+        <tr>
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Payment Mode:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                <select id="ddlPaymentMode" onchange="CheckTransactionType();" style="width: 140px;">
+                    <option value="1">Cash</option>
+                    <option value="2">Debit/Credit Card</option>
+                    <option value="3">Paytm</option>
+                </select>
+            </td>
+        </tr>
+
+        <!-- Transaction -->
+        <tr class="divTransaction">
+            <td colspan="5" style="text-align: right; padding: 8px;"><strong>Transaction No:</strong></td>
+            <td style="text-align: right; padding: 8px;">
+                <input type="text" id="txtTransactionId" style="width: 140px;" placeholder="Tnx. No" />
+            </td>
+        </tr>
+
+        <!-- Paid Amount -->
+        <tr class="divAmountRender">
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Paid Amount:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                ₹ 
+                <input type="text" id="txtPaidAmount" onkeypress="return validateNumbers();" maxlength="5"
+                       style="width: 140px;" placeholder="Amount Paid" />
+            </td>
+        </tr>
+
+        <!-- Amount Render -->
+        <tr class="divAmountRender">
+            <td colspan="5" style="text-align: right; padding: 8px;"><b>Amount Render:</b></td>
+            <td style="text-align: right; padding: 8px;">
+                ₹ 
+                <input type="text" id="txtAmountRender" readonly style="width: 140px;" placeholder="0.00" />
+            </td>
+        </tr>
+
+    </table>
+</div>
                     <div class="promocode" style="text-align: right; margin-top: 10px; padding-right: 8px; width: 100%; float: left;">
-                        <%--<p id="pHavePromo" style="display: visible;"><a href="#" style="color: #09f" onclick="OpenPromoPop();">Have Promocode?</a></p>
-                        <p style="color: green; display: visible;" id="pPromoApplied"><span id="spnPromoApplied"></span>Applied Successfully! <a href="#" style="color: red" onclick="RemovePromocode();">Remove?</a></p>--%>
-                        <input id="btnSave" type="button" onclick="savedata();" style="display: none;" value="Save" class="button" />&nbsp;
-                        <input id="btnReset" type="button" onclick="Reset();" style="display: none;" value="Reset" class="button" />&nbsp; </div>
+                        <p id="pHavePromo" style="display: visible;"><a href="#" style="color: #09f" onclick="OpenPromoPop();">Have Promocode?</a></p>
+                        <p style="color: green; display: visible;" id="pPromoApplied"><span id="spnPromoApplied"></span>Applied Successfully! <a href="#" style="color: red" onclick="RemovePromocode();">Remove?</a></p>
+                        <input id="btnSave" type="button" onclick="savedata();" value="Save" class="button" />&nbsp;
+                        <input id="btnReset" type="button" onclick="Reset();" value="Reset" class="button" />&nbsp; </div>
                 </div>
             </div>
         </div>
@@ -560,11 +594,11 @@
                         </tr>
                     </table>
                 </div>
-                <%--<div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div></div>--%>
+                <%--<div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div>--%> </div>
         </div>
     </div>
     <!-- Modal -->
-    <%--<div id="divPromo" style="display: visible;" class="MyModal">
+    <div id="divPromo" style="display: visible;" class="MyModal">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content" style="width: 48%;">
@@ -584,10 +618,23 @@
                         </tr>
                     </table>
                 </div>
-                <div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div> </div>
+                <%--<div class="modal-footer"> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div>--%> </div>
         </div>
-    </div>--%>
-
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("#txtBarcode").autocomplete("Search.ashx", {
+                width: 200,
+                formatItem: function (data, i, n, value) {
+                    return "<img style = 'width:50px;height:50px' src='" + value.split(",")[1] + "'/> " + value.split(",")[0];
+                },
+                formatResult: function (data, value) {
+                    return value.split(",")[0].split("#")[1];
+                    $('[id$=btnSearch]').click();
+                }
+            });
+        });
+    </script>
     <script type="text/javascript">
 
         var a = 0;
@@ -606,19 +653,19 @@
                     var Cost = $(this).find('[id$=txtTotalCost]').text();
 
 
-                    if (!isNaN(parseFloat(amount)))
-                        TotalAmount = TotalAmount + parseFloat(amount);
+                    if (amount != NaN)
+                        TotalAmount = TotalAmount + parseInt(amount);
 
-                    if (!isNaN(parseFloat(GST)))
+                    if (GST != NaN)
                         TotalGST = TotalGST + parseFloat(GST);
 
-                    if (!isNaN(parseFloat(Cost)))
+                    if (Cost != NaN)
                         TotalCost = TotalCost + parseFloat(Cost);
                 }
             });
 
-            $('[id$=spanTotal]').text(TotalCost.toFixed(2));
-            $('[id$=spanTax]').text(TotalGST.toFixed(2));
+            $('[id$=spanTotal]').text(TotalCost);
+            $('[id$=spanTax]').text(TotalGST);
 
         }
 
@@ -637,28 +684,28 @@
                 $('[id$=txtManualDiscount]').hide();
                 $('[id$=spnDiscountAmount]').show();
                 $('[id$=spnDiscountAmount]').text('0.00');
-                var AmountAfterDiscount = (parseFloat(Total) * parseFloat(Discount)) / 100
-                $('[id$=spnDiscountAmount]').text(AmountAfterDiscount.toFixed(2));
+                var AmountAfterDiscount = (parseInt(Total) * parseInt(Discount)) / 100
+                $('[id$=spnDiscountAmount]').text(AmountAfterDiscount);
                 var Discountedvalue = $('[id$=spnDiscountAmount]').text();
                 var Tax = $('[id$=spanTax]').text();
-                var spanGrandTotal = ((parseFloat(Total) - parseFloat(Discountedvalue)) + parseFloat(Tax));
-                $('[id$=spanGrandTotal]').text(spanGrandTotal.toFixed(2));
+                var spanGrandTotal = ((parseInt(Total) - parseInt(Discountedvalue)) + parseInt(Tax));
+                $('[id$=spanGrandTotal]').text(spanGrandTotal);
             }
 
         }
         function SetDiscount() {
             var Total = $('[id$=spanTotal]').text();
             var Disct = $('#txtManualDiscount').val().trim();
-            if (parseFloat(Disct) > parseFloat(Total)) {
+            if (parseInt(Disct) > parseInt(Total)) {
                 alert('Discount amount cannot be allowed more than total amount');
                 $('#txtManualDiscount').val('0');
                 Disct = '0';
             }
-            $('[id$=spnDiscountAmount]').text(parseFloat(Disct).toFixed(2));
+            $('[id$=spnDiscountAmount]').text(Disct);
             var Discountedvalue = $('[id$=spnDiscountAmount]').text();
             var Tax = $('[id$=spanTax]').text();
-            var spanGrandTotal = ((parseFloat(Total) - parseFloat(Discountedvalue)) + parseFloat(Tax));
-            $('[id$=spanGrandTotal]').text(spanGrandTotal.toFixed(2));
+            var spanGrandTotal = ((parseInt(Total) - parseInt(Discountedvalue)) + parseInt(Tax));
+            $('[id$=spanGrandTotal]').text(spanGrandTotal);
 
         }
         function Reset() {
@@ -672,7 +719,7 @@
             if (Barcode != "") {
                 $("#btnSearch").attr('disabled', 'disabled').val('Searching...');
                 jQuery.ajax({
-                    url: "ManualBilling.aspx/SearchData",
+                    url: "Billing.aspx/SearchData",
                     data: JSON.stringify({ Barcode: Barcode }),
                     type: "POST",
                     timeout: 120000,
@@ -717,8 +764,8 @@
                             $('[id$=btnReset]').css('display', '');
                             $('[id$=divDiscountsection]').css('display', '');
 
-                            //$('#pHavePromo').show();
-                            //$('#pPromoApplied').hide();
+                            $('#pHavePromo').show();
+                            $('#pPromoApplied').hide();
                             //for (var i = 0; i <= TestData.length - 1; i++) {
                             //    a++;
                             var mydata = "";
@@ -727,12 +774,15 @@
 
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:12px;text-align:center;font-weight:bold">' + a + ' <input type="hidden" id="hdnBarcode" value="' + Data[0]["Barcode"] + '" /> </td>';
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold"><input type="hidden"  id="hdnItemId"  value="' + Data[0]["ItemId"] + '" /> <span  id="lblName">' + Data[0]["ItemName"] + ' </span></td>';
-                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:12px;"><input type="text" style="width:100%;text-align:center" class="form-control" onkeyup="AmountAccToQuantity(this);" onkeypress="return validateNumbers();" value="1" id="txtQuantity" /></td>';
+                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:12px;"><select style="width:100%;" class="form-control" onchange="AmountAccToQuantity(this);" id="ddlQuantity">';
+                            mydata += '<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>';
+                            mydata += '<option>6</option><option>7</option><option>8</option><option>9</option></select>';
 
-                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold"><input type="text" style="width:100%;text-align:center" class="form-control" onkeyup="AmountAccToQuantity(this);" onkeypress="return validateNumbers();" value="0" id="txtAmount" /></td>';
-                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold"><span   id="txtTotal">0</span></td>';
+                            mydata += ' </td>';
+                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold"><span  id="lblAmount">' + Data[0]["TotalCost"] + '</span></td>';
+                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold"><span   id="txtTotal">' + Data[0]["TotalCost"] + '</span></td>';
 
-                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold;display:none"><span  id="txtTotalCost">0</span></td>';
+                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold;display:none"><span  id="txtTotalCost">' + Data[0]["TotalCost"] + '</span></td>';
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold;display:none"><span   id="txtGST">' + Data[0]["GST"] + '</span></td>';
 
 
@@ -778,24 +828,23 @@
         function AmountAccToQuantity(id) {
 
             var TotalAmount = "0";
-            var Quantity = $(id).closest('tr').find('[id$=txtQuantity]').val();
-            var amount = $(id).closest('tr').find('[id$=txtAmount]').val();
+            var Quantity = $(id).closest('tr').find('[id$=ddlQuantity]').val();
+            var amount = $(id).closest('tr').find('[id$=lblAmount]').text();
 
+            var Cost = $(id).closest('tr').find('[id$=txtSingleItemCost]').text();
             var GST = $(id).closest('tr').find('[id$=txtSingleItemGST]').text();
 
-            if (isNaN(Quantity) || Quantity == "") Quantity = 0;
-            if (isNaN(amount) || amount == "") amount = 0;
 
-            var TotalAmount = parseFloat(Quantity * amount);
+            var TotalAmount = parseInt(Quantity * amount);
 
-            var TotalCost = parseFloat(Quantity * amount); // Use user-entered amount as the cost for billing
-            var TotalGST = parseFloat(Quantity * GST);
+            var TotalCost = parseInt(Quantity * Cost);
+            var TotalGST = parseInt(Quantity * GST);
 
-            $(id).closest('tr').find('[id$=txtTotal]').text(TotalAmount.toFixed(2));
+            $(id).closest('tr').find('[id$=txtTotal]').text(TotalAmount);
 
 
-            $(id).closest('tr').find('[id$=txtTotalCost]').text(TotalCost.toFixed(2));
-            $(id).closest('tr').find('[id$=txtGST]').text(TotalGST.toFixed(2));
+            $(id).closest('tr').find('[id$=txtTotalCost]').text(TotalCost);
+            $(id).closest('tr').find('[id$=txtGST]').text(TotalGST);
 
             TotalAmount1();
             DiscountChange();
@@ -838,7 +887,6 @@
 
     <script>
         $(document).ready(function () {
-            $('#CustomerSearchPopUp').hide();
             $(document).keypress(function (e) {
                 if (e.which == 13) {
                     $('[id$=btnSearch]').click();
@@ -859,11 +907,7 @@
 
             $('#txtPaidAmount').keyup(function () {
                 if ($('#txtPaidAmount').val().length > 0) {
-                    var paid = parseFloat($('#txtPaidAmount').val().trim());
-                    var grandTotal = parseFloat($('#spanGrandTotal').text());
-                    if (!isNaN(paid) && !isNaN(grandTotal)) {
-                        $('#txtAmountRender').val((paid - grandTotal).toFixed(2));
-                    }
+                    $('#txtAmountRender').val(parseInt($('#txtPaidAmount').val().trim()) - parseInt($('#spanGrandTotal').text()));
                 }
                 else {
                     $('#txtAmountRender').val('');
@@ -920,41 +964,50 @@
             var NetAmount = $('[id$=spanTotal]').text();
             var PaymentMode = $('[id$=ddlPaymentMode]').val();
             var PaidAmount = $('#txtPaidAmount').val();
-            var SalesManId = $('[id$=ddlEmployee]').val();
-
             if (isNaN($('#txtPaidAmount').val())) {
                 PaidAmount = 0;
             }
 
+
             var DiscPerItem = 0;
-            if (parseFloat(Discount) > 0) {
+            if (parseInt(Discount) > 0) {
                 DiscPerItem = parseFloat(Discount) / parseFloat($('[id$=tb_ItemList] tr').length - 1);
             }
+            var perItemDisc = parseInt($('[id$=spnDiscountAmount]').text()) / $('[id$=tb_ItemList] tr').length - 1;
             var xml = "<Root>";
             $('[id$=tb_ItemList]').find('tr').each(function (index) {
                 if (index > 0) {
-                    var Qty = parseFloat($(this).find('#txtQuantity').val());
-                    if (isNaN(Qty)) Qty = 0;
-                    xml += "<Node>";
-                    xml += "<ItemId>" + $(this).find('#hdnItemId').val() + "</ItemId>";
-                    xml += "<Quantity>" + Qty + "</Quantity>";
-                    xml += "<Total>" + $(this).find('#txtTotal').text() + "</Total>";
-                    xml += "<Barcode>" + $(this).find('#hdnBarcode').val() + "</Barcode>";
-                    xml += "<TotalCost>" + $(this).find('#txtTotal').text() + "</TotalCost>";
-                    xml += "<GST>" + 0 + "</GST>";
-                    xml += "<Freight>" + 0 + "</Freight>";
-                    xml += "<Misc>" + 0 + "</Misc>";
-                    xml += "<Discount>" + (DiscPerItem || 0) + "</Discount>";
-                    xml += "</Node>";
+                    var Qty = parseFloat($(this).find('#ddlQuantity').val());
+
+                    for (var i = 0; i < Qty; i++) {
+                        xml += "<Node>";
+                        xml += "<ItemId>" + $(this).find('#hdnItemId').val() + "</ItemId>";
+                        xml += "<Quantity>1</Quantity>";
+                        xml += "<Total>" + parseFloat($(this).find('#txtTotal').text()) / Qty + "</Total>";
+                        //xml += "<Total>" + parseFloat($('#spanGrandTotal').text()) / Qty + "</Total>";
+                        xml += "<Barcode>" + $(this).find('#hdnBarcode').val() + "</Barcode>";
+                        xml += "<TotalCost>" + parseInt($('#spanGrandTotal').text()) / Qty + "</TotalCost>";
+                        xml += "<GST>" + parseInt($(this).find('#txtGST').text()) + "</GST>";
+                        xml += "<Freight>" + parseFloat($(this).find('#txtFreight').text()) + "</Freight>";
+                        xml += "<Misc>" + parseFloat($(this).find('#txtMisc').text()) + "</Misc>";
+                        if (DiscPerItem != 0) {
+                            xml += "<Discount>" + parseFloat(DiscPerItem) / Qty + "</Discount>";
+
+                        } else {
+                            xml += "<Discount>0</Discount>";
+                        }
+
+                        xml += "</Node>";
+                    }
                 }
             });
 
             xml += "</Root>";
 
             $.ajax({
-                url: "ManualBilling.aspx/SaveBill",
+                url: "Billing.aspx/SaveBill",
                 async: false,
-                data: JSON.stringify({ Title: Title, LName: LName, Email: Email, Mobile: Mobile, Name: Name, Gender: Gender, Age: Age, GrandTotal: GrandTotal, Discount: Discount, Tax: 0, NetAmount: NetAmount, PaymentMode: PaymentMode, PaidAmount: PaidAmount, LtDetail: xml, SalesManId: SalesManId }),
+                data: JSON.stringify({ Title: Title, LName: LName, Email: Email, Mobile: Mobile, Name: Name, Gender: Gender, Age: Age, GrandTotal: GrandTotal, Discount: Discount, Tax: Tax, NetAmount: NetAmount, PaymentMode: PaymentMode, PaidAmount: PaidAmount, LtDetail: xml }),
                 contentType: "application/json; charset=utf-8",
                 type: "POST", // data has to be Posted 
                 timeout: 120000,
@@ -967,9 +1020,9 @@
                     if (TransactionId != "0") {
                         //alert(TransactionId);
                         //---------Check Due Amount------------
-                        debugger;
+
                         $.ajax({
-                            url: "ManualBilling.aspx/MarkDueEntry",
+                            url: "Billing.aspx/MarkDueEntry",
                             async: false,
                             data: JSON.stringify({ TransactionId: TransactionId, Mobile: Mobile, Name: Name, GrandTotal: GrandTotal, PaidAmount: PaidAmount, ReceiptId: ReceiptId }),
                             contentType: "application/json; charset=utf-8",
@@ -984,21 +1037,21 @@
 
 
                         showmsg('Billing Successfully !');
-                        //var Promocode = $('#spnPromoApplied').text();
-                        //if (Promocode != '') {
-                        //    $.ajax({
-                        //        url: "ManualBilling.aspx/SavePromoUsed",
-                        //        async: true,
-                        //        data: JSON.stringify({ Promocode: Promocode, Mobile: Mobile }),
-                        //        contentType: "application/json; charset=utf-8",
-                        //        type: "POST", // data has to be Posted 
-                        //        timeout: 120000,
-                        //        dataType: "json",
-                        //        success: function (result) {
+                        var Promocode = $('#spnPromoApplied').text();
+                        if (Promocode != '') {
+                            $.ajax({
+                                url: "Billing.aspx/SavePromoUsed",
+                                async: true,
+                                data: JSON.stringify({ Promocode: Promocode, Mobile: Mobile }),
+                                contentType: "application/json; charset=utf-8",
+                                type: "POST", // data has to be Posted 
+                                timeout: 120000,
+                                dataType: "json",
+                                success: function (result) {
 
-                        //        }
-                        //    });
-                        //}
+                                }
+                            });
+                        }
 
 
                         window.open("BillReceipt.aspx?TransactionId=" + TransactionId);
@@ -1118,14 +1171,14 @@
 
         }
 
-        //function OpenPromoPop() {
-        //    $('#divPromo').show();
-        //    $('#txtPromocode').focus();
-        //}
-        //function ClosePromoPop() {
-        //    $('#txtPromocode').val('');
-        //    $('#divPromo').hide();
-        //}
+        function OpenPromoPop() {
+            $('#divPromo').show();
+            $('#txtPromocode').focus();
+        }
+        function ClosePromoPop() {
+            $('#txtPromocode').val('');
+            $('#divPromo').hide();
+        }
 
         function CheckPromo() {
             $.ajax({
@@ -1151,10 +1204,9 @@
                             SetDiscount();
                             $('#divPromo').hide();
                             $('#tb_ItemList').find('#remove').hide();
-                            $('#tb_ItemList').find('#txtQuantity').attr('disabled', 'disabled');
-                            $('#tb_ItemList').find('#txtAmount').attr('disabled', 'disabled');
-                            //$('#pHavePromo').hide();
-                            //$('#pPromoApplied').show();
+                            $('#tb_ItemList').find('#ddlQuantity').attr('disabled', 'disabled');
+                            $('#pHavePromo').hide();
+                            $('#pPromoApplied').show();
                             $('#spnPromoApplied').text($('#txtPromocode').val());
                             $('#txtPromocode').val('');
                             alert('Promocode applied successfully');
@@ -1169,12 +1221,11 @@
 
         function RemovePromocode() {
             if (confirm('Are you sure?')) {
-                //$('#pHavePromo').show();
-                //$('#pPromoApplied').hide();
+                $('#pHavePromo').show();
+                $('#pPromoApplied').hide();
                 $('#spnPromoApplied').text('');
                 $('#tb_ItemList').find('#remove').show();
-                $('#tb_ItemList').find('#txtQuantity').removeAttr('disabled');
-                $('#tb_ItemList').find('#txtAmount').removeAttr('disabled');
+                $('#tb_ItemList').find('#ddlQuantity').removeAttr('disabled');
                 $('[id$=txtManualDiscount],[id$=ddldiscount]').removeAttr('disabled');
                 $('[id$=txtManualDiscount]').val('0');
                 SetDiscount();
@@ -1182,4 +1233,6 @@
             }
         }
     </script>
+
+
 </asp:Content>
