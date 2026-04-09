@@ -116,6 +116,7 @@ namespace BLL
         public string NetAmount { get; set; }
         public string PaymentMode { get; set; }
         public string TransactionId { get; set; }
+        public int SalesManId { get; set; }
 
         public string DiscountName { get; set; }
         public float DiscountPer { get; set; }
@@ -275,6 +276,38 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@XML", XML);
                     sqlCommand.Parameters.AddWithValue("@AddedBy", UserId);
                     sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
+
+                    return objDAL.GetDataTable(sqlCommand).Rows[0][0].ToString();
+
+                }
+            }
+        }
+
+        public string SaveBillManual()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "Proc_SaveBillManual";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@Title", Title);
+                    sqlCommand.Parameters.AddWithValue("@LName", LName);
+                    sqlCommand.Parameters.AddWithValue("@Email", Email);
+                    sqlCommand.Parameters.AddWithValue("@Name", Name);
+                    sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
+                    sqlCommand.Parameters.AddWithValue("@Gender", Gender);
+                    sqlCommand.Parameters.AddWithValue("@Age", Age);
+                    sqlCommand.Parameters.AddWithValue("@Total", Total);
+                    sqlCommand.Parameters.AddWithValue("@Discount", Discount);
+                    sqlCommand.Parameters.AddWithValue("@Tax", Tax);
+                    sqlCommand.Parameters.AddWithValue("@NetAmount", NetAmount);
+                    sqlCommand.Parameters.AddWithValue("@PaymentMode", PaymentMode);
+                    sqlCommand.Parameters.AddWithValue("@XML", XML);
+                    sqlCommand.Parameters.AddWithValue("@AddedBy", UserId);
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
+                    sqlCommand.Parameters.AddWithValue("@SalesManId", SalesManId);
 
                     return objDAL.GetDataTable(sqlCommand).Rows[0][0].ToString();
 
@@ -1287,6 +1320,24 @@ namespace BLL
                     sqlCommand.CommandType = CommandType.StoredProcedure;
                     sqlCommand.CommandTimeout = 100;
                     sqlCommand.Parameters.AddWithValue("@Barcode", Barcode);
+
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
+
+        public DataTable GetItemDetailByItemName(string ItemName, int OrgId, int CategoryId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "Proc_GetItemDetailByItemName";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@Barcode", ItemName);
+                    sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.Parameters.AddWithValue("@CategoryId", CategoryId);
 
                     return objDAL.GetDataTable(sqlCommand);
                 }
@@ -2769,5 +2820,19 @@ namespace BLL
         public string LoginPassword { get; set; }
         public string ExpectedDemandType { get; set; }
         public bool Consent { get; set; }
+        public DataTable GetEmployeeByOrgId(int OrgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "PROC_GETEMPLOYEEBYORGID";
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    return objDAL.GetDataTable(sqlCommand);
+                }
+            }
+        }
     }
 }

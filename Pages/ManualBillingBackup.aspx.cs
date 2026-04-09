@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,7 @@ using DAL;
 
 namespace WSBillingMaster.Pages
 {
-    public partial class ManualBilling : System.Web.UI.Page
+    public partial class ManualBillingBackup : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,26 +22,6 @@ namespace WSBillingMaster.Pages
             {
                 lblDate.Text = DateTime.Now.ToString("dd-MMM-yyyy");
                 BindDiscount();
-                BindEmployee();
-            }
-        }
-
-        private void BindEmployee()
-        {
-            using (BusinessLogicLayer objBLL = new BusinessLogicLayer())
-            {
-                int OrgId = Convert.ToInt32(Session["OrgId"]);
-                using (DataTable dt = objBLL.GetEmployeeByOrgId(OrgId))
-                {
-                    if (dt.Rows.Count > 0)
-                    {
-                        ddlEmployee.DataSource = dt;
-                        ddlEmployee.DataTextField = "EmployeeName";
-                        ddlEmployee.DataValueField = "EmployeeId";
-                        ddlEmployee.DataBind();
-                    }
-                    ddlEmployee.Items.Insert(0, new ListItem("Select Sales Man", "0"));
-                }
             }
         }
 
@@ -68,56 +48,10 @@ namespace WSBillingMaster.Pages
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string SearchData(string Barcode)
         {
-            int OrgId = Convert.ToInt32(HttpContext.Current.Session["OrgId"]);
-            int CategoryId = 0;
-            string ItemName = Barcode; // As per requirement, user types item name in txtBarcode
-
-            using (DataAccessLayer objDAL = new DataAccessLayer())
-            {
-                // 1. Fetch CategoryId (BusinessId) from tblOrganizationMaster
-                string queryOrg = "SELECT BusinessId FROM tblOrganizationMaster WHERE SellerId = @OrgId";
-                using (SqlCommand cmdOrg = new SqlCommand(queryOrg))
-                {
-                    cmdOrg.Parameters.AddWithValue("@OrgId", OrgId);
-                    DataTable dtOrg = objDAL.GetDataTable(cmdOrg);
-                    if (dtOrg.Rows.Count > 0)
-                    {
-                        CategoryId = Convert.ToInt32(dtOrg.Rows[0]["BusinessId"]);
-                    }
-                }
-
-                // 2. Check if item exists based on (ItemName, CategoryId, OrgId)
-                string queryCheck = "SELECT ItemId FROM tblItem WHERE ItemName = @ItemName AND CategoryId = @CategoryId AND OrgId = @OrgId";
-                using (SqlCommand cmdCheck = new SqlCommand(queryCheck))
-                {
-                    cmdCheck.Parameters.AddWithValue("@ItemName", ItemName);
-                    cmdCheck.Parameters.AddWithValue("@CategoryId", CategoryId);
-                    cmdCheck.Parameters.AddWithValue("@OrgId", OrgId);
-                    DataTable dtItemExists = objDAL.GetDataTable(cmdCheck);
-
-                    if (dtItemExists.Rows.Count == 0)
-                    {
-                        // 3. Create record in tblItem if not unique
-                        string queryInsert = @"INSERT INTO tblItem (ItemName, CategoryId, AddedOn, AddedBy, IsActive, Barcode, OrgId) 
-                                             VALUES (@ItemName, @CategoryId, GETDATE(), @AddedBy, 1, 'NA', @OrgId)";
-                        using (SqlCommand cmdInsert = new SqlCommand(queryInsert))
-                        {
-                            cmdInsert.Parameters.AddWithValue("@ItemName", ItemName);
-                            cmdInsert.Parameters.AddWithValue("@CategoryId", CategoryId);
-                            cmdInsert.Parameters.AddWithValue("@OrgId", OrgId);
-                            cmdInsert.Parameters.AddWithValue("@Barcode", "N/A");
-                            cmdInsert.Parameters.AddWithValue("@AddedBy", HttpContext.Current.Session["UserId"]);
-                            objDAL.ExecuteNonQuery_RetInt(cmdInsert);
-                        }
-                    }
-                }
-            }
-
-            // Finally, call the existing BLL method to ensure the returned data structure is consistent
             using (BusinessLogicLayer objBLL = new BusinessLogicLayer())
             {
                 objBLL.Barcode = Barcode;
-                using (DataTable dt = objBLL.GetItemDetailByItemName(ItemName, OrgId, CategoryId))
+                using (DataTable dt = objBLL.GetItemDetail())
                 {
                     return Newtonsoft.Json.JsonConvert.SerializeObject(dt);
                 }
@@ -126,7 +60,7 @@ namespace WSBillingMaster.Pages
 
         [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string SaveBill(string Title, string LName, string Email, string Mobile, string Name, string Gender, string Age, string GrandTotal, string Discount, string Tax, string NetAmount, string PaymentMode, string PaidAmount, string LtDetail, string SalesManId)
+        public static string SaveBill(string Title, string LName, string Email, string Mobile, string Name, string Gender, string Age, string GrandTotal, string Discount, string Tax, string NetAmount, string PaymentMode, string PaidAmount, string LtDetail)
         {
             using (BusinessLogicLayer objBLL = new BusinessLogicLayer())
             {
@@ -146,8 +80,7 @@ namespace WSBillingMaster.Pages
                     objBLL.PaymentMode = PaymentMode;
                     objBLL.XML = LtDetail;
                     objBLL.UserId = "1";
-                    objBLL.SalesManId = Convert.ToInt32(SalesManId);
-                    string TransactionId = objBLL.SaveBillManual();
+                    string TransactionId = objBLL.SaveBill();
 
                     return TransactionId;
                 }
@@ -160,31 +93,25 @@ namespace WSBillingMaster.Pages
         }
 
 
+
         [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string MarkDueEntry(string TransactionId, string Mobile, string Name, string GrandTotal, string PaidAmount)
         {
-            decimal grandTotal = 0;
-            decimal paidAmount = 0;
-            if (PaidAmount == "")
-                PaidAmount = "0";
-
-            // Handle blank / int / decimal
-            decimal.TryParse(GrandTotal, out grandTotal);
-            decimal.TryParse(PaidAmount, out paidAmount);
-
             if (TransactionId != "")
             {
                 //-------------------Update Paid Amount : 20-02-2020 ------------------
 
-                decimal DueAmount = 0;
-                if (grandTotal > paidAmount)
+                int DueAmount = 0;
+                if (PaidAmount == "")
+                    PaidAmount = "0";
+                if (Convert.ToInt32(GrandTotal) > Convert.ToInt32(PaidAmount))
                 {
-                    DueAmount = grandTotal - paidAmount;
+                    DueAmount = Convert.ToInt32(GrandTotal) - Convert.ToInt32(PaidAmount);
                 }
                 else
                 {
-                    paidAmount = grandTotal;
+                    PaidAmount = GrandTotal;
                 }
                 string CustomerId = "0";
                 StringBuilder sb = new StringBuilder();
@@ -195,7 +122,7 @@ namespace WSBillingMaster.Pages
                     {
                         dbSqlCommand.CommandText = sb.ToString();
                         dbSqlCommand.CommandType = CommandType.Text;
-                        dbSqlCommand.Parameters.AddWithValue("@PaidAmount", paidAmount);
+                        dbSqlCommand.Parameters.AddWithValue("@PaidAmount", PaidAmount);
                         dbSqlCommand.Parameters.AddWithValue("@DueAmount", DueAmount);
                         dbSqlCommand.Parameters.AddWithValue("@TransactionId", TransactionId);
 

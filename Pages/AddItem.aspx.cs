@@ -162,7 +162,7 @@ namespace WSBillingMaster.Pages
                             {
                                 ddlSupplier.SelectedValue = dt.Rows[0]["SupplierId"].ToString();
                                 txtItemName.Text = dt.Rows[0]["ItemName"].ToString();
-                                txtItemDescription.Text = Server.HtmlDecode(dt.Rows[0]["ItemDescription"].ToString());
+                                //txtItemDescription.Text = Server.HtmlDecode(dt.Rows[0]["ItemDescription"].ToString());
                                  
                                 txtAmount.Text = Convert.ToString(dt.Rows[0]["Amount"] == System.DBNull.Value ? 0 : Convert.ToInt32(dt.Rows[0]["Amount"]));
 
@@ -172,15 +172,15 @@ namespace WSBillingMaster.Pages
                                 ddlSubCatgeory.SelectedValue = dt.Rows[0]["SubCategoryId"].ToString();
                                 //ddlColor.SelectedValue = dt.Rows[0]["ColorId"].ToString();
                                 ddlSubSubCategory.SelectedValue = dt.Rows[0]["SubSubCategoryId"].ToString();
-                                if (dt.Rows[0]["IsCoupanAppplicable"].ToString().ToLower() == "true")
-                                    chkIscoupan.Checked = true;
-                                else
-                                    chkIscoupan.Checked = false;
+                                //if (dt.Rows[0]["IsCoupanAppplicable"].ToString().ToLower() == "true")
+                                //    chkIscoupan.Checked = true;
+                                //else
+                                //    chkIscoupan.Checked = false;
 
-                                if (dt.Rows[0]["Active"].ToString().ToLower() == "true")
-                                    chkIsActive.Checked = true;
-                                else
-                                    chkIsActive.Checked = false;
+                                //if (dt.Rows[0]["Active"].ToString().ToLower() == "true")
+                                //    chkIsActive.Checked = true;
+                                //else
+                                    //chkIsActive.Checked = false;
                                 // txtStock.Text = dt.Rows[0]["Stock"].ToString();
                                 txtItemCode.Text = Convert.ToString(dt.Rows[0]["ItemId"] == System.DBNull.Value ? 0 : dt.Rows[0]["ItemId"]);
                                 txtBrand.Text = Convert.ToString(dt.Rows[0]["Brand"] == System.DBNull.Value ? 0 : dt.Rows[0]["Brand"]);
@@ -236,8 +236,8 @@ namespace WSBillingMaster.Pages
                         {
                             if (dt != null && dt.Rows.Count > 0)
                             {
-                                rptAttachment.DataSource = dt;
-                                rptAttachment.DataBind();
+                                //rptAttachment.DataSource = dt;
+                                //rptAttachment.DataBind();
 
                             }
                         }
@@ -280,7 +280,7 @@ namespace WSBillingMaster.Pages
                 }
                 objfp.ItemName = txtItemName.Text;
                 //objfp.Stock = txtStock.Text;
-                objfp.ItemDescription = Server.HtmlEncode(txtItemDescription.Text);
+                //objfp.ItemDescription = Server.HtmlEncode(txtItemDescription.Text);
                 if (hdnSupplier.Value != "")
                     objfp.SupplierId = Convert.ToInt32(hdnSupplier.Value.ToString());
                 if (hdnCategory.Value != "")
@@ -293,15 +293,15 @@ namespace WSBillingMaster.Pages
                 objfp.Amount = Convert.ToInt32(txtAmount.Text.ToString());
                 objfp.MRP = Convert.ToInt32(txtMRP.Text.ToString());
 
-                if (chkIscoupan.Checked)
-                    objfp.IsCoupanAvailable = 1;
-                else
-                    objfp.IsCoupanAvailable = 0;
+                //if (chkIscoupan.Checked)
+                //    objfp.IsCoupanAvailable = 1;
+                //else
+                //    objfp.IsCoupanAvailable = 0;
 
-                if (chkIsActive.Checked)
-                    objfp.Active = 1;
-                else
-                    objfp.Active = 0;
+                //if (chkIsActive.Checked)
+                //    objfp.Active = 1;
+                //else
+                //    objfp.Active = 0;
                 objfp.colorId = Convert.ToInt32(ddlColor.SelectedValue);
 
                 objfp.SizeXml = hdnsize.Value;
@@ -314,7 +314,7 @@ namespace WSBillingMaster.Pages
                 objfp.Department = txtDepartment.Text;
                 objfp.Cashback = txtCashback.Text ?? "0";
                 objfp.Vendor = txtVendor.Text;
-                objfp.COD = ddlCOD.SelectedValue;
+                //objfp.COD = ddlCOD.SelectedValue;
                 objfp.ItemVolume = txtVolume.Text;
                 objfp.ItemWidth = txtWidth.Text;
                 objfp.ItemLength = txtLength.Text;
@@ -326,7 +326,7 @@ namespace WSBillingMaster.Pages
                 //unable to get the stock value
 
                 objfp.ItemPrice = Convert.ToInt32(txtMRP.Text);
-                HttpPostedFile PostedFile = flUpload.PostedFile;
+                HttpPostedFile PostedFile = null;//flUpload.PostedFile;
                 string fileName = Path.GetFileName(PostedFile.FileName);
                 string fileExtension = Path.GetExtension(fileName);
                 int FileSize = PostedFile.ContentLength;

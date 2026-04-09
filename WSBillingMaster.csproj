@@ -347,6 +347,7 @@
     <Content Include="Pages\AdminList.aspx" />
     <Content Include="Pages\AllTransactions.aspx" />
     <Content Include="Pages\AreaMaster.aspx" />
+    <Content Include="Pages\ManualBillingBackup.aspx" />
     <Content Include="Pages\ManualBilling.aspx" />
     <Content Include="Pages\Billing.aspx" />
     <Content Include="Pages\BillReceipt.aspx" />
@@ -792,6 +793,13 @@
     </Compile>
     <Compile Include="Pages\AreaMaster.aspx.designer.cs">
       <DependentUpon>AreaMaster.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ManualBillingBackup.aspx.cs">
+      <DependentUpon>ManualBillingBackup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ManualBillingBackup.aspx.designer.cs">
+      <DependentUpon>ManualBillingBackup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\ManualBilling.aspx.cs">
       <DependentUpon>ManualBilling.aspx</DependentUpon>

@@ -11,7 +11,7 @@ namespace WSBillingMaster.Pages
 {
 
 
-    public partial class ManualBilling
+    public partial class ManualBillingBackup
     {
 
         /// <summary>
@@ -42,13 +42,13 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.DropDownList ddlGender;
 
         /// <summary>
-        /// ddlEmployee control.
+        /// DropDownList1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEmployee;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
 
         /// <summary>
         /// ddldiscount control.
