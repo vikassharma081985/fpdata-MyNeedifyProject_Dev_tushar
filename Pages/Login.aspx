@@ -6,6 +6,7 @@
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
      <style>
          img[src*="Christmas-Hat-PNG-Image.png"]{
@@ -48,10 +49,15 @@
                                     <label for="txtLogin" class="form-label">Login ID</label>
                                     <input name="txtLogin" type="text" id="txtLogin" class="form-control">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="txtPassword" class="form-label">Password</label>
-                                    <input name="txtPassword" type="password" id="txtPassword" class="form-control">
-                                </div>
+                               <div class="mb-3 position-relative">
+    <label for="txtPassword" class="form-label">Password</label>
+
+    <input name="txtPassword" type="password" id="txtPassword" class="form-control pe-5">
+
+    <i class="bi bi-eye-fill position-absolute"
+       id="togglePassword"
+       style="top: 38px; right: 15px; cursor: pointer;"></i>
+</div>
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="chkRemember" name="chkRemember">
                                     <label class="form-check-label" for="chkRemember">Remember me</label>
@@ -119,14 +125,35 @@
 
         <%-- Snowfall Effect --%>
         <link href="../Js/Snowflakes/snowflakes.css" rel="stylesheet" />
-        <script src="../Js/Snowflakes/jquery-latest.min.js"></script>
+<%--        <script src="../Js/Snowflakes/jquery-latest.min.js"></script>--%>
         <script src="../Js/Snowflakes/snowfall.jquery.js"></script>
-        <script>
-            $(document).ready(function () {
-                $(document).snowfall({ deviceorientation: true, round: true, minSize: 1, maxSize: 8, flakeCount: 250 });
-            });
-        </script>
+       <script>
+           $(document).ready(function () {
 
+               // Snowfall
+               $(document).snowfall({
+                   deviceorientation: true,
+                   round: true,
+                   minSize: 1,
+                   maxSize: 8,
+                   flakeCount: 250
+               });
+
+               // Password toggle
+               $('#togglePassword').on('click', function () {
+                   var password = $('#txtPassword');
+
+                   if (password.attr('type') === 'password') {
+                       password.attr('type', 'text');
+                       $(this).removeClass('bi-eye-fill').addClass('bi-eye-slash-fill');
+                   } else {
+                       password.attr('type', 'password');
+                       $(this).removeClass('bi-eye-slash-fill').addClass('bi-eye-fill');
+                   }
+               });
+
+           });
+       </script>
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     </form>
