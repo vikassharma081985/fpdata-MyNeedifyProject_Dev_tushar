@@ -69,6 +69,7 @@
                         </tr>
                           <tr>
                             <td style="text-align:right;width:100px;">
+                                Qty<strong><span id="spnQty"></span></strong>&nbsp;
                                Total Amount :
                             </td>
                             <td style="text-align:left;width:100px;">
@@ -132,6 +133,7 @@
                         $('#spnInvoice').text(data[0].InvoiceNumber);
                         $('#spnBillDate').text(data[0].BillDate);
                         $('#spnTotalAmount').text(data[0].TotalAmount);
+                        $('#spnQty').text(data[0].Quantity);
                         $('#spnTotalDiscount').text(data[0].Discount);
                         $('#spnPaidAmount').text(data[0].PaidAmount);
 

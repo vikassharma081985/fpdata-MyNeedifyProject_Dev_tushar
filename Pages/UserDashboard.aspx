@@ -145,6 +145,13 @@
                 </div>
             </a>
 
+             <a class="Admin" href="ManualBilling.aspx">
+     <div class="col-xs-6 col-sm-4 col-md-3">
+         <span class="glyphicon glyphicon-list-alt logo-small"></span>
+         <h4>Manual Billing</h4>
+     </div>
+ </a>
+
             <a class="Admin" href="ItemImportExport.aspx">
                 <div class="col-xs-6 col-sm-4 col-md-3">
                     <span class="glyphicon glyphicon-plus-sign logo-small"></span>
