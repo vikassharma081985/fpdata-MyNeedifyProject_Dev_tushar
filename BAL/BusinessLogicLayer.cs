@@ -808,12 +808,12 @@ namespace BLL
                     dbSqlCommand.Parameters.AddWithValue("@Cashback", Cashback);
                     dbSqlCommand.Parameters.AddWithValue("@Vendor", Vendor);
                     dbSqlCommand.Parameters.AddWithValue("@COD", COD);
-                    dbSqlCommand.Parameters.AddWithValue("@ItemVolume", ItemVolume);
-                    dbSqlCommand.Parameters.AddWithValue("@ItemWidth", ItemWidth);
-                    dbSqlCommand.Parameters.AddWithValue("@ItemLength", ItemLength);
-                    dbSqlCommand.Parameters.AddWithValue("@ItemHeight", ItemHeight);
-                    dbSqlCommand.Parameters.AddWithValue("@ShippingPrice", ShippingPrice);
-                    dbSqlCommand.Parameters.AddWithValue("@ShippingWeight", ShippingWeight);
+                    dbSqlCommand.Parameters.AddWithValue("@ItemVolume", ItemVolume.Trim() == ""? 0:Convert.ToInt32(ItemVolume));
+                    dbSqlCommand.Parameters.AddWithValue("@ItemWidth", ItemWidth.Trim() == "" ? 0 : Convert.ToInt32(ItemWidth));
+                    dbSqlCommand.Parameters.AddWithValue("@ItemLength", ItemLength.Trim() == "" ? 0 : Convert.ToInt32(ItemLength));
+                    dbSqlCommand.Parameters.AddWithValue("@ItemHeight", ItemHeight.Trim() == "" ? 0 : Convert.ToInt32(ItemHeight));
+                    dbSqlCommand.Parameters.AddWithValue("@ShippingPrice", ShippingPrice.Trim() == "" ? 0 : Convert.ToInt32(ShippingPrice));
+                    dbSqlCommand.Parameters.AddWithValue("@ShippingWeight", ShippingWeight.Trim() == "" ? 0 : Convert.ToInt32(ShippingWeight));
                     dbSqlCommand.Parameters.AddWithValue("@HSNCode", HSNCode);
                     dbSqlCommand.Parameters.AddWithValue("@GST", GST);
                     dbSqlCommand.Parameters.AddWithValue("@SupplierId", SupplierId);
@@ -899,7 +899,33 @@ namespace BLL
                 }
             }
         }
-        public DataSet GetAdminItemEdit(int userid, int role)
+        public DataSet GetAdminItemSearch(int CategoryId, int SubCategoryId, int SubSubCategoryId)
+        {
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDAL = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandText = "GET_ITEMSFORONLINE";
+                    if (CategoryId > 0)
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@CategoryId", CategoryId);
+                    }
+                    if (SubCategoryId > 0)
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@SubCategoryId", SubCategoryId);
+                    }
+                    if (SubSubCategoryId > 0)
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@SubSubCategoryId", SubSubCategoryId);
+                    }
+                    dbSqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.GetDataSet(dbSqlCommand);
+                }
+            }
+        }
+
+        public DataSet GetAdminItemEdit(int userid, int role, int CategoryId, int SubCategoryId, int SubSubCategoryId)
         {
             using (SqlCommand dbSqlCommand = new SqlCommand())
             {
@@ -909,6 +935,19 @@ namespace BLL
                     dbSqlCommand.Parameters.AddWithValue("@ItemId", ItemId);
                     dbSqlCommand.Parameters.AddWithValue("@userid", userid);
                     dbSqlCommand.Parameters.AddWithValue("@role", role);
+                    dbSqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
+                    if (CategoryId != 0)
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@CategoryId", CategoryId);
+                    }
+                    if (SubCategoryId != 0)
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@SubCategoryId", SubCategoryId);
+                    }
+                    if (SubSubCategoryId != 0)
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@SubSubCategoryId", SubSubCategoryId);
+                    }
                     dbSqlCommand.CommandType = CommandType.StoredProcedure;
                     return objDALCIILibrary.GetDataSet(dbSqlCommand);
 
@@ -1198,6 +1237,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@IP", Ip);
                     sqlCommand.Parameters.AddWithValue("@UserId", UserId);
                     sqlCommand.Parameters.AddWithValue("@SellerId", SellerId);
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
                     using (DataSet ds = objDAL.GetDataSet(sqlCommand))
                     {
                         return ds.Tables[0];
