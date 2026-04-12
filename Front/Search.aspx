@@ -245,7 +245,7 @@
                                     <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
                                         <div class="Tile">
                                             <%--<img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"https://myneedify.com//Images/Items/"+Eval("ImageName") %>" />--%>
-                                            <img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"http://198.38.88.185:8082/Images/Items/"+Eval("ImageName") %>" />
+                                            <img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"https://myneedify.com/Images/Items/"+Eval("ImageName") %>" />
                                         </div>
                                     </a>
 
