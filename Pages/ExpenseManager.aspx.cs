@@ -140,10 +140,10 @@ namespace WSBillingMaster.Pages
                     string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
 					int idx = url.IndexOf('?');
 					string query = idx >= 0 ? url.Substring(idx) : "";
-                    obj.FetchUserId = OrgId > 0 ? "0" : Convert.ToString(data[0].userId); // (HttpUtility.ParseQueryString(query).Get("UserId"));
+                    obj.FetchUserId = OrgId > 0 ? Convert.ToString(EmployeeId) : Convert.ToString(data[0].userId); // (HttpUtility.ParseQueryString(query).Get("UserId"));
                     obj.OrgId = OrgId;//Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("OrgId"));
                     obj.EmpId = EmployeeId;// Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("EmpId"));
-                    
+
 
                     int a = obj.SaveExpense();
                     return "1";
