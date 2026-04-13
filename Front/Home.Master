@@ -887,7 +887,7 @@ margin-left: 0px;                    font-size: 13px;
           </span>
 
           <div class="dropdown-menu mt-2 shadow-sm">
-              <a class="dropdown-item" href="Account.aspx">My Account</a>
+              <a class="dropdown-item" href="/Front/MyAccount.aspx">My Account</a>
               <a class="dropdown-item" href="/Front/MyOrders.aspx">My Orders</a>
               <a class="dropdown-item" href="#" id="lnkLogout2" onclick=" return lnkLogout_ClickNew();">Logout</a>
           </div>

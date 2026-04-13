@@ -13,6 +13,7 @@ namespace FaduPrice.Pages
 {
     public partial class MyAccount : System.Web.UI.Page
     {
+        static string userId = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -21,7 +22,8 @@ namespace FaduPrice.Pages
                 if (Session["UserId"] != null)
                 {
                     BindData();
-                    hdnUserId.Value = Session["UserId"].ToString(); 
+                    hdnUserId.Value = Session["UserId"].ToString();
+                    userId = hdnUserId.Value;
                 }
                 else
                 {
@@ -75,7 +77,7 @@ namespace FaduPrice.Pages
         {
             using (BusinessLogicLayer obj = new BusinessLogicLayer())
             {
-                obj.UserId = UserId;
+                obj.UserId = userId;
                 obj.FirstName = FirstName;
                 obj.LastName = LastName;
                 obj.Email = Email;

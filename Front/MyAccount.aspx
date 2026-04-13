@@ -593,14 +593,14 @@ function saveAddress() {
                     dataType: "json",
                     success: function (result) {
                         var IsUpdated = parseInt(result.d);
-                        if (IsUpdated > 0) {
+                        //if (IsUpdated > 0) {
                             alert('Profile Updated Successfully !');
                             $('[id$=lblUserName]').text(FirstName + ' ' + LastName);
                             $('[id$=lblEmail]').text(Email);
-                        }
-                        else {
-                            alert('Some Error Ouccerd !');
-                        }
+                        //}
+                        //else {
+                        //    alert('Some Error Ouccerd !');
+                        //}
 
                     }
                 });
