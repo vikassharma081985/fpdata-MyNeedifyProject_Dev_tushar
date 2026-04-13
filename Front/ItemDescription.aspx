@@ -229,7 +229,7 @@ Edit width, height and placement of the dynamically created image zoom box.
             <div class="mt-3">
                 <asp:Repeater ID="rptItemImages" runat="server">
                     <ItemTemplate>
-                         <img id="subImg" src="<%#"http://198.38.88.185:8082/Images/Items/"+Eval("ImageName") %>" style="width: 65px !important;" onclick="Switch(this)" class="img-responsive img-thumbnail" />
+                         <img id="subImg" src="<%#"https://myneedify.com/Images/Items/"+Eval("ImageName") %>" style="width: 65px !important;" onclick="Switch(this)" class="img-responsive img-thumbnail" />
 
                     </ItemTemplate>
                 </asp:Repeater>
