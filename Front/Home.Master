@@ -340,7 +340,12 @@ font-family: Arial, sans-serif;
         .navbar-expand-lg .navbar-nav .dropdown-menu {
             margin-left: -15px !important;
         }
-
+        .navbar>.container, .navbar>.container-fluid, .navbar>.container-lg, .navbar>.container-md, .navbar>.container-sm, .navbar>.container-xl, .navbar>.container-xxl {
+    display: contents;
+    flex-wrap: inherit;
+    align-items: center;
+    justify-content: space-between;
+}
         .dropdown-header {
             padding: 0 !important;
             color: #000 !important;
@@ -731,6 +736,59 @@ margin-left: 0px;                    font-size: 13px;
         align-items: center;
     }
 }
+
+
+   .location-box {
+       border: 1px solid #ddd;
+       border-radius: 10px;
+       padding: 10px;
+       margin-bottom: 10px;
+       cursor: pointer;
+       background: #fff;
+       transition: 0.3s;
+   }
+
+   .location-box.active {
+       border: 2px solid #007bff;
+       background: #eef5ff;
+   }
+
+   .location-box:hover {
+       background: #f7f7f7;
+   }
+
+   .location-name {
+       font-weight: bold;
+       text-transform: capitalize;
+   }
+
+   .location-address {
+       font-size: 13px;
+       color: #555;
+   }
+
+   .default-tag {
+       font-size: 12px;
+       color: #007bff;
+       margin-top: 5px;
+   }
+
+   .modal-title-custom {
+       font-size: 18px;
+       font-weight: 600;
+   }
+
+   .bottom-links {
+       display: flex;
+       justify-content: space-between;
+       margin-top: 10px;
+       font-size: 14px;
+   }
+
+   .bottom-links a {
+       color: #007bff;
+       text-decoration: none;
+   }
     </style>
     <script>
         function AddToCart(ItemId) {
@@ -816,6 +874,7 @@ margin-left: 0px;                    font-size: 13px;
 
         <div><i class="bi bi-heart"></i>Wishlistt</div>
         <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
+       
 
         <!-- NOTIFICATION -->
 <div class="dropdown">
@@ -856,6 +915,11 @@ margin-left: 0px;                    font-size: 13px;
 
             <div><i class="bi bi-heart"></i>Wishlist</div>
             <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
+
+<div> <a href="#" data-toggle="modal" data-target="#addPass"; style="color: #39f;">
+       <i class="bi bi-geo-alt"></i> 
+Address</a></div>
+
             <!-- NOTIFICATION ICON -->
 <div class="dropdown">
     <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown">
@@ -932,6 +996,10 @@ margin-left: 0px;                    font-size: 13px;
 
                
                 <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
+
+                        <div> <a href="#" class="btn btn-admin btn-sm" data-toggle="modal" data-target="#addPass";>
+       <i class="bi bi-geo-alt"></i> 
+Address</a></div>
                  <div class="btn btn-seller btn-sm" id="NotLoggedIn">
      <button class="btn btn-seller btn-sm" type="button" onclick="OpenLogin()">Login/Signup</button>
  </div>
@@ -1421,7 +1489,67 @@ margin-left: 0px;                    font-size: 13px;
 
 
 
+        <!-------------location modal----------------->
 
+<div class="modal fade" id="addPass" role="dialog" style="top: 10%;">
+  <div class="modal-dialog">
+    <div class="modal-content LoginPanel">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <span class="modal-title-custom">Choose your location</span>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <p style="font-size:13px;color:#666;">
+          Select a delivery location to see product availability and delivery options
+        </p>
+
+        <!-- ADDRESS 1 (Active) -->
+        <div class="location-box active">
+          <div class="location-name">Vikas sharma</div>
+          <div class="location-address">
+            House no. D-7, Plot No. 33M Sai ocean apartment, rajender nagar sector 5,
+            GHAZIABAD UTTAR PRADESH 201005
+          </div>
+          <div class="default-tag">Default address</div>
+        </div>
+
+        <!-- ADDRESS 2 -->
+        <div class="location-box">
+          <div class="location-name">Bal Krishan suvedi</div>
+          <div class="location-address">
+            Old quarters 8/9 Moti Lal Nehru school of sports (Rai),
+            RAI INDUSTRIAL AREA HARYANA 131029
+          </div>
+        </div>
+
+
+        <!-- ADDRESS 3 -->
+        <div class="location-box">
+          <div class="location-name">Kulwansh Sharma</div>
+          <div class="location-address">
+            VPO chhattar Teh Fatehpur district kangra, Rehan
+            HIMACHAL PRADESH 176022
+          </div>
+        </div>
+
+   
+
+        <!-- FOOTER LINKS -->
+        <div class="bottom-links">
+          <a href="#">See all</a>
+          <a href="#">Add an address or pick-up point</a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 
