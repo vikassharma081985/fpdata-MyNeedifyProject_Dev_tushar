@@ -124,17 +124,17 @@
                                             Text='<%# Eval("ProductName") %>' />
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtBrand" runat="server" CssClass="form-control" />
+                                        <asp:TextBox ID="txtBrand" runat="server" Text='<%# Eval("Brand") %>' CssClass="form-control" />
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtModel" runat="server" CssClass="form-control" />
+                                        <asp:TextBox ID="txtModel" runat="server" Text='<%# Eval("Model") %>' CssClass="form-control" />
                                     </td>
                                     <td>
-                                        <asp:TextBox ID="txtDepartment" runat="server" CssClass="form-control" />
+                                        <asp:TextBox ID="txtDepartment" Text='<%# Eval("Department") %>' runat="server" CssClass="form-control" />
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtColor" runat="server" CssClass="form-control"
-                                            Text='<%# Eval("Color") %>' />
+                                            Text='<%# Eval("Color1") %>' />
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtMRP" runat="server" CssClass="form-control"
@@ -192,11 +192,11 @@
                                     </td>
 
                                     <td>
-                                        <asp:TextBox ID="txtBatchNo" runat="server" CssClass="form-control" />
+                                        <asp:TextBox ID="txtBatchNo" Text='<%# Eval("BatchNo") %>' runat="server" CssClass="form-control" />
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtSize" runat="server" CssClass="form-control"
-                                            Text='<%# Eval("Size") %>' />
+                                            Text='<%# Eval("Size1") %>' />
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtStock" runat="server" CssClass="form-control"

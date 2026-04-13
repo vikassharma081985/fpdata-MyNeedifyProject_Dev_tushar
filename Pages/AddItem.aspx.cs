@@ -373,13 +373,14 @@ namespace WSBillingMaster.Pages
                         // Build SizeXml in <data><rows> format
                         string batchNo = ((TextBox)item.FindControl("txtBatchNo")).Text;
                         string size = ((TextBox)item.FindControl("txtSize")).Text;
+                        string color1 = ((TextBox)item.FindControl("txtColor")).Text;
                         string stock = ((TextBox)item.FindControl("txtStock")).Text;
                         
                         string sizeXml = "<data><rows>";
                         sizeXml += "<BatchNo>" + batchNo + "</BatchNo>";
                         // BLL/SP expects bigint for SizeId, if sending text might fail unless handled in SP
-                        sizeXml += "<SizeId>" + (string.IsNullOrWhiteSpace(size) ? "0" : size) + "</SizeId>"; 
-                        sizeXml += "<ColorId>0</ColorId>";
+                        sizeXml += "<SizeId>" + (string.IsNullOrWhiteSpace(size) ? "0" : size) + "</SizeId>";
+                        sizeXml += "<ColorId>" + color1 + "</ColorId>";
                         sizeXml += "<Stock>" + (string.IsNullOrWhiteSpace(stock) ? "0" : stock) + "</Stock>";
                         sizeXml += "</rows></data>";
                         objfp.SizeXml = sizeXml;
