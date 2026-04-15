@@ -10,7 +10,9 @@
 
                     <div class="col-sm-6 col-md-9">
 
-                        <h2>Your <span class="hidden-xs">Wishlist</span></h2>
+                        <a>Your <span class="hidden-xs">Wishlist</span></<a href="file:///d:\my%20needify\front\Wishlist.aspx.designer.cs">file:///d:\my needify\front\Wishlist.aspx.designer.cs</a>
+                            <a href="file:///d:\my%20needify\front\Wishlist.aspx.designer.csfile:///d:\my%20needify\front\Wishlist.aspx.cs">file:///d:\my needify\front\Wishlist.aspx.designer.csfile:///d:\my needify\front\Wishlist.aspx.cs</a>
+                            <a href="file:///d:\my%20needify\front\Wishlist.aspx.designer.csfile:///d:\my%20needify\front\Wishlist.aspx.csfile:///d:\my%20needify\front\Wishlist.aspx">file:///d:\my needify\front\Wishlist.aspx.designer.csfile:///d:\my needify\front\Wishlist.aspx.csfile:///d:\my needify\front\Wishlist.aspx</a>h2>
                     </div>
 
                     <div class="col-sm-12 order-promotion">
@@ -27,12 +29,12 @@
                             <asp:Repeater ID="rptMenCollection" runat="server">
                                 <ItemTemplate>
                                     <div class="col-md-2 col-xs-6 col-sm-3">
-                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" >
                                             <div class="Tile">
                                                 <img class="img-responsive img-thumbnail" src="<%#"../Images/Item/"+Eval("ImageName") %>" />
                                             </div>
                                         </a>
-                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                        <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" >
                                             <span class="ItemName"><%#Eval("ItemName").ToString().Length >50?Eval("ItemName").ToString().Substring(0,50):Eval("ItemName") %></span>
                                         </a>
                                         <div class="ItemPrice">
