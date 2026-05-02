@@ -997,9 +997,14 @@ Address</a></div>
                
                 <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
 
-                        <div> <a href="#" class="btn btn-admin btn-sm" data-toggle="modal" data-target="#addPass";>
+                        <div class="btn btn-admin btn-sm"> <a href="#" class="btn btn-admin btn-sm" data-toggle="modal" data-target="#addPass";>
        <i class="bi bi-geo-alt"></i> 
 Address</a></div>
+
+                 <div id="SellerDashboard" style="display:visible;" class="btn btn-login btn-sm" >
+     <a href="../Pages/UserDashboard.aspx" target="_blank" class="btn btn-login btn-sm">Seller</a>
+ </div>
+
                  <div class="btn btn-seller btn-sm" id="NotLoggedIn">
      <button class="btn btn-seller btn-sm" type="button" onclick="OpenLogin()">Login/Signup</button>
  </div>
