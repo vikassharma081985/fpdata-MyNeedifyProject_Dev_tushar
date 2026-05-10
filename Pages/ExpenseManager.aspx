@@ -1035,7 +1035,7 @@
                     html += '<strong>Amount: </strong>' + value.Amount + '<br>';
                     html += '<strong>Description: </strong>' + value.Description + '<br>';
                     if (value.ExpenseFile) {
-                        html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank">View Bill</a><br>';
+                        html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a><br>';
                     }
                     if (value.Status != "Reimbursement Created") {
                         html += '<button type="button" class="btnn btn-warning btn-sm mt-1" onclick="OpenEditModal(' + value.ID + ')">Edit</button>';
@@ -1394,7 +1394,7 @@
                     html += '<td class="MyHeader" style="width: 200px; white-space: normal; word-wrap: break-word;">' + value.Description + '</td>';
                     html += '<td class="MyHeader">';
                     if (value.ExpenseFile) {
-                        html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" target="_blank">View Bill</a>';
+                        html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a>';
                     }
                     html += '</td>';
                     /*html += '<td class="MyHeader">' + value.EntryDate + '</td>';*/
@@ -1723,7 +1723,7 @@
                 // Show current file link
                 var fileHtml = '';
                 if (expense.ExpenseFile) {
-                    fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" target="_blank" style="color:#007bff;">View Current Bill</a>';
+                    fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" style="color:#007bff;">View Current Bill</a>';
                     fileHtml += '<a href="javascript:void(0);" onclick="removeCurrentFile()" style="color:red; margin-left:10px;">[Remove]</a>';
                 } else {
                     fileHtml = '<span style="color:gray;">No file uploaded</span>';

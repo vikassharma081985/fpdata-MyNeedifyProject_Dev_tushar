@@ -846,9 +846,9 @@
             <span style="font-size: 30px; margin-left: 10px;">
                 <img src="../Images/System/mylogo.png" style="height: 100px;" /></span>
             &emsp;
-            <a href="http://localhost:46692/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>
+            <a href="http://localhost:46692/Pages/Login.aspx"  style="color: blue;">Seller Login</a>
 		<%--<a href="https://myneedify.com/Pages/Login.aspx" target="_blank" style="color: blue;">Seller Login</a>--%>
-		 <a href="../Pages/ExpenseManager.aspx" target="_blank" style="color: blue;">Expense Master</a>
+		 <a href="../Pages/ExpenseManager.aspx"  style="color: blue;">Expense Master</a>
         </div>
         <div style="width: 50%; float: right;">
         </div>
@@ -859,7 +859,7 @@
                 <div style="/*width: 100%; */ float: left;">
                     <div style="/*width: 100%; */ float: left; padding: 10px;">
                         
-                        <div style="width: 40%; float: left;"><a href="../Pages/Login.aspx" target="_blank" style="color: blue;">Admin Login</a></div>
+                        <div style="width: 40%; float: left;"><a href="../Pages/Login.aspx"  style="color: blue;">Admin Login</a></div>
                         <div style="width: 60%; float: left;">
                             <asp:LinkButton ID="lnkLogin" runat="server" Style="color: black; font-weight: 500; margin-left: 0px; margin-top: -5px;"
                                 OnClientClick="return OpenLogin();"> Login/Signup   </asp:LinkButton>
@@ -948,9 +948,9 @@
                                     <ul class="footer-links list-unstyled">
 
                                         <li class="yCmsComponent">
-                                            <a href="http://www.faduprice.in/Pages/Search.aspx?SubSubCategory=54" target="_blank" title="Bottoms">Men</a></li>
+                                            <a href="http://www.faduprice.in/Pages/Search.aspx?SubSubCategory=54"  title="Bottoms">Men</a></li>
                                         <li class="yCmsComponent">
-                                            <a href="http://www.faduprice.in/Pages/Search.aspx?SubSubCategory=45" target="_blank" title="Dresses & Jumpsuits">Women</a></li>
+                                            <a href="http://www.faduprice.in/Pages/Search.aspx?SubSubCategory=45"  title="Dresses & Jumpsuits">Women</a></li>
                                         <li class="yCmsComponent">
                                             <a href="#" title="Accessories">Accessories</a></li>
                                     </ul>
@@ -998,17 +998,17 @@
                                     <div class="FooterHead">Get Social</div>
                                     <ul class="footer-links list-unstyled">
                                         <li class="yCmsComponent">
-                                            <a href="https://www.facebook.com/faduprice/" target="_blank" title="Facebook"><i style="color: #7C519B; font-size: 20px;" class="fa fa-facebook"></i>&nbsp;&nbsp;Facebook</a></li>
+                                            <a href="https://www.facebook.com/faduprice/"  title="Facebook"><i style="color: #7C519B; font-size: 20px;" class="fa fa-facebook"></i>&nbsp;&nbsp;Facebook</a></li>
                                         <li class="yCmsComponent">
-                                            <a href="https://www.instagram.com/faduprice/" target="_blank" title="Instagram"><i style="color: #7C519B; font-size: 20px;" class="fa fa-instagram"></i>&nbsp;&nbsp;Instagram</a></li>
+                                            <a href="https://www.instagram.com/faduprice/"  title="Instagram"><i style="color: #7C519B; font-size: 20px;" class="fa fa-instagram"></i>&nbsp;&nbsp;Instagram</a></li>
                                         <li class="yCmsComponent">
-                                            <a href="https://twitter.com/Faduprice" target="_blank" title="twitter"><i style="color: #7C519B; font-size: 20px;" class="fa fa-twitter"></i>&nbsp;&nbsp;Twitter</a></li>
+                                            <a href="https://twitter.com/Faduprice"  title="twitter"><i style="color: #7C519B; font-size: 20px;" class="fa fa-twitter"></i>&nbsp;&nbsp;Twitter</a></li>
                                         <li class="yCmsComponent">
-                                            <a href="https://in.pinterest.com/faduprice/ " target="_blank" title="Pinterest"><i style="color: #7C519B; font-size: 20px;" class="fa fa-pinterest"></i>&nbsp;&nbsp;Pinterest</a></li>
+                                            <a href="https://in.pinterest.com/faduprice/ " title="Pinterest"><i style="color: #7C519B; font-size: 20px;" class="fa fa-pinterest"></i>&nbsp;&nbsp;Pinterest</a></li>
                                         <li class="yCmsComponent">
-                                            <a href="https://plus.google.com/u/2/110063294915695284909" target="_blank" title="Google Plus"><i style="color: #7C519B; font-size: 20px;" class="fa fa-google"></i>&nbsp;&nbsp;Google Plus</a></li>
+                                            <a href="https://plus.google.com/u/2/110063294915695284909"  title="Google Plus"><i style="color: #7C519B; font-size: 20px;" class="fa fa-google"></i>&nbsp;&nbsp;Google Plus</a></li>
                                         <li class="yCmsComponent">
-                                            <a href="https://www.linkedin.com/company/13440204/" target="_blank" title="LinkedIn"><i style="color: #7C519B; font-size: 20px;" class="fa fa-linkedin"></i>&nbsp;&nbsp;LinkedIn</a></li>
+                                            <a href="https://www.linkedin.com/company/13440204/"  title="LinkedIn"><i style="color: #7C519B; font-size: 20px;" class="fa fa-linkedin"></i>&nbsp;&nbsp;LinkedIn</a></li>
 
 
                                     </ul>

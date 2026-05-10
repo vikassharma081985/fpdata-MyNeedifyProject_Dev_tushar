@@ -933,13 +933,13 @@ Address</a></div>
 </div>
 
             <div class="login-buttons d-flex ms-3 gap-2">
-                <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
+                <a  class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
                 <%--<a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>--%>
                 
                 <%--If LoggedIn user contains OrgId--%>
                 <div id="SellerDashboard" style="display:none;">
-                    <a href="../Pages/UserDashboard.aspx" target="_blank" class="btn btn-seller btn-sm">Seller</a>
+                    <a href="../Pages/UserDashboard.aspx"  class="btn btn-seller btn-sm">Seller</a>
                 </div>
 
                   <!-- LOGGED IN USER -->
@@ -995,7 +995,7 @@ Address</a></div>
             <div class="d-lg-none mt-3 d-flex flex-column gap-2">
 
                
-                <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
+                <a  class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
 
                         <div class="btn btn-admin btn-sm"> <a href="#" class="btn btn-admin btn-sm" data-toggle="modal" data-target="#addPass";>
        <i class="bi bi-geo-alt"></i> 

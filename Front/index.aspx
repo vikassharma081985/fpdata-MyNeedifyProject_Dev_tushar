@@ -268,7 +268,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                                <a href="../Pages/ExpenseManager.aspx" target="_blank" style="color: blue;">
+                                <a href="../Pages/ExpenseManager.aspx"  style="color: blue;">
 
                             <h5 class="fw-bold mb-1">Daily</h5>
                             <p class="small text-muted mb-0">Expenses</p>
@@ -283,7 +283,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                       <a href="../Pages/RegistrationList.aspx" target="_blank" style="color: blue;">
+                       <a href="../Pages/RegistrationList.aspx" style="color: blue;">
                             <h5 class="fw-bold mb-1">Looking For Job?</h5>
                             <p class="small text-muted mb-0">Registration</p>
                         </div>
@@ -297,7 +297,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                       <a href="../Pages/Job.aspx" target="_blank" style="color: blue;">
+                       <a href="../Pages/Job.aspx"  style="color: blue;">
                             <h5 class="fw-bold mb-1">Manpower Required?</h5>
                             <p class="small text-muted mb-0">Search here</p>
                         </div>
@@ -332,7 +332,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                       <a href="../Pages/AddOrganization.aspx" target="_blank" style="color: blue;">
+                       <a href="../Pages/AddOrganization.aspx"  style="color: blue;">
                             <h5 class="fw-bold mb-1">Register as Seller</h5>
                             <p class="small text-muted mb-0">Start selling today</p>
                         </div>
@@ -348,7 +348,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                        <a href="http://198.38.88.185:8082/Front/appointmentmaster.aspx" target="_blank" style="color: blue;">
+                        <a href="http://198.38.88.185:8082/Front/appointmentmaster.aspx"  style="color: blue;">
                             <h5 class="fw-bold mb-1">Salon Appointment</h5>
                             <p class="small text-muted mb-0">Schedule Your Visit</p></a>
                         </div>
@@ -379,7 +379,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                                               <a href="../Front/indexShubh.aspx" target="_blank" style="color: blue;">
+                                               <a href="../Front/indexShubh.aspx"  style="color: blue;">
 
                             <h5 class="fw-bold mb-1">Apparels</h5>
                             <p class="small text-muted mb-0">Search here</p></a>
@@ -493,7 +493,7 @@ style="border-radius: 20px;">
 
     <div class="carousel-inner"> <asp:Repeater ID="rptSlider" runat="server"> <ItemTemplate> 
         <div id="SliderItem" class="item MySliderDiv"> 
-        <a href="https://www.example.com" target="_blank"> 
+        <a href="https://www.example.com" > 
          <img src="../Images/Slider/1_003.jpg" />
             <span><img src="../Images/Slider/1_003.jpg" style="max-width: 50%;height: 270px;" /></span>
         </a> </div>
@@ -770,12 +770,12 @@ style="border-radius: 20px;">
             <asp:Repeater ID="rptElectronics" runat="server">
                 <ItemTemplate>
                     <div class="col-md-2 col-xs-6 col-sm-3">
-                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>' target="_blank">
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
                             <div class="Tile">
                                 <img class="img-responsive img-thumbnail" src='<%# "../Images/Items/" + Eval("ImageName") %>' />
                             </div>
                         </a>
-                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>' target="_blank">
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>' >
                             <span class="ItemName"><%# Eval("ItemName").ToString().Length > 35 ? Eval("ItemName").ToString().Substring(0, 35) + "..." : Eval("ItemName") %></span>
                         </a>
                         <div class="ItemPrice">
