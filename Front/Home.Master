@@ -106,6 +106,8 @@
                                 }
                             });
 
+                            LoadUserAddresses(UserInfo[0].UserId);
+
                             $('#btnModalClose').click();
                             //location.reload();
 
@@ -140,6 +142,139 @@
 
             }
         }
+
+        function LoadUserAddresses(userId) {
+            if (!userId || userId === "0") {
+                $('[id$=divUserAddresses]').html('');
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: appURL + "Front/index.aspx/GetAddressData",
+                data: JSON.stringify({ UserId: userId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (addressData) {
+                    $('[id$=divUserAddresses]').html(addressData.d);
+                }
+            });
+        }
+
+        function OpenAddAddressModal() {
+            var userId = $('[id$=MasterhdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("Please login to add an address.");
+                $('#addPass').modal('hide');
+                OpenLogin();
+                return false;
+            }
+
+            ClearAddAddressForm();
+            $('#addPass').modal('hide');
+            $('#addAddressModal').modal('show');
+            return false;
+        }
+
+        function ClearAddAddressForm() {
+            $('#txtAddrName, #txtAddrMobile, #txtAddrBuilding, #txtAddrLocality, #txtAddrCity, #txtAddrState, #txtAddrPincode').val('').css('border', '1px solid #ccc');
+        }
+
+        function ValidateAddAddressForm() {
+            var isValid = true;
+            var fields = [
+                { id: '#txtAddrName', label: 'Full Name' },
+                { id: '#txtAddrMobile', label: 'Mobile' },
+                { id: '#txtAddrBuilding', label: 'House / Building' },
+                { id: '#txtAddrLocality', label: 'Locality' },
+                { id: '#txtAddrCity', label: 'City' },
+                { id: '#txtAddrState', label: 'State' },
+                { id: '#txtAddrPincode', label: 'Pincode' }
+            ];
+
+            fields.forEach(function (field) {
+                var value = $(field.id).val().trim();
+                if (value === "") {
+                    isValid = false;
+                    $(field.id).css('border', '1px solid red');
+                } else {
+                    $(field.id).css('border', '1px solid #ccc');
+                }
+            });
+
+            if (!isValid) {
+                alert("Please fill all required fields.");
+                return false;
+            }
+
+            var mobile = $('#txtAddrMobile').val().trim();
+            if (!/^\d{10}$/.test(mobile)) {
+                $('#txtAddrMobile').css('border', '1px solid red');
+                alert("Please enter a valid 10-digit mobile number.");
+                return false;
+            }
+
+            var pincode = $('#txtAddrPincode').val().trim();
+            if (!/^\d{6}$/.test(pincode)) {
+                $('#txtAddrPincode').css('border', '1px solid red');
+                alert("Please enter a valid 6-digit pincode.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function SaveNewAddress() {
+            if (!ValidateAddAddressForm()) {
+                return false;
+            }
+
+            var userId = $('[id$=MasterhdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("Please login to add an address.");
+                $('#addAddressModal').modal('hide');
+                OpenLogin();
+                return false;
+            }
+
+            $('#btnSaveAddress').prop('disabled', true).text('Saving...');
+
+            $.ajax({
+                type: "POST",
+                url: appURL + "Front/index.aspx/AddNewAddress",
+                data: JSON.stringify({
+                    UserId: userId,
+                    Name: $('#txtAddrName').val().trim(),
+                    Mobile: $('#txtAddrMobile').val().trim(),
+                    Building: $('#txtAddrBuilding').val().trim(),
+                    Locality: $('#txtAddrLocality').val().trim(),
+                    City: $('#txtAddrCity').val().trim(),
+                    State: $('#txtAddrState').val().trim(),
+                    Pincode: $('#txtAddrPincode').val().trim()
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var contactId = parseInt(result.d, 10);
+                    if (contactId > 0) {
+                        ClearAddAddressForm();
+                        $('#addAddressModal').modal('hide');
+                        LoadUserAddresses(userId);
+                        $('#addPass').modal('show');
+                    } else {
+                        alert("This address already exists.");
+                    }
+                },
+                error: function (response) {
+                    alert("Unable to save address. Please try again.");
+                },
+                complete: function () {
+                    $('#btnSaveAddress').prop('disabled', false).text('Save Address');
+                }
+            });
+
+            return false;
+        }
     </script>
 
     <script>
@@ -164,6 +299,13 @@
                     $(this).toggleClass('open');
                 }
             );
+
+            $('#addPass').on('show.bs.modal', function () {
+                var userId = $('[id$=MasterhdnUserId]').val();
+                if (userId && userId !== "0") {
+                    LoadUserAddresses(userId);
+                }
+            });
         });
 
         $(document).ready(function () {
@@ -788,6 +930,49 @@ margin-left: 0px;                    font-size: 13px;
    .bottom-links a {
        color: #007bff;
        text-decoration: none;
+   }
+
+   .address-form-group {
+       margin-bottom: 10px;
+   }
+
+   .address-form-group label {
+       font-size: 13px;
+       color: #555;
+       margin-bottom: 4px;
+       display: block;
+   }
+
+   .address-form-group input {
+       width: 100%;
+       padding: 8px 10px;
+       border: 1px solid #ccc;
+       border-radius: 6px;
+       font-size: 14px;
+   }
+
+   .address-form-actions {
+       margin-top: 15px;
+       display: flex;
+       gap: 10px;
+   }
+
+   .btn-save-address {
+       background-color: #F6861F;
+       color: #fff;
+       border: none;
+       padding: 8px 16px;
+       border-radius: 6px;
+       flex: 1;
+   }
+
+   .btn-cancel-address {
+       background-color: #fff;
+       color: #555;
+       border: 1px solid #ccc;
+       padding: 8px 16px;
+       border-radius: 6px;
+       flex: 1;
    }
     </style>
     <script>
@@ -1513,41 +1698,12 @@ Address</a></div>
           Select a delivery location to see product availability and delivery options
         </p>
 
-        <!-- ADDRESS 1 (Active) -->
-        <div class="location-box active">
-          <div class="location-name">Vikas sharma</div>
-          <div class="location-address">
-            House no. D-7, Plot No. 33M Sai ocean apartment, rajender nagar sector 5,
-            GHAZIABAD UTTAR PRADESH 201005
-          </div>
-          <div class="default-tag">Default address</div>
-        </div>
-
-        <!-- ADDRESS 2 -->
-        <div class="location-box">
-          <div class="location-name">Bal Krishan suvedi</div>
-          <div class="location-address">
-            Old quarters 8/9 Moti Lal Nehru school of sports (Rai),
-            RAI INDUSTRIAL AREA HARYANA 131029
-          </div>
-        </div>
-
-
-        <!-- ADDRESS 3 -->
-        <div class="location-box">
-          <div class="location-name">Kulwansh Sharma</div>
-          <div class="location-address">
-            VPO chhattar Teh Fatehpur district kangra, Rehan
-            HIMACHAL PRADESH 176022
-          </div>
-        </div>
-
-   
+        <div id="divUserAddresses" runat="server"></div>
 
         <!-- FOOTER LINKS -->
         <div class="bottom-links">
           <a href="#">See all</a>
-          <a href="#">Add an address or pick-up point</a>
+          <a href="#" onclick="return OpenAddAddressModal();">Add an address or pick-up point</a>
         </div>
 
       </div>
@@ -1556,10 +1712,58 @@ Address</a></div>
   </div>
 </div>
 
+        <!-------------add address modal----------------->
 
+<div class="modal fade" id="addAddressModal" role="dialog" style="top: 10%;">
+  <div class="modal-dialog">
+    <div class="modal-content LoginPanel">
 
+      <div class="modal-header">
+        <span class="modal-title-custom">Add an address or pick-up point</span>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
 
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrName">Full Name</label>
+            <input type="text" id="txtAddrName" maxlength="50" placeholder="Full Name" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrMobile">Mobile</label>
+            <input type="text" id="txtAddrMobile" maxlength="10" placeholder="Mobile Number" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrBuilding">House / Building</label>
+            <input type="text" id="txtAddrBuilding" maxlength="50" placeholder="House Number / Building / Apartment" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrLocality">Locality</label>
+            <input type="text" id="txtAddrLocality" maxlength="50" placeholder="Street / Locality / Area" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrCity">City</label>
+            <input type="text" id="txtAddrCity" maxlength="50" placeholder="City" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrState">State</label>
+            <input type="text" id="txtAddrState" maxlength="50" placeholder="State" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrPincode">Pincode</label>
+            <input type="text" id="txtAddrPincode" maxlength="6" placeholder="Pincode" />
+          </div>
+        </div>
 
+        <div class="address-form-actions">
+          <button type="button" class="btn-cancel-address" data-dismiss="modal">Cancel</button>
+          <button type="button" id="btnSaveAddress" class="btn-save-address" onclick="return SaveNewAddress();">Save Address</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
         <!-------------forgot pass modal----------------->
 <div class="modal fade" id="forgotPass" role="dialog" style="top: 10%;">

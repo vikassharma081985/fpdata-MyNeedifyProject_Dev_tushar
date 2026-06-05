@@ -1,14 +1,15 @@
-﻿using BLL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
+using BLL;
 
 namespace FaduPrice.Pages
 {
@@ -29,16 +30,17 @@ namespace FaduPrice.Pages
             {
                 if (Session["UserId"] != null && Session["UserName"] != null)
                 { //Modified by SHubham at late night, dont trust //////////////////////////////////////////////////////
-                   /* MasterhdnUserId.Value = Session["UserId"].ToString();
-                    LoggedinUser.Style["display"] = "";
-                    lnkLogin.Style["display"] = "none";
-                    lblUserName.Style["display"] = "";
-                    lnkLogout.Style["display"] = "";
-                    lblUserName.InnerText = "Hi, " + Session["UserName"].ToString();// +" <span class='caret'></span> "; */
+                    /* MasterhdnUserId.Value = Session["UserId"].ToString();
+                     LoggedinUser.Style["display"] = "";
+                     lnkLogin.Style["display"] = "none";
+                     lblUserName.Style["display"] = "";
+                     lnkLogout.Style["display"] = "";
+                     lblUserName.InnerText = "Hi, " + Session["UserName"].ToString();// +" <span class='caret'></span> "; */
                     //UserName1.Text = "Welcome ,"+ Session["UserName"].ToString();
-                    
+
                     //UserName1.Text = "Welcome ,"+ Session["UserName"].ToString();
                     BindNotifications(Convert.ToInt32(Session["UserId"]));
+                    BindAddress(Convert.ToInt32(Session["UserId"]));
                 }
                 GetMenu();
 
@@ -50,7 +52,7 @@ namespace FaduPrice.Pages
             Session.Abandon();
             Response.Redirect("https://myneedify.com//Front/Index.aspx");
         }
-               
+
         protected void btnSignup_Click(object sender, EventArgs e)
         {
             using (BusinessLogicLayer objFp = new BusinessLogicLayer())
@@ -112,8 +114,65 @@ namespace FaduPrice.Pages
                     }
                 }
             }
-            //if (divNotificationsMobile != null) divNotificationsMobile.InnerHtml = notificationHtml;
-            //if (divNotificationsDesktop != null) divNotificationsDesktop.InnerHtml = notificationHtml;
-        }                
+        }
+
+        public void BindAddress(int userId)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.IntUserId = userId;
+
+                using (DataTable dt = objBll.GetUserAddressV1())
+                {
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        int count = 0;
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string name = Convert.ToString(row["Name"]);
+                            string building = Convert.ToString(row["Building"]);
+                            string locality = Convert.ToString(row["Locality"]);
+                            string city = Convert.ToString(row["City"]);
+                            string state = Convert.ToString(row["State"]);
+                            string pincode = Convert.ToString(row["Pincode"]);
+
+                            string activeClass = count == 0 ? "active" : "";
+
+                            sb.Append($@"
+                    <div class='location-box {activeClass}'>
+                        <div class='location-name'>{name}</div>
+
+                        <div class='location-address'>
+                            {building}, {locality}, {city},
+                            {state} - {pincode}
+                        </div>");
+
+                            if (count == 0)
+                            {
+                                sb.Append("<div class='default-tag'>Default address</div>");
+                            }
+
+                            sb.Append("</div>");
+
+                            count++;
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(@"
+                <div class='text-center' style='padding:20px;'>
+                    No address found
+                </div>");
+                    }
+                }
+            }
+
+            divUserAddresses.InnerHtml = sb.ToString();
+        }
+        //if (divNotificationsMobile != null) divNotificationsMobile.InnerHtml = notificationHtml;
+        //if (divNotificationsDesktop != null) divNotificationsDesktop.InnerHtml = notificationHtml;
     }
 }

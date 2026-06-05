@@ -346,6 +346,7 @@
     <Content Include="Pages\AddSupplier.aspx" />
     <Content Include="Pages\AdminList.aspx" />
     <Content Include="Pages\AllTransactions.aspx" />
+    <Content Include="Pages\AmountSettlement.aspx" />
     <Content Include="Pages\AreaMaster.aspx" />
     <Content Include="Pages\ManualBillingBackup.aspx" />
     <Content Include="Pages\ManualBilling.aspx" />
@@ -786,6 +787,13 @@
     </Compile>
     <Compile Include="Pages\AllTransactions.aspx.designer.cs">
       <DependentUpon>AllTransactions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AmountSettlement.aspx.cs">
+      <DependentUpon>AmountSettlement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\AmountSettlement.aspx.designer.cs">
+      <DependentUpon>AmountSettlement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\AreaMaster.aspx.cs">
       <DependentUpon>AreaMaster.aspx</DependentUpon>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
@@ -251,6 +252,84 @@ namespace FaduPrice.Front
                     }
                     return notificationHtml;
                 }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GetAddressData(string UserId)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.IntUserId = Convert.ToInt32(UserId);
+
+                using (DataTable dt = objBll.GetUserAddressV1())
+                {
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        int count = 0;
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string name = Convert.ToString(row["Name"]);
+                            string building = Convert.ToString(row["Building"]);
+                            string locality = Convert.ToString(row["Locality"]);
+                            string city = Convert.ToString(row["City"]);
+                            string state = Convert.ToString(row["State"]);
+                            string pincode = Convert.ToString(row["Pincode"]);
+
+                            string activeClass = count == 0 ? "active" : "";
+
+                            sb.Append($@"
+                    <div class='location-box {activeClass}'>
+                        <div class='location-name'>{name}</div>
+
+                        <div class='location-address'>
+                            {building}, {locality}, {city},
+                            {state} - {pincode}
+                        </div>");
+
+                            if (count == 0)
+                            {
+                                sb.Append("<div class='default-tag'>Default address</div>");
+                            }
+
+                            sb.Append("</div>");
+
+                            count++;
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(@"
+                <div class='text-center' style='padding:20px;'>
+                    No address found
+                </div>");
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string AddNewAddress(string UserId, string Name, string Mobile, string Building, string Locality, string City, string State, string Pincode)
+        {
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.IntUserId = Convert.ToInt32(UserId);
+                objBll.Name = Name;
+                objBll.Mobile = Mobile;
+                objBll.Building = Building;
+                objBll.Locality = Locality;
+                objBll.City = City;
+                objBll.State = State;
+                objBll.Pincode = Pincode;
+
+                return objBll.AddNewAddress().ToString();
             }
         }
 
