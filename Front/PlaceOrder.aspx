@@ -38,7 +38,7 @@
             margin-top: 15px;
             margin-bottom: 15px;
         }
-
+     
 
         @media (max-width: 768px) {
 
@@ -47,7 +47,7 @@
             }
         }
     </style>
-    <div class="container frm" style="padding-bottom: 25px; margin-bottom:400px;">
+    <div class="container frm" style="padding-bottom:120px; margin-bottom:400px;">
         <div class="col-md-8 col-xs-12">
             <div class="Header">
                 Delivery Address

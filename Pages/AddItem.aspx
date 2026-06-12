@@ -9,6 +9,13 @@
                 body {
                     color: black;
                 }
+                th {
+    text-align: left;
+    min-width: 120px;
+}
+                #imgSellerLogo{
+    margin-top: -20px !important;
+}
             </style>
         </asp:Content>
         <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

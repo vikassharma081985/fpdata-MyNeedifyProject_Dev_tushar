@@ -1498,55 +1498,82 @@ Address</a></div>
       <!-- HEADER -->
       <div class="modal-header">
         <span class="modal-title-custom">Choose your location</span>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" onclick="hideAddressForm()" >&times;</button>
       </div>
-
+         
       <!-- BODY -->
       <div class="modal-body">
 
-        <p style="font-size:13px;color:#666;">
-          Select a delivery location to see product availability and delivery options
-        </p>
+    <p style="font-size:13px;color:#666;">
+        Select a delivery location to see product availability and delivery options
+    </p>
 
-        <!-- ADDRESS 1 (Active) -->
-        <div class="location-box active">
-          <div class="location-name">Vikas sharma</div>
-          <div class="location-address">
-            House no. D-7, Plot No. 33M Sai ocean apartment, rajender nagar sector 5,
-            GHAZIABAD UTTAR PRADESH 201005
-          </div>
-          <div class="default-tag">Default address</div>
+    <!-- ADDRESS 1 -->
+    <div class="location-box active">
+        <div class="location-name">Vikas Sharma</div>
+        <div class="location-address">
+            House no. D-7, Plot No. 33M Sai Ocean Apartment,
+            Rajender Nagar Sector 5, Ghaziabad,
+            Uttar Pradesh 201005
         </div>
+        <div class="default-tag">Default address</div>
+    </div>
 
-        <!-- ADDRESS 2 -->
-        <div class="location-box">
-          <div class="location-name">Bal Krishan suvedi</div>
-          <div class="location-address">
-            Old quarters 8/9 Moti Lal Nehru school of sports (Rai),
-            RAI INDUSTRIAL AREA HARYANA 131029
-          </div>
+    <!-- ADDRESS 2 -->
+    <div class="location-box">
+        <div class="location-name">Bal Krishan Suvedi</div>
+        <div class="location-address">
+            Old Quarters 8/9, Moti Lal Nehru School of Sports (Rai),
+            Rai Industrial Area, Haryana 131029
         </div>
+    </div>
 
-
-        <!-- ADDRESS 3 -->
-        <div class="location-box">
-          <div class="location-name">Kulwansh Sharma</div>
-          <div class="location-address">
-            VPO chhattar Teh Fatehpur district kangra, Rehan
-            HIMACHAL PRADESH 176022
-          </div>
+    <!-- ADDRESS 3 -->
+    <div class="location-box">
+        <div class="location-name">Kulwansh Sharma</div>
+        <div class="location-address">
+            VPO Chhattar, Teh Fatehpur, District Kangra,
+            Rehan, Himachal Pradesh 176022
         </div>
+    </div>
 
-   
+    <!-- Hidden Address Form -->
+    <div id="addressForm" style="display:none; margin-top:20px;">
 
-        <!-- FOOTER LINKS -->
-        <div class="bottom-links">
-          <a href="#">See all</a>
-          <a href="#">Add an address or pick-up point</a>
-        </div>
+        <h5>Add New Address</h5>
 
-      </div>
+        <input type="text" class="form-control mb-2" id="txtName" placeholder="Full Name">
 
+        <input type="text" class="form-control mb-2" id="txtMobile" placeholder="Mobile Number">
+
+        <textarea class="form-control mb-2" id="txtAddress" rows="3" placeholder="Full Address"></textarea>
+
+        <input type="text" class="form-control mb-2" id="txtCity" placeholder="City">
+
+        <input type="text" class="form-control mb-2" id="txtState" placeholder="State">
+
+        <input type="text" class="form-control mb-2" id="txtPincode" placeholder="Pincode">
+
+        <button type="button" class="btn btn-success" onclick="saveAddress()">
+            Save Address
+        </button>
+
+        <button type="button" class="btn btn-secondary" onclick="hideAddressForm()">
+            Cancel
+        </button>
+
+    </div>
+
+    <!-- Footer Links -->
+    <div class="bottom-links mt-3">
+        <a href="#">See all</a>
+
+        <a href="javascript:void(0);" onclick="showAddressForm();">
+            Add an address or pick-up point
+        </a>
+    </div>
+
+</div>
     </div>
   </div>
 </div>
@@ -1668,7 +1695,36 @@ Address</a></div>
     </div>
   </div>
 </div>
+        <script>
+    function showAddressForm() {
+        document.getElementById("addressForm").style.display = "block";
+    }
 
+    function hideAddressForm() {
+        document.getElementById("addressForm").style.display = "none";
+    }
+
+    function saveAddress() {
+
+        var name = document.getElementById("txtName").value;
+        var mobile = document.getElementById("txtMobile").value;
+        var address = document.getElementById("txtAddress").value;
+        var city = document.getElementById("txtCity").value;
+        var state = document.getElementById("txtState").value;
+        var pincode = document.getElementById("txtPincode").value;
+
+        if (name == "" || mobile == "" || address == "") {
+            alert("Please fill all required fields.");
+            return;
+        }
+
+        // Call your AJAX or ASP.NET save method here
+
+        alert("Address saved successfully!");
+
+        document.getElementById("addressForm").style.display = "none";
+    }
+        </script>
 
 <script>
     // Open OTP Modal

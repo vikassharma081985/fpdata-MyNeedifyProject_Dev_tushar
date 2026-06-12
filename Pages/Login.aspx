@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
      <style>
          img[src*="Christmas-Hat-PNG-Image.png"]{
      max-height: 60px !important;
@@ -48,16 +49,32 @@
                                     <label for="txtLogin" class="form-label">Login ID</label>
                                     <input name="txtLogin" type="text" id="txtLogin" class="form-control">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="txtPassword" class="form-label">Password</label>
-                                    <input name="txtPassword" type="password" id="txtPassword" class="form-control">
-                                </div>
+                            <div class="mb-3">
+    <label for="txtPassword" class="form-label">Password</label>
+
+    <div class="input-group">
+        <input
+            type="password"
+            id="txtPassword"
+            name="txtPassword"
+            class="form-control" />
+
+        <span class="input-group-text" id="togglePassword" style="cursor:pointer;">
+            <i class="bi bi-eye-fill"></i>
+        </span>
+    </div>
+</div>
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="checkbox" id="chkRemember" name="chkRemember">
                                     <label class="form-check-label" for="chkRemember">Remember me</label>
                                 </div>
                                 <div class="d-grid mb-3">
-                                    <input type="button" id="btnLogin" value="Login" onclick="Validate();" class="btn btn-warning">
+<%--                                    <input type="button" id="btnLogin" value="Login" onclick="Validate();" class="btn btn-warning">--%>
+                                    <input type="submit"
+       id="btnLogin"
+       value="Login"
+       onclick="Validate(); return false;"
+       class="btn btn-warning" />
                                 </div>
                                 <span id="lblMessage" class="text-danger small d-none">Invalid User Name / Password</span>
                             </div>
@@ -82,6 +99,39 @@
                 </div>
             </div>
         </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var password = document.getElementById("txtPassword");
+        var toggle = document.getElementById("togglePassword");
+        var icon = toggle.querySelector("i");
+
+        toggle.addEventListener("click", function () {
+
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.remove("bi-eye-fill");
+                icon.classList.add("bi-eye-slash-fill");
+            } else {
+                password.type = "password";
+                icon.classList.remove("bi-eye-slash-fill");
+                icon.classList.add("bi-eye-fill");
+            }
+
+        });
+
+    });
+</script>
+
+        <script>
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    Validate();
+                }
+            });
+        </script>
 
         <%-- jQuery --%>
         <script src="../Js/jquery.min.js"></script>
@@ -116,10 +166,21 @@
                 }
             }
         </script>
+        <script>
+            $(function () {
+                $(document).snowfall({
+                    deviceorientation: true,
+                    round: true,
+                    minSize: 1,
+                    maxSize: 8,
+                    flakeCount: 250
+                });
+            });
+</script>
 
         <%-- Snowfall Effect --%>
         <link href="../Js/Snowflakes/snowflakes.css" rel="stylesheet" />
-        <script src="../Js/Snowflakes/jquery-latest.min.js"></script>
+<%--        <script src="../Js/Snowflakes/jquery-latest.min.js"></script>--%>
         <script src="../Js/Snowflakes/snowfall.jquery.js"></script>
         <script>
             $(document).ready(function () {
@@ -132,3 +193,4 @@
     </form>
 </body>
 </html>
+ 

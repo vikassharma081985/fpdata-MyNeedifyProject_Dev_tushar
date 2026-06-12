@@ -48,6 +48,9 @@
                     font-size: 14px;
                     color: #303030;
             }
+            #imgSellerLogo{
+                margin-top: -20px !important;
+            }
         </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
