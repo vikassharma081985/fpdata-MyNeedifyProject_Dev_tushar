@@ -313,6 +313,8 @@ style="border-radius: 20px;">
      style="border-radius: 20px;">
 
                         <div class="text-start">
+                     <a href="../Front/Apparels.aspx" target="_blank" style="color: blue;">
+
                             <h5 class="fw-bold mb-1">Looking for Desi Products?</h5>
                             <p class="small text-muted mb-0"> Here I am</p>
                         </div>

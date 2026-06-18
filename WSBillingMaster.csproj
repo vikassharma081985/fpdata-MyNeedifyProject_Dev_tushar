@@ -242,6 +242,7 @@
     <Content Include="Css\snowflakes.css" />
     <Content Include="Front\AboutUs.aspx" />
     <Content Include="Front\Account.aspx" />
+    <Content Include="Front\Apparels.aspx" />
     <Content Include="Front\AsyncUploadFile.ashx" />
     <Content Include="Front\CheckBrowser.html" />
     <Content Include="Front\Checkout.aspx" />
@@ -599,6 +600,9 @@
     </Compile>
     <Compile Include="Front\Account.aspx.designer.cs">
       <DependentUpon>Account.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Front\Apparels.aspx.cs">
+      <DependentUpon>Apparels.aspx</DependentUpon>
     </Compile>
     <Compile Include="Front\Appointment1.aspx.cs">
       <DependentUpon>Appointment1.aspx</DependentUpon>
@@ -1132,6 +1136,7 @@
     <Content Include=".vs\WSBillingMaster\FileContentIndex\read.lock" />
     <Content Include=".vs\WSBillingMaster\v15\.suo" />
     <Content Include=".vs\WSBillingMaster\v17\.suo" />
+    <Content Include="Front\jsconfig.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\WSBilling.pubxml" />
     <None Include="Web.Debug.config">
