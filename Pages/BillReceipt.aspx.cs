@@ -32,9 +32,9 @@ namespace WSBillingMaster.Pages
                             {
                                 System.IO.Stream oStream = null;
                                 ds.Tables.Add(dtReceipt.Copy());
-                              //  ds.WriteXmlSchema(@"H:\\BillReceipt.xml");
+                                //  ds.WriteXmlSchema(@"H:\\BillReceipt.xml");
                                 ReportDocument obj1 = new ReportDocument();
-                                obj1.Load(Server.MapPath("~/Reports/BillReceipt.rpt"));
+                                obj1.Load(Server.MapPath("~/Reports/BillReceiptRpt.rpt"));
                                 obj1.SetDataSource(ds);
                                 byte[] byteArray = null;
                                 oStream = obj1.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);

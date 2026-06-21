@@ -603,6 +603,7 @@
     </Compile>
     <Compile Include="Front\Apparels.aspx.cs">
       <DependentUpon>Apparels.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Front\Appointment1.aspx.cs">
       <DependentUpon>Appointment1.aspx</DependentUpon>
@@ -1101,13 +1102,10 @@
       <DependentUpon>Registration.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\BillReceiptRpt.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="WSBillingMaster\Properties\AssemblyInfo.cs" />
-    <Compile Include="WSBillingMaster\Reports\BillReceipt.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="WSBillingMaster\Reports\PrintBarcode.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1139,6 +1137,7 @@
     <Content Include="Front\jsconfig.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\WSBilling.pubxml" />
+    <Content Include="Reports\BillReceiptRpt.rpt" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1152,9 +1151,6 @@
     <Content Include="WSBillingMaster\AjaxResponsePages\AsyAttachement_HandlerFile.ashx" />
     <Content Include="WSBillingMaster\AjaxResponsePages\Search.ashx" />
     <None Include="WSBillingMaster\Properties\PublishProfiles\WSBilling.pubxml" />
-    <Content Include="WSBillingMaster\Reports\BillReceipt.rpt" />
-    <Content Include="WSBillingMaster\Reports\BillReceipt_BAK.zip" />
-    <Content Include="WSBillingMaster\Reports\PrintBarcode.rpt" />
     <Content Include="WSBillingMaster\Web.config" />
     <None Include="WSBillingMaster\Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1179,7 +1175,6 @@
     <Folder Include="Images\Items\Temp\" />
     <Folder Include="Images\Slider\Temp\" />
     <Folder Include="obj\" />
-    <Folder Include="Reports\" />
     <Folder Include="Uploads\Expense\" />
     <Folder Include="WSBillingMaster\.vs\WSBillingMaster\v15\Server\" />
     <Folder Include="WSBillingMaster\App_Code\" />

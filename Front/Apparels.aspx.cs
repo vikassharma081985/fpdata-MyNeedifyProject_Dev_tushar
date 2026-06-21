@@ -26,9 +26,9 @@ public partial class Apparels : System.Web.UI.Page
         dt.Rows.Add("3", "Jeans", "jeans.jpg", "1499", "1999");
         dt.Rows.Add("4", "Hoodie", "hoodie.jpg", "1799", "2299");
 
-        rptWomenCollection.DataSource = dt;
-        rptWomenCollection.DataBind();
+        //rptWomenCollection.DataSource = dt;
+        //rptWomenCollection.DataBind();
 
-        divWomenCollNoRecord.Visible = dt.Rows.Count == 0;
+        //divWomenCollNoRecord.Visible = dt.Rows.Count == 0;
     }
 }
