@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
 
 <!DOCTYPE html>
 
@@ -161,6 +161,45 @@
             });
         }
 
+        function LoadAddrStateDropdown(callback) {
+
+            var ddlState = $("#ddlAddrState");
+
+            $.ajax({
+                type: "POST",
+                url: appURL + "Front/index.aspx/GetStateMaster",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (r) {
+
+                    console.log(r);
+
+                    ddlState.empty();
+                    ddlState.append('<option value="0">Please select state</option>');
+
+                    $.each(r.d, function (i, item) {
+                        ddlState.append(
+                            $("<option>")
+                                .val(item.Value)
+                                .text(item.Text)
+                        );
+                    });
+
+                    if (typeof callback === "function")
+                        callback();
+                },
+
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
         function OpenAddAddressModal() {
             var userId = $('[id$=MasterhdnUserId]').val();
             if (!userId || userId === "0") {
@@ -171,30 +210,188 @@
             }
 
             ClearAddAddressForm();
-            $('#addPass').modal('hide');
+            LoadAddrStateDropdown();
             $('#addAddressModal').modal('show');
             return false;
         }
 
         function ClearAddAddressForm() {
-            $('#txtAddrName, #txtAddrMobile, #txtAddrBuilding, #txtAddrLocality, #txtAddrCity, #txtAddrState, #txtAddrPincode').val('').css('border', '1px solid #ccc');
+            $('#hdnAddrContactId').val('0');
+            $('#txtAddrName, #txtAddrMobile, #txtAddrBuilding, #txtAddrPincode').val('').css('border', '1px solid #ccc');
+            $('#ddlAddrState').val('0').css('border', '1px solid #ccc');
+            $('#ddlAddrCity').empty().append('<option selected="selected" value="0">Please select city</option>').css('border', '1px solid #ccc');
+            $('#ddlAddrLocality').empty().append('<option selected="selected" value="0">Please select locality</option>').css('border', '1px solid #ccc');
+            $('#addrModalTitle').text('Add an address or pick-up point');
+            $('#btnSaveAddress').text('Save Address');
+        }
+
+        function OpenEditAddressModal(elem) {
+            var userId = $('[id$=MasterhdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("Please login to edit an address.");
+                $('#addPass').modal('hide');
+                OpenLogin();
+                return false;
+            }
+
+            var $elem = $(elem);
+            $('#hdnAddrContactId').val($elem.attr('data-id'));
+            $('#txtAddrName').val($elem.attr('data-name'));
+            $('#txtAddrMobile').val($elem.attr('data-mobile'));
+            $('#txtAddrBuilding').val($elem.attr('data-building'));
+            $('#txtAddrPincode').val($elem.attr('data-pincode'));
+
+            // Store edit values to set after dropdowns load
+            var editLocality = $elem.attr('data-locality') || '';
+            var editCity = $elem.attr('data-city') || '';
+            var editState = $elem.attr('data-state') || '';
+
+            $('#txtAddrName, #txtAddrMobile, #txtAddrBuilding, #txtAddrPincode').css('border', '1px solid #ccc');
+            $('#ddlAddrState, #ddlAddrCity, #ddlAddrLocality').css('border', '1px solid #ccc');
+
+            // Load states first, then cascade to match saved values
+            LoadAddrStateDropdown(function () {
+                // Try to match state by text
+                var stateMatched = false;
+                $('#ddlAddrState option').each(function () {
+                    if ($(this).text().trim().toLowerCase() === editState.trim().toLowerCase()) {
+                        $('#ddlAddrState').val($(this).val());
+                        stateMatched = true;
+                        return false;
+                    }
+                });
+
+                if (stateMatched && $('#ddlAddrState').val() !== '0') {
+                    // Load cities for the selected state, then match city
+                    $.ajax({
+                        type: "POST",
+                        url: appURL + "Front/index.aspx/GetCityMasterByStateID",
+                        data: JSON.stringify({ stateID: parseInt($('#ddlAddrState').val()) }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            var ddlCity = $('#ddlAddrCity');
+                            ddlCity.empty().append('<option selected="selected" value="0">Please select city</option>');
+                            $.each(r.d, function () {
+                                ddlCity.append($('<option></option>').val(this['Value']).html(this['Text']));
+                            });
+                            // Match city by text
+                            ddlCity.find('option').each(function () {
+                                if ($(this).text().trim().toLowerCase() === editCity.trim().toLowerCase()) {
+                                    ddlCity.val($(this).val());
+                                    return false;
+                                }
+                            });
+                            // If city matched, load localities
+                            if (ddlCity.val() !== '0') {
+                                $.ajax({
+                                    type: "POST",
+                                    url: appURL + "Front/index.aspx/GetAreaMasterByCityID",
+                                    data: JSON.stringify({ CityID: parseInt(ddlCity.val()) }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (r2) {
+                                        var ddlLoc = $('#ddlAddrLocality');
+                                        ddlLoc.empty().append('<option selected="selected" value="0">Please select locality</option>');
+                                        $.each(r2.d, function () {
+                                            ddlLoc.append($('<option></option>').val(this['Value']).html(this['Text']));
+                                        });
+                                        // Match locality by text
+                                        ddlLoc.find('option').each(function () {
+                                            if ($(this).text().trim().toLowerCase() === editLocality.trim().toLowerCase()) {
+                                                ddlLoc.val($(this).val());
+                                                return false;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#addrModalTitle').text('Edit Address');
+            $('#btnSaveAddress').text('Update Address');
+
+            $('#addAddressModal').modal('show');
+            return false;
+        }
+
+        function resetModalElement(selector) {
+            var $modal = $(selector);
+            $modal.removeClass('in show').css('display', 'none').attr('aria-hidden', 'true');
+            var modalData = $modal.data('bs.modal');
+            if (modalData) {
+                modalData.isShown = false;
+                modalData.$backdrop = null;
+            }
+        }
+
+        function cleanupModalBackdrops(forceAll) {
+            if (forceAll) {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open').css({ overflow: '', paddingRight: '' });
+                return;
+            }
+
+            var openModalCount = $('.modal.in, .modal.show').filter(function () {
+                return $(this).css('display') === 'block';
+            }).length;
+            var $backdrops = $('.modal-backdrop');
+
+            if (openModalCount === 0) {
+                $backdrops.remove();
+                $('body').removeClass('modal-open').css({ overflow: '', paddingRight: '' });
+            } else if ($backdrops.length > openModalCount) {
+                $backdrops.slice(0, $backdrops.length - openModalCount).remove();
+            }
+        }
+
+        function closeAddressModalAndShowLocation(userId) {
+            resetModalElement('#addAddressModal');
+            resetModalElement('#addPass');
+            cleanupModalBackdrops(true);
+
+            if (userId && userId !== "0") {
+                LoadUserAddresses(userId);
+            }
+
+            setTimeout(function () {
+                cleanupModalBackdrops(true);
+                $('#addPass').modal('show');
+            }, 50);
         }
 
         function ValidateAddAddressForm() {
             var isValid = true;
-            var fields = [
+            var textFields = [
                 { id: '#txtAddrName', label: 'Full Name' },
                 { id: '#txtAddrMobile', label: 'Mobile' },
                 { id: '#txtAddrBuilding', label: 'House / Building' },
-                { id: '#txtAddrLocality', label: 'Locality' },
-                { id: '#txtAddrCity', label: 'City' },
-                { id: '#txtAddrState', label: 'State' },
                 { id: '#txtAddrPincode', label: 'Pincode' }
             ];
 
-            fields.forEach(function (field) {
+            textFields.forEach(function (field) {
                 var value = $(field.id).val().trim();
                 if (value === "") {
+                    isValid = false;
+                    $(field.id).css('border', '1px solid red');
+                } else {
+                    $(field.id).css('border', '1px solid #ccc');
+                }
+            });
+
+            // Validate dropdowns
+            var ddlFields = [
+                { id: '#ddlAddrState', label: 'State' },
+                { id: '#ddlAddrCity', label: 'City' },
+                { id: '#ddlAddrLocality', label: 'Locality' }
+            ];
+
+            ddlFields.forEach(function (field) {
+                var value = $(field.id).val();
+                if (!value || value === "0") {
                     isValid = false;
                     $(field.id).css('border', '1px solid red');
                 } else {
@@ -231,45 +428,55 @@
 
             var userId = $('[id$=MasterhdnUserId]').val();
             if (!userId || userId === "0") {
-                alert("Please login to add an address.");
+                alert("Please login to save address.");
+                $('#addAddressModal').data('skipReturn', true);
                 $('#addAddressModal').modal('hide');
+                $('#addPass').modal('hide');
+                cleanupModalBackdrops();
                 OpenLogin();
                 return false;
             }
 
-            $('#btnSaveAddress').prop('disabled', true).text('Saving...');
+            var contactId = $('#hdnAddrContactId').val();
+            var isEdit = (contactId && contactId !== "0");
+
+            var url = appURL + "Front/index.aspx/" + (isEdit ? "UpdateAddress" : "AddNewAddress");
+            var postData = {
+                UserId: userId,
+                Name: $('#txtAddrName').val().trim(),
+                Mobile: $('#txtAddrMobile').val().trim(),
+                Building: $('#txtAddrBuilding').val().trim(),
+                Locality: $('#ddlAddrLocality option:selected').text(),
+                City: $('#ddlAddrCity option:selected').text(),
+                State: $('#ddlAddrState option:selected').text(),
+                Pincode: $('#txtAddrPincode').val().trim()
+            };
+            if (isEdit) {
+                postData.ContactId = contactId;
+            }
+
+            $('#btnSaveAddress').prop('disabled', true).text(isEdit ? 'Updating...' : 'Saving...');
 
             $.ajax({
                 type: "POST",
-                url: appURL + "Front/index.aspx/AddNewAddress",
-                data: JSON.stringify({
-                    UserId: userId,
-                    Name: $('#txtAddrName').val().trim(),
-                    Mobile: $('#txtAddrMobile').val().trim(),
-                    Building: $('#txtAddrBuilding').val().trim(),
-                    Locality: $('#txtAddrLocality').val().trim(),
-                    City: $('#txtAddrCity').val().trim(),
-                    State: $('#txtAddrState').val().trim(),
-                    Pincode: $('#txtAddrPincode').val().trim()
-                }),
+                url: url,
+                data: JSON.stringify(postData),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                    var contactId = parseInt(result.d, 10);
-                    if (contactId > 0) {
+                    var responseVal = parseInt(result.d, 10);
+                    if (responseVal > 0) {
                         ClearAddAddressForm();
-                        $('#addAddressModal').modal('hide');
-                        LoadUserAddresses(userId);
-                        $('#addPass').modal('show');
+                        closeAddressModalAndShowLocation(userId);
                     } else {
-                        alert("This address already exists.");
+                        alert(isEdit ? "Unable to update address. It may already exist." : "This address already exists.");
                     }
                 },
                 error: function (response) {
                     alert("Unable to save address. Please try again.");
                 },
                 complete: function () {
-                    $('#btnSaveAddress').prop('disabled', false).text('Save Address');
+                    $('#btnSaveAddress').prop('disabled', false).text(isEdit ? 'Update Address' : 'Save Address');
                 }
             });
 
@@ -304,6 +511,87 @@
                 var userId = $('[id$=MasterhdnUserId]').val();
                 if (userId && userId !== "0") {
                     LoadUserAddresses(userId);
+                }
+            });
+
+            $('#addAddressModal').on('hidden.bs.modal', function () {
+                if ($('#addAddressModal').data('skipReturn')) {
+                    $('#addAddressModal').removeData('skipReturn');
+                    cleanupModalBackdrops(true);
+                    return;
+                }
+
+                setTimeout(function () {
+                    cleanupModalBackdrops(false);
+                    var userId = $('[id$=MasterhdnUserId]').val();
+                    if (userId && userId !== "0") {
+                        LoadUserAddresses(userId);
+                    }
+                }, 150);
+            });
+
+            $('#addPass').on('hidden.bs.modal', function () {
+                cleanupModalBackdrops(true);
+            });
+
+            // Delegate change events for dynamically created dropdown options
+            // (using document-level delegation since dropdowns are inside a modal)
+
+            // State change → load cities
+            $('#ddlAddrState').change(function () {
+                var stateID = $(this).val();
+                var ddlCity = $('#ddlAddrCity');
+                var ddlLocality = $('#ddlAddrLocality');
+                ddlCity.empty().append('<option selected="selected" value="0">Please select city</option>');
+                ddlLocality.empty().append('<option selected="selected" value="0">Please select locality</option>');
+                $('#txtAddrPincode').val('');
+
+                if (stateID && stateID !== "0") {
+                    $.ajax({
+                        type: "POST",
+                        url: appURL + "Front/index.aspx/GetCityMasterByStateID",
+                        data: JSON.stringify({ stateID: parseInt(stateID) }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            $.each(r.d, function () {
+                                ddlCity.append($('<option></option>').val(this['Value']).html(this['Text']));
+                            });
+                        }
+                    });
+                }
+            });
+
+            // City change → load localities/areas
+            $('#ddlAddrCity').change(function () {
+                var cityID = $(this).val();
+                var ddlLocality = $('#ddlAddrLocality');
+                ddlLocality.empty().append('<option selected="selected" value="0">Please select locality</option>');
+                $('#txtAddrPincode').val('');
+
+                if (cityID && cityID !== "0") {
+                    $.ajax({
+                        type: "POST",
+                        url: appURL + "Front/index.aspx/GetAreaMasterByCityID",
+                        data: JSON.stringify({ CityID: parseInt(cityID) }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            $.each(r.d, function () {
+                                ddlLocality.append($('<option></option>').val(this['Value']).html(this['Text']));
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Locality change → auto-fill pincode
+            $('#ddlAddrLocality').change(function () {
+                var pincode = $(this).val();
+                if (pincode && pincode !== "0") {
+                    $('#txtAddrPincode').val(pincode);
+                } else {
+                    $('#txtAddrPincode').val('');
                 }
             });
         });
@@ -362,7 +650,6 @@
         });
         //var j = jQuery.noConflict();
         function OpenLogin() {
-            debugger;
             closeNav();
             //j('#myModal').modal('show');
             jQuery.noConflict();
@@ -879,6 +1166,14 @@ margin-left: 0px;                    font-size: 13px;
     }
 }
 
+
+   #addAddressModal {
+       z-index: 1060;
+   }
+
+   #addAddressModal .modal-dialog {
+       z-index: 1061;
+   }
 
    .location-box {
        border: 1px solid #ddd;
@@ -1714,16 +2009,17 @@ Address</a></div>
 
         <!-------------add address modal----------------->
 
-<div class="modal fade" id="addAddressModal" role="dialog" style="top: 10%;">
+<div class="modal fade" id="addAddressModal" role="dialog" style="top: 10%;" data-backdrop="false">
   <div class="modal-dialog">
     <div class="modal-content LoginPanel">
 
       <div class="modal-header">
-        <span class="modal-title-custom">Add an address or pick-up point</span>
+        <span class="modal-title-custom" id="addrModalTitle">Add an address or pick-up point</span>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <div class="modal-body">
+        <input type="hidden" id="hdnAddrContactId" value="0" />
         <div class="row">
           <div class="col-md-6 address-form-group">
             <label for="txtAddrName">Full Name</label>
@@ -1738,20 +2034,26 @@ Address</a></div>
             <input type="text" id="txtAddrBuilding" maxlength="50" placeholder="House Number / Building / Apartment" />
           </div>
           <div class="col-md-6 address-form-group">
-            <label for="txtAddrLocality">Locality</label>
-            <input type="text" id="txtAddrLocality" maxlength="50" placeholder="Street / Locality / Area" />
+            <label for="ddlAddrState">State</label>
+            <select id="ddlAddrState" class="form-control">
+              <option selected="selected" value="0">Please select state</option>
+            </select>
           </div>
           <div class="col-md-6 address-form-group">
-            <label for="txtAddrCity">City</label>
-            <input type="text" id="txtAddrCity" maxlength="50" placeholder="City" />
+            <label for="ddlAddrCity">City</label>
+            <select id="ddlAddrCity" class="form-control">
+              <option selected="selected" value="0">Please select city</option>
+            </select>
           </div>
           <div class="col-md-6 address-form-group">
-            <label for="txtAddrState">State</label>
-            <input type="text" id="txtAddrState" maxlength="50" placeholder="State" />
+            <label for="ddlAddrLocality">Locality / Area</label>
+            <select id="ddlAddrLocality" class="form-control">
+              <option selected="selected" value="0">Please select locality</option>
+            </select>
           </div>
           <div class="col-md-6 address-form-group">
             <label for="txtAddrPincode">Pincode</label>
-            <input type="text" id="txtAddrPincode" maxlength="6" placeholder="Pincode" />
+            <input type="text" id="txtAddrPincode" maxlength="6" placeholder="Pincode" readonly="readonly" style="background-color:#f5f5f5;" />
           </div>
         </div>
 
@@ -2287,6 +2589,5 @@ function sendOtp() {
             }
         </style>
     </form>
-    <script src="../Js/bootstrap.min.js"></script>
 </body>
 </html>

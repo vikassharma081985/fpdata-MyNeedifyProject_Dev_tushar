@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -132,6 +132,8 @@ namespace FaduPrice.Pages
 
                         foreach (DataRow row in dt.Rows)
                         {
+                            string contactId = Convert.ToString(row["ContactId"]);
+                            string mobile = Convert.ToString(row["Mobile"]);
                             string name = Convert.ToString(row["Name"]);
                             string building = Convert.ToString(row["Building"]);
                             string locality = Convert.ToString(row["Locality"]);
@@ -143,7 +145,21 @@ namespace FaduPrice.Pages
 
                             sb.Append($@"
                     <div class='location-box {activeClass}'>
-                        <div class='location-name'>{name}</div>
+                        <div style='display: flex; justify-content: space-between; align-items: center;'>
+                            <div class='location-name'>{name}</div>
+                            <a href='#' class='edit-address-link' style='color: #7C519B; font-weight: bold; font-size: 12px;'
+                               data-id='{contactId}'
+                               data-name='{System.Web.HttpUtility.HtmlAttributeEncode(name)}'
+                               data-mobile='{System.Web.HttpUtility.HtmlAttributeEncode(mobile)}'
+                               data-building='{System.Web.HttpUtility.HtmlAttributeEncode(building)}'
+                               data-locality='{System.Web.HttpUtility.HtmlAttributeEncode(locality)}'
+                               data-city='{System.Web.HttpUtility.HtmlAttributeEncode(city)}'
+                               data-state='{System.Web.HttpUtility.HtmlAttributeEncode(state)}'
+                               data-pincode='{System.Web.HttpUtility.HtmlAttributeEncode(pincode)}'
+                               onclick='event.stopPropagation(); OpenEditAddressModal(this); return false;'>
+                                <i class='fa fa-edit'></i> Edit
+                            </a>
+                        </div>
 
                         <div class='location-address'>
                             {building}, {locality}, {city},

@@ -724,6 +724,29 @@ namespace BLL
             return 0;
         }
 
+        public int UpdateAddress()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "UPDATE tblUserContactDetails SET Name = @Name, Mobile = @Mobile, Building = @Building, Locality = @Locality, City = @City, State = @State, Pincode = @Pincode WHERE ContactId = @ContactId AND UserId = @UserId";
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@Name", Name);
+                    sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
+                    sqlCommand.Parameters.AddWithValue("@Building", Building);
+                    sqlCommand.Parameters.AddWithValue("@Locality", Locality);
+                    sqlCommand.Parameters.AddWithValue("@City", City);
+                    sqlCommand.Parameters.AddWithValue("@State", State);
+                    sqlCommand.Parameters.AddWithValue("@Pincode", Pincode);
+                    sqlCommand.Parameters.AddWithValue("@ContactId", ContactId);
+                    sqlCommand.Parameters.AddWithValue("@UserId", IntUserId);
+                    return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                }
+            }
+        }
+
 
 
         public DataSet BindMyOrders()
