@@ -19,112 +19,159 @@ public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
         string PerPath = null;
         string ItemId = context.Request["ItemId"];
 
-        if (context.Request.Files.Count > 0)
+        try
         {
-            HttpFileCollection files = context.Request.Files;
-            HttpPostedFile file = files[0];
-            imgName = file.FileName.Replace("^", "");
-
-            if (imgName.Contains("\\"))
+            if (context.Request.Files.Count > 0)
             {
-                string[] arr = imgName.Split('\\');
-                imgName = arr[arr.Length - 1];
-            }
+                HttpFileCollection files = context.Request.Files;
+                HttpPostedFile file = files[0];
+                imgName = (file.FileName ?? "").Replace("^", "");
 
-            if (callFor == "Items")
-            {
-                Path = context.Request.PhysicalApplicationPath + "Images/Items/" + ItemId + "_" + imgName;
-                PerPath = Path;
-                if (System.IO.File.Exists(Path))
-                    System.IO.File.Delete(Path);
-                Path = PerPath;
-                using (BusinessLogicLayer objBLL = new BusinessLogicLayer())
+                if (imgName.Contains("\\"))
                 {
-                    objBLL.ItemId = Convert.ToInt32(ItemId);
-                    objBLL.ImageName = ItemId + "_" + imgName;
-                    objBLL.UpdateItemImage();
+                    string[] arr = imgName.Split('\\');
+                    imgName = arr[arr.Length - 1];
                 }
-            }
-            if (callFor == "MoudLetter")
-            {
-                Path = context.Request.PhysicalApplicationPath + "Images/Items/Temp/" + context.Session.SessionID + "_" + imgName;
-                PerPath = Path;
-                if (System.IO.File.Exists(Path))
-                    System.IO.File.Delete(Path);
-                Path = PerPath;
-            }
-            if (callFor == "banner")
-            {
-                Path = context.Request.PhysicalApplicationPath + "Images/Slider/Temp/" + context.Session.SessionID + "_" + imgName;
-                PerPath = Path;
-                if (System.IO.File.Exists(Path))
-                    System.IO.File.Delete(Path);
-                Path = PerPath;
-            }
-            //if (callFor == "Expense")
-            //{
-            //    string ext = System.IO.Path.GetExtension(imgName);
-            //    string uniqueName = System.DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_" + Guid.NewGuid().ToString("N") + ext;
-            //    imgName = uniqueName;
-            //    Path = context.Request.PhysicalApplicationPath + "Uploads/Expense/" + imgName;
-            //    PerPath = Path;
-            //    if (System.IO.File.Exists(Path))
-            //        System.IO.File.Delete(Path);
-            //    Path = PerPath;
 
-            //}
-
-            if (callFor == "Expense")
-            {
-                string uploadDir = context.Request.PhysicalApplicationPath + "Uploads/Expense/";
-                if (!Directory.Exists(uploadDir))
-                    Directory.CreateDirectory(uploadDir);
-
-                string ext = System.IO.Path.GetExtension(imgName).ToLower();
-                string uniqueName = GetUniqueName(ext);
-                string savedPath = System.IO.Path.Combine(uploadDir, uniqueName);
-                if (System.IO.File.Exists(savedPath))
-                    System.IO.File.Delete(savedPath);
-                file.SaveAs(savedPath);
-
-                // PDF → IMAGE
-                if (ext == ".pdf")
+                if (callFor == "Items")
                 {
-                    string imageName = ConvertPdfToImage(savedPath, uploadDir);
-                    string imagePath = System.IO.Path.Combine(uploadDir, imageName);
+                    Path = context.Request.PhysicalApplicationPath + "Images/Items/" + ItemId + "_" + imgName;
+                    PerPath = Path;
+                    if (System.IO.File.Exists(Path))
+                        System.IO.File.Delete(Path);
+                    Path = PerPath;
+                    using (BusinessLogicLayer objBLL = new BusinessLogicLayer())
+                    {
+                        objBLL.ItemId = Convert.ToInt32(ItemId);
+                        objBLL.ImageName = ItemId + "_" + imgName;
+                        objBLL.UpdateItemImage();
+                    }
+                }
+                if (callFor == "MoudLetter")
+                {
+                    Path = context.Request.PhysicalApplicationPath + "Images/Items/Temp/" + context.Session.SessionID + "_" + imgName;
+                    PerPath = Path;
+                    if (System.IO.File.Exists(Path))
+                        System.IO.File.Delete(Path);
+                    Path = PerPath;
+                }
+                if (callFor == "banner")
+                {
+                    Path = context.Request.PhysicalApplicationPath + "Images/Slider/Temp/" + context.Session.SessionID + "_" + imgName;
+                    PerPath = Path;
+                    if (System.IO.File.Exists(Path))
+                        System.IO.File.Delete(Path);
+                    Path = PerPath;
+                }
+                //if (callFor == "Expense")
+                //{
+                //    string ext = System.IO.Path.GetExtension(imgName);
+                //    string uniqueName = System.DateTime.Now.ToString("yyyyMMddHHmmssfff") + "_" + Guid.NewGuid().ToString("N") + ext;
+                //    imgName = uniqueName;
+                //    Path = context.Request.PhysicalApplicationPath + "Uploads/Expense/" + imgName;
+                //    PerPath = Path;
+                //    if (System.IO.File.Exists(Path))
+                //        System.IO.File.Delete(Path);
+                //    Path = PerPath;
 
-                    // delete pdf
+                //}
+
+                if (callFor == "Expense")
+                {
+                    string uploadDir = context.Request.PhysicalApplicationPath + "Uploads/Expense/";
+                    if (!Directory.Exists(uploadDir))
+                        Directory.CreateDirectory(uploadDir);
+
+                    string ext = System.IO.Path.GetExtension(imgName).ToLower();
+                    if (string.IsNullOrEmpty(ext))
+                        ext = GetExtensionFromContentType(file.ContentType);
+
+                    if (string.IsNullOrEmpty(ext))
+                    {
+                        context.Response.StatusCode = 400;
+                        context.Response.ContentType = "text/plain";
+                        context.Response.Write("Upload failed: selected file does not have an extension and the browser did not send a supported content type. File name received: " + imgName + "; Content type received: " + (file.ContentType ?? ""));
+                        return;
+                    }
+
+                    string uniqueName = GetUniqueName(ext);
+                    string savedPath = System.IO.Path.Combine(uploadDir, uniqueName);
                     if (System.IO.File.Exists(savedPath))
                         System.IO.File.Delete(savedPath);
+                    file.SaveAs(savedPath);
 
+                    // PDF -> IMAGE
+                    if (ext == ".pdf")
+                    {
+                        string imageName = ConvertPdfToImage(savedPath, uploadDir);
+                        string imagePath = System.IO.Path.Combine(uploadDir, imageName);
+
+                        // delete pdf
+                        if (System.IO.File.Exists(savedPath))
+                            System.IO.File.Delete(savedPath);
+
+                        context.Response.ContentType = "text/plain";
+                        context.Response.Write(imageName + "|" + imagePath);
+                        return;
+                    }
+
+                    // Normal image
                     context.Response.ContentType = "text/plain";
-                    context.Response.Write(imageName + "|" + imagePath);
+                    context.Response.Write(uniqueName + "|" + savedPath);
                     return;
                 }
 
-                // Normal image
+                if (string.IsNullOrEmpty(Path))
+                {
+                    context.Response.StatusCode = 400;
+                    context.Response.ContentType = "text/plain";
+                    context.Response.Write("Upload failed: invalid callFor value '" + (callFor ?? "") + "'.");
+                    return;
+                }
+
+                file.SaveAs(Path);
                 context.Response.ContentType = "text/plain";
-                context.Response.Write(uniqueName + "|" + savedPath);
-                return;
+                context.Response.Write(imgName + "|" + Path);
+
+                //--------------------------
             }
-
-
-            file.SaveAs(Path);
-            context.Response.ContentType = "text/plain";
-            context.Response.Write(imgName + "|" + Path);
-
-            //--------------------------
-
+            else
+            {
+                context.Response.StatusCode = 400;
+                context.Response.ContentType = "text/plain";
+                context.Response.Write("Upload failed: no file was received by the server.");
+            }
         }
-
-
-
+        catch (Exception ex)
+        {
+            context.Response.StatusCode = 500;
+            context.Response.ContentType = "text/plain";
+            context.Response.Write("Upload failed on server: " + ex.Message);
+        }
     }
     private string GetUniqueName(string extension)
     {
         return DateTime.Now.ToString("yyyyMMddHHmmssfff")
                + "_" + Guid.NewGuid().ToString("N")
                + extension;
+    }
+
+    private string GetExtensionFromContentType(string contentType)
+    {
+        switch ((contentType ?? "").ToLower())
+        {
+            case "image/gif":
+                return ".gif";
+            case "image/jpeg":
+            case "image/jpg":
+                return ".jpg";
+            case "image/png":
+                return ".png";
+            case "application/pdf":
+                return ".pdf";
+            default:
+                return "";
+        }
     }
 
     private string ConvertPdfToImage(string pdfPath, string outputFolder)

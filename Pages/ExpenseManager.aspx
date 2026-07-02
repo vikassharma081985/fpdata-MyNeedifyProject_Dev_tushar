@@ -470,7 +470,7 @@
                         </div>
                         <div class="form-group">
                             <label>Replace File (Optional) :</label>
-                            <input type="file" id="fpEditUpload" onchange="EditFileChange(this);" />
+                            <input type="file" id="fpEditUpload" accept="image/*,.pdf,application/pdf" onchange="EditFileChange(this);" />
                             <input type="hidden" id="hfEditUploadedFile" />
                         </div>
                     </div>
@@ -1754,37 +1754,164 @@
                 calculateEditAmount();
             });
 
-            // File upload for edit
+            var editUploadInProgress = false;
+
+            function getFileExtension(fileName) {
+                var dotIndex = fileName.lastIndexOf('.');
+                return dotIndex >= 0 ? fileName.substring(dotIndex).toLowerCase() : '';
+            }
+
+            function getUploadErrorDetails(xhr, errorThrown) {
+                var details = [];
+                if (xhr) {
+                    details.push('HTTP Status: ' + (xhr.status || 'No status'));
+                    details.push('Status Text: ' + (xhr.statusText || 'No status text'));
+                    details.push('Ready State: ' + (xhr.readyState || 'No ready state'));
+                    if (xhr.status === 0) {
+                        details.push('Likely Reason: Browser did not receive any HTTP response. This usually means mobile network drop, request blocked/cancelled by browser, server not reachable from mobile, or the upload was rejected before ASP.NET returned a response.');
+                    }
+                    if (xhr.responseText) {
+                        details.push('Server Message: ' + xhr.responseText);
+                    }
+                    try {
+                        var responseHeaders = xhr.getAllResponseHeaders();
+                        if (responseHeaders) {
+                            details.push('Response Headers: ' + responseHeaders);
+                        }
+                    } catch (e) { }
+                }
+                if (errorThrown) {
+                    details.push('Error: ' + errorThrown);
+                }
+                return details.join('\n');
+            }
+
+            function getUploadedFileName(response) {
+                return (response || '').split('|')[0];
+            }
+
+            function getExtensionFromMimeType(fileType) {
+                var mimeExtensionMap = {
+                    "image/gif": ".gif",
+                    "image/jpeg": ".jpg",
+                    "image/jpg": ".jpg",
+                    "image/png": ".png",
+                    "application/pdf": ".pdf"
+                };
+                return mimeExtensionMap[fileType] || '';
+            }
+
+            function bytesToMb(bytes) {
+                return (bytes / (1024 * 1024)).toFixed(2);
+            }
+
+            function getMaxUploadBytes() {
+                return 500 * 1024 * 1024;
+            }
+
+            function getUploadDiagnostics(fileName, fileType, fileExt, fileSize, uploadUrl) {
+                return [
+                    'Diagnostic Version: ExpenseUpload-20260702-02',
+                    'Page URL: ' + window.location.href,
+                    'Upload URL: ' + uploadUrl,
+                    'Browser Online: ' + (navigator.onLine ? 'Yes' : 'No'),
+                    'Selected File: ' + (fileName || 'Unknown'),
+                    'File Type: ' + (fileType || 'Not provided by browser'),
+                    'File Extension: ' + (fileExt || 'Missing'),
+                    'File Size: ' + fileSize + ' bytes (' + bytesToMb(fileSize) + ' MB)',
+                    'User Agent: ' + navigator.userAgent
+                ].join('\n');
+            }
+
             function EditFileChange(ctrl) {
                 ImgPreview(ctrl.files, ctrl, 'hfEditUploadedFile');
             }
 
             // Modified ImgPreview to support different hidden field
             function ImgPreview(input, ctrl, hiddenFieldId = 'hfUploadedFile') {
-                var file = input[0];
-                var fileType = file["type"];
-                var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg", "application/pdf"];
-                if ($.inArray(fileType, ValidImageTypes) < 0) {
-                    alert("Only image or PDF files are allowed");
+                if (!window.FormData) {
+                    alert('Upload failed before sending: this browser does not support FormData file uploads.');
                     $(ctrl).val('');
                     return;
                 }
 
-                if (input && input[0]) {
-                    var data = new FormData();
-                    data.append(input[0].name, input[0]);
-                    $.ajax({
-                        url: "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Expense",
-                        type: "POST",
-                        async: true,
-                        data: data,
-                        contentType: false,
-                        processData: false,
-                        success: function (response) {
-                            $('#' + hiddenFieldId).val(response);
-                        }
-                    });
+                if (!input || input.length === 0 || !input[0]) {
+                    alert('No file selected. Please choose an image or PDF file again.');
+                    $(ctrl).val('');
+                    return;
                 }
+
+                var file = input[0];
+                var fileName = file.name || '';
+                var fileType = (file.type || '').toLowerCase();
+                var fileExt = getFileExtension(fileName);
+                var fileSize = file.size || 0;
+                var uploadFileName = fileName || ('expense_upload' + getExtensionFromMimeType(fileType));
+                var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg", "application/pdf"];
+                var ValidExtensions = [".gif", ".jpeg", ".jpg", ".png", ".pdf"];
+                var isValidType = fileType && $.inArray(fileType, ValidImageTypes) >= 0;
+                var isValidExtension = $.inArray(fileExt, ValidExtensions) >= 0;
+                var previousHiddenValue = $('#' + hiddenFieldId).val();
+                var uploadUrl = "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Expense";
+                var uploadDiagnostics = getUploadDiagnostics(fileName, fileType, fileExt, fileSize, uploadUrl);
+
+                if (!isValidType && !isValidExtension) {
+                    alert("Upload stopped before sending: only image or PDF files are allowed.\n\n" + uploadDiagnostics);
+                    $(ctrl).val('');
+                    return;
+                }
+
+                if (fileSize <= 0) {
+                    alert("Upload stopped before sending: selected file is empty or the browser did not provide file data.\n\n" + uploadDiagnostics);
+                    $(ctrl).val('');
+                    return;
+                }
+
+                if (fileSize > getMaxUploadBytes()) {
+                    alert("Upload stopped before sending: selected file is too large for this page.\n\nMaximum Allowed: 500 MB\n\n" + uploadDiagnostics);
+                    $(ctrl).val('');
+                    return;
+                }
+
+                if (hiddenFieldId === 'hfEditUploadedFile') {
+                    //alert("Starting bill file upload with diagnostics.\n\n" + uploadDiagnostics);
+                }
+
+                var data = new FormData();
+                data.append(uploadFileName, file);
+                editUploadInProgress = hiddenFieldId === 'hfEditUploadedFile';
+                $.ajax({
+                    url: uploadUrl,
+                    type: "POST",
+                    async: true,
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    timeout: 120000,
+                    success: function (response) {
+                        var uploadedFileName = getUploadedFileName(response);
+                        if (!uploadedFileName) {
+                            $('#' + hiddenFieldId).val(previousHiddenValue);
+                            alert("Upload reached the server, but the server returned an empty file name.\n\n" + uploadDiagnostics + "\nRaw Server Response: " + (response || "Empty response"));
+                            return;
+                        }
+                        $('#' + hiddenFieldId).val(response);
+                        if (hiddenFieldId === 'hfEditUploadedFile') {
+                            $('#currentFileLink').html('<span style="color:green;">New file uploaded: ' + uploadedFileName + '</span>');
+                            //alert("File uploaded successfully.\n\nSaved File: " + uploadedFileName + "\n\n" + uploadDiagnostics);
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        $('#' + hiddenFieldId).val(previousHiddenValue);
+                        $(ctrl).val('');
+                        alert("Upload failed with detailed diagnostics.\n\nRequest Status: " + textStatus + "\n" + getUploadErrorDetails(xhr, errorThrown) + "\n\n" + uploadDiagnostics);
+                    },
+                    complete: function () {
+                        if (hiddenFieldId === 'hfEditUploadedFile') {
+                            editUploadInProgress = false;
+                        }
+                    }
+                });
             }
 
             function removeCurrentFile() {
@@ -1804,6 +1931,11 @@
                 var Rate = $('#txtEditRate').val() || '0';
                 var Amount = $('#txtEditAmount').val();
                 var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+
+                if (editUploadInProgress) {
+                    alert('Please wait. The selected bill file is still uploading.');
+                    return;
+                }
 
                 if (Date == "" || !ExpenseId || Amount == "0") {
                     alert('Please fill all required fields.');
@@ -1837,12 +1969,12 @@
                             closeEditExpenseModal();
                             Search(); // Refresh table
                         } else {
-                            alert('Error updating expense.');
+                            alert('Error updating expense. Server returned: ' + (result.d || 'Empty response'));
                         }
                     },
-                    error: function () {
+                    error: function (xhr, textStatus, errorThrown) {
                         hideLoader();
-                        alert('Server error during update.');
+                        alert('Server error during update.\n\nRequest Status: ' + textStatus + '\n' + getUploadErrorDetails(xhr, errorThrown));
                     }
                 });
             }
