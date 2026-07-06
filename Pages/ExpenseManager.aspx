@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
     CodeBehind="ExpenseManager.aspx.cs" Inherits="WSBillingMaster.Pages.ExpenseManager" %>
 
     <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -168,28 +168,33 @@
                     </div>
                 </div>--%>
 
-                <p class="show-charts-text">Hover here to view expense charts</p>
+                <div id="chartsContainer" class="expense-charts" aria-label="Expense charts">
+                    <div class="chart-box chart-box-category">
+                        <div class="chart-header">
+                            <div>
+                                <span class="chart-kicker">Categorywise</span>
+                                <h5>Expense Split</h5>
+                            </div>
+                            <span id="categoryChartTotal" class="chart-total">Rs. 0</span>
+                        </div>
+                        <div class="chart-canvas-wrap">
+                            <canvas id="pieChartCategory"></canvas>
+                        </div>
+                    </div>
 
-<div id="chartsContainer"
-    style="margin-top: 20px; margin-bottom: 20px; text-align: center;">
-    <div class="form-row center" style="flex-wrap: wrap; gap: 20px; justify-content: center;">
-        <div class="chart-box"
-            style="width: 35%; min-width: 250px; background: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-            <h5>Category Wise Expense</h5>
-            <div style="height: 300px; position: relative;">
-                <canvas id="pieChartCategory"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-box"
-            style="width: 35%; min-width: 250px; background: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-            <h5>Month Wise Expense</h5>
-            <div style="height: 300px; position: relative;">
-                <canvas id="pieChartMonth"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
+                    <div class="chart-box chart-box-month">
+                        <div class="chart-header">
+                            <div>
+                                <span class="chart-kicker">Monthwise</span>
+                                <h5>Expense Trend</h5>
+                            </div>
+                            <span id="monthChartPeak" class="chart-total">Rs. 0</span>
+                        </div>
+                        <div class="chart-canvas-wrap">
+                            <canvas id="pieChartMonth"></canvas>
+                        </div>
+                    </div>
+                </div>
 
                 <div id="mobileViewToggle" style="display:none; margin-bottom:10px;">
                     <span id="btnTableView" onclick="showTableView()" class="toggle-text active">Table View</span> |
@@ -360,14 +365,100 @@
 </div>
 
 <style>
-    #chartsContainer {
-    display: none;
-}
+    .expense-charts {
+        display: none;
+        grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+        gap: 18px;
+        margin: 22px 0;
+        text-align: left;
+    }
 
-.show-charts-text:hover + #chartsContainer,
-#chartsContainer:hover {
-    display: block;
-}
+    .chart-box {
+        background: #fff;
+        border: 1px solid #d9e2ec;
+        border-radius: 8px;
+        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+        padding: 16px;
+        min-width: 0;
+    }
+
+    .chart-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .chart-header h5 {
+        color: #111827;
+        font-size: 16px;
+        font-weight: 700;
+        margin: 2px 0 0;
+    }
+
+    .chart-kicker {
+        color: #64748b;
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: uppercase;
+    }
+
+    .chart-total {
+        background: #f1f5f9;
+        border: 1px solid #dbe4ee;
+        border-radius: 6px;
+        color: #0f172a;
+        flex: 0 0 auto;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 5px 8px;
+        white-space: nowrap;
+    }
+
+    .chart-canvas-wrap {
+        height: 330px;
+        position: relative;
+        width: 100%;
+    }
+
+    .chart-box-category .chart-canvas-wrap {
+        height: 340px;
+    }
+
+    @media (max-width: 1024px) {
+        .expense-charts {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .expense-charts {
+            gap: 14px;
+            margin: 16px 0;
+        }
+
+        .chart-box {
+            padding: 12px;
+        }
+
+        .chart-header {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .chart-total {
+            align-self: flex-start;
+        }
+
+        .chart-canvas-wrap,
+        .chart-box-category .chart-canvas-wrap {
+            height: 290px;
+        }
+    }
 
 .form-grid {
     display: grid;
@@ -1330,7 +1421,7 @@
                         expenseData = $.parseJSON(result.d);
                         currentPage = 1;
                         renderExpenseTable();
-                        //renderCharts(); // Render charts after data is loaded
+                        renderCharts(); // Render charts after data is loaded
                     },
                     error: function (xhr, status, error) {
                         // This is where ACTUAL exceptions and errors are caught
@@ -2005,6 +2096,285 @@
                     }
                 });
             }
+
+            // ------------------- Chart Rendering Logic -------------------
+            var categoryChart = null;
+            var monthChart = null;
+            var chartCurrencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+            var chartCompactCurrencyFormatter = new Intl.NumberFormat('en-IN', { notation: 'compact', maximumFractionDigits: 1 });
+
+            function formatChartCurrency(value) {
+                return chartCurrencyFormatter.format(Number(value) || 0);
+            }
+
+            function formatCompactChartCurrency(value) {
+                return 'Rs. ' + chartCompactCurrencyFormatter.format(Number(value) || 0);
+            }
+
+            function getExpenseAmount(item) {
+                return parseFloat(item.Amount) || 0;
+            }
+
+            function renderCharts() {
+                if (!expenseData || expenseData.length === 0) {
+                    $('#chartsContainer').hide();
+                    return;
+                }
+                $('#chartsContainer').css('display', 'grid');
+
+                // 1. Process Data for Category Wise
+                var categoryMap = {};
+                $.each(expenseData, function (index, item) {
+                    var key = item.Expense || 'Other';
+                    if (!categoryMap[key]) categoryMap[key] = 0;
+                    categoryMap[key] += getExpenseAmount(item);
+                });
+
+                var categoryRows = Object.keys(categoryMap).map(function (key) {
+                    return { label: key, value: categoryMap[key] };
+                }).sort(function (a, b) {
+                    return b.value - a.value;
+                });
+                var catLabels = categoryRows.map(function (item) { return item.label; });
+                var catValues = categoryRows.map(function (item) { return item.value; });
+                var catColors = generateColors(catLabels.length);
+                var totalExpense = catValues.reduce(function (sum, value) { return sum + value; }, 0);
+                $('#categoryChartTotal').text(formatChartCurrency(totalExpense));
+
+                // 2. Process Data for Month Wise
+                var monthMap = {};
+                var getMonthIndex = function (monStr) {
+                    return new Date(monStr + " 1, 2000").getMonth();
+                };
+
+                $.each(expenseData, function (index, item) {
+                    var parts = (item.ExpenseDate || '').split('-');
+                    if (parts.length === 3) {
+                        var monthStr = parts[1]; // MMM
+                        var yearStr = parts[2];
+                        var key = monthStr + "-" + yearStr;
+
+                        if (!monthMap[key]) monthMap[key] = { amount: 0, sortValue: getMonthIndex(monthStr) + parseInt(yearStr) * 12 };
+                        monthMap[key].amount += getExpenseAmount(item);
+                    }
+                });
+
+                var monthKeys = Object.keys(monthMap).sort(function (a, b) {
+                    return monthMap[a].sortValue - monthMap[b].sortValue;
+                });
+
+                var monthLabels = monthKeys;
+                var monthValues = monthKeys.map(function (k) { return monthMap[k].amount; });
+                var peakMonthValue = monthValues.length ? Math.max.apply(null, monthValues) : 0;
+                $('#monthChartPeak').text('Peak ' + formatChartCurrency(peakMonthValue));
+
+                var categoryCenterText = {
+                    id: 'categoryCenterText',
+                    afterDraw: function (chart) {
+                        var meta = chart.getDatasetMeta(0);
+                        if (!meta || !meta.data || !meta.data.length) {
+                            return;
+                        }
+
+                        var ctx = chart.ctx;
+                        var center = meta.data[0];
+                        ctx.save();
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillStyle = '#64748b';
+                        ctx.font = '600 12px Arial, sans-serif';
+                        ctx.fillText('Total', center.x, center.y - 10);
+                        ctx.fillStyle = '#111827';
+                        ctx.font = '700 16px Arial, sans-serif';
+                        ctx.fillText(formatCompactChartCurrency(totalExpense), center.x, center.y + 12);
+                        ctx.restore();
+                    }
+                };
+
+                // 3. Render/Update Category Chart
+                var ctxCat = document.getElementById('pieChartCategory').getContext('2d');
+                if (categoryChart) {
+                    categoryChart.destroy();
+                }
+                categoryChart = new Chart(ctxCat, {
+                    type: 'doughnut',
+                    data: {
+                        labels: catLabels,
+                        datasets: [{
+                            data: catValues,
+                            backgroundColor: catColors,
+                            borderColor: '#ffffff',
+                            borderRadius: 4,
+                            borderWidth: 3,
+                            hoverBorderColor: '#ffffff',
+                            hoverOffset: 8,
+                            spacing: 2
+                        }]
+                    },
+                    options: {
+                        cutout: '62%',
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        layout: {
+                            padding: {
+                                top: 4,
+                                bottom: 4
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxHeight: 10,
+                                    boxWidth: 10,
+                                    color: '#334155',
+                                    font: {
+                                        size: 11,
+                                        weight: '600'
+                                    },
+                                    padding: 14,
+                                    usePointStyle: true,
+                                    generateLabels: function (chart) {
+                                        var data = chart.data;
+                                        if (data.labels.length && data.datasets.length) {
+                                            return data.labels.map(function (label, i) {
+                                                var meta = chart.getDatasetMeta(0);
+                                                var style = meta.controller.getStyle(i);
+                                                var value = data.datasets[0].data[i];
+                                                var percent = totalExpense ? ((value / totalExpense) * 100).toFixed(1) : '0.0';
+
+                                                return {
+                                                    text: label + ' (' + percent + '%)',
+                                                    fillStyle: style.backgroundColor,
+                                                    strokeStyle: style.borderColor,
+                                                    lineWidth: style.borderWidth,
+                                                    hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                                    index: i
+                                                };
+                                            });
+                                        }
+                                        return [];
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: '#0f172a',
+                                borderColor: 'rgba(255,255,255,0.12)',
+                                borderWidth: 1,
+                                displayColors: true,
+                                padding: 10,
+                                callbacks: {
+                                    label: function (context) {
+                                        var label = context.label || '';
+                                        var value = context.parsed || 0;
+                                        var percent = totalExpense ? ((value / totalExpense) * 100).toFixed(1) : '0.0';
+                                        return label + ': ' + formatChartCurrency(value) + ' (' + percent + '%)';
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    plugins: [categoryCenterText]
+                });
+
+                // 4. Render/Update Month Chart (Line)
+                var ctxMonth = document.getElementById('pieChartMonth').getContext('2d');
+                if (monthChart) {
+                    monthChart.destroy();
+                }
+                monthChart = new Chart(ctxMonth, {
+                    type: 'line',
+                    data: {
+                        labels: monthLabels,
+                        datasets: [{
+                            label: 'Monthly Expense',
+                            data: monthValues,
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.12)',
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#ffffff',
+                            pointBorderColor: '#2563eb',
+                            pointBorderWidth: 2,
+                            pointHoverBackgroundColor: '#2563eb',
+                            pointHoverBorderColor: '#ffffff',
+                            pointHoverBorderWidth: 2,
+                            pointHoverRadius: 6,
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: '#0f172a',
+                                borderColor: 'rgba(255,255,255,0.12)',
+                                borderWidth: 1,
+                                padding: 10,
+                                callbacks: {
+                                    label: function (context) {
+                                        return 'Expense: ' + formatChartCurrency(context.parsed.y);
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#475569',
+                                    font: {
+                                        size: 11,
+                                        weight: '600'
+                                    },
+                                    maxRotation: 0
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                border: {
+                                    display: false
+                                },
+                                grid: {
+                                    color: 'rgba(148, 163, 184, 0.22)',
+                                    drawTicks: false
+                                },
+                                ticks: {
+                                    color: '#64748b',
+                                    padding: 8,
+                                    callback: function (value) {
+                                        return formatCompactChartCurrency(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function generateColors(count) {
+                var colors = [];
+                var baseColors = [
+                    '#2563eb', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4',
+                    '#f97316', '#14b8a6', '#64748b', '#84cc16', '#ec4899', '#0f766e'
+                ];
+                for (var i = 0; i < count; i++) {
+                    colors.push(baseColors[i % baseColors.length]);
+                }
+                return colors;
+            }
+
         </script>
 
         <div id="loaderOverlay" style="display:none;">
