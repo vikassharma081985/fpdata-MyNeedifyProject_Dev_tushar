@@ -312,7 +312,7 @@
             });
 
             $('#addrModalTitle').text('Edit Address');
-            $('#btnSaveAddress').text('Update Address');
+$('#btnSaveAddress').text('Update Address');
 
             $('#addAddressModal').modal('show');
             return false;
@@ -660,8 +660,20 @@
 
         function lnkLogout_ClickNew() {
             sessionStorage.clear();
-            window.open(appURL + "Front/Index.aspx");
-            //window.open(appURL + "/Front/Index.aspx");
+            $.ajax({
+                type: "POST",
+                url: appURL + "Front/index.aspx/Logout",
+                data: JSON.stringify({ TestId: "0" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = appURL + "Front/Index.aspx";
+                },
+                error: function (data) {
+                    window.location.href = appURL + "Front/Index.aspx";
+                }
+            });
+            return false;
         }
     </script>
 

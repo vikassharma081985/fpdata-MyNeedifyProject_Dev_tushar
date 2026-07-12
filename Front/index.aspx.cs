@@ -189,7 +189,7 @@ namespace FaduPrice.Front
             }
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string RemoveCartItem(string CartId)
         {
@@ -202,7 +202,7 @@ namespace FaduPrice.Front
             }
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string Logout(string TestId)
         {

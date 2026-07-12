@@ -18,7 +18,8 @@ namespace FaduPrice.Pages
         protected string appURL;
         protected void Page_Load(object sender, EventArgs e)
         {
-            appURL = ConfigurationManager.AppSettings["appURL"];
+            appURL = Request.Url.GetLeftPart(UriPartial.Authority) + Request.ApplicationPath;
+            if (!appURL.EndsWith("/")) appURL += "/";
             //Session["UserId"] ="1";
             //Session["UserName"] = "Apoorv";
 
@@ -26,25 +27,34 @@ namespace FaduPrice.Pages
             //{
             //    Response.Redirect("http://faduprice.in");
             //}
+            // Always set UserId hidden field and UI state on every page load (not just first)
+            if (Session["UserId"] != null && Session["UserName"] != null)
+            {
+                MasterhdnUserId.Value = Session["UserId"].ToString();
+                string orgScript = Session["OrgId"] != null ? "$('[id$=SellerDashboard]').show();" : "$('[id$=SellerDashboard]').hide();";
+                string script = $@"
+                    (function() {{
+                        $('[id$=lblUserName]').text('Hi, {Session["UserName"]}');
+                        $('[id$=LoggedinUser]').show();
+                        $('[id$=NotLoggedIn]').hide();
+                        $('[id$=lnkLogin]').hide();
+                        $('[id$=lnkLogout]').show();
+                        {orgScript}
+                    }})();
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "LoginState", script, true);
+            }
+
             if (!IsPostBack)
             {
                 if (Session["UserId"] != null && Session["UserName"] != null)
-                { //Modified by SHubham at late night, dont trust //////////////////////////////////////////////////////
-                    /* MasterhdnUserId.Value = Session["UserId"].ToString();
-                     LoggedinUser.Style["display"] = "";
-                     lnkLogin.Style["display"] = "none";
-                     lblUserName.Style["display"] = "";
-                     lnkLogout.Style["display"] = "";
-                     lblUserName.InnerText = "Hi, " + Session["UserName"].ToString();// +" <span class='caret'></span> "; */
-                    //UserName1.Text = "Welcome ,"+ Session["UserName"].ToString();
-
-                    //UserName1.Text = "Welcome ,"+ Session["UserName"].ToString();
+                {
                     BindNotifications(Convert.ToInt32(Session["UserId"]));
                     BindAddress(Convert.ToInt32(Session["UserId"]));
                 }
                 GetMenu();
-
             }
+
         }
 
         protected void lnkLogout_Click(object sender, EventArgs e)

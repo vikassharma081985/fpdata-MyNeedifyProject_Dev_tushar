@@ -21,7 +21,7 @@ namespace WSBillingMaster.Pages
         }
 
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string ValidateUser(string User, string Password)
         {
