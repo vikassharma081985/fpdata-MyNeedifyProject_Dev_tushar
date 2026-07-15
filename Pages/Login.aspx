@@ -87,7 +87,7 @@
         <script src="../Js/jquery.min.js"></script>
         <%-- Validation Script --%>
         <script>
-            var appURL = "<%= appURL %>";
+            var appURL = "http://127.0.0.1:46692/";
             function Validate() {
                 var User = $('[id$=txtLogin]').val().trim();
                 var Pwd = $('[id$=txtPassword]').val().trim();
