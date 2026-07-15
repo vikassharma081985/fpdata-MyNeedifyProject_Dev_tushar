@@ -54,33 +54,28 @@
     <input type="text" class="form-control" id="txtExpenseDescription" />
 </div>
 
-<div class="form-group" style="width:100px; margin-top:25px;">
-    <input type="button" class="btn btn-danger w-100" value="Save" onclick="Save();" />
-</div>
-                </div>
-            </div>
-
-            <!-- ======================== All Expenses Section ========================= -->
-<%--            <div class="Header" style="margin-top: 20px;">
-                <div class="section-title">All Expenses</div>
-                <div class="section-title">Total Expense : Rs. <span id="lblExpenseAmt"
-                        style="color: LawnGreen; font-size: Large;">0</span> </div>
-                <div class="responsive-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>From Date :</label>
-                            <input type="text" class="form-control datepicker" id="txtFromDate" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>To Date :</label>
-                            <input type="text" class="form-control datepicker" id="txtToDate" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>Expense On :</label>
-                            <select id="ddlExpenseSearch" class="form-control"></select>
-                        </div>
+                    <div class="form-group">
+                        <label>Expense On :</label>
+                        <select id="ddlExpense" class="form-control"></select> 
+                    </div>
+                    <div class="form-group">  <!-- NEW: Added for sub-category -->
+                        <label>Sub Expense :</label>
+                        <select id="ddlSubExpense" class="form-control">
+                            <option value="0">Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rate :</label>
+                        <input type="text" id="txtRate" value="0" class="form-control" maxlength="10" oninput="validateRate(this)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity :</label>
+                        <input type="text" id="txtQuantity" value="1" class="form-control" maxlength="10" />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount :</label>
+                        <input type="text" disabled id="txtAmount" class="form-control" maxlength="5" />
+                    </div>
 
 
                     </div>
@@ -109,14 +104,12 @@
         </div>
     </div>
 
-    <!-- Row 2 -->
-    <div class="responsive-form" style="width:100%; margin-top:10px;">
-        <div class="form-row" style="display:flex; align-items:end; gap:10px; flex-wrap:nowrap;">
-            
-            <div class="form-group">
-                <label>From Date :</label>
-                <input type="text" class="form-control datepicker" id="txtFromDate" />
-            </div>
+                <div class="form-row center">
+                    <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
+                    <input type="button" class="btn btn-primary" value="Submit for Reimbursement" onclick="OpenRbmPopup();">
+<input type="button" class="btn btn-danger" value="Reimbursement History" onclick="openHistoryModal();">
+
+                </div>
 
             <div class="form-group">
                 <label>To Date :</label>
@@ -245,26 +238,29 @@
 
 
 
-        <!-- ====================== Reimbursement History Modal ====================== -->
-        <div id="historyModal" class="modal">
-            <div class="modal-content" style="max-width:1100px;">
-                <span class="close" onclick="closeHistoryModal()">&times;</span>
-                <h3 style="text-align:center;">Reimbursement History</h3>
+    <!-- ====================== Reimbursement History Modal ====================== -->
+<div id="historyModal" class="modal">
+    <div class="modal-content" style="max-width:1100px;">
+        <span class="close" onclick="closeHistoryModal()">&times;</span>
+        <h3 style="text-align:center;">Reimbursement History</h3>
 
-                <div class="table-responsive">
-                    <table id="tblHistory" class="table table-bordered">
-                        <tr>
-                            <th>SNo.</th>
-                            <th>Date</th>
-                             <th>Reimbursement ID</th>
-                            <th>Total Amount</th>
-                            <th>Status</th>
-                            <th>View</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+        <div class="table-responsive">
+            <table id="tblHistory" class="table table-bordered">
+                <tr>
+                    <th>SNo.</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>View</th>
+                </tr>
+            </table>
         </div>
+    </div>
+</div>
+
+
+
+
 
 
 
@@ -868,6 +864,80 @@
         </style>
 
 
+    <!-- ======================== Scripts ========================= -->
+    <link href="../Css/jquery-ui.css" rel="stylesheet" />
+    <script src="../Js/jquery-ui.js"></script>
+    <script>
+        function openHistoryModal() {
+            document.getElementById("historyModal").style.display = "block";
+            renderHistoryFromExpenseData();
+        }
+
+        function closeHistoryModal() {
+            document.getElementById("historyModal").style.display = "none";
+        }
+
+        function renderHistoryFromExpenseData() {
+
+            // Clear old rows (keep header)
+            $('#tblHistory tr:gt(0)').remove();
+
+            // Filter reimbursement-created expenses
+            var historyData = expenseData.filter(x => x.Status === "Reimbursement Created");
+
+            if (historyData.length === 0) {
+                $('#tblHistory').append(
+                    '<tr><td colspan="5" style="text-align:center;color:gray;">No reimbursement history found</td></tr>'
+                );
+                return;
+            }
+
+            $.each(historyData, function (index, value) {
+
+                var html = '<tr>';
+
+                // SNo
+                html += '<td>' + (index + 1) + '</td>';
+
+                // Date + Expense Details
+                html += '<td>';
+                html += '<strong>Date:</strong> ' + value.ExpenseDate + '<br>';
+                html += '<strong>Expense:</strong> ' + value.Expense +
+                    (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+                html += '<strong>Rate:</strong> ' + value.Rate + '<br>';
+                html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';
+                html += '<strong>Description:</strong> ' + (value.Description || '-');
+                html += '</td>';
+
+                // Total Amount
+                html += '<td>' + value.Amount + '</td>';
+
+                // Status
+                html += '<td>' + value.Status + '</td>';
+
+                // View
+                html += '<td>';
+                if (value.PdfPath) {
+                    html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">View</a>';
+                } else {
+                    html += '<span style="color:gray;">N/A</span>';
+                }
+                html += '</td>';
+
+                html += '</tr>';
+
+                $('#tblHistory').append(html);
+            });
+        }
+
+
+        // ------------------- Mobile Table/Card View Toggle -------------------
+        function showTableView() {
+            $('#tblExpense').parent().show(); // show table
+            $('#cardViewContainer').hide();    // hide card view
+            $('#btnTableView').prop('disabled', true);
+            $('#btnCardView').prop('disabled', false);
+        }
 
 
 
@@ -1809,6 +1879,46 @@
                     alert('Please fill all required fields.');
                     return;
                 }
+            });
+        }
+
+        function showLoader() {
+            $('#loaderOverlay').show();
+        }
+
+        function hideLoader() {
+            $('#loaderOverlay').hide();
+        }
+
+        function openExpensePdf(fileName) {
+            if (fileName == '') {
+                alert('File not found');
+                return;
+            }
+            //var pdfUrl = "https://198.38.88.185/api/Download/DownloadPdf" //"https://localhost:7089/api/Download/DownloadPdf"
+            var pdfUrl = "https://localhost:7089/api/Download/DownloadPdf"
+                + "?fileName=" + encodeURIComponent(fileName);
+            window.open(pdfUrl, "_blank");
+        }
+
+        function validateRate(input) {
+            // Allow numbers with up to 2 decimal places
+            input.value = input.value
+                .replace(/[^0-9.]/g, '')          // remove non-numeric
+                .replace(/(\..*)\./g, '$1');      // allow only one decimal
+
+            if (input.value.includes('.')) {
+                let parts = input.value.split('.');
+                parts[1] = parts[1].substring(0, 2); // max 2 digits after decimal
+                input.value = parts.join('.');
+            }
+        }
+        var currentEditingId = 0; // To track which expense is being edited
+
+        function OpenEditModal(expenseId) {
+            var expense = expenseData.find(function (item) {
+                return item.ID == expenseId;
+            });
 
                 var obj = {
                     ID: currentEditingId,
@@ -1875,8 +1985,8 @@
             }
         </script>
 
-        <div id="loaderOverlay" style="display:none;">
-            <div class="loader"></div>
-            <div class="loader-text">Please wait...</div>
-        </div>
-    </asp:Content>
+    <div id="loaderOverlay" style="display:none;">
+    <div class="loader"></div>
+    <div class="loader-text">Please wait...</div>
+</div>
+</asp:Content>
