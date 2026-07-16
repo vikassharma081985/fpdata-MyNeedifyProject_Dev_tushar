@@ -10,6 +10,12 @@ namespace WSBillingMaster
             // Runs once when app starts
         }
 
+        protected void Session_Start(object sender, EventArgs e)
+        {
+            // Force session creation so session id cookie is available across subsequent AJAX requests
+            Session["Init"] = 0;
+        }
+
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             HttpContext context = HttpContext.Current;

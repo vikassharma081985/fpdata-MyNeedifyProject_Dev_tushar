@@ -679,6 +679,74 @@ namespace BLL
             }
         }
 
+        public DataTable GetUserAddressV1()
+        {
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandText = "GetUserAddressv1";
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    dbSqlCommand.Parameters.AddWithValue("@UserId", IntUserId);
+                    return objDALCIILibrary.GetDataTable(dbSqlCommand);
+
+                }
+            }
+        }
+
+        public long AddNewAddress()
+        {
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandText = "Proc_AddNewAddress";
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    dbSqlCommand.Parameters.AddWithValue("@UserId", IntUserId);
+                    dbSqlCommand.Parameters.AddWithValue("@Name", Name);
+                    dbSqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
+                    dbSqlCommand.Parameters.AddWithValue("@Building", Building);
+                    dbSqlCommand.Parameters.AddWithValue("@Locality", Locality);
+                    dbSqlCommand.Parameters.AddWithValue("@City", City);
+                    dbSqlCommand.Parameters.AddWithValue("@State", State);
+                    dbSqlCommand.Parameters.AddWithValue("@Pincode", Pincode);
+
+                    using (DataTable dt = objDALCIILibrary.GetDataTable(dbSqlCommand))
+                    {
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            return Convert.ToInt64(dt.Rows[0][0]);
+                        }
+                    }
+                }
+            }
+
+            return 0;
+        }
+
+        public int UpdateAddress()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "UPDATE tblUserContactDetails SET Name = @Name, Mobile = @Mobile, Building = @Building, Locality = @Locality, City = @City, State = @State, Pincode = @Pincode WHERE ContactId = @ContactId AND UserId = @UserId";
+                    sqlCommand.CommandType = CommandType.Text;
+                    sqlCommand.CommandTimeout = 100;
+                    sqlCommand.Parameters.AddWithValue("@Name", Name);
+                    sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
+                    sqlCommand.Parameters.AddWithValue("@Building", Building);
+                    sqlCommand.Parameters.AddWithValue("@Locality", Locality);
+                    sqlCommand.Parameters.AddWithValue("@City", City);
+                    sqlCommand.Parameters.AddWithValue("@State", State);
+                    sqlCommand.Parameters.AddWithValue("@Pincode", Pincode);
+                    sqlCommand.Parameters.AddWithValue("@ContactId", ContactId);
+                    sqlCommand.Parameters.AddWithValue("@UserId", IntUserId);
+                    return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                }
+            }
+        }
+
 
 
         public DataSet BindMyOrders()
@@ -2318,6 +2386,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@FromDate", FromDate);
                     sqlCommand.Parameters.AddWithValue("@ToDate", ToDate);
                     sqlCommand.Parameters.AddWithValue("@Keyword", Keyword);
+                    sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
                     return objDAL.GetDataTable(sqlCommand);
                 }
             }

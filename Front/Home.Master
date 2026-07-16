@@ -108,6 +108,8 @@
                                 }
                             });
 
+                            LoadUserAddresses(UserInfo[0].UserId);
+
                             $('#btnModalClose').click();
                             $("#bookingModal").modal("hide");
                             //location.reload();
@@ -142,6 +144,346 @@
                 return false;
 
             }
+        }
+
+        function LoadUserAddresses(userId) {
+            if (!userId || userId === "0") {
+                $('[id$=divUserAddresses]').html('');
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: appURL + "Front/index.aspx/GetAddressData",
+                data: JSON.stringify({ UserId: userId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (addressData) {
+                    $('[id$=divUserAddresses]').html(addressData.d);
+                }
+            });
+        }
+
+        function LoadAddrStateDropdown(callback) {
+
+            var ddlState = $("#ddlAddrState");
+
+            $.ajax({
+                type: "POST",
+                url: appURL + "Front/index.aspx/GetStateMaster",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (r) {
+
+                    console.log(r);
+
+                    ddlState.empty();
+                    ddlState.append('<option value="0">Please select state</option>');
+
+                    $.each(r.d, function (i, item) {
+                        ddlState.append(
+                            $("<option>")
+                                .val(item.Value)
+                                .text(item.Text)
+                        );
+                    });
+
+                    if (typeof callback === "function")
+                        callback();
+                },
+
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+
+        function OpenAddAddressModal() {
+            var userId = $('[id$=MasterhdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("Please login to add an address.");
+                $('#addPass').modal('hide');
+                OpenLogin();
+                return false;
+            }
+
+            ClearAddAddressForm();
+            LoadAddrStateDropdown();
+            $('#addAddressModal').modal('show');
+            return false;
+        }
+
+        function ClearAddAddressForm() {
+            $('#hdnAddrContactId').val('0');
+            $('#txtAddrName, #txtAddrMobile, #txtAddrBuilding, #txtAddrPincode').val('').css('border', '1px solid #ccc');
+            $('#ddlAddrState').val('0').css('border', '1px solid #ccc');
+            $('#ddlAddrCity').empty().append('<option selected="selected" value="0">Please select city</option>').css('border', '1px solid #ccc');
+            $('#ddlAddrLocality').empty().append('<option selected="selected" value="0">Please select locality</option>').css('border', '1px solid #ccc');
+            $('#addrModalTitle').text('Add an address or pick-up point');
+            $('#btnSaveAddress').text('Save Address');
+        }
+
+        function OpenEditAddressModal(elem) {
+            var userId = $('[id$=MasterhdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("Please login to edit an address.");
+                $('#addPass').modal('hide');
+                OpenLogin();
+                return false;
+            }
+
+            var $elem = $(elem);
+            $('#hdnAddrContactId').val($elem.attr('data-id'));
+            $('#txtAddrName').val($elem.attr('data-name'));
+            $('#txtAddrMobile').val($elem.attr('data-mobile'));
+            $('#txtAddrBuilding').val($elem.attr('data-building'));
+            $('#txtAddrPincode').val($elem.attr('data-pincode'));
+
+            // Store edit values to set after dropdowns load
+            var editLocality = $elem.attr('data-locality') || '';
+            var editCity = $elem.attr('data-city') || '';
+            var editState = $elem.attr('data-state') || '';
+
+            $('#txtAddrName, #txtAddrMobile, #txtAddrBuilding, #txtAddrPincode').css('border', '1px solid #ccc');
+            $('#ddlAddrState, #ddlAddrCity, #ddlAddrLocality').css('border', '1px solid #ccc');
+
+            // Load states first, then cascade to match saved values
+            LoadAddrStateDropdown(function () {
+                // Try to match state by text
+                var stateMatched = false;
+                $('#ddlAddrState option').each(function () {
+                    if ($(this).text().trim().toLowerCase() === editState.trim().toLowerCase()) {
+                        $('#ddlAddrState').val($(this).val());
+                        stateMatched = true;
+                        return false;
+                    }
+                });
+
+                if (stateMatched && $('#ddlAddrState').val() !== '0') {
+                    // Load cities for the selected state, then match city
+                    $.ajax({
+                        type: "POST",
+                        url: appURL + "Front/index.aspx/GetCityMasterByStateID",
+                        data: JSON.stringify({ stateID: parseInt($('#ddlAddrState').val()) }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            var ddlCity = $('#ddlAddrCity');
+                            ddlCity.empty().append('<option selected="selected" value="0">Please select city</option>');
+                            $.each(r.d, function () {
+                                ddlCity.append($('<option></option>').val(this['Value']).html(this['Text']));
+                            });
+                            // Match city by text
+                            ddlCity.find('option').each(function () {
+                                if ($(this).text().trim().toLowerCase() === editCity.trim().toLowerCase()) {
+                                    ddlCity.val($(this).val());
+                                    return false;
+                                }
+                            });
+                            // If city matched, load localities
+                            if (ddlCity.val() !== '0') {
+                                $.ajax({
+                                    type: "POST",
+                                    url: appURL + "Front/index.aspx/GetAreaMasterByCityID",
+                                    data: JSON.stringify({ CityID: parseInt(ddlCity.val()) }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (r2) {
+                                        var ddlLoc = $('#ddlAddrLocality');
+                                        ddlLoc.empty().append('<option selected="selected" value="0">Please select locality</option>');
+                                        $.each(r2.d, function () {
+                                            ddlLoc.append($('<option></option>').val(this['Value']).html(this['Text']));
+                                        });
+                                        // Match locality by text
+                                        ddlLoc.find('option').each(function () {
+                                            if ($(this).text().trim().toLowerCase() === editLocality.trim().toLowerCase()) {
+                                                ddlLoc.val($(this).val());
+                                                return false;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#addrModalTitle').text('Edit Address');
+$('#btnSaveAddress').text('Update Address');
+
+            $('#addAddressModal').modal('show');
+            return false;
+        }
+
+        function resetModalElement(selector) {
+            var $modal = $(selector);
+            $modal.removeClass('in show').css('display', 'none').attr('aria-hidden', 'true');
+            var modalData = $modal.data('bs.modal');
+            if (modalData) {
+                modalData.isShown = false;
+                modalData.$backdrop = null;
+            }
+        }
+
+        function cleanupModalBackdrops(forceAll) {
+            if (forceAll) {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open').css({ overflow: '', paddingRight: '' });
+                return;
+            }
+
+            var openModalCount = $('.modal.in, .modal.show').filter(function () {
+                return $(this).css('display') === 'block';
+            }).length;
+            var $backdrops = $('.modal-backdrop');
+
+            if (openModalCount === 0) {
+                $backdrops.remove();
+                $('body').removeClass('modal-open').css({ overflow: '', paddingRight: '' });
+            } else if ($backdrops.length > openModalCount) {
+                $backdrops.slice(0, $backdrops.length - openModalCount).remove();
+            }
+        }
+
+        function closeAddressModalAndShowLocation(userId) {
+            resetModalElement('#addAddressModal');
+            resetModalElement('#addPass');
+            cleanupModalBackdrops(true);
+
+            if (userId && userId !== "0") {
+                LoadUserAddresses(userId);
+            }
+
+            setTimeout(function () {
+                cleanupModalBackdrops(true);
+                $('#addPass').modal('show');
+            }, 50);
+        }
+
+        function ValidateAddAddressForm() {
+            var isValid = true;
+            var textFields = [
+                { id: '#txtAddrName', label: 'Full Name' },
+                { id: '#txtAddrMobile', label: 'Mobile' },
+                { id: '#txtAddrBuilding', label: 'House / Building' },
+                { id: '#txtAddrPincode', label: 'Pincode' }
+            ];
+
+            textFields.forEach(function (field) {
+                var value = $(field.id).val().trim();
+                if (value === "") {
+                    isValid = false;
+                    $(field.id).css('border', '1px solid red');
+                } else {
+                    $(field.id).css('border', '1px solid #ccc');
+                }
+            });
+
+            // Validate dropdowns
+            var ddlFields = [
+                { id: '#ddlAddrState', label: 'State' },
+                { id: '#ddlAddrCity', label: 'City' },
+                { id: '#ddlAddrLocality', label: 'Locality' }
+            ];
+
+            ddlFields.forEach(function (field) {
+                var value = $(field.id).val();
+                if (!value || value === "0") {
+                    isValid = false;
+                    $(field.id).css('border', '1px solid red');
+                } else {
+                    $(field.id).css('border', '1px solid #ccc');
+                }
+            });
+
+            if (!isValid) {
+                alert("Please fill all required fields.");
+                return false;
+            }
+
+            var mobile = $('#txtAddrMobile').val().trim();
+            if (!/^\d{10}$/.test(mobile)) {
+                $('#txtAddrMobile').css('border', '1px solid red');
+                alert("Please enter a valid 10-digit mobile number.");
+                return false;
+            }
+
+            var pincode = $('#txtAddrPincode').val().trim();
+            if (!/^\d{6}$/.test(pincode)) {
+                $('#txtAddrPincode').css('border', '1px solid red');
+                alert("Please enter a valid 6-digit pincode.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function SaveNewAddress() {
+            if (!ValidateAddAddressForm()) {
+                return false;
+            }
+
+            var userId = $('[id$=MasterhdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("Please login to save address.");
+                $('#addAddressModal').data('skipReturn', true);
+                $('#addAddressModal').modal('hide');
+                $('#addPass').modal('hide');
+                cleanupModalBackdrops();
+                OpenLogin();
+                return false;
+            }
+
+            var contactId = $('#hdnAddrContactId').val();
+            var isEdit = (contactId && contactId !== "0");
+
+            var url = appURL + "Front/index.aspx/" + (isEdit ? "UpdateAddress" : "AddNewAddress");
+            var postData = {
+                UserId: userId,
+                Name: $('#txtAddrName').val().trim(),
+                Mobile: $('#txtAddrMobile').val().trim(),
+                Building: $('#txtAddrBuilding').val().trim(),
+                Locality: $('#ddlAddrLocality option:selected').text(),
+                City: $('#ddlAddrCity option:selected').text(),
+                State: $('#ddlAddrState option:selected').text(),
+                Pincode: $('#txtAddrPincode').val().trim()
+            };
+            if (isEdit) {
+                postData.ContactId = contactId;
+            }
+
+            $('#btnSaveAddress').prop('disabled', true).text(isEdit ? 'Updating...' : 'Saving...');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: JSON.stringify(postData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var responseVal = parseInt(result.d, 10);
+                    if (responseVal > 0) {
+                        ClearAddAddressForm();
+                        closeAddressModalAndShowLocation(userId);
+                    } else {
+                        alert(isEdit ? "Unable to update address. It may already exist." : "This address already exists.");
+                    }
+                },
+                error: function (response) {
+                    alert("Unable to save address. Please try again.");
+                },
+                complete: function () {
+                    $('#btnSaveAddress').prop('disabled', false).text(isEdit ? 'Update Address' : 'Save Address');
+                }
+            });
+
+            return false;
         }
     </script>
 
@@ -407,6 +749,94 @@ function updateNotification(){
                     $(this).toggleClass('open');
                 }
             );
+
+            $('#addPass').on('show.bs.modal', function () {
+                var userId = $('[id$=MasterhdnUserId]').val();
+                if (userId && userId !== "0") {
+                    LoadUserAddresses(userId);
+                }
+            });
+
+            $('#addAddressModal').on('hidden.bs.modal', function () {
+                if ($('#addAddressModal').data('skipReturn')) {
+                    $('#addAddressModal').removeData('skipReturn');
+                    cleanupModalBackdrops(true);
+                    return;
+                }
+
+                setTimeout(function () {
+                    cleanupModalBackdrops(false);
+                    var userId = $('[id$=MasterhdnUserId]').val();
+                    if (userId && userId !== "0") {
+                        LoadUserAddresses(userId);
+                    }
+                }, 150);
+            });
+
+            $('#addPass').on('hidden.bs.modal', function () {
+                cleanupModalBackdrops(true);
+            });
+
+            // Delegate change events for dynamically created dropdown options
+            // (using document-level delegation since dropdowns are inside a modal)
+
+            // State change → load cities
+            $('#ddlAddrState').change(function () {
+                var stateID = $(this).val();
+                var ddlCity = $('#ddlAddrCity');
+                var ddlLocality = $('#ddlAddrLocality');
+                ddlCity.empty().append('<option selected="selected" value="0">Please select city</option>');
+                ddlLocality.empty().append('<option selected="selected" value="0">Please select locality</option>');
+                $('#txtAddrPincode').val('');
+
+                if (stateID && stateID !== "0") {
+                    $.ajax({
+                        type: "POST",
+                        url: appURL + "Front/index.aspx/GetCityMasterByStateID",
+                        data: JSON.stringify({ stateID: parseInt(stateID) }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            $.each(r.d, function () {
+                                ddlCity.append($('<option></option>').val(this['Value']).html(this['Text']));
+                            });
+                        }
+                    });
+                }
+            });
+
+            // City change → load localities/areas
+            $('#ddlAddrCity').change(function () {
+                var cityID = $(this).val();
+                var ddlLocality = $('#ddlAddrLocality');
+                ddlLocality.empty().append('<option selected="selected" value="0">Please select locality</option>');
+                $('#txtAddrPincode').val('');
+
+                if (cityID && cityID !== "0") {
+                    $.ajax({
+                        type: "POST",
+                        url: appURL + "Front/index.aspx/GetAreaMasterByCityID",
+                        data: JSON.stringify({ CityID: parseInt(cityID) }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (r) {
+                            $.each(r.d, function () {
+                                ddlLocality.append($('<option></option>').val(this['Value']).html(this['Text']));
+                            });
+                        }
+                    });
+                }
+            });
+
+            // Locality change → auto-fill pincode
+            $('#ddlAddrLocality').change(function () {
+                var pincode = $(this).val();
+                if (pincode && pincode !== "0") {
+                    $('#txtAddrPincode').val(pincode);
+                } else {
+                    $('#txtAddrPincode').val('');
+                }
+            });
         });
 
         $(document).ready(function () {
@@ -468,7 +898,6 @@ $("#bookingModal").on("hidden.bs.modal", function () {
         });
         //var j = jQuery.noConflict();
         function OpenLogin() {
-            debugger;
             closeNav();
             //j('#myModal').modal('show');
             jQuery.noConflict();
@@ -479,8 +908,20 @@ $("#bookingModal").on("hidden.bs.modal", function () {
 
         function lnkLogout_ClickNew() {
             sessionStorage.clear();
-            window.open(appURL + "Front/Index.aspx");
-            //window.open(appURL + "/Front/Index.aspx");
+            $.ajax({
+                type: "POST",
+                url: appURL + "Front/index.aspx/Logout",
+                data: JSON.stringify({ TestId: "0" }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    window.location.href = appURL + "Front/Index.aspx";
+                },
+                error: function (data) {
+                    window.location.href = appURL + "Front/Index.aspx";
+                }
+            });
+            return false;
         }
 
 
@@ -988,6 +1429,14 @@ margin-left: 0px;                    font-size: 13px;
 }
 
 
+   #addAddressModal {
+       z-index: 1060;
+   }
+
+   #addAddressModal .modal-dialog {
+       z-index: 1061;
+   }
+
    .location-box {
        border: 1px solid #ddd;
        border-radius: 10px;
@@ -1098,6 +1547,48 @@ margin-left: 0px;                    font-size: 13px;
 
     margin-left:8px;
 }
+   .address-form-group {
+       margin-bottom: 10px;
+   }
+
+   .address-form-group label {
+       font-size: 13px;
+       color: #555;
+       margin-bottom: 4px;
+       display: block;
+   }
+
+   .address-form-group input {
+       width: 100%;
+       padding: 8px 10px;
+       border: 1px solid #ccc;
+       border-radius: 6px;
+       font-size: 14px;
+   }
+
+   .address-form-actions {
+       margin-top: 15px;
+       display: flex;
+       gap: 10px;
+   }
+
+   .btn-save-address {
+       background-color: #F6861F;
+       color: #fff;
+       border: none;
+       padding: 8px 16px;
+       border-radius: 6px;
+       flex: 1;
+   }
+
+   .btn-cancel-address {
+       background-color: #fff;
+       color: #555;
+       border: 1px solid #ccc;
+       padding: 8px 16px;
+       border-radius: 6px;
+       flex: 1;
+   }
     </style>
     <script>
         function AddToCart(ItemId) {
@@ -1245,13 +1736,13 @@ Address</a></div>
 </div>
 
             <div class="login-buttons d-flex ms-3 gap-2">
-                <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
+                <a  class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
                 <%--<a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>--%>
                 
                 <%--If LoggedIn user contains OrgId--%>
                 <div id="SellerDashboard" style="display:none;">
-                    <a href="../Pages/UserDashboard.aspx" target="_blank" class="btn btn-seller btn-sm">Seller</a>
+                    <a href="../Pages/UserDashboard.aspx"  class="btn btn-seller btn-sm">Seller</a>
                 </div>
 
                   <!-- LOGGED IN USER -->
@@ -1307,7 +1798,7 @@ Address</a></div>
             <div class="d-lg-none mt-3 d-flex flex-column gap-2">
 
                
-                <a target="_blank" class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
+                <a  class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
 
                         <div class="btn btn-admin btn-sm"> <a href="#" class="btn btn-admin btn-sm" data-toggle="modal" data-target="#addPass";>
        <i class="bi bi-geo-alt"></i> 
@@ -1825,41 +2316,12 @@ Address</a></div>
           Select a delivery location to see product availability and delivery options
         </p>
 
-        <!-- ADDRESS 1 (Active) -->
-        <div class="location-box active">
-          <div class="location-name">Vikas sharma</div>
-          <div class="location-address">
-            House no. D-7, Plot No. 33M Sai ocean apartment, rajender nagar sector 5,
-            GHAZIABAD UTTAR PRADESH 201005
-          </div>
-          <div class="default-tag">Default address</div>
-        </div>
-
-        <!-- ADDRESS 2 -->
-        <div class="location-box">
-          <div class="location-name">Bal Krishan suvedi</div>
-          <div class="location-address">
-            Old quarters 8/9 Moti Lal Nehru school of sports (Rai),
-            RAI INDUSTRIAL AREA HARYANA 131029
-          </div>
-        </div>
-
-
-        <!-- ADDRESS 3 -->
-        <div class="location-box">
-          <div class="location-name">Kulwansh Sharma</div>
-          <div class="location-address">
-            VPO chhattar Teh Fatehpur district kangra, Rehan
-            HIMACHAL PRADESH 176022
-          </div>
-        </div>
-
-   
+        <div id="divUserAddresses" runat="server"></div>
 
         <!-- FOOTER LINKS -->
         <div class="bottom-links">
           <a href="#">See all</a>
-          <a href="#">Add an address or pick-up point</a>
+          <a href="#" onclick="return OpenAddAddressModal();">Add an address or pick-up point</a>
         </div>
 
       </div>
@@ -1868,10 +2330,65 @@ Address</a></div>
   </div>
 </div>
 
+        <!-------------add address modal----------------->
 
+<div class="modal fade" id="addAddressModal" role="dialog" style="top: 10%;" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content LoginPanel">
 
+      <div class="modal-header">
+        <span class="modal-title-custom" id="addrModalTitle">Add an address or pick-up point</span>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
 
+      <div class="modal-body">
+        <input type="hidden" id="hdnAddrContactId" value="0" />
+        <div class="row">
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrName">Full Name</label>
+            <input type="text" id="txtAddrName" maxlength="50" placeholder="Full Name" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrMobile">Mobile</label>
+            <input type="text" id="txtAddrMobile" maxlength="10" placeholder="Mobile Number" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrBuilding">House / Building</label>
+            <input type="text" id="txtAddrBuilding" maxlength="50" placeholder="House Number / Building / Apartment" />
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="ddlAddrState">State</label>
+            <select id="ddlAddrState" class="form-control">
+              <option selected="selected" value="0">Please select state</option>
+            </select>
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="ddlAddrCity">City</label>
+            <select id="ddlAddrCity" class="form-control">
+              <option selected="selected" value="0">Please select city</option>
+            </select>
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="ddlAddrLocality">Locality / Area</label>
+            <select id="ddlAddrLocality" class="form-control">
+              <option selected="selected" value="0">Please select locality</option>
+            </select>
+          </div>
+          <div class="col-md-6 address-form-group">
+            <label for="txtAddrPincode">Pincode</label>
+            <input type="text" id="txtAddrPincode" maxlength="6" placeholder="Pincode" readonly="readonly" style="background-color:#f5f5f5;" />
+          </div>
+        </div>
 
+        <div class="address-form-actions">
+          <button type="button" class="btn-cancel-address" data-dismiss="modal">Cancel</button>
+          <button type="button" id="btnSaveAddress" class="btn-save-address" onclick="return SaveNewAddress();">Save Address</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
         <!-------------forgot pass modal----------------->
 <div class="modal fade" id="forgotPass" role="dialog" style="top: 10%;">
@@ -2427,6 +2944,5 @@ function sendOtp() {
 </div>
 <!-- Bookings notification -->
     </form>
-    <script src="../Js/bootstrap.min.js"></script>
 </body>
 </html>

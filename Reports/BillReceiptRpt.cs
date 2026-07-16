@@ -16,9 +16,9 @@ namespace WSBillingMaster.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class BillReceipt : ReportClass {
+    public class BillReceiptRpt : ReportClass {
         
-        public BillReceipt() {
+        public BillReceiptRpt() {
         }
         
         public override string ResourceName {
@@ -90,9 +90,9 @@ namespace WSBillingMaster.Reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedBillReceipt : Component, ICachedReport {
+    public class CachedBillReceiptRpt : Component, ICachedReport {
         
-        public CachedBillReceipt() {
+        public CachedBillReceiptRpt() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace WSBillingMaster.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            BillReceipt rpt = new BillReceipt();
+            BillReceiptRpt rpt = new BillReceiptRpt();
             rpt.Site = this.Site;
             return rpt;
         }
