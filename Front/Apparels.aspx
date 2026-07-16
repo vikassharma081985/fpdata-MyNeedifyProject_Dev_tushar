@@ -1,0 +1,974 @@
+﻿
+ <%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="FaduPrice.Front.index" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <!-- Add Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+
+<!-- Add FontAwesome for icons (optional) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+
+    <script>
+        $(document).ready(function () {
+
+            // PRICE SLIDER
+            $('#ex1').slider({
+                formatter: function (value) {
+                    $('[id$=hdnSearchByPrice]').val(value);
+                    SetSearchData();
+                    return 'Rs. : ' + value;
+                }
+            });
+
+        });
+
+        // SIZE CLICK
+        function SelectSize(ctrl) {
+            $(ctrl).toggleClass('SelectedSize');
+            SetSearchData();
+        }
+
+        // COLOR CLICK
+        function SelectColor(ctrl) {
+            $(ctrl).toggleClass('SelectedColor');
+            SetSearchData();
+        }
+
+        function SetSearchData() {
+
+            var SelectedSize = [];
+            var SelectedColor = [];
+
+            // ✅ GET SELECTED SIZE
+            $('.SelectedSize input[type=hidden]').each(function () {
+                SelectedSize.push($(this).val());
+            });
+
+            // ✅ GET SELECTED COLOR
+            $('.SelectedColor input[type=hidden]').each(function () {
+                SelectedColor.push($(this).val());
+            });
+
+            // CONVERT TO STRING
+            SelectedSize = SelectedSize.join(',');
+            SelectedColor = SelectedColor.join(',');
+
+            // SET HIDDEN FIELDS (IMPORTANT)
+            $('[id$=hdnSearchBySize]').val(SelectedSize);
+            $('[id$=hdnSearchByColor]').val(SelectedColor);
+
+            var SearchText = $('[id$=hdnSearchText]').val();
+            var SubSubCategory = $('[id$=hdnSubSubCategory]').val();
+            var Price = $('[id$=hdnSearchByPrice]').val();
+            var PriceOrder = $('#sort-field option:selected').val();
+
+            // LOADING (OPTIONAL)
+            $('[id$=divSearchData]').html('<p>Loading...</p>');
+
+            $.ajax({
+                url: "Search.aspx/SearchData",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    SubSubCategory: SubSubCategory,
+                    SearchText: SearchText,
+                    SelectedSize: SelectedSize,
+                    SelectedColor: SelectedColor,
+                    Price: Price,
+                    PriceOrder: PriceOrder
+                }),
+
+                success: function (result) {
+
+                    var data = typeof result.d === "string"
+                        ? JSON.parse(result.d)
+                        : result.d;
+
+                    var html = '';
+
+                    if (data && data.length > 0) {
+
+                        for (var i = 0; i < data.length; i++) {
+
+                            html += '<div class="col-md-3 col-xs-6 col-sm-3" style="margin-bottom:20px;">';
+                            html += '<div style="height:250px;width:100%;">';
+
+                            html += '<a href="https://myneedify.com/Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + '" target="_blank">';
+                            html += '<img class="img-responsive img-thumbnail" style="height:250px;width:100%;" src="http://198.38.88.185:8082/Images/Items/' + data[i].ImageName + '" />';
+                            html += '</a>';
+
+                            html += '<a href="https://myneedify.com/Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + '" target="_blank">';
+                            html += '<span class="ItemName">' + data[i].ItemName + '</span>';
+                            html += '</a>';
+
+                            html += '<div class="ItemPrice"><span><i class="fa fa-inr"></i>' + data[i].OldPrice + '</span></div>';
+                            html += '<div class="ItemPriceOffer"><span><i class="fa fa-inr"></i>' + data[i].ItemPrice + '</span></div>';
+
+                            html += '</div></div>';
+                        }
+
+                        $('[id$=divSearchData]').html(html);
+                        $('[id$=lblTotalCount]').text(data.length);
+
+                    } else {
+                        $('[id$=divSearchData]').html('No products found');
+                        $('[id$=lblTotalCount]').text('0');
+                    }
+                },
+
+                error: function () {
+                    $('[id$=divSearchData]').html('Error loading data');
+                }
+            });
+
+            return false;
+        }
+    </script>
+
+    <script>
+
+
+        $('.carousel').carousel({
+            interval: 1000
+        });
+
+        $(document).ready(function () {
+            $('.MySliderDiv').each(function (index) {
+                if (index == 0) {
+                    $(this).addClass('active');
+                }
+            });
+            $('.MyBullets').each(function (index) {
+                if (index == 0) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+
+    </script>
+    <!-- Include Slick Styles -->
+<link href="/slick/slick.css" rel="stylesheet" />
+<link href="/slick/slick-theme.css" rel="stylesheet" />
+
+
+
+<!-- Responsive CSS -->
+<style>
+    .card:hover{
+    transform:translateY(-3px);
+    transition:0.3s;
+}
+
+.btn-outline-success{
+    border:2px solid #28a745;
+    color:#28a745;
+    background:#fff;
+}
+
+.btn-outline-success:hover{
+    background:#28a745;
+    color:#fff;
+}
+
+.badge{
+    font-size:11px;
+    padding:6px 10px;
+}
+
+    .title{
+        font-size:20px;
+    }
+   /* Responsive Fixes for Item Tiles */
+.Tile img {
+    width: 100%;
+    height: auto;
+}
+
+/* Center item name and price on smaller screens */
+.ItemName, .ItemPrice, .ItemPriceOffer {
+    display: block;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Margin bottom on items */
+.col-md-2.col-xs-6.col-sm-3 {
+    margin-bottom: 20px;
+}
+
+/* Fix padding on mobile */
+@media (max-width: 768px) {
+    .site-header {
+        padding: 15px 20px;
+    }
+
+    .site-header .logo {
+        font-size: 1.5rem;
+    }
+
+    .site-header .nav-links {
+        gap: 15px;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    h2.text-uppercase {
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .ItemName, .ItemPrice, .ItemPriceOffer {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h2.text-uppercase {
+        font-size: 1.1rem;
+    }
+
+    .site-header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .site-header .nav-links {
+        align-items: center;
+    }
+}
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+}
+
+/*For Search Button*/
+    .input-group-btn {
+        padding-bottom: 80px;
+    }
+    /*For Slider CSS*/
+    .carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
+    float: left;
+    max-width: 50%;
+    height: 270px;
+
+    
+}
+    @media (max-width: 768px) {
+  .carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
+    float: left;
+    max-width: 100%;
+    height: 50%;
+}
+
+ .carousel .item span img{
+     display:none;
+ }
+
+    }
+ /*Sahil Code for four icons */
+    .col-3{
+        border:1px solid black;
+        margin-bottom:20px;
+        border-radius:5px;
+    }
+    .sahil{
+        display:flex;
+        column-gap:10px;
+    }
+
+    @media (max-width: 768px){
+        .sahil{
+            display:block;
+            margin-top: 20px;
+        }
+        .col-3{
+         width: 45%;
+        float: left;
+        margin-left: 10px;
+        }
+    }
+
+      .SelectedSize {
+      border: 1px solid #09f;
+  }
+
+  .SelectedColor {
+      border: 1px solid #09f;
+  }
+</style>
+
+  
+    
+    <div class="container">
+
+<div class="container my-4">
+<div class="row">
+
+<!-- MOBILE FILTER BUTTON -->
+<%--<div class="d-lg-none mb-3">
+<button class="btn w-100"
+style="background:#F48B1E;color:white;"
+data-bs-toggle="offcanvas"
+data-bs-target="#mobileFilter">
+
+<i class="fa fa-filter"></i> Filter
+</button>
+</div>--%>
+
+
+<!-- DESKTOP FILTER SIDEBAR -->
+  <!-- sidebar -->
+  <div class="sidebar col-md-2 col-sm-3" style="display:none">
+
+      <strong class="title hidden-xs">Results</strong>
+      <div class="block hidden-xs">
+          <ul class="list-unstyled sub-categories">
+              <li>
+                  <a href="#">
+                      <asp:Label ID="lblResultOf" runat="server" Text="All Results"></asp:Label>
+                  </a>
+              </li>
+
+          </ul>
+      </div>
+
+      <div class="block open-caret">
+          <strong class="title">Size - Numeric</strong>
+          <ul class="list-unstyled set-size">
+              <asp:Repeater runat="server" ID="rptSizeNum">
+                  <ItemTemplate>
+                      <li onclick="SelectSize(this)">
+                          <input type="hidden" id="hdnSizeId" value='<%#Eval("SizeId") %>' />
+                          <label>
+                              <%#Eval("Size") %>
+                          </label>
+                      </li>
+                  </ItemTemplate>
+              </asp:Repeater>
+
+
+          </ul>
+      </div>
+      <div class="block open-caret">
+          <strong class="title">Size - Alpha</strong>
+          <ul class="list-unstyled set-size">
+              <asp:Repeater runat="server" ID="rptSizeAlpha">
+                  <ItemTemplate>
+                      <li onclick="SelectSize(this)">
+                          <input type="hidden" id="hdnSizeId" value='<%#Eval("SizeId") %>' />
+                          <label>
+                              <%#Eval("Size") %>
+                          </label>
+                      </li>
+                  </ItemTemplate>
+              </asp:Repeater>
+          </ul>
+      </div>
+      <div class="block open-caret">
+          <strong class="title">Color</strong>
+          <ul class="list-unstyled color-set">
+              <asp:Repeater runat="server" ID="rptColor">
+                  <ItemTemplate>
+                      <li onclick="SelectColor(this)">
+                          <input type="hidden" id="hdnColorId" value='<%#Eval("ColorId") %>' />
+                          <label style='<%#"background-color:"+Eval("Code") %>'>
+                              <%#Eval("Color") %>
+                          </label>
+                      </li>
+                  </ItemTemplate>
+              </asp:Repeater>
+
+          </ul>
+      </div>
+      <div class="block" id="filter-form-block-05">
+          <strong class="title">Price</strong>
+          <div class="range-slider">
+              <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="50" data-slider-max="30000" data-slider-step="1" data-slider-value="30000" />
+          </div>
+      </div>
+      <div class="block" id="Div1" style="padding: 25px; padding-left: 0px; padding-right: 0px;">
+          <asp:Button ID="btnSearch" runat="server" Style="font-weight: 100; background-color: #7C519B; background-image: none; border: 1px solid  #7C519B;" class="btn btn-primary btn-block" OnClientClick="return SetSearchData();" Text="Search" />
+      </div>
+
+  </div>
+
+
+
+
+<!-- PRODUCT LIST -->
+<div class="col-lg-9 col-md-8">
+
+    <p class="title text-center mb-3">Latest Collection</p>
+
+    <!-- IMPORTANT -->
+    <div class="row g-3" id="divSearchData">
+
+        <asp:Repeater ID="rptWomenCollection" runat="server">
+            <ItemTemplate>
+
+                <div class="col-6 col-md-4 col-lg-3">
+
+                    <div class="product-card border bg-white rounded h-100 position-relative p-2 shadow-sm">
+
+                        <!-- Product Image -->
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+
+                            <img src='<%# "../Images/Items/" + Eval("ImageName") %>'
+                                class="img-fluid w-100 rounded"
+                                alt='<%# Eval("ItemName") %>'
+                                style="height:200px; object-fit:cover;" />
+
+                        </a>
+
+                        <!-- Wishlist -->
+                        <button type="button"
+                            class="btn btn-light border position-absolute top-0 end-0 m-2 rounded-circle">
+
+                            <i class="bi bi-heart"></i>
+
+                        </button>
+
+                        <!-- Product Details -->
+                        <div class="p-2 text-center">
+
+                            <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'
+                                class="text-decoration-none text-dark">
+
+                                <p class="small text-muted mb-1">
+
+                                    <%# Eval("ItemName").ToString().Length > 35 
+                                    ? Eval("ItemName").ToString().Substring(0,35) + "..." 
+                                    : Eval("ItemName") %>
+
+                                </p>
+
+                            </a>
+
+                            <!-- Rating -->
+                            <div class="mb-2">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star text-warning"></i>
+                            </div>
+
+                            <!-- Price -->
+                            <p class="mb-2 fw-bold">
+
+                                ₹ <%# Eval("OfferPrice") %>
+
+                                <span class="text-muted text-decoration-line-through">
+                                    ₹ <%# Eval("ItemPrice") %>
+                                </span>
+
+                            </p>
+
+                            <!-- Buttons -->
+                            <div class="d-flex flex-column flex-md-row gap-2">
+
+                                <button type="button"
+                                    class="btn btn-sm flex-fill"
+                                    style="background-color:#F48B1E;color:#fff;border:none;">
+
+                                    Add to Cart
+
+                                </button>
+
+                                <button type="button"
+                                    class="btn btn-sm flex-fill"
+                                    style="background-color:#8EC243;color:#fff;border:none;">
+
+                                    Buy Now
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </ItemTemplate>
+        </asp:Repeater>
+
+    </div>
+
+    <div id="divWomenCollNoRecord"
+        runat="server"
+        style="padding:15px;border:1px solid #ccc;display:none;">
+
+        No Item Available!
+
+    </div>
+
+</div>
+
+    <div class="container-fluid py-3">
+
+    <div class="row g-3">
+
+        <!-- PRODUCT CARD -->
+        <div class="col-6 col-md-4 col-lg-3">
+
+            <div class="card border-0 shadow-sm rounded-4 position-relative h-100 overflow-hidden">
+
+                <!-- TOP TAG -->
+                <span class="position-absolute top-0 start-0 bg-success text-white px-2 py-1 small rounded-end">
+                    Bought Earlier
+                </span>
+
+                <!-- WISHLIST -->
+                <button class="btn btn-light btn-sm rounded-circle position-absolute top-0 end-0 m-2 shadow-sm">
+                    <i class="bi bi-heart"></i>
+                </button>
+
+                <!-- PRODUCT IMAGE -->
+                <div class="text-center p-2">
+
+                    <img src="https://m.media-amazon.com/images/I/61LtuGzXeaL._SL1500_.jpg"
+"
+                        class="img-fluid"
+                        style="height:150px; object-fit:contain;" />
+
+                </div>
+
+                <!-- PRODUCT DETAILS -->
+                <div class="px-2 pb-2">
+
+                    <!-- TITLE -->
+                    <p class="small fw-semibold mb-1"
+                        style="height:40px; overflow:hidden;">
+
+                                                Dell Wireless Mouse
+
+
+                    </p>
+
+                    <!-- QUANTITY -->
+                    <p class="text-muted small mb-2">
+                        1 ltr
+                    </p>
+
+                    <!-- PRICE + BUTTON -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+
+                        <div>
+
+                            <h5 class="fw-bold mb-0">
+                                ₹69
+                            </h5>
+
+                        </div>
+
+                        <button class="btn btn-outline-success rounded-3 fw-bold px-3">
+
+                            ADD
+
+                            <div style="font-size:10px;">
+                                2 options
+                            </div>
+
+                        </button>
+
+                    </div>
+
+                    <!-- CATEGORY -->
+                    <span class="badge bg-warning text-dark fw-normal">
+                        Mouse
+                    </span>
+
+                    <!-- RATING -->
+                    <div class="mt-2 small text-muted">
+
+                        <span class="text-warning">
+                            ★★★★★
+                        </span>
+
+
+                    </div>
+
+                    <!-- DELIVERY -->
+                    <div class="small text-muted mt-4">
+
+                        <i class="bi bi-clock"></i>
+                        8 mins
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECOND PRODUCT -->
+        <div class="col-6 col-md-4 col-lg-3">
+
+            <div class="card border-0 shadow-sm rounded-4 position-relative h-100 overflow-hidden">
+
+                <button class="btn btn-light btn-sm rounded-circle position-absolute top-0 end-0 m-2 shadow-sm">
+                    <i class="bi bi-heart"></i>
+                </button>
+
+                <div class="text-center p-2">
+
+                    <img src="https://m.media-amazon.com/images/I/61LtuGzXeaL._SL1500_.jpg"
+                        class="img-fluid"
+                        style="height:150px; object-fit:contain;" />
+
+                </div>
+
+                <div class="px-2 pb-2">
+
+                    <p class="small fw-semibold mb-1"
+                        style="height:40px; overflow:hidden;">
+
+                        Dell Wireless Mouse
+
+                    </p>
+
+                    <p class="text-muted small mb-2">
+                        1 ltr
+                    </p>
+
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+
+                        <h5 class="fw-bold mb-0">
+                            ₹69
+                        </h5>
+
+                        <button class="btn btn-outline-success rounded-3 fw-bold px-3">
+
+                            ADD
+
+                            <div style="font-size:10px;">
+                                2 options
+                            </div>
+
+                        </button>
+
+                    </div>
+
+                    <span class="badge bg-warning text-dark fw-normal">
+                        Mouse
+                    </span>
+
+                    <div class="mt-2 small text-muted">
+
+                        <span class="text-warning">
+                            ★★★★★
+                        </span>
+
+
+                    </div>
+
+                    <div class="small text-muted mt-4">
+
+                        <i class="bi bi-clock"></i>
+                        8 mins
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- MOBILE FILTER OFFCANVAS -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileFilter">
+
+<div class="offcanvas-header">
+<h5 class="offcanvas-title">Filters</h5>
+<button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+</div>
+
+<div class="offcanvas-body">
+
+<!-- Price -->
+<div class="mb-3">
+<h6 class="fw-bold">Price</h6>
+<input type="range" class="form-range" min="100" max="5000">
+
+<div class="d-flex justify-content-between small">
+<span>₹100</span>
+<span>₹5000</span>
+</div>
+</div>
+
+
+<!-- Color -->
+<div class="mb-3">
+<h6 class="fw-bold">Color</h6>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Red</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Blue</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Black</label>
+</div>
+
+</div>
+
+
+<!-- Size -->
+<div class="mb-3">
+<h6 class="fw-bold">Size</h6>
+
+<div class="d-flex flex-wrap gap-2">
+<button class="btn btn-outline-secondary btn-sm">S</button>
+<button class="btn btn-outline-secondary btn-sm">M</button>
+<button class="btn btn-outline-secondary btn-sm">L</button>
+<button class="btn btn-outline-secondary btn-sm">XL</button>
+</div>
+
+</div>
+
+
+<!-- Category -->
+<div class="mb-3">
+<h6 class="fw-bold">Category</h6>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Kurti</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Saree</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox">
+<label class="form-check-label">Dress</label>
+</div>
+
+</div>
+
+
+<button class="btn w-100"
+style="background:#F48B1E;color:white;">
+Apply Filter
+</button>
+
+</div>
+</div>
+        </div>
+
+<!-- Sahil Code for four icons Section Complete -->
+
+
+<!-- Carousel Section (Use Bootstrap Carousel if JS is added) -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: -10px; display:none">
+    <ol class="carousel-indicators">
+        <asp:Literal runat="server" ID="litBullets"></asp:Literal>
+    </ol>
+
+    <div class="carousel-inner"> <asp:Repeater ID="rptSlider" runat="server"> <ItemTemplate> 
+        <div id="SliderItem" class="item MySliderDiv"> 
+        <a href="https://www.example.com" target="_blank"> 
+         <img src="../Images/Slider/1_003.jpg" />
+            <span><img src="../Images/Slider/1_003.jpg" style="max-width: 50%;height: 270px;" /></span>
+        </a> </div>
+            </ItemTemplate>
+        </asp:Repeater>
+    </div>
+</div>
+
+
+
+
+<!-- WOMEN COLLECTION -->
+
+<section class="regular slider" style="display:none">
+            <asp:Repeater ID="rptWomenCollection1" runat="server">
+                <ItemTemplate>
+                    <div class="col-md-2 col-xs-6 col-sm-3">
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+                            <div class="Tile">
+                                <img class="img-responsive img-thumbnail" src='<%# "../Images/Items/" + Eval("ImageName") %>' />
+                            </div>
+                        </a>
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+                            <span class="ItemName"><%# Eval("ItemName").ToString().Length > 35 ? Eval("ItemName").ToString().Substring(0, 35) + "..." : Eval("ItemName") %></span>
+                        </a>
+                        <div class="ItemPrice">
+                            <span><i class="fa fa-inr"></i> <%# Eval("OfferPrice") %></span>
+                        </div>
+                        <div class="ItemPriceOffer">
+                            <span><i class="fa fa-inr"></i> <%# Eval("ItemPrice") %></span>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
+        </section>
+
+
+
+<!-- MEN COLLECTION -->
+<div class="container-fluid" style="visibility:hidden; display:none">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-uppercase">MEN COLLECTIONS</h2>
+        </div>
+
+        <section class="regular slider">
+            <asp:Repeater ID="rptMenCollection" runat="server">
+                <ItemTemplate>
+                    <div class="col-md-2 col-xs-6 col-sm-3">
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+                            <div class="Tile">
+                                <img class="img-responsive img-thumbnail" src='<%# "../Images/Items/" + Eval("ImageName") %>' />
+                            </div>
+                        </a>
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+                            <span class="ItemName"><%# Eval("ItemName").ToString().Length > 35 ? Eval("ItemName").ToString().Substring(0, 35) + "..." : Eval("ItemName") %></span>
+                        </a>
+                        <div class="ItemPrice">
+                            <span><i class="fa fa-inr"></i> <%# Eval("OfferPrice") %></span>
+                        </div>
+                        <div class="ItemPriceOffer">
+                            <span><i class="fa fa-inr"></i> <%# Eval("ItemPrice") %></span>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
+        </section>
+
+        <div id="divMenCollNoRecord" runat="server" style="padding: 15px; border: 1px solid #ccc;">
+            No Item Available!
+        </div>
+    </div>
+</div>
+
+<!-- ELECTRONIC APPLIANCES -->
+<div class="container-fluid" style="visibility:hidden; display:none">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-uppercase">Electronic Appliances</h2>
+        </div>
+
+        <section class="regular slider">
+            <asp:Repeater ID="rptElectronics" runat="server">
+                <ItemTemplate>
+                    <div class="col-md-2 col-xs-6 col-sm-3">
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>' target="_blank">
+                            <div class="Tile">
+                                <img class="img-responsive img-thumbnail" src='<%# "../Images/Items/" + Eval("ImageName") %>' />
+                            </div>
+                        </a>
+                        <a href='<%# "/Front/ItemDescription.aspx?ItemId=" + Eval("ItemId") %>' target="_blank">
+                            <span class="ItemName"><%# Eval("ItemName").ToString().Length > 35 ? Eval("ItemName").ToString().Substring(0, 35) + "..." : Eval("ItemName") %></span>
+                        </a>
+                        <div class="ItemPrice">
+                            <span><i class="fa fa-inr"></i> <%# Eval("OfferPrice") %></span>
+                        </div>
+                        <div class="ItemPriceOffer">
+                            <span><i class="fa fa-inr"></i> <%# Eval("ItemPrice") %></span>
+                        </div>
+                        <div class="ItemPriceOffer">
+                            <span style="color: #7C519B"><%# Eval("Discount") %></span>
+                        </div>
+                    </div>
+                </ItemTemplate>
+            </asp:Repeater>
+        </section>
+
+        <div id="divElectronicsNoRecord" runat="server" style="padding: 15px; border: 1px solid #ccc;">
+            No Item Available!
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/slick/slick.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.regular.slider').slick({
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: true
+                    }
+
+
+
+
+                        < script >
+                        $(document).ready(function () {
+                            $('.regular.slider').slick({
+                                dots: true,
+                                infinite: false,
+                                speed: 300,
+                                slidesToShow: 4,
+                                slidesToScroll: 4,
+                                responsive: [
+                                    {
+                                        breakpoint: 1024,
+                                        settings: {
+                                            slidesToShow: 3,
+                                            slidesToScroll: 3,
+                                            infinite: true,
+                                            dots: true
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 768,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 480,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll: 1
+                                        }
+                                    }
+                                ]
+                            });
+                        });
+</script>
+
+
+</asp:Content>
+
+

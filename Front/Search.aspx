@@ -81,11 +81,11 @@
                         for (var i = 0; i < data.length; i++) {
                             html += '<div class="col-md-3 col-xs-6 col-sm-3" style="margin-bottom: 20px;">';
                             html += '<div style="height: 250px !important; width: 100%;">';
-                            html += '<a href="https://myneedify.com//Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + '"  target="_blank" >';
+                            html += '<a href="https://myneedify.com//Front/ItemDescription.aspx?ItemId=' + data[i].ItemId + ' >';
                             html += '<div class="Tile">';
                             html += ' <img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="../Images/Items/' + data[i].ImageName + '" />';
                             html += '</div>';
-                            html += '</a> <a href="ItemDescription.aspx?ItemId=' + data[i].ItemId + '"  target="_blank">';
+                            html += '</a> <a href="ItemDescription.aspx?ItemId=' + data[i].ItemId + '>';
                             html += ' <span class="ItemName">' + data[i].ItemName + '</span>';
                             html += '</a> <div class="ItemPrice">';
                             html += ' <span><i class="fa fa-inr"></i>' + data[i].OldPrice + '</span>';
@@ -242,14 +242,14 @@
                             <div class="col-md-3 col-xs-6 col-sm-3" style="margin-bottom: 20px;">
                                 <div style="height: 250px !important; width: 100%;">
 
-                                    <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                    <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" >
                                         <div class="Tile">
                                             <%--<img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"https://myneedify.com//Images/Items/"+Eval("ImageName") %>" />--%>
                                             <img class="img-responsive img-thumbnail" alt="Img" style="height: 250px !important; width: 100%;" src="<%#"https://myneedify.com/Images/Items/"+Eval("ImageName") %>" />
                                         </div>
                                     </a>
 
-                                    <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" target="_blank">
+                                    <a href="<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>" >
                                         <span class="ItemName"><%#Eval("ItemName") %></span>
                                     </a>
 

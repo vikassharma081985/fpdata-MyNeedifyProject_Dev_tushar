@@ -456,6 +456,7 @@ margin-top: 0px;
                                 <th class="GridViewHeaderStyle" scope="col" style="text-align: center; font-size: 13px; width: 100px;">Qty</th>
                                 <th class="GridViewHeaderStyle" scope="col" style="text-align: center; font-size: 13px; width: 200px;">Amount</th>
                                 <th class="GridViewHeaderStyle" scope="col" style="text-align: center; font-size: 13px; width: 200px;">Total</th>
+                                <th class="GridViewHeaderStyle" scope="col" style="text-align: center; font-size: 13px; width: 200px;">Available Stock</th>
                             </tr>
                         </table>
                     <div id="divDiscountsection" style="text-align: right; margin-top: 10px; display: visible;">
@@ -743,6 +744,7 @@ margin-top: 0px;
 
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold;display:none"><span   id="txtFreight">' + Data[0]["Freight"] + '</span></td>';
                             mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold;display:none"><span   id="txtMisc">' + Data[0]["Misc"] + '</span></td>';
+                            mydata += '<td class="GridViewLabItemStyle" align="left" style="font-size:14px;text-align:center;font-weight:bold;"><span   id="txtStock">' + Data[0]["Stock"] + '</span></td>';
 
 
 

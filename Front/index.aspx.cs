@@ -1,8 +1,9 @@
-﻿using BLL;
+using BLL;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
@@ -188,7 +189,7 @@ namespace FaduPrice.Front
             }
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string RemoveCartItem(string CartId)
         {
@@ -201,7 +202,7 @@ namespace FaduPrice.Front
             }
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string Logout(string TestId)
         {
@@ -250,6 +251,192 @@ namespace FaduPrice.Front
                         notificationHtml = "<span class=\"dropdown-item text-muted\">No notifications</span>";
                     }
                     return notificationHtml;
+                }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GetAddressData(string UserId)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.IntUserId = Convert.ToInt32(UserId);
+
+                using (DataTable dt = objBll.GetUserAddressV1())
+                {
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        int count = 0;
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string contactId = Convert.ToString(row["ContactId"]);
+                            string mobile = Convert.ToString(row["Mobile"]);
+                            string name = Convert.ToString(row["Name"]);
+                            string building = Convert.ToString(row["Building"]);
+                            string locality = Convert.ToString(row["Locality"]);
+                            string city = Convert.ToString(row["City"]);
+                            string state = Convert.ToString(row["State"]);
+                            string pincode = Convert.ToString(row["Pincode"]);
+
+                            string activeClass = count == 0 ? "active" : "";
+
+                            sb.Append($@"
+                    <div class='location-box {activeClass}'>
+                        <div style='display: flex; justify-content: space-between; align-items: center;'>
+                            <div class='location-name'>{name}</div>
+                            <a href='#' class='edit-address-link' style='color: #7C519B; font-weight: bold; font-size: 12px;'
+                               data-id='{contactId}'
+                               data-name='{System.Web.HttpUtility.HtmlAttributeEncode(name)}'
+                               data-mobile='{System.Web.HttpUtility.HtmlAttributeEncode(mobile)}'
+                               data-building='{System.Web.HttpUtility.HtmlAttributeEncode(building)}'
+                               data-locality='{System.Web.HttpUtility.HtmlAttributeEncode(locality)}'
+                               data-city='{System.Web.HttpUtility.HtmlAttributeEncode(city)}'
+                               data-state='{System.Web.HttpUtility.HtmlAttributeEncode(state)}'
+                               data-pincode='{System.Web.HttpUtility.HtmlAttributeEncode(pincode)}'
+                               onclick='event.stopPropagation(); OpenEditAddressModal(this); return false;'>
+                                <i class='fa fa-edit'></i> Edit
+                            </a>
+                        </div>
+
+                        <div class='location-address'>
+                            {building}, {locality}, {city},
+                            {state} - {pincode}
+                        </div>");
+
+                            if (count == 0)
+                            {
+                                sb.Append("<div class='default-tag'>Default address</div>");
+                            }
+
+                            sb.Append("</div>");
+
+                            count++;
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(@"
+                <div class='text-center' style='padding:20px;'>
+                    No address found
+                </div>");
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string AddNewAddress(string UserId, string Name, string Mobile, string Building, string Locality, string City, string State, string Pincode)
+        {
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.IntUserId = Convert.ToInt32(UserId);
+                objBll.Name = Name;
+                objBll.Mobile = Mobile;
+                objBll.Building = Building;
+                objBll.Locality = Locality;
+                objBll.City = City;
+                objBll.State = State;
+                objBll.Pincode = Pincode;
+
+                return objBll.AddNewAddress().ToString();
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string UpdateAddress(string ContactId, string UserId, string Name, string Mobile, string Building, string Locality, string City, string State, string Pincode)
+        {
+            using (BusinessLogicLayer objBll = new BusinessLogicLayer())
+            {
+                objBll.ContactId = Convert.ToInt32(ContactId);
+                objBll.IntUserId = Convert.ToInt32(UserId);
+                objBll.Name = Name;
+                objBll.Mobile = Mobile;
+                objBll.Building = Building;
+                objBll.Locality = Locality;
+                objBll.City = City;
+                objBll.State = State;
+                objBll.Pincode = Pincode;
+
+                return objBll.UpdateAddress().ToString();
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static List<ListItem> GetStateMaster()
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                using (DataTable dt = obj.GetStateMaster())
+                {
+                    List<ListItem> StateMaster = new List<ListItem>();
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        StateMaster.Add(new ListItem
+                        {
+                            Value = dt.Rows[i]["ID"].ToString(),
+                            Text = dt.Rows[i]["State"].ToString()
+                        });
+                    }
+
+                    return StateMaster;
+                }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static List<ListItem> GetCityMasterByStateID(int stateID)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                using (DataTable dt = obj.GetCityMasterByStateID(stateID))
+                {
+                    List<ListItem> cityMaster = new List<ListItem>();
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        cityMaster.Add(new ListItem
+                        {
+                            Value = dt.Rows[i]["ID"].ToString(),
+                            Text = dt.Rows[i]["City"].ToString()
+                        });
+                    }
+
+                    return cityMaster;
+                }
+            }
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static List<ListItem> GetAreaMasterByCityID(int CityID)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                using (DataTable dt = obj.GetAreaMasterByCityID(CityID))
+                {
+                    List<ListItem> AreaMaster = new List<ListItem>();
+
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        AreaMaster.Add(new ListItem
+                        {
+                            Value = dt.Rows[i]["pincode"].ToString(),
+                            Text = dt.Rows[i]["Area"].ToString()
+                        });
+                    }
+
+                    return AreaMaster;
                 }
             }
         }
