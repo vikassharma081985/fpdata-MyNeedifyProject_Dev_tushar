@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Web.UI;
 
-namespace WSBillingMaster.Pages
+namespace FaduPrice.Front
 {
-    public partial class AppointmentMaster : Page
+    public partial class AppointmentMaster
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
 
 <!DOCTYPE html>
 
@@ -92,7 +92,9 @@
                             $('[id$=lnkLogout]').show();
                             $('[id$=MasterhdnUserId]').val(UserInfo[0].UserId);
                             BindCart();
-                            
+                            sessionStorage.setItem("OrgId", UserInfo[0].OrgId);
+                            sessionStorage.setItem("UserId", UserInfo[0].UserId);
+                            loadEmployeeBookings(UserInfo[0].OrgId, UserInfo[0].UserId);
                             // Dynamically load notifications upon successful login
                             $.ajax({
                                 type: "POST",
@@ -109,6 +111,7 @@
                             LoadUserAddresses(UserInfo[0].UserId);
 
                             $('#btnModalClose').click();
+                            $("#bookingModal").modal("hide");
                             //location.reload();
 
                             //  window.location.href = 'Front/index.aspx';
@@ -485,6 +488,246 @@ $('#btnSaveAddress').text('Update Address');
     </script>
 
     <script>
+const API_BASE = "http://localhost:5150";
+let pendingBookings=[];
+
+function formatDate(value){
+
+    return new Date(value)
+        .toLocaleDateString();
+
+}
+
+function formatTime(time){
+
+    return time.substring(0,5);
+
+}
+function attachEvents(){
+
+    $(".btnApprove").click(function (e) {
+e.preventDefault();
+    var id = $(this).data("id");
+
+    var comment = $("#comment_" + id).val();
+
+    acceptBooking(id, comment);
+
+});
+
+$(".btnReject").click(function (e) {
+e.preventDefault();
+    var id = $(this).data("id");
+
+    var txt = $("#comment_" + id);
+
+    var comment = txt.val().trim();
+
+    // Validation
+    if (comment === "") {
+
+        txt.css("border", "1px solid #d9534f");
+        txt.focus();
+
+        alert("Comments are required when rejecting a booking.");
+
+        return;
+    }
+
+    rejectBooking(id, comment);
+
+});
+$(".booking-comment").on("input", function () {
+
+    $(this).css("border", "");
+
+});
+
+}
+function showBookings(){
+    console.log("show bookings");
+    let html="";
+
+    pendingBookings.forEach(b=>{
+
+        html+=`
+
+        <div class="booking-card">
+
+            <div class="booking-name">
+
+                <span class="glyphicon glyphicon-user"></span> ${b.customerName}
+
+            </div>
+
+            <div>
+
+                <span class="glyphicon glyphicon-earphone"></span> ${b.customerPhone}
+
+            </div>
+
+            <div>
+
+                📅 ${formatDate(b.appointmentDate)}
+
+            </div>
+
+            <div>
+
+                🕒 ${formatTime(b.startTime)}
+                -
+                ${formatTime(b.endTime)}
+
+            </div>
+
+            <div class="row booking-actions">
+
+    <div class="col-sm-8">
+
+        <textarea
+    class="form-control booking-comment"
+    id="comment_${b.appointmentId}"
+    rows="2"
+    placeholder="Comments (required for rejection)">
+</textarea>
+
+    </div>
+
+    <div class="col-sm-4 text-right">
+
+        <button
+type="button"
+            class="btn btn-danger btnReject"
+            data-id="${b.appointmentId}">
+            Reject
+        </button>
+
+        <button
+type="button"
+            class="btn btn-success btnApprove"
+            data-id="${b.appointmentId}">
+            Approve
+        </button>
+
+    </div>
+</div>
+</div>
+
+        `;
+
+    });
+
+    document.getElementById("bookingList").innerHTML=html;
+
+    attachEvents();
+
+    $("#bookingModal").modal("show");
+
+}
+
+function closeModal (){
+$("#bookingModal").modal("hide");
+}
+
+async function acceptBooking(id, comment) {
+const orgId = sessionStorage.getItem("OrgId");
+const userId = sessionStorage.getItem("UserId");
+    try {
+
+        await $.ajax({
+
+            url: API_BASE + "/api/Appointment/AcceptBooking",
+
+            type: "POST",
+contentType: "application/json",
+            data: JSON.stringify({
+                appointmentId: id,
+                comments: comment
+            })
+
+        });
+
+        await loadEmployeeBookings(orgId,userId);
+
+        showBookings();
+
+    }
+    catch (ex) {
+
+        alert("Unable to approve booking.");
+
+        console.error(ex);
+
+    }
+
+}
+async function rejectBooking(id, comment) {
+const orgId = sessionStorage.getItem("OrgId");
+const userId = sessionStorage.getItem("UserId");
+    try {
+
+        await $.ajax({
+
+            url: API_BASE + "/api/Appointment/RejectBooking",
+contentType: "application/json",
+            type: "POST",
+
+            data: JSON.stringify({
+                appointmentId: id,
+                comments: comment
+            })
+
+        });
+
+        await loadEmployeeBookings(orgId,userId);
+
+        showBookings();
+
+    }
+    catch (ex) {
+
+        alert("Unable to reject booking.");
+
+        console.error(ex);
+
+    }
+
+}
+
+
+
+
+async function loadEmployeeBookings(orgId, employeeId){
+
+    const response=await fetch(
+        `${API_BASE}/api/Appointment/GetEmployeeBookings?orgId=${orgId}&employeeId=${employeeId}`
+    );
+
+    const bookings=await response.json();
+
+    pendingBookings=bookings.filter(
+        x=>x.bookingStatus==="Pending"
+    );
+
+    updateNotification();
+}
+function updateNotification(){
+    const badge=document.getElementById("bookingBadge");
+
+    if(pendingBookings.length){
+
+        badge.style.display="block";
+
+        badge.innerText="You have "+pendingBookings.length+" booking requests";
+        badge.onclick=showBookings;
+    }
+    else{
+
+        badge.style.display="none";
+    }
+
+}
+
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
@@ -602,6 +845,11 @@ $('#btnSaveAddress').text('Update Address');
             }
 
         });
+$("#bookingModal").on("hidden.bs.modal", function () {
+
+    loadEmployeeBookings();   // Refresh pending bookings
+
+});
     </script>
     <script>
         var flag = true;
@@ -675,6 +923,8 @@ $('#btnSaveAddress').text('Update Address');
             });
             return false;
         }
+
+
     </script>
 
 
@@ -1239,6 +1489,64 @@ margin-left: 0px;                    font-size: 13px;
        text-decoration: none;
    }
 
+.notification-bell{
+
+    position:fixed;
+    top:20px;
+    right:20px;
+
+    width:60px;
+    height:60px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.2);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+
+    z-index:9999;
+
+    font-size:28px;
+}
+
+.booking-card{
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+    background:#fafafa;
+}
+
+.booking-name{
+
+    font-weight:bold;
+
+    font-size:18px;
+
+    margin-bottom:8px;
+}
+
+.booking-actions{
+
+    margin-top:15px;
+    text-align:right;
+}
+
+.booking-actions button{
+
+    margin-left:8px;
+}
    .address-form-group {
        margin-bottom: 10px;
    }
@@ -1421,6 +1729,9 @@ Address</a></div>
     <div class="dropdown-menu  mt-2" style="width:250px;" id="divNotificationsDesktop" runat="server">
          <%--<a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
 <a href="../Pages/NewHire.aspx" class="dropdown-item">New offer Notification 2 </a>--%>
+    </div>
+<div id="bookingBadge" 
+          style="display:none;">
     </div>
 </div>
 
@@ -2600,6 +2911,38 @@ function sendOtp() {
                 color: #000;
             }
         </style>
+<!-- Bookings notification -->
+<div class="modal fade"
+     id="bookingModal">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Pending Booking Requests
+                </h5>
+
+                <button class="btn-close" type="button" onclick="closeModal();"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div id="bookingList"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- Bookings notification -->
     </form>
 </body>
 </html>
