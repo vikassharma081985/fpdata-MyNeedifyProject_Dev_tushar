@@ -1705,7 +1705,7 @@ margin-left: 0px;                    font-size: 13px;
              style="max-width: 600px; width:100%; height:40px;">
             <i class="bi bi-search me-2 text-secondary" onclick="Search();"></i>
             <input type="text" class="form-control border-0 shadow-none" id="txtGlobalSearch"
-                   placeholder="Search for products, brands and more">
+                   placeholder="Search for products, brands and more" onkeydown="if (event.key === 'Enter') { event.preventDefault(); Search(); }">
         </div>
 
         <!-- DESKTOP RIGHT ICONS -->

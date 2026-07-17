@@ -315,7 +315,7 @@ style="border-radius: 20px;">
      style="border-radius: 20px;">
 
                         <div class="text-start">
-                     <a href="../Front/Apparels.aspx" target="_blank" style="color: blue;">
+                     <a href="../Front/Apparels.aspx" style="color: blue;">
 
                             <h5 class="fw-bold mb-1">Looking for Desi Products?</h5>
                             <p class="small text-muted mb-0"> Here I am</p>
@@ -810,40 +810,40 @@ style="border-radius: 20px;">
 <script src="./slick/slick.min.js"></script>
 <script>
     $(document).ready(function () {
-        
-                            $('.regular.slider').slick({
-                                dots: true,
-                                infinite: false,
-                                speed: 300,
-                                slidesToShow: 4,
-                                slidesToScroll: 4,
-                                responsive: [
-                                    {
-                                        breakpoint: 1024,
-                                        settings: {
-                                            slidesToShow: 3,
-                                            slidesToScroll: 3,
-                                            infinite: true,
-                                            dots: true
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 768,
-                                        settings: {
-                                            slidesToShow: 2,
-                                            slidesToScroll: 2
-                                        }
-                                    },
-                                    {
-                                        breakpoint: 480,
-                                        settings: {
-                                            slidesToShow: 1,
-                                            slidesToScroll: 1
-                                        }
-                                    }
-                                ]
-                            })
-                        })
+
+        $('.regular.slider').slick({
+            dots: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        infinite: true,
+                        dots: true
+                    }
+                },
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 1,
+                        slidesToScroll: 1
+                    }
+                }
+            ]
+        })
+    })
 </script>
 
 
