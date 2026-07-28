@@ -37,6 +37,7 @@ namespace BLL
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string Signature { get; set; }    // tushar
         public string Mobile { get; set; }
         public string Password { get; set; }
         public string UserId { get; set; }
@@ -497,6 +498,7 @@ namespace BLL
                     dbSqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
                     dbSqlCommand.Parameters.AddWithValue("@EmailId", Email);
                     dbSqlCommand.Parameters.AddWithValue("@Password", Password);
+                    dbSqlCommand.Parameters.AddWithValue("@Signature", Signature);   // tushar
 
                     return objDALCIILibrary.GetDataTable(dbSqlCommand);
 

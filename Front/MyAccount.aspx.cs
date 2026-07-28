@@ -53,6 +53,9 @@ namespace FaduPrice.Pages
                             hdnPassword.Value = dt.Rows[0]["Password"].ToString();
                             lblUserName.Text = dt.Rows[0]["FirstName"].ToString() + " " + dt.Rows[0]["LastName"].ToString();
                             lblEmail.Text = dt.Rows[0]["Email"].ToString();
+
+                            fuSignature.Text = dt.Rows[0]["fuSignature"].ToString();   // tushar
+
                         }
 
                     }
@@ -82,12 +85,47 @@ namespace FaduPrice.Pages
                 obj.LastName = LastName;
                 obj.Email = Email;
                 obj.Mobile = Mobile;
+                // New Property
+                obj.Signature = signaturePath;    // tushar
                 int rowsEffected = obj.UpdateUserData();
                 return rowsEffected.ToString();
             }
         }
-        
+
+        // code updated by tushar
+
         [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string UpdateUserData(string FirstName, string LastName,
+    string Mobile, string Email, string UserId)
+        {
+            string signaturePath = "";
+
+            HttpPostedFile postedFile = HttpContext.Current.Request.Files["fuSignature"];
+
+            if (postedFile != null && postedFile.ContentLength > 0)
+            {
+                string extension = Path.GetExtension(postedFile.FileName).ToLower();
+
+                if (extension == ".jpg" || extension == ".jpeg" || extension == ".png")
+                {
+                    string fileName = Guid.NewGuid().ToString() + extension;
+
+                    string folder = HttpContext.Current.Server.MapPath("~/Signature/");
+
+                    if (!Directory.Exists(folder))
+                        Directory.CreateDirectory(folder);
+
+                    postedFile.SaveAs(Path.Combine(folder, fileName));
+
+                    signaturePath = "~/Signature/" + fileName;
+                }
+            }
+            // code end by tushar
+
+
+
+            [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string ChangePassword(string Password, string UserId)
         {
