@@ -48,6 +48,25 @@
                             <label>Upload :</label>
                             <input type="file" id="fpUpload" onchange="FileChange(this);" />
                         </div>
+                        <div class="form-group">
+                            <label>Bill Number :</label>
+                            <input type="text" id="txtBillNumber" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Is Paid :</label>
+                            <select id="ddlIsPaid" class="form-control" onchange="togglePaymentMode(this.value, 'ddlPaymentMode')">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Mode :</label>
+                            <select id="ddlPaymentMode" class="form-control" disabled>
+                                <option value="">Select</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Credit">Credit</option>
+                            </select>
+                        </div>
 
            <div class="form-group" style="flex:2;">
     <label>Description :</label>
@@ -224,6 +243,8 @@
                                 <th class="MyHeader">Quantity</th>
                                 <th class="MyHeader">Amount</th>
                                 <th class="MyHeader">Description</th>
+                                <th class="MyHeader">Bill No</th>
+                                <th class="MyHeader">Payment Type</th>
                                 <th class="MyHeader">File</th>
                                 <th class="MyHeader">Edit</th>
                         </tr>
@@ -563,6 +584,25 @@
                             <label>Replace File (Optional) :</label>
                             <input type="file" id="fpEditUpload" accept="image/*,.pdf,application/pdf" onchange="EditFileChange(this);" />
                             <input type="hidden" id="hfEditUploadedFile" />
+                        </div>
+                        <div class="form-group">
+                            <label>Bill Number :</label>
+                            <input type="text" id="txtEditBillNumber" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Is Paid :</label>
+                            <select id="ddlEditIsPaid" class="form-control" onchange="togglePaymentMode(this.value, 'ddlEditPaymentMode')">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Payment Mode :</label>
+                            <select id="ddlEditPaymentMode" class="form-control" disabled>
+                                <option value="">Select</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Credit">Credit</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">
@@ -1302,6 +1342,16 @@
                 });
             }
 
+            function togglePaymentMode(isPaidValue, paymentModeId) {
+                var ddl = document.getElementById(paymentModeId);
+                if (isPaidValue === 'Yes') {
+                    ddl.removeAttribute('disabled');
+                } else {
+                    ddl.setAttribute('disabled', 'disabled');
+                    ddl.value = '';
+                }
+            }
+
             function Save() {
                 var Date = $('#txtExpenseDate').val();
                 var ExpenseId = $('#ddlExpense').val();
@@ -1311,10 +1361,18 @@
                 var Quantity = $('#txtQuantity').val();
                 var Rate = $('#txtRate').val();
                 var Amount = $('#txtAmount').val();
+                var BillNumber = $('#txtBillNumber').val();
+                var IsPaid = $('#ddlIsPaid').val() === 'Yes';
+                var PaymentMode = $('#ddlPaymentMode').val();
                 var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
 
                 if (Date == "" || ExpenseId == "" || Amount == "" || SubExpenseId == "0") {
                     alert('Date, Expense On, Sub Expense, and Amount are mandatory fields');
+                    return;
+                }
+                
+                if (IsPaid && PaymentMode == "") {
+                    alert('Please select Payment Mode');
                     return;
                 }
 
@@ -1329,6 +1387,9 @@
                 obj.userId = hdnUserId;
                 obj.Quantity = Quantity;
                 obj.Rate = Rate;
+                obj.BillNumber = BillNumber;
+                obj.IsPaid = IsPaid;
+                obj.PaymentMode = PaymentMode;
                 data.push(obj);
 
                 $.ajax({
@@ -1483,6 +1544,8 @@
                     html += '<td class="MyHeader">' + value.Quantity + '</td>';
                     html += '<td class="MyHeader">' + value.Amount + '</td>';
                     html += '<td class="MyHeader" style="width: 200px; white-space: normal; word-wrap: break-word;">' + value.Description + '</td>';
+                    html += '<td class="MyHeader">' + value.BillNumber + '</td>';
+                    html += '<td class="MyHeader">' + value.PaymentMode + '</td>';
                     html += '<td class="MyHeader">';
                     if (value.ExpenseFile) {
                         html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a>';
@@ -1593,6 +1656,9 @@
                 $('#txtQuantity').val('1');
                 $('#txtRate').val('0');
                 $('#txtExpenseDescription').val('');
+                $('#txtBillNumber').val('');
+                $('#ddlIsPaid').val('No');
+                $('#ddlPaymentMode').val('').prop('disabled', true);
             }
 
             function parseDateSafe(dateStr) {
@@ -1808,6 +1874,13 @@
                 $('#txtEditQuantity').val(expense.Quantity || 1);
                 $('#txtEditAmount').val(expense.Amount);
                 $('#txtEditDescription').val(expense.Description || '');
+                $('#txtEditBillNumber').val(expense.BillNumber || '');
+                $('#ddlEditIsPaid').val(expense.IsPaid ? 'Yes' : 'No');
+                if (expense.IsPaid) {
+                    $('#ddlEditPaymentMode').prop('disabled', false).val(expense.PaymentMode || '');
+                } else {
+                    $('#ddlEditPaymentMode').prop('disabled', true).val('');
+                }
                 $('#hfEditUploadedFile').val(expense.ExpenseFile || '');
                 BindSubExpense(expense.ExpenseId, 'ddlEditSubExpense', expense.SubExpenseId);
 
@@ -2021,6 +2094,9 @@
                 var Quantity = $('#txtEditQuantity').val() || '1';
                 var Rate = $('#txtEditRate').val() || '0';
                 var Amount = $('#txtEditAmount').val();
+                var BillNumber = $('#txtEditBillNumber').val().trim();
+                var IsPaid = $('#ddlEditIsPaid').val() === 'Yes';
+                var PaymentMode = $('#ddlEditPaymentMode').val();
                 var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
 
                 if (editUploadInProgress) {
@@ -2030,6 +2106,11 @@
 
                 if (Date == "" || !ExpenseId || Amount == "0") {
                     alert('Please fill all required fields.');
+                    return;
+                }
+                
+                if (IsPaid && PaymentMode == "") {
+                    alert('Please select Payment Mode');
                     return;
                 }
 
@@ -2043,7 +2124,10 @@
                     Amount: Amount,
                     userId: hdnUserId,
                     Quantity: Quantity,
-                    Rate: Rate
+                    Rate: Rate,
+                    BillNumber: BillNumber,
+                    IsPaid: IsPaid,
+                    PaymentMode: PaymentMode
                 };
                 showLoader();
                 $.ajax({

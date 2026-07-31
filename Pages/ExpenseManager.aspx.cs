@@ -137,6 +137,9 @@ namespace WSBillingMaster.Pages
                     obj.Amount = data[0].Amount;
 					obj.Rate = data[0].Rate;
                     obj.Quantity = data[0].Quantity;
+                    obj.BillNumber = data[0].BillNumber;
+                    obj.IsPaid = data[0].IsPaid;
+                    obj.PaymentMode = data[0].PaymentMode;
                     string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
 					int idx = url.IndexOf('?');
 					string query = idx >= 0 ? url.Substring(idx) : "";
@@ -320,6 +323,9 @@ namespace WSBillingMaster.Pages
                     obj.Amount = item.Amount;
                     obj.Rate = item.Rate;
                     obj.Quantity = item.Quantity;
+                    obj.BillNumber = item.BillNumber;
+                    obj.IsPaid = item.IsPaid;
+                    obj.PaymentMode = item.PaymentMode;
                     obj.FetchUserId = item.userId.ToString();
 
                     int result = obj.UpdateExpense(); // Implement in BLL
@@ -342,7 +348,8 @@ namespace WSBillingMaster.Pages
         public int userId { get; set; }
         public decimal Rate { get; set; }
         public int Quantity { get; set; }
-
-
+        public string BillNumber { get; set; }
+        public bool IsPaid { get; set; }
+        public string PaymentMode { get; set; }
     }
 }

@@ -1653,6 +1653,8 @@ namespace BLL
         public int ExpenseStatus { get; set; }
         public string FetchUserId { get; set; }
         public string ExpenseDataStatus { get; set; }
+        public string BillNumber { get; set; }
+        public bool IsPaid { get; set; }
         public int SaveExpense()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -1673,6 +1675,9 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
                     sqlCommand.Parameters.AddWithValue("@Rate", Rate);
                     sqlCommand.Parameters.AddWithValue("@Quantity", Quantity);
+                    sqlCommand.Parameters.AddWithValue("@BillNumber", string.IsNullOrEmpty(BillNumber) ? (object)DBNull.Value : BillNumber);
+                    sqlCommand.Parameters.AddWithValue("@IsPaid", IsPaid);
+                    sqlCommand.Parameters.AddWithValue("@PaymentMode", string.IsNullOrEmpty(PaymentMode) ? (object)DBNull.Value : PaymentMode);
                     //sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
 
 
@@ -1745,6 +1750,9 @@ namespace BLL
                     // EmpId and OrgId usually don't change during edit, but included for completeness
                     sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
                     sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.Parameters.AddWithValue("@BillNumber", string.IsNullOrEmpty(BillNumber) ? (object)DBNull.Value : BillNumber);
+                    sqlCommand.Parameters.AddWithValue("@IsPaid", IsPaid);
+                    sqlCommand.Parameters.AddWithValue("@PaymentMode", string.IsNullOrEmpty(PaymentMode) ? (object)DBNull.Value : PaymentMode);
 
                     // Use your existing GetDataTable method
                     DataTable dt = objDAL.GetDataTable(sqlCommand);
