@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Services;
@@ -74,30 +75,29 @@ namespace FaduPrice.Pages
             }
         }
 
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string UpdateUserData(string FirstName,string LastName,string Mobile,string Email,string UserId)
-        {
-            using (BusinessLogicLayer obj = new BusinessLogicLayer())
-            {
-                obj.UserId = userId;
-                obj.FirstName = FirstName;
-                obj.LastName = LastName;
-                obj.Email = Email;
-                obj.Mobile = Mobile;
-                // New Property
-                obj.Signature = signaturePath;    // tushar
-                int rowsEffected = obj.UpdateUserData();
-                return rowsEffected.ToString();
-            }
-        }
+        //[WebMethod]
+        //[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        //public static string UpdateUserData(string FirstName, string LastName, string Mobile, string Email, string UserId)
+        //{
+        //    using (BusinessLogicLayer obj = new BusinessLogicLayer())
+        //    {
+        //        obj.UserId = userId;
+        //        obj.FirstName = FirstName;
+        //        obj.LastName = LastName;
+        //        obj.Email = Email;
+        //        obj.Mobile = Mobile;
+        //        // New Property
+        //        obj.Signature = signaturePath;    // tushar
+        //        int rowsEffected = obj.UpdateUserData();
+        //        return rowsEffected.ToString();
+        //    }
+        //}
 
         // code updated by tushar
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string UpdateUserData(string FirstName, string LastName,
-    string Mobile, string Email, string UserId)
+        public static string UpdateUserData(string FirstName, string LastName, string Mobile, string Email, string UserId)
         {
             string signaturePath = "";
 
@@ -121,11 +121,12 @@ namespace FaduPrice.Pages
                     signaturePath = "~/Signature/" + fileName;
                 }
             }
+            return signaturePath;
             // code end by tushar
+        }
 
 
-
-            [WebMethod]
+        [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public static string ChangePassword(string Password, string UserId)
         {
@@ -138,7 +139,9 @@ namespace FaduPrice.Pages
             }
         }
 
+        protected void fuSignature_Click(object sender, EventArgs e)
+        {
 
-        
+        }
     }
 }
