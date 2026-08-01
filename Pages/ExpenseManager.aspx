@@ -1,86 +1,87 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
     CodeBehind="ExpenseManager.aspx.cs" Inherits="WSBillingMaster.Pages.ExpenseManager" %>
 
-    <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-        <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    </asp:Content>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</asp:Content>
 
-    <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-        <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
-        <div class="container">
-            <!-- ======================== Expense Entry Section ========================= -->
-            <div class="Header">
-                <div class="section-title">Expense Manager</div>
-                <input type="hidden" id="hfUploadedFile" />
-                <div class="responsive-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Expense Date :</label>
-                            <input type="text" class="form-control datepicker" id="txtExpenseDate" />
-                        </div>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
+    <div class="container">
+        <!-- ======================== Expense Entry Section ========================= -->
+        <div class="Header">
+            <div class="section-title">Expense Manager</div>
+            <input type="hidden" id="hfUploadedFile" />
+            <div class="responsive-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expense Date :</label>
+                        <input type="text" class="form-control datepicker" id="txtExpenseDate" />
+                    </div>
 
-                        <div class="form-group">
-                            <label>Expense On :</label>
-                            <select id="ddlExpense" class="form-control"></select>
-                        </div>
-                        <div class="form-group"> <!-- NEW: Added for sub-category -->
-                            <label>Sub Expense :</label>
-                            <select id="ddlSubExpense" class="form-control">
-                                <option value="0">Select</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Rate :</label>
-                            <input type="text" id="txtRate" value="0" class="form-control" maxlength="10"
-                                oninput="validateRate(this)" />
-                        </div>
-                        <div class="form-group">
-                            <label>Quantity :</label>
-                            <input type="text" id="txtQuantity" value="1" class="form-control" maxlength="10" />
-                        </div>
-                        <div class="form-group">
-                            <label>Amount :</label>
-                            <input type="text" disabled id="txtAmount" class="form-control" maxlength="5" />
-                        </div>
+                    <div class="form-group">
+                        <label>Expense On :</label>
+                        <select id="ddlExpense" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <!-- NEW: Added for sub-category -->
+                        <label>Sub Expense :</label>
+                        <select id="ddlSubExpense" class="form-control">
+                            <option value="0">Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rate :</label>
+                        <input type="text" id="txtRate" value="0" class="form-control" maxlength="10"
+                            oninput="validateRate(this)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity :</label>
+                        <input type="text" id="txtQuantity" value="1" class="form-control" maxlength="10" />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount :</label>
+                        <input type="text" disabled id="txtAmount" class="form-control" maxlength="5" />
+                    </div>
 
-                        <div class="form-group">
-                            <label>Upload :</label>
-                            <input type="file" id="fpUpload" onchange="FileChange(this);" />
-                        </div>
-                        <div class="form-group">
-                            <label>Bill Number :</label>
-                            <input type="text" id="txtBillNumber" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label>Is Paid :</label>
-                            <select id="ddlIsPaid" class="form-control" onchange="togglePaymentMode(this.value, 'ddlPaymentMode')">
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Payment Mode :</label>
-                            <select id="ddlPaymentMode" class="form-control" disabled>
-                                <option value="">Select</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Credit">Credit</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label>Upload :</label>
+                        <input type="file" id="fpUpload" onchange="FileChange(this);" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bill Number :</label>
+                        <input type="text" id="txtBillNumber" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Is Paid :</label>
+                        <select id="ddlIsPaid" class="form-control" onchange="togglePaymentMode(this.value, 'ddlPaymentMode')">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Mode :</label>
+                        <select id="ddlPaymentMode" class="form-control" disabled>
+                            <option value="">Select</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit">Credit</option>
+                        </select>
+                    </div>
 
-           <div class="form-group" style="flex:2;">
-    <label>Description :</label>
-    <input type="text" class="form-control" id="txtExpenseDescription" />
-</div>
+                    <div class="form-group" style="flex: 2;">
+                        <label>Description :</label>
+                        <input type="text" class="form-control" id="txtExpenseDescription" />
+                    </div>
 
-<div class="form-group" style="width:100px; margin-top:25px;">
-    <input type="button" class="btn btn-danger w-100" value="Save" onclick="Save();" />
-</div>
+                    <div class="form-group" style="width: 100px; margin-top: 25px;">
+                        <input type="button" class="btn btn-danger w-100" value="Save" onclick="Save();" />
+                    </div>
                 </div>
             </div>
 
             <!-- ======================== All Expenses Section ========================= -->
-<%--            <div class="Header" style="margin-top: 20px;">
+            <%--            <div class="Header" style="margin-top: 20px;">
                 <div class="section-title">All Expenses</div>
                 <div class="section-title">Total Expense : Rs. <span id="lblExpenseAmt"
                         style="color: LawnGreen; font-size: Large;">0</span> </div>
@@ -117,56 +118,56 @@
 
                 </div>--%>
 
-                <div class="Header" style="margin-top: 20px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;">
-    
-    <!-- Row 1 -->
-    <div style="display:flex; gap:20px; align-items:center;">
-        <div class="section-title">All Expenses</div>
-        <div class="section-title">
-            Total Expense : Rs.
+            <div class="Header" style="margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+
+                <!-- Row 1 -->
+                <div style="display: flex; gap: 20px; align-items: center;">
+                    <div class="section-title">All Expenses</div>
+                    <div class="section-title">
+                        Total Expense : Rs.
             <span id="lblExpenseAmt" style="color: LawnGreen; font-size: Large;">0</span>
-        </div>
-    </div>
+                    </div>
+                </div>
 
-    <!-- Row 2 -->
-    <div class="responsive-form" style="width:100%; margin-top:10px;">
-        <div class="form-row" style="display:flex; align-items:end; gap:10px; flex-wrap:nowrap;">
-            
-            <div class="form-group">
-                <label>From Date :</label>
-                <input type="text" class="form-control datepicker" id="txtFromDate" />
+                <!-- Row 2 -->
+                <div class="responsive-form" style="width: 100%; margin-top: 10px;">
+                    <div class="form-row" style="display: flex; align-items: end; gap: 10px; flex-wrap: nowrap;">
+
+                        <div class="form-group">
+                            <label>From Date :</label>
+                            <input type="text" class="form-control datepicker" id="txtFromDate" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>To Date :</label>
+                            <input type="text" class="form-control datepicker" id="txtToDate" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Expense On :</label>
+                            <select id="ddlExpenseSearch" class="form-control"></select>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 22px;">
+                            <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
+                        </div>
+
+                        <div class="form-group" style="margin-top: 22px;">
+                            <input type="button" class="btn btn-primary" value="Submit for Reimbursement"
+                                onclick="OpenRbmPopup();">
+                        </div>
+
+                        <div class="form-group" style="margin-top: 22px;">
+                            <input type="button" class="btn btn-danger" value="Reimbursement History"
+                                onclick="openHistoryModal();">
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
 
-            <div class="form-group">
-                <label>To Date :</label>
-                <input type="text" class="form-control datepicker" id="txtToDate" />
-            </div>
-
-            <div class="form-group">
-                <label>Expense On :</label>
-                <select id="ddlExpenseSearch" class="form-control"></select>
-            </div>
-
-            <div class="form-group" style="margin-top:22px;">
-                <input type="button" class="btn btn-success" value="Search" onclick="Search();" />
-            </div>
-
-            <div class="form-group" style="margin-top:22px;">
-                <input type="button" class="btn btn-primary" value="Submit for Reimbursement"
-                    onclick="OpenRbmPopup();">
-            </div>
-
-            <div class="form-group" style="margin-top:22px;">
-                <input type="button" class="btn btn-danger" value="Reimbursement History"
-                    onclick="openHistoryModal();">
-            </div>
-
-        </div>
-    </div>
-
-</div>
-
-                <!-- Charts Section -->
+            <!-- Charts Section -->
             <%--    <div id="chartsContainer"
                     style="display:visible; margin-top: 20px; margin-bottom: 20px; text-align: center;">
                     <div class="form-row center" style="flex-wrap: wrap; gap: 20px; justify-content: center;">
@@ -187,116 +188,115 @@
                     </div>
                 </div>--%>
 
-                <div id="chartsContainer" class="expense-charts" aria-label="Expense charts">
-                    <div class="chart-box chart-box-category">
-                        <div class="chart-header">
-                            <div>
-                                <span class="chart-kicker">Categorywise</span>
-                                <h5>Expense Split</h5>
-                            </div>
-                            <span id="categoryChartTotal" class="chart-total">Rs. 0</span>
+            <div id="chartsContainer" class="expense-charts" aria-label="Expense charts">
+                <div class="chart-box chart-box-category">
+                    <div class="chart-header">
+                        <div>
+                            <span class="chart-kicker">Categorywise</span>
+                            <h5>Expense Split</h5>
                         </div>
-                        <div class="chart-canvas-wrap">
-                            <canvas id="pieChartCategory"></canvas>
-                        </div>
+                        <span id="categoryChartTotal" class="chart-total">Rs. 0</span>
                     </div>
-
-                    <div class="chart-box chart-box-month">
-                        <div class="chart-header">
-                            <div>
-                                <span class="chart-kicker">Monthwise</span>
-                                <h5>Expense Trend</h5>
-                            </div>
-                            <span id="monthChartPeak" class="chart-total">Rs. 0</span>
-                        </div>
-                        <div class="chart-canvas-wrap">
-                            <canvas id="pieChartMonth"></canvas>
-                        </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="pieChartCategory"></canvas>
                     </div>
                 </div>
 
-                <div id="mobileViewToggle" style="display:none; margin-bottom:10px;">
-                    <span id="btnTableView" onclick="showTableView()" class="toggle-text active">Table View</span> |
+                <div class="chart-box chart-box-month">
+                    <div class="chart-header">
+                        <div>
+                            <span class="chart-kicker">Monthwise</span>
+                            <h5>Expense Trend</h5>
+                        </div>
+                        <span id="monthChartPeak" class="chart-total">Rs. 0</span>
+                    </div>
+                    <div class="chart-canvas-wrap">
+                        <canvas id="pieChartMonth"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mobileViewToggle" style="display: none; margin-bottom: 10px;">
+                <span id="btnTableView" onclick="showTableView()" class="toggle-text active">Table View</span> |
                     <span id="btnCardView" onclick="showCardView()" class="toggle-text">Card View</span>
-                </div>
+            </div>
 
-                <div id="cardViewContainer" style="display:none; margin-top:10px;">
-                    <!-- Cards will be dynamically appended here -->
+            <div id="cardViewContainer" style="display: none; margin-top: 10px;">
+                <!-- Cards will be dynamically appended here -->
 
-                </div>
-
-
+            </div>
 
 
-                <div class="table-responsive">
-                    <table id="tblExpense" style="width: 100%;">
-                        <tr>
-                            <th class="MyHeader">
-                                <input type="checkbox" id="chkSelectAll" />
-                            </th>
-                            <th class="MyHeader">SNo.</th>
-                            <th class="MyHeader" style="cursor:pointer;" onclick="sortByDate()">Date <span
-                                    id="dateSortIcon">&#9650;</span></th>
-                            <%--<th class="MyHeader">Expense On</th>--%>
-                                <th class="MyHeader">Expense On (Sub)</th>
-                                <th class="MyHeader">Rate</th>
-                                <th class="MyHeader">Quantity</th>
-                                <th class="MyHeader">Amount</th>
-                                <th class="MyHeader">Description</th>
-                                <th class="MyHeader">Bill No</th>
-                                <th class="MyHeader">Payment Type</th>
-                                <th class="MyHeader">File</th>
-                                <th class="MyHeader">Edit</th>
-                        </tr>
-                    </table>
-                    <%--<div id="pagination" style="margin-top:10px;text-align:center;">
+
+
+            <div class="table-responsive">
+                <table id="tblExpense" style="width: 100%;">
+                    <tr>
+                        <th class="MyHeader">
+                            <input type="checkbox" id="chkSelectAll" />
+                        </th>
+                        <th class="MyHeader">SNo.</th>
+                        <th class="MyHeader" style="cursor: pointer;" onclick="sortByDate()">Date <span
+                            id="dateSortIcon">&#9650;</span></th>
+                        <%--<th class="MyHeader">Expense On</th>--%>
+                        <th class="MyHeader">Expense On (Sub)</th>
+                        <th class="MyHeader">Rate</th>
+                        <th class="MyHeader">Quantity</th>
+                        <th class="MyHeader">Amount</th>
+                        <th class="MyHeader">Description</th>
+                        <th class="MyHeader">Bill No</th>
+                        <th class="MyHeader">Payment Type</th>
+                        <th class="MyHeader">File</th>
+                        <th class="MyHeader">Edit</th>
+                    </tr>
+                </table>
+                <%--<div id="pagination" style="margin-top:10px;text-align:center;">
                         <button type="button" class="btn btn-secondary btn-sm" onclick="prevPage()">Prev</button>
                         <span id="pageInfo" style="margin:0 10px;"></span>
                         <button type="button" class="btn btn-secondary btn-sm" onclick="nextPage()">Next</button>
                 </div>--%>
-
             </div>
 
             <!-- Pagination separated from table -->
             <div id="pagination" class="pgn"
-                style="margin-top:10px; display:flex; justify-content:center; align-items:center; gap:20px;">
+                style="margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 20px;">
                 <button type="button" class="btn btn-secondary btn-sm" onclick="prevPage()">Prev</button>
-                <span id="pageInfo" class="pgninfo" style="text-align:center; flex:none;"></span>
+                <span id="pageInfo" class="pgninfo" style="text-align: center; flex: none;"></span>
                 <button type="button" class="btn btn-secondary btn-sm" onclick="nextPage()">Next</button>
             </div>
 
 
         </div>
-        </div>
+    </div>
 
 
 
-        <!-- ====================== Reimbursement History Modal ====================== -->
-        <div id="historyModal" class="modal">
-            <div class="modal-content" style="max-width:1100px;">
-                <span class="close" onclick="closeHistoryModal()">&times;</span>
-                <h3 style="text-align:center;">Reimbursement History</h3>
+    <!-- ====================== Reimbursement History Modal ====================== -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content" style="max-width: 1100px;">
+            <span class="close" onclick="closeHistoryModal()">&times;</span>
+            <h3 style="text-align: center;">Reimbursement History</h3>
 
-                <div class="table-responsive">
-                    <table id="tblHistory" class="table table-bordered">
-                        <tr>
-                            <th>SNo.</th>
-                            <th>Date</th>
-                             <th>Reimbursement ID</th>
-                            <th>Total Amount</th>
-                            <th>Status</th>
-                            <th>View</th>
-                        </tr>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table id="tblHistory" class="table table-bordered">
+                    <tr>
+                        <th>SNo.</th>
+                        <th>Date</th>
+                        <th>Reimbursement ID</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>View</th>
+                    </tr>
+                </table>
             </div>
         </div>
+    </div>
 
 
 
 
-        <!-- ====================== Modal ====================== -->
-       <%-- <div id="submitModal" class="modal">
+    <!-- ====================== Modal ====================== -->
+    <%-- <div id="submitModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeSubmitModal();">&times;</span>
                 <h3>Details which needs to be displayed on header </h3>
@@ -315,7 +315,7 @@
 
                     <%--<label>Signature (Upload)</label>
                         <input type="file" id="fpSignature" onchange="UploadSignature();" />--%>
-                       <%-- <label style="cursor:pointer;color:#007bff;" onclick="openSignatureModal()">
+    <%-- <label style="cursor:pointer;color:#007bff;" onclick="openSignatureModal()">
                             Signature (Click to Sign)
                         </label>
                         <label id="lblSignatureFile" style="display:none;color:green;font-weight:600;">
@@ -333,378 +333,374 @@
 
 
 
-        <div id="submitModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeSubmitModal();">&times;</span>
-        <h3>Details which needs to be displayed on header</h3>
+    <div id="submitModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSubmitModal();">&times;</span>
+            <h3>Details which needs to be displayed on header</h3>
 
-        <div id="rbmPopup" title="Submit Reimbursement" style="display: visible;">
+            <div id="rbmPopup" title="Submit Reimbursement" style="display: visible;">
 
-            <div class="form-grid">
+                <div class="form-grid">
 
-                <div class="form-group">
-                    <label>Reporting Manager</label>
-                    <input type="text" id="txtManager" class="form-control" />
+                    <div class="form-group">
+                        <label>Reporting Manager</label>
+                        <input type="text" id="txtManager" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Employee Code</label>
+                        <input type="text" id="txtEmpCode" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" id="txtCompany" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Plant Code</label>
+                        <input type="text" id="txtPlant" class="form-control" />
+                    </div>
+
+                    <!-- Upload Option -->
+                    <div class="form-group">
+                        <label>Upload Logo</label>
+                        <input type="file" id="fileUploadDoc" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label style="cursor: pointer; color: #007bff;" onclick="openSignatureModal()">
+                            Signature (Click to Sign)
+                        </label>
+                        <label id="lblSignatureFile" style="display: none; color: green; font-weight: 600;"></label>
+                        <input type="hidden" id="hfSignaturePath" />
+                    </div>
+
                 </div>
 
-                <div class="form-group">
-                    <label>Employee Code</label>
-                    <input type="text" id="txtEmpCode" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label>Company Name</label>
-                    <input type="text" id="txtCompany" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label>Plant Code</label>
-                    <input type="text" id="txtPlant" class="form-control" />
-                </div>
-
-                <!-- Upload Option -->
-                <div class="form-group">
-                    <label>Upload Logo</label>
-                    <input type="file" id="fileUploadDoc" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label style="cursor:pointer;color:#007bff;" onclick="openSignatureModal()">
-                        Signature (Click to Sign)
-                    </label>
-                    <label id="lblSignatureFile" style="display:none;color:green;font-weight:600;"></label>
-                    <input type="hidden" id="hfSignaturePath" />
-                </div>
+                <input type="button" class="btn btn-success" value="Generate Document"
+                    onclick="GenerateReimbursementDoc();" />
 
             </div>
-
-            <input type="button" class="btn btn-success" value="Generate Document"
-                onclick="GenerateReimbursementDoc();" />
-
         </div>
     </div>
-</div>
 
-<style>
-    .expense-charts {
-        display: none;
-        grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
-        gap: 18px;
-        margin: 22px 0;
-        text-align: left;
-    }
-
-    .chart-box {
-        background: #fff;
-        border: 1px solid #d9e2ec;
-        border-radius: 8px;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
-        padding: 16px;
-        min-width: 0;
-    }
-
-    .chart-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-
-    .chart-header h5 {
-        color: #111827;
-        font-size: 16px;
-        font-weight: 700;
-        margin: 2px 0 0;
-    }
-
-    .chart-kicker {
-        color: #64748b;
-        display: block;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0;
-        text-transform: uppercase;
-    }
-
-    .chart-total {
-        background: #f1f5f9;
-        border: 1px solid #dbe4ee;
-        border-radius: 6px;
-        color: #0f172a;
-        flex: 0 0 auto;
-        font-size: 12px;
-        font-weight: 700;
-        padding: 5px 8px;
-        white-space: nowrap;
-    }
-
-    .chart-canvas-wrap {
-        height: 330px;
-        position: relative;
-        width: 100%;
-    }
-
-    .chart-box-category .chart-canvas-wrap {
-        height: 340px;
-    }
-
-    @media (max-width: 1024px) {
+    <style>
         .expense-charts {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .expense-charts {
-            gap: 14px;
-            margin: 16px 0;
+            display: none;
+            grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+            gap: 18px;
+            margin: 22px 0;
+            text-align: left;
         }
 
         .chart-box {
-            padding: 12px;
+            background: #fff;
+            border: 1px solid #d9e2ec;
+            border-radius: 8px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+            padding: 16px;
+            min-width: 0;
         }
 
         .chart-header {
-            align-items: stretch;
-            flex-direction: column;
-            gap: 8px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+            .chart-header h5 {
+                color: #111827;
+                font-size: 16px;
+                font-weight: 700;
+                margin: 2px 0 0;
+            }
+
+        .chart-kicker {
+            color: #64748b;
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
         }
 
         .chart-total {
-            align-self: flex-start;
+            background: #f1f5f9;
+            border: 1px solid #dbe4ee;
+            border-radius: 6px;
+            color: #0f172a;
+            flex: 0 0 auto;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 8px;
+            white-space: nowrap;
         }
 
-        .chart-canvas-wrap,
+        .chart-canvas-wrap {
+            height: 330px;
+            position: relative;
+            width: 100%;
+        }
+
         .chart-box-category .chart-canvas-wrap {
-            height: 290px;
+            height: 340px;
         }
-    }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
+        @media (max-width: 1024px) {
+            .expense-charts {
+                grid-template-columns: 1fr;
+            }
+        }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-}
+        @media (max-width: 600px) {
+            .expense-charts {
+                gap: 14px;
+                margin: 16px 0;
+            }
 
-.form-control {
-    padding: 8px;
-}
+            .chart-box {
+                padding: 12px;
+            }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-}
-</style>
+            .chart-header {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .chart-total {
+                align-self: flex-start;
+            }
+
+            .chart-canvas-wrap,
+            .chart-box-category .chart-canvas-wrap {
+                height: 290px;
+            }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-control {
+            padding: 8px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 
 
 
-        <!-------------------------edit modal-------------------------->
+    <!-------------------------edit modal-------------------------->
 
-        <div id="editModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeEditModal();">&times;</span>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal();">&times;</span>
 
-                <h3>Generated Reimbursement Documents</h3>
+            <h3>Generated Reimbursement Documents</h3>
 
-                <!-- Table will be shown automatically -->
-                <table id="tblRbmDocs" class="table table-bordered">
-                    <tr>
-                        <th>SNo</th>
-                        <th>Date</th>
-                        <th>Document</th>
-                        <th>Send Mail</th>
-                        <th>Open / Print</th>
-                    </tr>
-                </table>
+            <!-- Table will be shown automatically -->
+            <table id="tblRbmDocs" class="table table-bordered">
+                <tr>
+                    <th>SNo</th>
+                    <th>Date</th>
+                    <th>Document</th>
+                    <th>Send Mail</th>
+                    <th>Open / Print</th>
+                </tr>
+            </table>
 
-            </div>
         </div>
+    </div>
 
-        <div id="signatureModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeSignatureModal()">&times;</span>
-                <h3>Draw Your Signature</h3>
-                <canvas id="signatureCanvas" width="500" height="200"
-                    style="border:1px solid #ccc;background:#fff;"></canvas>
-                <br /><br />
-                <button type="button" class="btn btn-warning" onclick="clearSignature()">Clear</button>
-                <button type="button" class="btn btn-success" onclick="saveSignature()">Save</button>
-            </div>
+    <div id="signatureModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeSignatureModal()">&times;</span>
+            <h3>Draw Your Signature</h3>
+            <canvas id="signatureCanvas" width="500" height="200"
+                style="border: 1px solid #ccc; background: #fff;"></canvas>
+            <br />
+            <br />
+            <button type="button" class="btn btn-warning" onclick="clearSignature()">Clear</button>
+            <button type="button" class="btn btn-success" onclick="saveSignature()">Save</button>
         </div>
+    </div>
 
-        <!-- ====================== Edit Expense Modal ====================== -->
-        <div id="editExpenseModal" class="modal">
-            <div class="modal-content" style="max-width:800px;">
-                <span class="close" onclick="closeEditExpenseModal()">&times;</span>
-                <h3 style="text-align:center;">Edit Expense</h3>
-                <div class="responsive-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Expense Date :</label>
-                            <input type="text" class="form-control datepicker" id="txtEditExpenseDate" />
-                        </div>
-                        <div class="form-group">
-                            <label>Expense On :</label>
-                            <select id="ddlEditExpense" class="form-control"></select>
-                        </div>
-                        <div class="form-group"> <!-- NEW: Added for sub-category -->
-                            <label>Sub Expense :</label>
-                            <select id="ddlEditSubExpense" class="form-control">
-                                <option value="0">Select</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Rate :</label>
-                            <input type="text" id="txtEditRate" value="0" class="form-control" maxlength="10"
-                                oninput="validateRate(this)" />
-                        </div>
-                        <div class="form-group">
-                            <label>Quantity :</label>
-                            <input type="text" id="txtEditQuantity" value="1" class="form-control" maxlength="10" />
-                        </div>
-                        <div class="form-group">
-                            <label>Amount :</label>
-                            <input type="text" disabled id="txtEditAmount" class="form-control" />
-                        </div>
+    <!-- ====================== Edit Expense Modal ====================== -->
+    <div id="editExpenseModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <span class="close" onclick="closeEditExpenseModal()">&times;</span>
+            <h3 style="text-align: center;">Edit Expense</h3>
+            <div class="responsive-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expense Date :</label>
+                        <input type="text" class="form-control datepicker" id="txtEditExpenseDate" />
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Current File :</label>
-                            <div id="currentFileLink"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Replace File (Optional) :</label>
-                            <input type="file" id="fpEditUpload" accept="image/*,.pdf,application/pdf" onchange="EditFileChange(this);" />
-                            <input type="hidden" id="hfEditUploadedFile" />
-                        </div>
-                        <div class="form-group">
-                            <label>Bill Number :</label>
-                            <input type="text" id="txtEditBillNumber" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label>Is Paid :</label>
-                            <select id="ddlEditIsPaid" class="form-control" onchange="togglePaymentMode(this.value, 'ddlEditPaymentMode')">
-                                <option value="No">No</option>
-                                <option value="Yes">Yes</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Payment Mode :</label>
-                            <select id="ddlEditPaymentMode" class="form-control" disabled>
-                                <option value="">Select</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Credit">Credit</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label>Expense On :</label>
+                        <select id="ddlEditExpense" class="form-control"></select>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group" style="flex:1;">
-                            <label>Description :</label>
-                            <textarea class="form-control" id="txtEditDescription" rows="3"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <!-- NEW: Added for sub-category -->
+                        <label>Sub Expense :</label>
+                        <select id="ddlEditSubExpense" class="form-control">
+                            <option value="0">Select</option>
+                        </select>
                     </div>
-                    <div class="form-row center">
-                        <input type="button" class="btn btn-success" value="Update Expense"
-                            onclick="UpdateExpense();" />
-                        <input type="button" class="btn btn-secondary" value="Cancel"
-                            onclick="closeEditExpenseModal();" />
+                    <div class="form-group">
+                        <label>Rate :</label>
+                        <input type="text" id="txtEditRate" value="0" class="form-control" maxlength="10"
+                            oninput="validateRate(this)" />
                     </div>
+                    <div class="form-group">
+                        <label>Quantity :</label>
+                        <input type="text" id="txtEditQuantity" value="1" class="form-control" maxlength="10" />
+                    </div>
+                    <div class="form-group">
+                        <label>Amount :</label>
+                        <input type="text" disabled id="txtEditAmount" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Current File :</label>
+                        <div id="currentFileLink"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Replace File (Optional) :</label>
+                        <input type="file" id="fpEditUpload" accept="image/*,.pdf,application/pdf" onchange="EditFileChange(this);" />
+                        <input type="hidden" id="hfEditUploadedFile" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bill Number :</label>
+                        <input type="text" id="txtEditBillNumber" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Is Paid :</label>
+                        <select id="ddlEditIsPaid" class="form-control" onchange="togglePaymentMode(this.value, 'ddlEditPaymentMode')">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Mode :</label>
+                        <select id="ddlEditPaymentMode" class="form-control" disabled>
+                            <option value="">Select</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Credit">Credit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Description :</label>
+                        <textarea class="form-control" id="txtEditDescription" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-row center">
+                    <input type="button" class="btn btn-success" value="Update Expense"
+                        onclick="UpdateExpense();" />
+                    <input type="button" class="btn btn-secondary" value="Cancel"
+                        onclick="closeEditExpenseModal();" />
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- ======================== Styles ========================= -->
-        <style>
-            .section-title {
-     width: auto !important;
-    max-width: none !important;
-}
+    <!-- ======================== Styles ========================= -->
+    <style>
+        .section-title {
+            width: auto !important;
+            max-width: none !important;
+        }
 
-            .Header {
-    margin-top: 5%;
-}
-
-
-
-            @media (max-width: 576px) {
-                .btnn {
-                    width: 30% !important;
-
-                }
+        .Header {
+            margin-top: 5%;
+        }
 
 
-                .table-responsive #pagination {
-                    display: flex !important;
-                    flex-direction: row !important;
-                    justify-content: center !important;
-                    align-items: center !important;
-                    gap: 6px;
-                    white-space: nowrap;
-                }
+
+        @media (max-width: 576px) {
+            .btnn {
+                width: 30% !important;
+            }
+
+
+            .table-responsive #pagination {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 6px;
+                white-space: nowrap;
+            }
 
                 .table-responsive #pagination button,
                 .table-responsive #pagination span {
                     white-space: nowrap;
                 }
-            }
+        }
 
 
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 9999;
-                padding-top: 80px;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.4);
-            }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            padding-top: 80px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
 
-            .modal-content {
-                background-color: #fff;
-                margin: auto;
-                padding: 20px;
-                border-radius: 6px;
-                width: 85%;
-                max-width: 700px;
-            }
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 20px;
+            border-radius: 6px;
+            width: 85%;
+            max-width: 700px;
+        }
 
-            /*.close {
+        /*.close {
             float: right;
             font-size: 22px;
             cursor: pointer;
             font-weight: bold;
         }*/
-            .close {
-                float: right;
-                cursor: pointer;
-                font-weight: bold;
-
-                width: 26px;
-                height: 26px;
-
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-
-                font-size: 18px;
-                line-height: 1;
-
-                color: #fff;
-                background-color: #000;
-
-                border-radius: 50%;
-            }
+        .close {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1;
+            color: #fff;
+            background-color: #000;
+            border-radius: 50%;
+        }
 
             /* Explicitly prevent hover/focus color changes */
             .close:hover,
@@ -715,95 +711,95 @@
                 outline: none;
             }
 
-            @media (max-width: 600px) {
+        @media (max-width: 600px) {
 
-                .modal-content {
-                    width: 95% !important;
-                    padding: 15px;
-                }
+            .modal-content {
+                width: 95% !important;
+                padding: 15px;
+            }
 
                 .modal-content h3 {
                     font-size: 16px;
                     text-align: center;
                 }
 
-                .table-responsive {
-                    overflow-x: auto;
-                    -webkit-overflow-scrolling: touch;
-                }
-
-                table {
-                    width: 600px;
-                }
-
-                .MyHeader,
-                .MyCol {
-                    font-size: 11px !important;
-                    padding: 4px !important;
-                    white-space: nowrap;
-                    text-align: center !important;
-                }
-
-                .close {
-                    font-size: 20px;
-                }
-
-                .btn {
-                    width: 100%;
-                    font-size: 14px;
-                    padding: 10px 0 !important;
-                }
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
-
-            .MyCol,
-            .MyHeader {
-                font-size: 12px;
-                text-align: right;
-                border: 1px solid #ccc;
-                padding: 5px;
+            table {
+                width: 600px;
             }
 
-            .MyHeader {
-                font-weight: bold;
-                color: #000;
+            .MyHeader,
+            .MyCol {
+                font-size: 11px !important;
+                padding: 4px !important;
+                white-space: nowrap;
+                text-align: center !important;
             }
 
-            .container {
+            .close {
+                font-size: 20px;
+            }
+
+            .btn {
                 width: 100%;
-                padding: 10px 15px;
-                box-sizing: border-box;
+                font-size: 14px;
+                padding: 10px 0 !important;
             }
+        }
 
-            .section-title {
-                font-weight: bold;
-                color: #000;
-                font-size: 16px;
-                text-align: center;
-                width: 100%;
-                border-bottom: 1px solid #ccc;
-                padding-bottom: 5px;
-            }
 
-            /* Form Layout for Desktop */
-            .responsive-form {
-                margin-top: 15px;
-                width: 100%;
-            }
+        .MyCol,
+        .MyHeader {
+            font-size: 12px;
+            text-align: right;
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
 
-            .form-row {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 15px;
-                width: 100%;
-            }
+        .MyHeader {
+            font-weight: bold;
+            color: #000;
+        }
 
-            .form-group {
-                flex: 1;
-                min-width: 180px;
-                display: flex;
-                flex-direction: column;
-            }
+        .container {
+            width: 100%;
+            padding: 10px 15px;
+            box-sizing: border-box;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #000;
+            font-size: 16px;
+            text-align: center;
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        /* Form Layout for Desktop */
+        .responsive-form {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            flex-direction: column;
+        }
 
             .form-group label {
                 font-weight: 600;
@@ -823,48 +819,48 @@
                 width: 100%;
             }
 
-            .center {
-                justify-content: center;
-                display: flex;
-                margin-top: 10px;
+        .center {
+            justify-content: center;
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Responsive for Mobile/Tablet */
+        @media (max-width: 1024px) {
+            .Header {
+                margin-top: 30%;
             }
 
-            .btn {
-                padding: 8px 20px;
-                border-radius: 4px;
-                cursor: pointer;
+            .form-group {
+                margin-bottom: -10px;
+            }
+        }
+
+
+        @media (max-width: 1024px) {
+
+            html,
+            body {
+                overflow-x: hidden;
+                width: 100%;
+                margin: 0;
+                padding: 0;
             }
 
-            /* Responsive for Mobile/Tablet */
-            @media (max-width: 1024px) {
-                .Header {
-                    margin-top: 30%;
-                }
-
-                .form-group {
-                    margin-bottom: -10px;
-                }
+            .form-row {
+                flex-direction: column;
+                width: 100%;
             }
 
-
-            @media (max-width: 1024px) {
-
-                html,
-                body {
-                    overflow-x: hidden;
-                    width: 100%;
-                    margin: 0;
-                    padding: 0;
-                }
-
-                .form-row {
-                    flex-direction: column;
-                    width: 100%;
-                }
-
-                .form-group {
-                    width: 100% !important;
-                }
+            .form-group {
+                width: 100% !important;
+            }
 
                 .form-group label {
                     font-size: 14px;
@@ -883,92 +879,91 @@
                     box-sizing: border-box;
                 }
 
-                .btn {
-                    padding: 10px 0;
-                    font-size: 15px;
-                }
-
-                input[type="file"] {
-                    background-color: #fff;
-                }
-
-                .table-responsive {
-                    overflow-x: auto;
-                }
-
-                #tblExpense th,
-                #tblExpense td {
-                    font-size: 11px;
-                    white-space: nowrap;
-                }
+            .btn {
+                padding: 10px 0;
+                font-size: 15px;
             }
 
-            #loaderOverlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.4);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-            }
-
-            .loader {
-                border: 6px solid #f3f3f3;
-                border-top: 6px solid #28a745;
-                border-radius: 50%;
-                width: 50px;
-                height: 50px;
-                animation: spin 1s linear infinite;
-            }
-
-            .loader-text {
-                margin-top: 10px;
-                color: #fff;
-                font-weight: bold;
-                font-size: 14px;
-            }
-
-            @keyframes spin {
-                0% {
-                    transform: rotate(0deg);
-                }
-
-                100% {
-                    transform: rotate(360deg);
-                }
-            }
-
-
-            .Header {
-                text-align: left;
-
-            }
-
-            .expense-card {
-                border: 1px solid #ccc;
-                padding: 15px;
-                margin-bottom: 10px;
-                border-radius: 8px;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            input[type="file"] {
                 background-color: #fff;
-                display: block;
-                /* make it block so content stacks vertically */
             }
 
-            .expense-row {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                /* align text properly for multi-line */
-                margin-bottom: 5px;
-                flex-wrap: wrap;
-                /* allow long text to wrap */
+            .table-responsive {
+                overflow-x: auto;
             }
+
+            #tblExpense th,
+            #tblExpense td {
+                font-size: 11px;
+                white-space: nowrap;
+            }
+        }
+
+        #loaderOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #28a745;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-text {
+            margin-top: 10px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .Header {
+            text-align: left;
+        }
+
+        .expense-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            display: block;
+            /* make it block so content stacks vertically */
+        }
+
+        .expense-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            /* align text properly for multi-line */
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+            /* allow long text to wrap */
+        }
 
             .expense-row strong {
                 color: #555;
@@ -983,1486 +978,1486 @@
                 word-break: break-word;
             }
 
-            .expense-card a {
-                color: #007bff;
-                text-decoration: none;
-            }
+        .expense-card a {
+            color: #007bff;
+            text-decoration: none;
+        }
 
             .expense-card a:hover {
                 text-decoration: underline;
             }
 
-            .expense-card button {
-                width: 100%;
-                margin-top: 10px;
-            }
-        </style>
+        .expense-card button {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
 
 
 
 
 
-        <!-- ======================== Scripts ========================= -->
-        <link href="../Css/jquery-ui.css" rel="stylesheet" />
-        <script src="../Js/jquery-ui.js"></script>
-        <script>
+    <!-- ======================== Scripts ========================= -->
+    <link href="../Css/jquery-ui.css" rel="stylesheet" />
+    <script src="../Js/jquery-ui.js"></script>
+    <script>
 
-            function openHistoryModal() {
-                document.getElementById("historyModal").style.display = "block";
-                renderHistoryFromExpenseData();
-            }
+        function openHistoryModal() {
+            document.getElementById("historyModal").style.display = "block";
+            renderHistoryFromExpenseData();
+        }
 
-            function closeHistoryModal() {
-                document.getElementById("historyModal").style.display = "none";
-            }
+        function closeHistoryModal() {
+            document.getElementById("historyModal").style.display = "none";
+        }
 
-            function GetExpenseHistoryHistoryData() {
-                var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
-                var UserId = hdnUserId;//localStorage.getItem("UserId");
-                $.ajax({
-                    url: "ExpenseManager.aspx/ReimbursementHistoryData",
-                    async: false,
-                    data: JSON.stringify({ LoggedInUserID: UserId }),
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    timeout: 120000,
-                    dataType: "json",
-                    success: function (result) {
-                        ReimbursmentHistoryData = $.parseJSON(result.d);
-                    },
-                    error: function (xhr, status, error) {
-                        // This is where ACTUAL exceptions and errors are caught
-                        hideLoader();
+        function GetExpenseHistoryHistoryData() {
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var UserId = hdnUserId;//localStorage.getItem("UserId");
+            $.ajax({
+                url: "ExpenseManager.aspx/ReimbursementHistoryData",
+                async: false,
+                data: JSON.stringify({ LoggedInUserID: UserId }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                timeout: 120000,
+                dataType: "json",
+                success: function (result) {
+                    ReimbursmentHistoryData = $.parseJSON(result.d);
+                },
+                error: function (xhr, status, error) {
+                    // This is where ACTUAL exceptions and errors are caught
+                    hideLoader();
 
-                        var errorMessage = "An error occurred while searching expenses.";
+                    var errorMessage = "An error occurred while searching expenses.";
 
-                        console.error("AJAX Error Details:");
-                        console.error("Status:", status);                    // e.g., "timeout", "error", "abort", "parsererror"
-                        console.error("Error Thrown:", error);               // e.g., exception message
-                        console.error("HTTP Status Code:", xhr.status);      // e.g., 500, 404, 0
-                        console.error("Response Text:", xhr.responseText);   // Full server response (very useful!)
-                        console.error("Full XHR Object:", xhr);
+                    console.error("AJAX Error Details:");
+                    console.error("Status:", status);                    // e.g., "timeout", "error", "abort", "parsererror"
+                    console.error("Error Thrown:", error);               // e.g., exception message
+                    console.error("HTTP Status Code:", xhr.status);      // e.g., 500, 404, 0
+                    console.error("Response Text:", xhr.responseText);   // Full server response (very useful!)
+                    console.error("Full XHR Object:", xhr);
 
-                        if (status === "timeout") {
-                            errorMessage = "Request timed out. Please try again.";
-                        } else if (status === "parsererror") {
-                            errorMessage = "Failed to parse server response. Invalid JSON returned.";
-                        } else if (xhr.status === 500) {
-                            errorMessage = "Server error occurred. Check logs or contact admin.";
-                        } else if (xhr.status === 404) {
-                            errorMessage = "Search endpoint not found.";
-                        } else if (xhr.status === 0) {
-                            errorMessage = "No network connection or server unreachable.";
-                        }
-
-                        alert(errorMessage + "\nCheck browser console (F12) for detailed error logs.");
+                    if (status === "timeout") {
+                        errorMessage = "Request timed out. Please try again.";
+                    } else if (status === "parsererror") {
+                        errorMessage = "Failed to parse server response. Invalid JSON returned.";
+                    } else if (xhr.status === 500) {
+                        errorMessage = "Server error occurred. Check logs or contact admin.";
+                    } else if (xhr.status === 404) {
+                        errorMessage = "Search endpoint not found.";
+                    } else if (xhr.status === 0) {
+                        errorMessage = "No network connection or server unreachable.";
                     }
 
-                });
-            }
-
-            function renderHistoryFromExpenseData() {
-                GetExpenseHistoryHistoryData();
-                // Clear old rows (keep header)
-                $('#tblHistory tr:gt(0)').remove();
-
-                // Filter reimbursement-created expenses
-                var historyData = ReimbursmentHistoryData;
-
-                if (historyData.length === 0) {
-                    $('#tblHistory').append(
-                        '<tr><td colspan="5" style="text-align:center;color:gray;">No reimbursement history found</td></tr>'
-                    );
-                    return;
-                }
-                $.each(historyData, function (index, value) {
-
-                    var html = '<tr>';
-
-                    // SNo
-                    html += '<td>' + (index + 1) + '</td>';
-
-                    // Date + Expense Details
-                    html += '<td>';
-                    html += value.ExpenseDate + '<br>';
-                    html += '<td>' + value.ID + '</td>';
-                    //html += '<strong>Expense:</strong> ' + value.Expense +
-                    //    (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
-                   /* html += '<strong>Rate:</strong> ' + value.Rate + '<br>';*/
-                    /*html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';*/
-                   /* html += '<strong>Description:</strong> ' + (value.Description || '-');*/
-                    html += '</td>';
-
-                    // Total Amount
-                    html += '<td>' + value.Amount + '</td>';
-
-                    // Status
-                    html += '<td>' + value.Status + '</td>';
-
-                    // View
-                    html += '<td>';
-                    if (value.PdfPath) {
-                        html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">View</a>';
-                    } else {
-                        html += '<span style="color:gray;">N/A</span>';
-                    }
-                    html += '</td>';
-
-                    html += '</tr>';
-
-                    $('#tblHistory').append(html);
-                });
-            }
-
-
-            // ------------------- Mobile Table/Card View Toggle -------------------
-            function showTableView() {
-                $('#tblExpense').parent().show(); // show table
-                $('#cardViewContainer').hide();    // hide card view
-                $('#btnTableView').prop('disabled', true);
-                $('#btnCardView').prop('disabled', false);
-            }
-
-            function showCardView() {
-                if (!expenseData || expenseData.length === 0) {
-                    alert("No expense data available to show in card view.");
-                    return;
+                    alert(errorMessage + "\nCheck browser console (F12) for detailed error logs.");
                 }
 
-                $('#tblExpense').parent().hide(); // hide table
-                $('#cardViewContainer').show();    // show cards
-                $('#btnTableView').prop('disabled', false);
-                $('#btnCardView').prop('disabled', true);
+            });
+        }
 
-                currentPage = 1; // reset page
-                renderExpenseCards(); // render cards
+        function renderHistoryFromExpenseData() {
+            GetExpenseHistoryHistoryData();
+            // Clear old rows (keep header)
+            $('#tblHistory tr:gt(0)').remove();
+
+            // Filter reimbursement-created expenses
+            var historyData = ReimbursmentHistoryData;
+
+            if (historyData.length === 0) {
+                $('#tblHistory').append(
+                    '<tr><td colspan="5" style="text-align:center;color:gray;">No reimbursement history found</td></tr>'
+                );
+                return;
             }
+            $.each(historyData, function (index, value) {
 
-            function renderExpenseCards() {
-                $('#cardViewContainer').empty(); // clear old cards
+                var html = '<tr>';
 
-                var start = (currentPage - 1) * pageSize;
-                var end = start + pageSize;
-                var pageData = expenseData.slice(start, end);
+                // SNo
+                html += '<td>' + (index + 1) + '</td>';
 
-                if (pageData.length === 0) {
-                    $('#cardViewContainer').html('<div style="text-align:left; color:gray;">No data available</div>');
-                    return;
+                // Date + Expense Details
+                html += '<td>';
+                html += value.ExpenseDate + '<br>';
+                html += '<td>' + value.ID + '</td>';
+                //html += '<strong>Expense:</strong> ' + value.Expense +
+                //    (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+                /* html += '<strong>Rate:</strong> ' + value.Rate + '<br>';*/
+                /*html += '<strong>Qty:</strong> ' + value.Quantity + '<br>';*/
+                /* html += '<strong>Description:</strong> ' + (value.Description || '-');*/
+                html += '</td>';
+
+                // Total Amount
+                html += '<td>' + value.Amount + '</td>';
+
+                // Status
+                html += '<td>' + value.Status + '</td>';
+
+                // View
+                html += '<td>';
+                if (value.PdfPath) {
+                    html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">View</a>';
+                } else {
+                    html += '<span style="color:gray;">N/A</span>';
                 }
+                html += '</td>';
 
-                $.each(pageData, function (index, value) {
-                    var html = '<div class="expense-card" style="border:1px solid #ccc; font-size:14px; padding:10px; margin-bottom:10px; border-radius:5px; box-shadow: 0px 0px 5px rgba(0,0,0,0.1);">';
+                html += '</tr>';
 
-                    if (value.Status != "Reimbursement Created") {
-                        html += '<input type="checkbox" class="chkSingle" data-id="' + value.ID + '" style="margin-bottom:6px;"> ';
-                    } else {
-                        html += '<input type="checkbox" class="chkSingle" disabled style="margin-bottom:6px;"> ';
-                    }
-                    html += '<strong>SNo: </strong>' + (start + index + 1) + '<br>';
-                    html += '<strong>Date: </strong>' + value.ExpenseDate + '<br>';
-                    html += '<strong>Expense: </strong>' + value.Expense + (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
-                    html += '<strong>Rate: </strong>' + value.Rate + '<br>';
-                    html += '<strong>Quantity: </strong>' + value.Quantity + '<br>';
-                    html += '<strong>Amount: </strong>' + value.Amount + '<br>';
-                    html += '<strong>Description: </strong>' + value.Description + '<br>';
-                    if (value.ExpenseFile) {
-                        html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a><br>';
-                    }
-                    if (value.Status != "Reimbursement Created") {
-                        html += '<button type="button" class="btnn btn-warning btn-sm mt-1" onclick="OpenEditModal(' + value.ID + ')">Edit</button>';
-                    } else {
-                        html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')" class="btn btn-link btn-sm mt-1">View Reimbursement</a>';
-                    }
-                    html += '</div>';
+                $('#tblHistory').append(html);
+            });
+        }
 
-                    $('#cardViewContainer').append(html);
-                });
+
+        // ------------------- Mobile Table/Card View Toggle -------------------
+        function showTableView() {
+            $('#tblExpense').parent().show(); // show table
+            $('#cardViewContainer').hide();    // hide card view
+            $('#btnTableView').prop('disabled', true);
+            $('#btnCardView').prop('disabled', false);
+        }
+
+        function showCardView() {
+            if (!expenseData || expenseData.length === 0) {
+                alert("No expense data available to show in card view.");
+                return;
             }
 
+            $('#tblExpense').parent().hide(); // hide table
+            $('#cardViewContainer').show();    // show cards
+            $('#btnTableView').prop('disabled', false);
+            $('#btnCardView').prop('disabled', true);
 
-            // ------------------- Show Toggle Buttons on Mobile -------------------
-            $(document).ready(function () {
-                if ($(window).width() < 768) { // mobile view
+            currentPage = 1; // reset page
+            renderExpenseCards(); // render cards
+        }
+
+        function renderExpenseCards() {
+            $('#cardViewContainer').empty(); // clear old cards
+
+            var start = (currentPage - 1) * pageSize;
+            var end = start + pageSize;
+            var pageData = expenseData.slice(start, end);
+
+            if (pageData.length === 0) {
+                $('#cardViewContainer').html('<div style="text-align:left; color:gray;">No data available</div>');
+                return;
+            }
+
+            $.each(pageData, function (index, value) {
+                var html = '<div class="expense-card" style="border:1px solid #ccc; font-size:14px; padding:10px; margin-bottom:10px; border-radius:5px; box-shadow: 0px 0px 5px rgba(0,0,0,0.1);">';
+
+                if (value.Status != "Reimbursement Created") {
+                    html += '<input type="checkbox" class="chkSingle" data-id="' + value.ID + '" style="margin-bottom:6px;"> ';
+                } else {
+                    html += '<input type="checkbox" class="chkSingle" disabled style="margin-bottom:6px;"> ';
+                }
+                html += '<strong>SNo: </strong>' + (start + index + 1) + '<br>';
+                html += '<strong>Date: </strong>' + value.ExpenseDate + '<br>';
+                html += '<strong>Expense: </strong>' + value.Expense + (value.SubExpense ? ' - ' + value.SubExpense : '') + '<br>';
+                html += '<strong>Rate: </strong>' + value.Rate + '<br>';
+                html += '<strong>Quantity: </strong>' + value.Quantity + '<br>';
+                html += '<strong>Amount: </strong>' + value.Amount + '<br>';
+                html += '<strong>Description: </strong>' + value.Description + '<br>';
+                if (value.ExpenseFile) {
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a><br>';
+                }
+                if (value.Status != "Reimbursement Created") {
+                    html += '<button type="button" class="btnn btn-warning btn-sm mt-1" onclick="OpenEditModal(' + value.ID + ')">Edit</button>';
+                } else {
+                    html += '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')" class="btn btn-link btn-sm mt-1">View Reimbursement</a>';
+                }
+                html += '</div>';
+
+                $('#cardViewContainer').append(html);
+            });
+        }
+
+
+        // ------------------- Show Toggle Buttons on Mobile -------------------
+        $(document).ready(function () {
+            if ($(window).width() < 768) { // mobile view
+                $('#mobileViewToggle').show();
+                showTableView(); // table visible by default
+            } else {
+                $('#mobileViewToggle').hide();
+                showTableView(); // desktop default
+            }
+
+            $(window).resize(function () {
+                if ($(window).width() < 768) {
                     $('#mobileViewToggle').show();
-                    showTableView(); // table visible by default
                 } else {
                     $('#mobileViewToggle').hide();
-                    showTableView(); // desktop default
+                    showTableView();
                 }
+            });
+        });
 
-                $(window).resize(function () {
-                    if ($(window).width() < 768) {
-                        $('#mobileViewToggle').show();
+
+
+
+        var expenseData = [];
+        var ReimbursmentHistoryData = [];
+        var currentPage = 1;
+        var pageSize = 50;
+        var dateSortAsc = true;
+        function EditExpense() {
+            document.getElementById("editModal").style.display = "block";
+        }
+
+        function closeEditModal() {
+            document.getElementById("editModal").style.display = "none";
+        }
+
+
+
+        // Select/Deselect All checkboxes
+        $(document).on('change', '#chkSelectAll', function () {
+            var isChecked = $(this).is(':checked');
+            $('.chkSingle').prop('checked', isChecked);
+        });
+
+        // If any single checkbox is unchecked, uncheck Select All
+        $(document).on('change', '.chkSingle', function () {
+            if (!$(this).is(':checked')) {
+                $('#chkSelectAll').prop('checked', false);
+            } else {
+                // If all checkboxes are checked, check Select All
+                if ($('.chkSingle:checked').length === $('.chkSingle').length) {
+                    $('#chkSelectAll').prop('checked', true);
+                }
+            }
+        }
+        );
+
+
+        function OpenRbmPopup() {
+            $('#txtManager').val('');
+            $('#txtEmpCode').val('');
+            $('#txtPlant').val('');
+            $('#txtCompany').val('');
+            $('#fpSignature').val('');
+            $('#hfSignaturePath').val('');
+            $('#lblSignatureFile').text('').hide();
+            document.getElementById("submitModal").style.display = "block";
+        }
+
+        function closeSubmitModal() {
+            document.getElementById("submitModal").style.display = "none";
+        }
+
+
+        function saveSelected() {
+            alert("Selected expenses saved! (Dummy action)");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd-M-yy',
+                maxdate: 0
+            });
+        });
+
+        $(document).ready(function () {
+            BindExpenseMaster();
+            Search();
+            calculateAmount();
+
+            // NEW: Added for sub-category - Load sub on category change
+            $('#ddlExpense').on('change', function () {
+                var categoryId = $(this).val();
+                BindSubExpense(categoryId, 'ddlSubExpense');
+            });
+
+            // NEW: Added for sub-category in edit modal
+            $('#ddlEditExpense').on('change', function () {
+                var categoryId = $(this).val();
+                BindSubExpense(categoryId, 'ddlEditSubExpense');
+            });
+
+            function calculateAmount() {
+                var qty = parseFloat($('#txtQuantity').val()) || 1;
+                var rate = parseFloat($('#txtRate').val()) || 0;
+
+                var amount = qty * rate;
+                $('#txtAmount').val(amount);
+            }
+
+            // Trigger on change / typing
+            $('#txtQuantity, #txtRate').on('input', function () {
+                calculateAmount();
+            });
+        });
+
+        function BindExpenseMaster() {
+            $.ajax({
+                url: "ExpenseManager.aspx/BindExpenseMaster",
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                timeout: 120000,
+                dataType: "json",
+                success: function (result) {
+                    var data = $.parseJSON(result.d);
+                    //if (data.length > 0) {
+                    //    $.each(data, function (index, value) {
+                    //        $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                    //        $('#ddlExpenseSearch').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                    //    });
+                    //}
+                    if (data.length > 0) {
+                        $('#ddlExpense').empty().append('<option value="">Select</option>');
+                        $('#ddlEditExpense').empty().append('<option value="">Select</option>');
+                        $('#ddlExpenseSearch').empty().append('<option value="">All</option>');
+                        $.each(data, function (index, value) {
+                            if (value.ExpenseId > 0) {
+                                $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                                $('#ddlEditExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
+                                $('#ddlExpenseSearch').append(
+                                    '<option value="' + value.ExpenseId + '">' + value.Expense + '</option>'
+                                );
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function togglePaymentMode(isPaidValue, paymentModeId) {
+            var ddl = document.getElementById(paymentModeId);
+            if (isPaidValue === 'Yes') {
+                ddl.removeAttribute('disabled');
+            } else {
+                ddl.setAttribute('disabled', 'disabled');
+                ddl.value = '';
+            }
+        }
+
+        function Save() {
+            var Date = $('#txtExpenseDate').val();
+            var ExpenseId = $('#ddlExpense').val();
+            var SubExpenseId = $('#ddlSubExpense').val();
+            var File = $('#hfUploadedFile').val();// $('#fpUpload').val();
+            var Description = $('#txtExpenseDescription').val();
+            var Quantity = $('#txtQuantity').val();
+            var Rate = $('#txtRate').val();
+            var Amount = $('#txtAmount').val();
+            var BillNumber = $('#txtBillNumber').val();
+            var IsPaid = $('#ddlIsPaid').val() === 'Yes';
+            var PaymentMode = $('#ddlPaymentMode').val();
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+
+            if (Date == "" || ExpenseId == "" || Amount == "" || SubExpenseId == "0") {
+                alert('Date, Expense On, Sub Expense, and Amount are mandatory fields');
+                return;
+            }
+
+            if (IsPaid && PaymentMode == "") {
+                alert('Please select Payment Mode');
+                return;
+            }
+
+            var obj = new Object();
+            var data = new Array();
+            obj.Date = Date;
+            obj.ExpenseId = ExpenseId;
+            obj.SubExpenseId = SubExpenseId;
+            obj.File = File;
+            obj.Description = Description;
+            obj.Amount = Amount;
+            obj.userId = hdnUserId;
+            obj.Quantity = Quantity;
+            obj.Rate = Rate;
+            obj.BillNumber = BillNumber;
+            obj.IsPaid = IsPaid;
+            obj.PaymentMode = PaymentMode;
+            data.push(obj);
+
+            $.ajax({
+                url: "ExpenseManager.aspx/Save",
+                async: true,
+                data: JSON.stringify({ data: data }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                timeout: 120000,
+                dataType: "json",
+                success: function (result) {
+                    if (result.d == "1") {
+                        alert('Expense entered successfully!');
+                        Search();
+                        Clear();
                     } else {
-                        $('#mobileViewToggle').hide();
-                        showTableView();
+                        alert('Some Error Occurred!');
                     }
-                });
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function sortByDate() {
+
+            expenseData.sort(function (a, b) {
+
+                var d1 = parseDate(a.ExpenseDate);
+                var d2 = parseDate(b.ExpenseDate);
+
+                return dateSortAsc ? d1 - d2 : d2 - d1;
             });
 
+            // Update icon BEFORE toggling dateSortAsc for next click
+            $('#dateSortIcon').html(dateSortAsc ? '&#9660;' : '&#9650;');
 
+            dateSortAsc = !dateSortAsc;
 
+            currentPage = 1;
+            renderExpenseTable();
+        }
 
-            var expenseData = [];
-            var ReimbursmentHistoryData = [];
-            var currentPage = 1;
-            var pageSize = 50;
-            var dateSortAsc = true;
-            function EditExpense() {
-                document.getElementById("editModal").style.display = "block";
-            }
+        function parseDate(dateStr) {
+            if (!dateStr) return 0;
 
-            function closeEditModal() {
-                document.getElementById("editModal").style.display = "none";
-            }
+            // Handle dd-MMM-yyyy or dd-MM-yyyy (e.g. 15-Feb-2026 or 15-02-2026)
+            if (dateStr.indexOf('-') > 0) {
+                var parts = dateStr.split('-');
+                if (parts.length === 3) {
+                    // Check if the middle part is a month name or number
+                    var day = parseInt(parts[0], 10);
+                    var monthStr = parts[1];
+                    var year = parseInt(parts[2], 10);
 
-
-
-            // Select/Deselect All checkboxes
-            $(document).on('change', '#chkSelectAll', function () {
-                var isChecked = $(this).is(':checked');
-                $('.chkSingle').prop('checked', isChecked);
-            });
-
-            // If any single checkbox is unchecked, uncheck Select All
-            $(document).on('change', '.chkSingle', function () {
-                if (!$(this).is(':checked')) {
-                    $('#chkSelectAll').prop('checked', false);
-                } else {
-                    // If all checkboxes are checked, check Select All
-                    if ($('.chkSingle:checked').length === $('.chkSingle').length) {
-                        $('#chkSelectAll').prop('checked', true);
+                    // If it's an ISO format yyyy-MM-dd (starts with year)
+                    if (parts[0].length === 4) {
+                        return new Date(dateStr).getTime();
                     }
+
+                    // Try parsing month: Feb -> 1, 02 -> 1
+                    var month = isNaN(monthStr) ? new Date(Date.parse(monthStr + " 1, 2000")).getMonth() : parseInt(monthStr, 10) - 1;
+
+                    return new Date(year, month, day).getTime();
                 }
             }
+
+            // Fallback to native Date parser for everything else (ISO, etc.)
+            var d = new Date(dateStr);
+            return isNaN(d.getTime()) ? 0 : d.getTime();
+        }
+
+        function Search() {
+            var FromDate = $('#txtFromDate').val();
+            var ToDate = $('#txtToDate').val();
+            var ExpenseId = $('#ddlExpenseSearch').val() || "0";
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var UserId = hdnUserId;//localStorage.getItem("UserId");
+            var totExpense = 0;
+            $.ajax({
+                url: "ExpenseManager.aspx/SearchExpense",
+                async: true,
+                data: JSON.stringify({ FromDate: FromDate, ToDate: ToDate, ExpenseId: ExpenseId, UserId: UserId }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                timeout: 120000,
+                dataType: "json",
+                success: function (result) {
+                    expenseData = $.parseJSON(result.d);
+                    currentPage = 1;
+                    renderExpenseTable();
+                    renderCharts(); // Render charts after data is loaded
+                },
+                error: function (xhr, status, error) {
+                    // This is where ACTUAL exceptions and errors are caught
+                    hideLoader();
+
+                    var errorMessage = "An error occurred while searching expenses.";
+
+                    console.error("AJAX Error Details:");
+                    console.error("Status:", status);                    // e.g., "timeout", "error", "abort", "parsererror"
+                    console.error("Error Thrown:", error);               // e.g., exception message
+                    console.error("HTTP Status Code:", xhr.status);      // e.g., 500, 404, 0
+                    console.error("Response Text:", xhr.responseText);   // Full server response (very useful!)
+                    console.error("Full XHR Object:", xhr);
+
+                    if (status === "timeout") {
+                        errorMessage = "Request timed out. Please try again.";
+                    } else if (status === "parsererror") {
+                        errorMessage = "Failed to parse server response. Invalid JSON returned.";
+                    } else if (xhr.status === 500) {
+                        errorMessage = "Server error occurred. Check logs or contact admin.";
+                    } else if (xhr.status === 404) {
+                        errorMessage = "Search endpoint not found.";
+                    } else if (xhr.status === 0) {
+                        errorMessage = "No network connection or server unreachable.";
+                    }
+
+                    alert(errorMessage + "\nCheck browser console (F12) for detailed error logs.");
+                }
+
+            });
+        }
+
+        function renderExpenseTable() {
+
+            $('#tblExpense tr').slice(1).remove();
+            var totExpense = 0;
+
+            var start = (currentPage - 1) * pageSize;
+            var end = start + pageSize;
+            var pageData = expenseData.slice(start, end);
+
+            $.each(pageData, function (index, value) {
+
+                totExpense += value.Amount;
+
+                var html = '<tr>';
+                if (value.Status != "Reimbursement Created") {
+                    html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
+                }
+                else {
+                    html += '<td class="MyHeader"><input type="checkbox" disabled class="chkSingle" data-id="' + value.ID + '" /></td>';
+                    //html += '<td class="MyHeader"></td>';
+                }
+                html += '<td class="MyHeader">' + (start + index + 1) + '</td>';
+                html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
+                //html += '<td class="MyHeader">' + value.Expense + '</td>';
+                html += '<td class="MyHeader">' + value.Expense + (value.SubExpense ? ' - ' + value.SubExpense : '') + '</td>';
+                html += '<td class="MyHeader">' + value.Rate + '</td>';
+                html += '<td class="MyHeader">' + value.Quantity + '</td>';
+                html += '<td class="MyHeader">' + value.Amount + '</td>';
+                html += '<td class="MyHeader" style="width: 200px; white-space: normal; word-wrap: break-word;">' + value.Description + '</td>';
+                html += '<td class="MyHeader">' + value.BillNumber + '</td>';
+                html += '<td class="MyHeader">' + value.PaymentMode + '</td>';
+                html += '<td class="MyHeader">';
+                if (value.ExpenseFile) {
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a>';
+                }
+                html += '</td>';
+                /*html += '<td class="MyHeader">' + value.EntryDate + '</td>';*/
+                if (value.Status != "Reimbursement Created") {
+                    //html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
+                    html += '<td class="MyHeader">' +
+                        '<button type="button" class="btn btn-warning btn-sm" onclick="OpenEditModal(' + value.ID + ')">Edit</button>' +
+                        '</td>';
+                }
+                else {
+                    html += '<td class="MyHeader">' +
+                        '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">' +
+                        'View Reimbursement</a></td>';
+                }
+                html += '</tr>';
+
+                $('#tblExpense').append(html);
+            });
+            $('#lblExpenseAmt').text(
+                expenseData.reduce((sum, x) => sum + parseFloat(x.Amount || 0), 0)
+                    .toFixed(2)
             );
 
+            updatePageInfo();
+        }
 
-            function OpenRbmPopup() {
-                $('#txtManager').val('');
-                $('#txtEmpCode').val('');
-                $('#txtPlant').val('');
-                $('#txtCompany').val('');
-                $('#fpSignature').val('');
-                $('#hfSignaturePath').val('');
-                $('#lblSignatureFile').text('').hide();
-                document.getElementById("submitModal").style.display = "block";
+        function updatePageInfo() {
+            var totalPages = Math.ceil(expenseData.length / pageSize);
+            $('#pageInfo').text("Page " + currentPage + " of " + totalPages);
+        }
+
+        //function nextPage() {
+        //    if (currentPage * pageSize < expenseData.length) {
+        //        currentPage++;
+        //        renderExpenseTable();
+        //    }
+        //}
+
+        //function prevPage() {
+        //    if (currentPage > 1) {
+        //        currentPage--;
+        //        renderExpenseTable();
+        //    }
+        //}
+
+        function nextPage() {
+            if (currentPage * pageSize < expenseData.length) {
+                currentPage++;
+                if ($('#cardViewContainer').is(':visible')) {
+                    renderExpenseCards(); // Card View
+                } else {
+                    renderExpenseTable(); // Table View
+                }
             }
+        }
 
-            function closeSubmitModal() {
-                document.getElementById("submitModal").style.display = "none";
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                if ($('#cardViewContainer').is(':visible')) {
+                    renderExpenseCards(); // Card View
+                } else {
+                    renderExpenseTable(); // Table View
+                }
             }
+        }
 
 
-            function saveSelected() {
-                alert("Selected expenses saved! (Dummy action)");
+        function FileChange(ctrl) {
+            ImgPreview(ctrl.files, ctrl);
+        }
+
+        function ImgPreview(input, ctrl) {
+            var file = input[0];
+            var fileType = file["type"];
+            var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
+            if ($.inArray(fileType, ValidImageTypes) < 0) {
+                alert("Only '.jpeg', '.jpg', '.png', '.gif' formats are allowed");
+                $(ctrl).val('');
+            } else {
+                if (input && input[0]) {
+                    var data = new FormData();
+                    data.append(input[0].name, input[0]);
+                    $.ajax({
+                        url: "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Expense",
+                        type: "POST",
+                        async: true,
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            $('#hfUploadedFile').val(response);
+                        }
+                    });
+                }
             }
+        }
 
+        function Clear() {
+            $('#txtExpenseDate').val('');
+            $('#ddlExpense').val('0');
+            $('#ddlSubExpense').val('0');
+            $('#txtAmount').val('');
+            $('#fpUpload').val('');
+            $('#txtQuantity').val('1');
+            $('#txtRate').val('0');
+            $('#txtExpenseDescription').val('');
+            $('#txtBillNumber').val('');
+            $('#ddlIsPaid').val('No');
+            $('#ddlPaymentMode').val('').prop('disabled', true);
+        }
 
+        function parseDateSafe(dateStr) {
+            var parts = dateStr.split('-'); // yyyy-MM-dd
+            return new Date(
+                parseInt(parts[0], 10),
+                parseInt(parts[1], 10) - 1,
+                parseInt(parts[2], 10)
+            ).getTime();
+        }
 
+        function GenerateReimbursementDoc() {
 
+            var selectedIds = [];
+            var selectedDates = [];
 
+            // Loop through all rows except header
+            $('#tblExpense tr').not(':first').each(function () {
 
+                var checkbox = $(this).find('.chkSingle');
 
-
-
-
-
-
-
-            $(function () {
-                $(".datepicker").datepicker({
-                    dateFormat: 'dd-M-yy',
-                    maxdate: 0
-                });
+                if (checkbox.is(':checked')) {
+                    var id = checkbox.attr('data-id');
+                    if (id) {
+                        selectedIds.push(Number(id));
+                    }
+                    // ExpenseDate is in 3rd column (index 2)
+                    var expenseDateText = $(this).find('td').eq(2).text().trim();
+                    if (expenseDateText) {
+                        selectedDates.push(expenseDateText);
+                    }
+                }
             });
 
-            $(document).ready(function () {
-                BindExpenseMaster();
-                Search();
-                calculateAmount();
+            if (selectedIds.length === 0) {
+                alert("Please select at least one expense.");
+                return;
+            }
+            // Build comparable list
+            var parsedDates = selectedDates.map(d => ({
+                original: d,
+                time: parseDateSafe(d)
+            }));
 
-                // NEW: Added for sub-category - Load sub on category change
-                $('#ddlExpense').on('change', function () {
-                    var categoryId = $(this).val();
-                    BindSubExpense(categoryId, 'ddlSubExpense');
-                });
+            // Find start & end
+            var startObj = parsedDates.reduce((min, cur) =>
+                cur.time < min.time ? cur : min
+            );
 
-                // NEW: Added for sub-category in edit modal
-                $('#ddlEditExpense').on('change', function () {
-                    var categoryId = $(this).val();
-                    BindSubExpense(categoryId, 'ddlEditSubExpense');
-                });
+            var endObj = parsedDates.reduce((max, cur) =>
+                cur.time > max.time ? cur : max
+            );
 
-                function calculateAmount() {
-                    var qty = parseFloat($('#txtQuantity').val()) || 1;
-                    var rate = parseFloat($('#txtRate').val()) || 0;
-
-                    var amount = qty * rate;
-                    $('#txtAmount').val(amount);
+            var startDateStr = startObj.original;
+            var endDateStr = endObj.original;
+            showLoader();
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var payload = {
+                createdBy: hdnUserId,
+                managerName: $('#txtManager').val(),
+                plantCode: $('#txtPlant').val(),
+                companyName: $('#txtCompany').val(),
+                signature: $('#hfSignaturePath').val(),
+                employeeCode: $('#txtEmpCode').val(),
+                pdfPath: '',
+                id: selectedIds[0],
+                expenseIds: selectedIds,
+                startExpenseDate: startDateStr,
+                endExpenseDate: endDateStr
+            };
+            $.ajax({
+                url: "ExpenseManager.aspx/CallSaveReimbursementAPI",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ payload: payload }),
+                success: function (res) {
+                    hideLoader();
+                    var result = JSON.parse(res.d);
+                    alert("Reimbursement Created with batch id: " + result.batchID);
+                    Search();
+                    closeSubmitModal();
+                },
+                error: function (err) {
+                    hideLoader();
+                    console.log(err);
+                    alert("Server Error!");
                 }
-
-                // Trigger on change / typing
-                $('#txtQuantity, #txtRate').on('input', function () {
-                    calculateAmount();
-                });
             });
+        }
 
-            function BindExpenseMaster() {
-                $.ajax({
-                    url: "ExpenseManager.aspx/BindExpenseMaster",
-                    async: false,
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    timeout: 120000,
-                    dataType: "json",
-                    success: function (result) {
-                        var data = $.parseJSON(result.d);
-                        //if (data.length > 0) {
-                        //    $.each(data, function (index, value) {
-                        //        $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
-                        //        $('#ddlExpenseSearch').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
-                        //    });
-                        //}
-                        if (data.length > 0) {
-                            $('#ddlExpense').empty().append('<option value="">Select</option>');
-                            $('#ddlEditExpense').empty().append('<option value="">Select</option>');
-                            $('#ddlExpenseSearch').empty().append('<option value="">All</option>');
-                            $.each(data, function (index, value) {
-                                if (value.ExpenseId > 0) {
-                                    $('#ddlExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
-                                    $('#ddlEditExpense').append('<option value="' + value.ExpenseId + '">' + value.Expense + '</option>');
-                                    $('#ddlExpenseSearch').append(
-                                        '<option value="' + value.ExpenseId + '">' + value.Expense + '</option>'
-                                    );
-                                }
-                            });
-                        }
-                    }
-                });
-            }
+        //var canvas = document.getElementById('signatureCanvas');
+        //var signaturePad = new SignaturePad(canvas);
 
-            function togglePaymentMode(isPaidValue, paymentModeId) {
-                var ddl = document.getElementById(paymentModeId);
-                if (isPaidValue === 'Yes') {
-                    ddl.removeAttribute('disabled');
+        var signaturePad = null;
+        function openSignatureModal() {
+            document.getElementById("signatureModal").style.display = "block";
+            setTimeout(function () {
+                var canvas = document.getElementById("signatureCanvas");
+                if (!signaturePad) {
+                    signaturePad = new SignaturePad(canvas);
                 } else {
-                    ddl.setAttribute('disabled', 'disabled');
-                    ddl.value = '';
-                }
-            }
-
-            function Save() {
-                var Date = $('#txtExpenseDate').val();
-                var ExpenseId = $('#ddlExpense').val();
-                var SubExpenseId = $('#ddlSubExpense').val();
-                var File = $('#hfUploadedFile').val();// $('#fpUpload').val();
-                var Description = $('#txtExpenseDescription').val();
-                var Quantity = $('#txtQuantity').val();
-                var Rate = $('#txtRate').val();
-                var Amount = $('#txtAmount').val();
-                var BillNumber = $('#txtBillNumber').val();
-                var IsPaid = $('#ddlIsPaid').val() === 'Yes';
-                var PaymentMode = $('#ddlPaymentMode').val();
-                var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
-
-                if (Date == "" || ExpenseId == "" || Amount == "" || SubExpenseId == "0") {
-                    alert('Date, Expense On, Sub Expense, and Amount are mandatory fields');
-                    return;
-                }
-                
-                if (IsPaid && PaymentMode == "") {
-                    alert('Please select Payment Mode');
-                    return;
-                }
-
-                var obj = new Object();
-                var data = new Array();
-                obj.Date = Date;
-                obj.ExpenseId = ExpenseId;
-                obj.SubExpenseId = SubExpenseId;
-                obj.File = File;
-                obj.Description = Description;
-                obj.Amount = Amount;
-                obj.userId = hdnUserId;
-                obj.Quantity = Quantity;
-                obj.Rate = Rate;
-                obj.BillNumber = BillNumber;
-                obj.IsPaid = IsPaid;
-                obj.PaymentMode = PaymentMode;
-                data.push(obj);
-
-                $.ajax({
-                    url: "ExpenseManager.aspx/Save",
-                    async: true,
-                    data: JSON.stringify({ data: data }),
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    timeout: 120000,
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.d == "1") {
-                            alert('Expense entered successfully!');
-                            Search();
-                            Clear();
-                        } else {
-                            alert('Some Error Occurred!');
-                        }
-                    },
-                    error: function (err) {
-                        console.log(err);
-                    }
-                });
-            }
-
-            function sortByDate() {
-
-                expenseData.sort(function (a, b) {
-
-                    var d1 = parseDate(a.ExpenseDate);
-                    var d2 = parseDate(b.ExpenseDate);
-
-                    return dateSortAsc ? d1 - d2 : d2 - d1;
-                });
-
-                // Update icon BEFORE toggling dateSortAsc for next click
-                $('#dateSortIcon').html(dateSortAsc ? '&#9660;' : '&#9650;');
-
-                dateSortAsc = !dateSortAsc;
-
-                currentPage = 1;
-                renderExpenseTable();
-            }
-
-            function parseDate(dateStr) {
-                if (!dateStr) return 0;
-
-                // Handle dd-MMM-yyyy or dd-MM-yyyy (e.g. 15-Feb-2026 or 15-02-2026)
-                if (dateStr.indexOf('-') > 0) {
-                    var parts = dateStr.split('-');
-                    if (parts.length === 3) {
-                        // Check if the middle part is a month name or number
-                        var day = parseInt(parts[0], 10);
-                        var monthStr = parts[1];
-                        var year = parseInt(parts[2], 10);
-
-                        // If it's an ISO format yyyy-MM-dd (starts with year)
-                        if (parts[0].length === 4) {
-                            return new Date(dateStr).getTime();
-                        }
-
-                        // Try parsing month: Feb -> 1, 02 -> 1
-                        var month = isNaN(monthStr) ? new Date(Date.parse(monthStr + " 1, 2000")).getMonth() : parseInt(monthStr, 10) - 1;
-
-                        return new Date(year, month, day).getTime();
-                    }
-                }
-
-                // Fallback to native Date parser for everything else (ISO, etc.)
-                var d = new Date(dateStr);
-                return isNaN(d.getTime()) ? 0 : d.getTime();
-            }
-
-            function Search() {
-                var FromDate = $('#txtFromDate').val();
-                var ToDate = $('#txtToDate').val();
-                var ExpenseId = $('#ddlExpenseSearch').val() || "0";
-                var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
-                var UserId = hdnUserId;//localStorage.getItem("UserId");
-                var totExpense = 0;
-                $.ajax({
-                    url: "ExpenseManager.aspx/SearchExpense",
-                    async: true,
-                    data: JSON.stringify({ FromDate: FromDate, ToDate: ToDate, ExpenseId: ExpenseId, UserId: UserId }),
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    timeout: 120000,
-                    dataType: "json",
-                    success: function (result) {
-                        expenseData = $.parseJSON(result.d);
-                        currentPage = 1;
-                        renderExpenseTable();
-                        renderCharts(); // Render charts after data is loaded
-                    },
-                    error: function (xhr, status, error) {
-                        // This is where ACTUAL exceptions and errors are caught
-                        hideLoader();
-
-                        var errorMessage = "An error occurred while searching expenses.";
-
-                        console.error("AJAX Error Details:");
-                        console.error("Status:", status);                    // e.g., "timeout", "error", "abort", "parsererror"
-                        console.error("Error Thrown:", error);               // e.g., exception message
-                        console.error("HTTP Status Code:", xhr.status);      // e.g., 500, 404, 0
-                        console.error("Response Text:", xhr.responseText);   // Full server response (very useful!)
-                        console.error("Full XHR Object:", xhr);
-
-                        if (status === "timeout") {
-                            errorMessage = "Request timed out. Please try again.";
-                        } else if (status === "parsererror") {
-                            errorMessage = "Failed to parse server response. Invalid JSON returned.";
-                        } else if (xhr.status === 500) {
-                            errorMessage = "Server error occurred. Check logs or contact admin.";
-                        } else if (xhr.status === 404) {
-                            errorMessage = "Search endpoint not found.";
-                        } else if (xhr.status === 0) {
-                            errorMessage = "No network connection or server unreachable.";
-                        }
-
-                        alert(errorMessage + "\nCheck browser console (F12) for detailed error logs.");
-                    }
-
-                });
-            }
-
-            function renderExpenseTable() {
-
-                $('#tblExpense tr').slice(1).remove();
-                var totExpense = 0;
-
-                var start = (currentPage - 1) * pageSize;
-                var end = start + pageSize;
-                var pageData = expenseData.slice(start, end);
-
-                $.each(pageData, function (index, value) {
-
-                    totExpense += value.Amount;
-
-                    var html = '<tr>';
-                    if (value.Status != "Reimbursement Created") {
-                        html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
-                    }
-                    else {
-                        html += '<td class="MyHeader"><input type="checkbox" disabled class="chkSingle" data-id="' + value.ID + '" /></td>';
-                        //html += '<td class="MyHeader"></td>';
-                    }
-                    html += '<td class="MyHeader">' + (start + index + 1) + '</td>';
-                    html += '<td class="MyHeader">' + value.ExpenseDate + '</td>';
-                    //html += '<td class="MyHeader">' + value.Expense + '</td>';
-                    html += '<td class="MyHeader">' + value.Expense + (value.SubExpense ? ' - ' + value.SubExpense : '') + '</td>';
-                    html += '<td class="MyHeader">' + value.Rate + '</td>';
-                    html += '<td class="MyHeader">' + value.Quantity + '</td>';
-                    html += '<td class="MyHeader">' + value.Amount + '</td>';
-                    html += '<td class="MyHeader" style="width: 200px; white-space: normal; word-wrap: break-word;">' + value.Description + '</td>';
-                    html += '<td class="MyHeader">' + value.BillNumber + '</td>';
-                    html += '<td class="MyHeader">' + value.PaymentMode + '</td>';
-                    html += '<td class="MyHeader">';
-                    if (value.ExpenseFile) {
-                        html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a>';
-                    }
-                    html += '</td>';
-                    /*html += '<td class="MyHeader">' + value.EntryDate + '</td>';*/
-                    if (value.Status != "Reimbursement Created") {
-                        //html += '<td class="MyHeader"><button type="button" class="btn btn-warning btn-sm" onclick="EditExpense(' + value.ID + ')">Edit</button></td>';
-                        html += '<td class="MyHeader">' +
-                            '<button type="button" class="btn btn-warning btn-sm" onclick="OpenEditModal(' + value.ID + ')">Edit</button>' +
-                            '</td>';
-                    }
-                    else {
-                        html += '<td class="MyHeader">' +
-                            '<a href="javascript:void(0);" onclick="openExpensePdf(\'' + value.PdfPath + '\')">' +
-                            'View Reimbursement</a></td>';
-                    }
-                    html += '</tr>';
-
-                    $('#tblExpense').append(html);
-                });
-                $('#lblExpenseAmt').text(
-                    expenseData.reduce((sum, x) => sum + parseFloat(x.Amount || 0), 0)
-                        .toFixed(2)
-                );
-
-                updatePageInfo();
-            }
-
-            function updatePageInfo() {
-                var totalPages = Math.ceil(expenseData.length / pageSize);
-                $('#pageInfo').text("Page " + currentPage + " of " + totalPages);
-            }
-
-            //function nextPage() {
-            //    if (currentPage * pageSize < expenseData.length) {
-            //        currentPage++;
-            //        renderExpenseTable();
-            //    }
-            //}
-
-            //function prevPage() {
-            //    if (currentPage > 1) {
-            //        currentPage--;
-            //        renderExpenseTable();
-            //    }
-            //}
-
-            function nextPage() {
-                if (currentPage * pageSize < expenseData.length) {
-                    currentPage++;
-                    if ($('#cardViewContainer').is(':visible')) {
-                        renderExpenseCards(); // Card View
-                    } else {
-                        renderExpenseTable(); // Table View
-                    }
-                }
-            }
-
-            function prevPage() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    if ($('#cardViewContainer').is(':visible')) {
-                        renderExpenseCards(); // Card View
-                    } else {
-                        renderExpenseTable(); // Table View
-                    }
-                }
-            }
-
-
-            function FileChange(ctrl) {
-                ImgPreview(ctrl.files, ctrl);
-            }
-
-            function ImgPreview(input, ctrl) {
-                var file = input[0];
-                var fileType = file["type"];
-                var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
-                if ($.inArray(fileType, ValidImageTypes) < 0) {
-                    alert("Only '.jpeg', '.jpg', '.png', '.gif' formats are allowed");
-                    $(ctrl).val('');
-                } else {
-                    if (input && input[0]) {
-                        var data = new FormData();
-                        data.append(input[0].name, input[0]);
-                        $.ajax({
-                            url: "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Expense",
-                            type: "POST",
-                            async: true,
-                            data: data,
-                            contentType: false,
-                            processData: false,
-                            success: function (response) {
-                                $('#hfUploadedFile').val(response);
-                            }
-                        });
-                    }
-                }
-            }
-
-            function Clear() {
-                $('#txtExpenseDate').val('');
-                $('#ddlExpense').val('0');
-                $('#ddlSubExpense').val('0');
-                $('#txtAmount').val('');
-                $('#fpUpload').val('');
-                $('#txtQuantity').val('1');
-                $('#txtRate').val('0');
-                $('#txtExpenseDescription').val('');
-                $('#txtBillNumber').val('');
-                $('#ddlIsPaid').val('No');
-                $('#ddlPaymentMode').val('').prop('disabled', true);
-            }
-
-            function parseDateSafe(dateStr) {
-                var parts = dateStr.split('-'); // yyyy-MM-dd
-                return new Date(
-                    parseInt(parts[0], 10),
-                    parseInt(parts[1], 10) - 1,
-                    parseInt(parts[2], 10)
-                ).getTime();
-            }
-
-            function GenerateReimbursementDoc() {
-
-                var selectedIds = [];
-                var selectedDates = [];
-
-                // Loop through all rows except header
-                $('#tblExpense tr').not(':first').each(function () {
-
-                    var checkbox = $(this).find('.chkSingle');
-
-                    if (checkbox.is(':checked')) {
-                        var id = checkbox.attr('data-id');
-                        if (id) {
-                            selectedIds.push(Number(id));
-                        }
-                        // ExpenseDate is in 3rd column (index 2)
-                        var expenseDateText = $(this).find('td').eq(2).text().trim();
-                        if (expenseDateText) {
-                            selectedDates.push(expenseDateText);
-                        }
-                    }
-                });
-
-                if (selectedIds.length === 0) {
-                    alert("Please select at least one expense.");
-                    return;
-                }
-                // Build comparable list
-                var parsedDates = selectedDates.map(d => ({
-                    original: d,
-                    time: parseDateSafe(d)
-                }));
-
-                // Find start & end
-                var startObj = parsedDates.reduce((min, cur) =>
-                    cur.time < min.time ? cur : min
-                );
-
-                var endObj = parsedDates.reduce((max, cur) =>
-                    cur.time > max.time ? cur : max
-                );
-
-                var startDateStr = startObj.original;
-                var endDateStr = endObj.original;
-                showLoader();
-                var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
-                var payload = {
-                    createdBy: hdnUserId,
-                    managerName: $('#txtManager').val(),
-                    plantCode: $('#txtPlant').val(),
-                    companyName: $('#txtCompany').val(),
-                    signature: $('#hfSignaturePath').val(),
-                    employeeCode: $('#txtEmpCode').val(),
-                    pdfPath: '',
-                    id: selectedIds[0],
-                    expenseIds: selectedIds,
-                    startExpenseDate: startDateStr,
-                    endExpenseDate: endDateStr
-                };
-                $.ajax({
-                    url: "ExpenseManager.aspx/CallSaveReimbursementAPI",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({ payload: payload }),
-                    success: function (res) {
-                        hideLoader();
-                        var result = JSON.parse(res.d);
-                        alert("Reimbursement Created with batch id: " + result.batchID);
-                        Search();
-                        closeSubmitModal();
-                    },
-                    error: function (err) {
-                        hideLoader();
-                        console.log(err);
-                        alert("Server Error!");
-                    }
-                });
-            }
-
-            //var canvas = document.getElementById('signatureCanvas');
-            //var signaturePad = new SignaturePad(canvas);
-
-            var signaturePad = null;
-            function openSignatureModal() {
-                document.getElementById("signatureModal").style.display = "block";
-                setTimeout(function () {
-                    var canvas = document.getElementById("signatureCanvas");
-                    if (!signaturePad) {
-                        signaturePad = new SignaturePad(canvas);
-                    } else {
-                        signaturePad.clear();
-                    }
-                }, 100);
-            }
-
-            function closeSignatureModal() {
-                document.getElementById("signatureModal").style.display = "none";
-            }
-
-            function clearSignature() {
-                if (signaturePad) {
                     signaturePad.clear();
                 }
+            }, 100);
+        }
+
+        function closeSignatureModal() {
+            document.getElementById("signatureModal").style.display = "none";
+        }
+
+        function clearSignature() {
+            if (signaturePad) {
+                signaturePad.clear();
             }
+        }
 
-            function saveSignature() {
-                var selectedIds = [];
-                $('#tblExpense tr').not(':first').each(function () {
+        function saveSignature() {
+            var selectedIds = [];
+            $('#tblExpense tr').not(':first').each(function () {
 
-                    var checkbox = $(this).find('.chkSingle');
+                var checkbox = $(this).find('.chkSingle');
 
-                    if (checkbox.is(':checked')) {
-                        var id = checkbox.attr('data-id');
-                        if (id) {
-                            selectedIds.push(Number(id));
-                        }
+                if (checkbox.is(':checked')) {
+                    var id = checkbox.attr('data-id');
+                    if (id) {
+                        selectedIds.push(Number(id));
                     }
-                });
-
-                if (selectedIds.length === 0) {
-                    alert("Please select at least one expense.");
-                    return;
                 }
-
-                if (signaturePad.isEmpty()) {
-                    alert("Please provide a signature.");
-                    return;
-                }
-
-                var base64Image = signaturePad.toDataURL("image/png");
-                var expenseIds = selectedIds.join('_');
-                showLoader();
-                $.ajax({
-                    url: "ExpenseManager.aspx/SaveSignature",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify({ imageData: base64Image, expenseIds: expenseIds }),
-                    success: function (res) {
-                        if (res.d !== "") {
-                            hideLoader();
-                            $('#hfSignaturePath').val(res.d);
-                            $('#lblSignatureFile').text(res.d).show();
-                            alert("Signature saved successfully!");
-                            closeSignatureModal();
-                        } else {
-                            hideLoader();
-                            alert("Error saving signature.");
-                        }
-                    }
-                });
-            }
-
-            function showLoader() {
-                $('#loaderOverlay').show();
-            }
-
-            function hideLoader() {
-                $('#loaderOverlay').hide();
-            }
-
-            function openExpensePdf(fileName) {
-                if (fileName == '') {
-                    alert('File not found');
-                    return;
-                }
-                var pdfUrl = "DownloadPdfProxy.ashx?fileName=" + encodeURIComponent(fileName);
-
-
-                window.open(pdfUrl, "_blank");
-            }
-
-            function validateRate(input) {
-                // Allow numbers with up to 2 decimal places
-                input.value = input.value
-                    .replace(/[^0-9.]/g, '')          // remove non-numeric
-                    .replace(/(\..*)\./g, '$1');      // allow only one decimal
-
-                if (input.value.includes('.')) {
-                    let parts = input.value.split('.');
-                    parts[1] = parts[1].substring(0, 2); // max 2 digits after decimal
-                    input.value = parts.join('.');
-                }
-            }
-            var currentEditingId = 0; // To track which expense is being edited
-
-            function OpenEditModal(expenseId) {
-                var expense = expenseData.find(function (item) {
-                    return item.ID == expenseId;
-                });
-
-                if (!expense) {
-                    alert("Expense not found!");
-                    return;
-                }
-
-                currentEditingId = expense.ID;
-
-                // Populate modal fields
-                $('#txtEditExpenseDate').val(expense.ExpenseDate);
-                $('#ddlEditExpense').val(expense.ExpenseId);
-                $('#txtEditRate').val(expense.Rate || 0);
-                $('#txtEditQuantity').val(expense.Quantity || 1);
-                $('#txtEditAmount').val(expense.Amount);
-                $('#txtEditDescription').val(expense.Description || '');
-                $('#txtEditBillNumber').val(expense.BillNumber || '');
-                $('#ddlEditIsPaid').val(expense.IsPaid ? 'Yes' : 'No');
-                if (expense.IsPaid) {
-                    $('#ddlEditPaymentMode').prop('disabled', false).val(expense.PaymentMode || '');
-                } else {
-                    $('#ddlEditPaymentMode').prop('disabled', true).val('');
-                }
-                $('#hfEditUploadedFile').val(expense.ExpenseFile || '');
-                BindSubExpense(expense.ExpenseId, 'ddlEditSubExpense', expense.SubExpenseId);
-
-                // Show current file link
-                var fileHtml = '';
-                if (expense.ExpenseFile) {
-                    fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" style="color:#007bff;">View Current Bill</a>';
-                    fileHtml += '<a href="javascript:void(0);" onclick="removeCurrentFile()" style="color:red; margin-left:10px;">[Remove]</a>';
-                } else {
-                    fileHtml = '<span style="color:gray;">No file uploaded</span>';
-                }
-                $('#currentFileLink').html(fileHtml);
-
-                // Clear new file input
-                $('#fpEditUpload').val('');
-
-                // Open modal
-                document.getElementById("editExpenseModal").style.display = "block";
-            }
-
-            function closeEditExpenseModal() {
-                document.getElementById("editExpenseModal").style.display = "none";
-                currentEditingId = 0;
-            }
-
-            // Calculate amount in edit modal
-            function calculateEditAmount() {
-                var qty = parseFloat($('#txtEditQuantity').val()) || 1;
-                var rate = parseFloat($('#txtEditRate').val()) || 0;
-                var amount = qty * rate;
-                $('#txtEditAmount').val(amount.toFixed(2));
-            }
-
-            $('#txtEditQuantity, #txtEditRate').on('input', function () {
-                calculateEditAmount();
             });
 
-            var editUploadInProgress = false;
-
-            function getFileExtension(fileName) {
-                var dotIndex = fileName.lastIndexOf('.');
-                return dotIndex >= 0 ? fileName.substring(dotIndex).toLowerCase() : '';
+            if (selectedIds.length === 0) {
+                alert("Please select at least one expense.");
+                return;
             }
 
-            function getUploadErrorDetails(xhr, errorThrown) {
-                var details = [];
-                if (xhr) {
-                    details.push('HTTP Status: ' + (xhr.status || 'No status'));
-                    details.push('Status Text: ' + (xhr.statusText || 'No status text'));
-                    details.push('Ready State: ' + (xhr.readyState || 'No ready state'));
-                    if (xhr.status === 0) {
-                        details.push('Likely Reason: Browser did not receive any HTTP response. This usually means mobile network drop, request blocked/cancelled by browser, server not reachable from mobile, or the upload was rejected before ASP.NET returned a response.');
+            if (signaturePad.isEmpty()) {
+                alert("Please provide a signature.");
+                return;
+            }
+
+            var base64Image = signaturePad.toDataURL("image/png");
+            var expenseIds = selectedIds.join('_');
+            showLoader();
+            $.ajax({
+                url: "ExpenseManager.aspx/SaveSignature",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ imageData: base64Image, expenseIds: expenseIds }),
+                success: function (res) {
+                    if (res.d !== "") {
+                        hideLoader();
+                        $('#hfSignaturePath').val(res.d);
+                        $('#lblSignatureFile').text(res.d).show();
+                        alert("Signature saved successfully!");
+                        closeSignatureModal();
+                    } else {
+                        hideLoader();
+                        alert("Error saving signature.");
                     }
-                    if (xhr.responseText) {
-                        details.push('Server Message: ' + xhr.responseText);
+                }
+            });
+        }
+
+        function showLoader() {
+            $('#loaderOverlay').show();
+        }
+
+        function hideLoader() {
+            $('#loaderOverlay').hide();
+        }
+
+        function openExpensePdf(fileName) {
+            if (fileName == '') {
+                alert('File not found');
+                return;
+            }
+            var pdfUrl = "DownloadPdfProxy.ashx?fileName=" + encodeURIComponent(fileName);
+
+
+            window.open(pdfUrl, "_blank");
+        }
+
+        function validateRate(input) {
+            // Allow numbers with up to 2 decimal places
+            input.value = input.value
+                .replace(/[^0-9.]/g, '')          // remove non-numeric
+                .replace(/(\..*)\./g, '$1');      // allow only one decimal
+
+            if (input.value.includes('.')) {
+                let parts = input.value.split('.');
+                parts[1] = parts[1].substring(0, 2); // max 2 digits after decimal
+                input.value = parts.join('.');
+            }
+        }
+        var currentEditingId = 0; // To track which expense is being edited
+
+        function OpenEditModal(expenseId) {
+            var expense = expenseData.find(function (item) {
+                return item.ID == expenseId;
+            });
+
+            if (!expense) {
+                alert("Expense not found!");
+                return;
+            }
+
+            currentEditingId = expense.ID;
+
+            // Populate modal fields
+            $('#txtEditExpenseDate').val(expense.ExpenseDate);
+            $('#ddlEditExpense').val(expense.ExpenseId);
+            $('#txtEditRate').val(expense.Rate || 0);
+            $('#txtEditQuantity').val(expense.Quantity || 1);
+            $('#txtEditAmount').val(expense.Amount);
+            $('#txtEditDescription').val(expense.Description || '');
+            $('#txtEditBillNumber').val(expense.BillNumber || '');
+            $('#ddlEditIsPaid').val(expense.IsPaid ? 'Yes' : 'No');
+            if (expense.IsPaid) {
+                $('#ddlEditPaymentMode').prop('disabled', false).val(expense.PaymentMode || '');
+            } else {
+                $('#ddlEditPaymentMode').prop('disabled', true).val('');
+            }
+            $('#hfEditUploadedFile').val(expense.ExpenseFile || '');
+            BindSubExpense(expense.ExpenseId, 'ddlEditSubExpense', expense.SubExpenseId);
+
+            // Show current file link
+            var fileHtml = '';
+            if (expense.ExpenseFile) {
+                fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" style="color:#007bff;">View Current Bill</a>';
+                fileHtml += '<a href="javascript:void(0);" onclick="removeCurrentFile()" style="color:red; margin-left:10px;">[Remove]</a>';
+            } else {
+                fileHtml = '<span style="color:gray;">No file uploaded</span>';
+            }
+            $('#currentFileLink').html(fileHtml);
+
+            // Clear new file input
+            $('#fpEditUpload').val('');
+
+            // Open modal
+            document.getElementById("editExpenseModal").style.display = "block";
+        }
+
+        function closeEditExpenseModal() {
+            document.getElementById("editExpenseModal").style.display = "none";
+            currentEditingId = 0;
+        }
+
+        // Calculate amount in edit modal
+        function calculateEditAmount() {
+            var qty = parseFloat($('#txtEditQuantity').val()) || 1;
+            var rate = parseFloat($('#txtEditRate').val()) || 0;
+            var amount = qty * rate;
+            $('#txtEditAmount').val(amount.toFixed(2));
+        }
+
+        $('#txtEditQuantity, #txtEditRate').on('input', function () {
+            calculateEditAmount();
+        });
+
+        var editUploadInProgress = false;
+
+        function getFileExtension(fileName) {
+            var dotIndex = fileName.lastIndexOf('.');
+            return dotIndex >= 0 ? fileName.substring(dotIndex).toLowerCase() : '';
+        }
+
+        function getUploadErrorDetails(xhr, errorThrown) {
+            var details = [];
+            if (xhr) {
+                details.push('HTTP Status: ' + (xhr.status || 'No status'));
+                details.push('Status Text: ' + (xhr.statusText || 'No status text'));
+                details.push('Ready State: ' + (xhr.readyState || 'No ready state'));
+                if (xhr.status === 0) {
+                    details.push('Likely Reason: Browser did not receive any HTTP response. This usually means mobile network drop, request blocked/cancelled by browser, server not reachable from mobile, or the upload was rejected before ASP.NET returned a response.');
+                }
+                if (xhr.responseText) {
+                    details.push('Server Message: ' + xhr.responseText);
+                }
+                try {
+                    var responseHeaders = xhr.getAllResponseHeaders();
+                    if (responseHeaders) {
+                        details.push('Response Headers: ' + responseHeaders);
                     }
-                    try {
-                        var responseHeaders = xhr.getAllResponseHeaders();
-                        if (responseHeaders) {
-                            details.push('Response Headers: ' + responseHeaders);
-                        }
-                    } catch (e) { }
-                }
-                if (errorThrown) {
-                    details.push('Error: ' + errorThrown);
-                }
-                return details.join('\n');
+                } catch (e) { }
+            }
+            if (errorThrown) {
+                details.push('Error: ' + errorThrown);
+            }
+            return details.join('\n');
+        }
+
+        function getUploadedFileName(response) {
+            return (response || '').split('|')[0];
+        }
+
+        function getExtensionFromMimeType(fileType) {
+            var mimeExtensionMap = {
+                "image/gif": ".gif",
+                "image/jpeg": ".jpg",
+                "image/jpg": ".jpg",
+                "image/png": ".png",
+                "application/pdf": ".pdf"
+            };
+            return mimeExtensionMap[fileType] || '';
+        }
+
+        function bytesToMb(bytes) {
+            return (bytes / (1024 * 1024)).toFixed(2);
+        }
+
+        function getMaxUploadBytes() {
+            return 500 * 1024 * 1024;
+        }
+
+        function getUploadDiagnostics(fileName, fileType, fileExt, fileSize, uploadUrl) {
+            return [
+                'Diagnostic Version: ExpenseUpload-20260702-02',
+                'Page URL: ' + window.location.href,
+                'Upload URL: ' + uploadUrl,
+                'Browser Online: ' + (navigator.onLine ? 'Yes' : 'No'),
+                'Selected File: ' + (fileName || 'Unknown'),
+                'File Type: ' + (fileType || 'Not provided by browser'),
+                'File Extension: ' + (fileExt || 'Missing'),
+                'File Size: ' + fileSize + ' bytes (' + bytesToMb(fileSize) + ' MB)',
+                'User Agent: ' + navigator.userAgent
+            ].join('\n');
+        }
+
+        function EditFileChange(ctrl) {
+            ImgPreview(ctrl.files, ctrl, 'hfEditUploadedFile');
+        }
+
+        // Modified ImgPreview to support different hidden field
+        function ImgPreview(input, ctrl, hiddenFieldId = 'hfUploadedFile') {
+            if (!window.FormData) {
+                alert('Upload failed before sending: this browser does not support FormData file uploads.');
+                $(ctrl).val('');
+                return;
             }
 
-            function getUploadedFileName(response) {
-                return (response || '').split('|')[0];
+            if (!input || input.length === 0 || !input[0]) {
+                alert('No file selected. Please choose an image or PDF file again.');
+                $(ctrl).val('');
+                return;
             }
 
-            function getExtensionFromMimeType(fileType) {
-                var mimeExtensionMap = {
-                    "image/gif": ".gif",
-                    "image/jpeg": ".jpg",
-                    "image/jpg": ".jpg",
-                    "image/png": ".png",
-                    "application/pdf": ".pdf"
-                };
-                return mimeExtensionMap[fileType] || '';
+            var file = input[0];
+            var fileName = file.name || '';
+            var fileType = (file.type || '').toLowerCase();
+            var fileExt = getFileExtension(fileName);
+            var fileSize = file.size || 0;
+            var uploadFileName = fileName || ('expense_upload' + getExtensionFromMimeType(fileType));
+            var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg", "application/pdf"];
+            var ValidExtensions = [".gif", ".jpeg", ".jpg", ".png", ".pdf"];
+            var isValidType = fileType && $.inArray(fileType, ValidImageTypes) >= 0;
+            var isValidExtension = $.inArray(fileExt, ValidExtensions) >= 0;
+            var previousHiddenValue = $('#' + hiddenFieldId).val();
+            var uploadUrl = "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Expense";
+            var uploadDiagnostics = getUploadDiagnostics(fileName, fileType, fileExt, fileSize, uploadUrl);
+
+            if (!isValidType && !isValidExtension) {
+                alert("Upload stopped before sending: only image or PDF files are allowed.\n\n" + uploadDiagnostics);
+                $(ctrl).val('');
+                return;
             }
 
-            function bytesToMb(bytes) {
-                return (bytes / (1024 * 1024)).toFixed(2);
+            if (fileSize <= 0) {
+                alert("Upload stopped before sending: selected file is empty or the browser did not provide file data.\n\n" + uploadDiagnostics);
+                $(ctrl).val('');
+                return;
             }
 
-            function getMaxUploadBytes() {
-                return 500 * 1024 * 1024;
+            if (fileSize > getMaxUploadBytes()) {
+                alert("Upload stopped before sending: selected file is too large for this page.\n\nMaximum Allowed: 500 MB\n\n" + uploadDiagnostics);
+                $(ctrl).val('');
+                return;
             }
 
-            function getUploadDiagnostics(fileName, fileType, fileExt, fileSize, uploadUrl) {
-                return [
-                    'Diagnostic Version: ExpenseUpload-20260702-02',
-                    'Page URL: ' + window.location.href,
-                    'Upload URL: ' + uploadUrl,
-                    'Browser Online: ' + (navigator.onLine ? 'Yes' : 'No'),
-                    'Selected File: ' + (fileName || 'Unknown'),
-                    'File Type: ' + (fileType || 'Not provided by browser'),
-                    'File Extension: ' + (fileExt || 'Missing'),
-                    'File Size: ' + fileSize + ' bytes (' + bytesToMb(fileSize) + ' MB)',
-                    'User Agent: ' + navigator.userAgent
-                ].join('\n');
+            if (hiddenFieldId === 'hfEditUploadedFile') {
+                //alert("Starting bill file upload with diagnostics.\n\n" + uploadDiagnostics);
             }
 
-            function EditFileChange(ctrl) {
-                ImgPreview(ctrl.files, ctrl, 'hfEditUploadedFile');
-            }
-
-            // Modified ImgPreview to support different hidden field
-            function ImgPreview(input, ctrl, hiddenFieldId = 'hfUploadedFile') {
-                if (!window.FormData) {
-                    alert('Upload failed before sending: this browser does not support FormData file uploads.');
-                    $(ctrl).val('');
-                    return;
-                }
-
-                if (!input || input.length === 0 || !input[0]) {
-                    alert('No file selected. Please choose an image or PDF file again.');
-                    $(ctrl).val('');
-                    return;
-                }
-
-                var file = input[0];
-                var fileName = file.name || '';
-                var fileType = (file.type || '').toLowerCase();
-                var fileExt = getFileExtension(fileName);
-                var fileSize = file.size || 0;
-                var uploadFileName = fileName || ('expense_upload' + getExtensionFromMimeType(fileType));
-                var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg", "application/pdf"];
-                var ValidExtensions = [".gif", ".jpeg", ".jpg", ".png", ".pdf"];
-                var isValidType = fileType && $.inArray(fileType, ValidImageTypes) >= 0;
-                var isValidExtension = $.inArray(fileExt, ValidExtensions) >= 0;
-                var previousHiddenValue = $('#' + hiddenFieldId).val();
-                var uploadUrl = "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Expense";
-                var uploadDiagnostics = getUploadDiagnostics(fileName, fileType, fileExt, fileSize, uploadUrl);
-
-                if (!isValidType && !isValidExtension) {
-                    alert("Upload stopped before sending: only image or PDF files are allowed.\n\n" + uploadDiagnostics);
-                    $(ctrl).val('');
-                    return;
-                }
-
-                if (fileSize <= 0) {
-                    alert("Upload stopped before sending: selected file is empty or the browser did not provide file data.\n\n" + uploadDiagnostics);
-                    $(ctrl).val('');
-                    return;
-                }
-
-                if (fileSize > getMaxUploadBytes()) {
-                    alert("Upload stopped before sending: selected file is too large for this page.\n\nMaximum Allowed: 500 MB\n\n" + uploadDiagnostics);
-                    $(ctrl).val('');
-                    return;
-                }
-
-                if (hiddenFieldId === 'hfEditUploadedFile') {
-                    //alert("Starting bill file upload with diagnostics.\n\n" + uploadDiagnostics);
-                }
-
-                var data = new FormData();
-                data.append(uploadFileName, file);
-                editUploadInProgress = hiddenFieldId === 'hfEditUploadedFile';
-                $.ajax({
-                    url: uploadUrl,
-                    type: "POST",
-                    async: true,
-                    data: data,
-                    contentType: false,
-                    processData: false,
-                    timeout: 120000,
-                    success: function (response) {
-                        var uploadedFileName = getUploadedFileName(response);
-                        if (!uploadedFileName) {
-                            $('#' + hiddenFieldId).val(previousHiddenValue);
-                            alert("Upload reached the server, but the server returned an empty file name.\n\n" + uploadDiagnostics + "\nRaw Server Response: " + (response || "Empty response"));
-                            return;
-                        }
-                        $('#' + hiddenFieldId).val(response);
-                        if (hiddenFieldId === 'hfEditUploadedFile') {
-                            $('#currentFileLink').html('<span style="color:green;">New file uploaded: ' + uploadedFileName + '</span>');
-                            //alert("File uploaded successfully.\n\nSaved File: " + uploadedFileName + "\n\n" + uploadDiagnostics);
-                        }
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
+            var data = new FormData();
+            data.append(uploadFileName, file);
+            editUploadInProgress = hiddenFieldId === 'hfEditUploadedFile';
+            $.ajax({
+                url: uploadUrl,
+                type: "POST",
+                async: true,
+                data: data,
+                contentType: false,
+                processData: false,
+                timeout: 120000,
+                success: function (response) {
+                    var uploadedFileName = getUploadedFileName(response);
+                    if (!uploadedFileName) {
                         $('#' + hiddenFieldId).val(previousHiddenValue);
-                        $(ctrl).val('');
-                        alert("Upload failed with detailed diagnostics.\n\nRequest Status: " + textStatus + "\n" + getUploadErrorDetails(xhr, errorThrown) + "\n\n" + uploadDiagnostics);
-                    },
-                    complete: function () {
-                        if (hiddenFieldId === 'hfEditUploadedFile') {
-                            editUploadInProgress = false;
-                        }
+                        alert("Upload reached the server, but the server returned an empty file name.\n\n" + uploadDiagnostics + "\nRaw Server Response: " + (response || "Empty response"));
+                        return;
                     }
-                });
-            }
-
-            function removeCurrentFile() {
-                if (confirm("Are you sure you want to remove the current bill file? This cannot be undone.")) {
-                    $('#currentFileLink').html('<span style="color:orange;">File will be removed on update</span>');
-                    $('#hfEditUploadedFile').val(''); // Clear any new upload too
-                }
-            }
-
-            function UpdateExpense() {
-                var Date = $('#txtEditExpenseDate').val().trim();
-                var ExpenseId = $('#ddlEditExpense').val();
-                var SubExpenseId = $('#ddlEditSubExpense').val();
-                var File = $('#hfEditUploadedFile').val(); // New file if uploaded, else old one
-                var Description = $('#txtEditDescription').val().trim();
-                var Quantity = $('#txtEditQuantity').val() || '1';
-                var Rate = $('#txtEditRate').val() || '0';
-                var Amount = $('#txtEditAmount').val();
-                var BillNumber = $('#txtEditBillNumber').val().trim();
-                var IsPaid = $('#ddlEditIsPaid').val() === 'Yes';
-                var PaymentMode = $('#ddlEditPaymentMode').val();
-                var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
-
-                if (editUploadInProgress) {
-                    alert('Please wait. The selected bill file is still uploading.');
-                    return;
-                }
-
-                if (Date == "" || !ExpenseId || Amount == "0") {
-                    alert('Please fill all required fields.');
-                    return;
-                }
-                
-                if (IsPaid && PaymentMode == "") {
-                    alert('Please select Payment Mode');
-                    return;
-                }
-
-                var obj = {
-                    ID: currentEditingId,
-                    Date: Date,
-                    ExpenseId: ExpenseId,
-                    SubExpenseId: SubExpenseId,
-                    File: File,
-                    Description: Description,
-                    Amount: Amount,
-                    userId: hdnUserId,
-                    Quantity: Quantity,
-                    Rate: Rate,
-                    BillNumber: BillNumber,
-                    IsPaid: IsPaid,
-                    PaymentMode: PaymentMode
-                };
-                showLoader();
-                $.ajax({
-                    url: "ExpenseManager.aspx/UpdateExpense",
-                    async: true,
-                    data: JSON.stringify({ data: [obj] }),
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    dataType: "json",
-                    success: function (result) {
-                        hideLoader();
-                        if (result.d == "1") {
-                            alert('Expense updated successfully!');
-                            closeEditExpenseModal();
-                            Search(); // Refresh table
-                        } else {
-                            alert('Error updating expense. Server returned: ' + (result.d || 'Empty response'));
-                        }
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        hideLoader();
-                        alert('Server error during update.\n\nRequest Status: ' + textStatus + '\n' + getUploadErrorDetails(xhr, errorThrown));
+                    $('#' + hiddenFieldId).val(response);
+                    if (hiddenFieldId === 'hfEditUploadedFile') {
+                        $('#currentFileLink').html('<span style="color:green;">New file uploaded: ' + uploadedFileName + '</span>');
+                        //alert("File uploaded successfully.\n\nSaved File: " + uploadedFileName + "\n\n" + uploadDiagnostics);
                     }
-                });
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $('#' + hiddenFieldId).val(previousHiddenValue);
+                    $(ctrl).val('');
+                    alert("Upload failed with detailed diagnostics.\n\nRequest Status: " + textStatus + "\n" + getUploadErrorDetails(xhr, errorThrown) + "\n\n" + uploadDiagnostics);
+                },
+                complete: function () {
+                    if (hiddenFieldId === 'hfEditUploadedFile') {
+                        editUploadInProgress = false;
+                    }
+                }
+            });
+        }
+
+        function removeCurrentFile() {
+            if (confirm("Are you sure you want to remove the current bill file? This cannot be undone.")) {
+                $('#currentFileLink').html('<span style="color:orange;">File will be removed on update</span>');
+                $('#hfEditUploadedFile').val(''); // Clear any new upload too
             }
-            function BindSubExpense(categoryId, targetDdlId, selectedSubId = null) {
-                if (categoryId == "" || categoryId == "0") {
+        }
+
+        function UpdateExpense() {
+            var Date = $('#txtEditExpenseDate').val().trim();
+            var ExpenseId = $('#ddlEditExpense').val();
+            var SubExpenseId = $('#ddlEditSubExpense').val();
+            var File = $('#hfEditUploadedFile').val(); // New file if uploaded, else old one
+            var Description = $('#txtEditDescription').val().trim();
+            var Quantity = $('#txtEditQuantity').val() || '1';
+            var Rate = $('#txtEditRate').val() || '0';
+            var Amount = $('#txtEditAmount').val();
+            var BillNumber = $('#txtEditBillNumber').val().trim();
+            var IsPaid = $('#ddlEditIsPaid').val() === 'Yes';
+            var PaymentMode = $('#ddlEditPaymentMode').val();
+            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+
+            if (editUploadInProgress) {
+                alert('Please wait. The selected bill file is still uploading.');
+                return;
+            }
+
+            if (Date == "" || !ExpenseId || Amount == "0") {
+                alert('Please fill all required fields.');
+                return;
+            }
+
+            if (IsPaid && PaymentMode == "") {
+                alert('Please select Payment Mode');
+                return;
+            }
+
+            var obj = {
+                ID: currentEditingId,
+                Date: Date,
+                ExpenseId: ExpenseId,
+                SubExpenseId: SubExpenseId,
+                File: File,
+                Description: Description,
+                Amount: Amount,
+                userId: hdnUserId,
+                Quantity: Quantity,
+                Rate: Rate,
+                BillNumber: BillNumber,
+                IsPaid: IsPaid,
+                PaymentMode: PaymentMode
+            };
+            showLoader();
+            $.ajax({
+                url: "ExpenseManager.aspx/UpdateExpense",
+                async: true,
+                data: JSON.stringify({ data: [obj] }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    hideLoader();
+                    if (result.d == "1") {
+                        alert('Expense updated successfully!');
+                        closeEditExpenseModal();
+                        Search(); // Refresh table
+                    } else {
+                        alert('Error updating expense. Server returned: ' + (result.d || 'Empty response'));
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    hideLoader();
+                    alert('Server error during update.\n\nRequest Status: ' + textStatus + '\n' + getUploadErrorDetails(xhr, errorThrown));
+                }
+            });
+        }
+        function BindSubExpense(categoryId, targetDdlId, selectedSubId = null) {
+            if (categoryId == "" || categoryId == "0") {
+                $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
+                return;
+            }
+            $.ajax({
+                url: "ExpenseManager.aspx/BindExpenseSubCategory",
+                async: false,
+                data: JSON.stringify({ categoryId: parseInt(categoryId) }),
+                contentType: "application/json; charset=utf-8",
+                type: "POST",
+                timeout: 120000,
+                dataType: "json",
+                success: function (result) {
+                    var data = $.parseJSON(result.d);
                     $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
-                    return;
-                }
-                $.ajax({
-                    url: "ExpenseManager.aspx/BindExpenseSubCategory",
-                    async: false,
-                    data: JSON.stringify({ categoryId: parseInt(categoryId) }),
-                    contentType: "application/json; charset=utf-8",
-                    type: "POST",
-                    timeout: 120000,
-                    dataType: "json",
-                    success: function (result) {
-                        var data = $.parseJSON(result.d);
-                        $('#' + targetDdlId).empty().append('<option value="0">Select</option>');
-                        $.each(data, function (index, value) {
-                            if (value.Id > 0) {  // Assuming data has SubExpenseId and SubExpense
-                                $('#' + targetDdlId).append('<option value="' + value.Id + '">' + value.ExpenseSubMaster + '</option>');
-                            }
-                        });
-                        if (selectedSubId) {
-                            $('#' + targetDdlId).val(selectedSubId);
+                    $.each(data, function (index, value) {
+                        if (value.Id > 0) {  // Assuming data has SubExpenseId and SubExpense
+                            $('#' + targetDdlId).append('<option value="' + value.Id + '">' + value.ExpenseSubMaster + '</option>');
                         }
+                    });
+                    if (selectedSubId) {
+                        $('#' + targetDdlId).val(selectedSubId);
                     }
-                });
-            }
-
-            // ------------------- Chart Rendering Logic -------------------
-            var categoryChart = null;
-            var monthChart = null;
-            var chartCurrencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
-            var chartCompactCurrencyFormatter = new Intl.NumberFormat('en-IN', { notation: 'compact', maximumFractionDigits: 1 });
-
-            function formatChartCurrency(value) {
-                return chartCurrencyFormatter.format(Number(value) || 0);
-            }
-
-            function formatCompactChartCurrency(value) {
-                return 'Rs. ' + chartCompactCurrencyFormatter.format(Number(value) || 0);
-            }
-
-            function getExpenseAmount(item) {
-                return parseFloat(item.Amount) || 0;
-            }
-
-            function renderCharts() {
-                if (!expenseData || expenseData.length === 0) {
-                    $('#chartsContainer').hide();
-                    return;
                 }
-                $('#chartsContainer').css('display', 'grid');
+            });
+        }
 
-                // 1. Process Data for Category Wise
-                var categoryMap = {};
-                $.each(expenseData, function (index, item) {
-                    var key = item.Expense || 'Other';
-                    if (!categoryMap[key]) categoryMap[key] = 0;
-                    categoryMap[key] += getExpenseAmount(item);
-                });
+        // ------------------- Chart Rendering Logic -------------------
+        var categoryChart = null;
+        var monthChart = null;
+        var chartCurrencyFormatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+        var chartCompactCurrencyFormatter = new Intl.NumberFormat('en-IN', { notation: 'compact', maximumFractionDigits: 1 });
 
-                var categoryRows = Object.keys(categoryMap).map(function (key) {
-                    return { label: key, value: categoryMap[key] };
-                }).sort(function (a, b) {
-                    return b.value - a.value;
-                });
-                var catLabels = categoryRows.map(function (item) { return item.label; });
-                var catValues = categoryRows.map(function (item) { return item.value; });
-                var catColors = generateColors(catLabels.length);
-                var totalExpense = catValues.reduce(function (sum, value) { return sum + value; }, 0);
-                $('#categoryChartTotal').text(formatChartCurrency(totalExpense));
+        function formatChartCurrency(value) {
+            return chartCurrencyFormatter.format(Number(value) || 0);
+        }
 
-                // 2. Process Data for Month Wise
-                var monthMap = {};
-                var getMonthIndex = function (monStr) {
-                    return new Date(monStr + " 1, 2000").getMonth();
-                };
+        function formatCompactChartCurrency(value) {
+            return 'Rs. ' + chartCompactCurrencyFormatter.format(Number(value) || 0);
+        }
 
-                $.each(expenseData, function (index, item) {
-                    var parts = (item.ExpenseDate || '').split('-');
-                    if (parts.length === 3) {
-                        var monthStr = parts[1]; // MMM
-                        var yearStr = parts[2];
-                        var key = monthStr + "-" + yearStr;
+        function getExpenseAmount(item) {
+            return parseFloat(item.Amount) || 0;
+        }
 
-                        if (!monthMap[key]) monthMap[key] = { amount: 0, sortValue: getMonthIndex(monthStr) + parseInt(yearStr) * 12 };
-                        monthMap[key].amount += getExpenseAmount(item);
+        function renderCharts() {
+            if (!expenseData || expenseData.length === 0) {
+                $('#chartsContainer').hide();
+                return;
+            }
+            $('#chartsContainer').css('display', 'grid');
+
+            // 1. Process Data for Category Wise
+            var categoryMap = {};
+            $.each(expenseData, function (index, item) {
+                var key = item.Expense || 'Other';
+                if (!categoryMap[key]) categoryMap[key] = 0;
+                categoryMap[key] += getExpenseAmount(item);
+            });
+
+            var categoryRows = Object.keys(categoryMap).map(function (key) {
+                return { label: key, value: categoryMap[key] };
+            }).sort(function (a, b) {
+                return b.value - a.value;
+            });
+            var catLabels = categoryRows.map(function (item) { return item.label; });
+            var catValues = categoryRows.map(function (item) { return item.value; });
+            var catColors = generateColors(catLabels.length);
+            var totalExpense = catValues.reduce(function (sum, value) { return sum + value; }, 0);
+            $('#categoryChartTotal').text(formatChartCurrency(totalExpense));
+
+            // 2. Process Data for Month Wise
+            var monthMap = {};
+            var getMonthIndex = function (monStr) {
+                return new Date(monStr + " 1, 2000").getMonth();
+            };
+
+            $.each(expenseData, function (index, item) {
+                var parts = (item.ExpenseDate || '').split('-');
+                if (parts.length === 3) {
+                    var monthStr = parts[1]; // MMM
+                    var yearStr = parts[2];
+                    var key = monthStr + "-" + yearStr;
+
+                    if (!monthMap[key]) monthMap[key] = { amount: 0, sortValue: getMonthIndex(monthStr) + parseInt(yearStr) * 12 };
+                    monthMap[key].amount += getExpenseAmount(item);
+                }
+            });
+
+            var monthKeys = Object.keys(monthMap).sort(function (a, b) {
+                return monthMap[a].sortValue - monthMap[b].sortValue;
+            });
+
+            var monthLabels = monthKeys;
+            var monthValues = monthKeys.map(function (k) { return monthMap[k].amount; });
+            var peakMonthValue = monthValues.length ? Math.max.apply(null, monthValues) : 0;
+            $('#monthChartPeak').text('Peak ' + formatChartCurrency(peakMonthValue));
+
+            var categoryCenterText = {
+                id: 'categoryCenterText',
+                afterDraw: function (chart) {
+                    var meta = chart.getDatasetMeta(0);
+                    if (!meta || !meta.data || !meta.data.length) {
+                        return;
                     }
-                });
 
-                var monthKeys = Object.keys(monthMap).sort(function (a, b) {
-                    return monthMap[a].sortValue - monthMap[b].sortValue;
-                });
+                    var ctx = chart.ctx;
+                    var center = meta.data[0];
+                    ctx.save();
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = '#64748b';
+                    ctx.font = '600 12px Arial, sans-serif';
+                    ctx.fillText('Total', center.x, center.y - 10);
+                    ctx.fillStyle = '#111827';
+                    ctx.font = '700 16px Arial, sans-serif';
+                    ctx.fillText(formatCompactChartCurrency(totalExpense), center.x, center.y + 12);
+                    ctx.restore();
+                }
+            };
 
-                var monthLabels = monthKeys;
-                var monthValues = monthKeys.map(function (k) { return monthMap[k].amount; });
-                var peakMonthValue = monthValues.length ? Math.max.apply(null, monthValues) : 0;
-                $('#monthChartPeak').text('Peak ' + formatChartCurrency(peakMonthValue));
-
-                var categoryCenterText = {
-                    id: 'categoryCenterText',
-                    afterDraw: function (chart) {
-                        var meta = chart.getDatasetMeta(0);
-                        if (!meta || !meta.data || !meta.data.length) {
-                            return;
+            // 3. Render/Update Category Chart
+            var ctxCat = document.getElementById('pieChartCategory').getContext('2d');
+            if (categoryChart) {
+                categoryChart.destroy();
+            }
+            categoryChart = new Chart(ctxCat, {
+                type: 'doughnut',
+                data: {
+                    labels: catLabels,
+                    datasets: [{
+                        data: catValues,
+                        backgroundColor: catColors,
+                        borderColor: '#ffffff',
+                        borderRadius: 4,
+                        borderWidth: 3,
+                        hoverBorderColor: '#ffffff',
+                        hoverOffset: 8,
+                        spacing: 2
+                    }]
+                },
+                options: {
+                    cutout: '62%',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    layout: {
+                        padding: {
+                            top: 4,
+                            bottom: 4
                         }
-
-                        var ctx = chart.ctx;
-                        var center = meta.data[0];
-                        ctx.save();
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillStyle = '#64748b';
-                        ctx.font = '600 12px Arial, sans-serif';
-                        ctx.fillText('Total', center.x, center.y - 10);
-                        ctx.fillStyle = '#111827';
-                        ctx.font = '700 16px Arial, sans-serif';
-                        ctx.fillText(formatCompactChartCurrency(totalExpense), center.x, center.y + 12);
-                        ctx.restore();
-                    }
-                };
-
-                // 3. Render/Update Category Chart
-                var ctxCat = document.getElementById('pieChartCategory').getContext('2d');
-                if (categoryChart) {
-                    categoryChart.destroy();
-                }
-                categoryChart = new Chart(ctxCat, {
-                    type: 'doughnut',
-                    data: {
-                        labels: catLabels,
-                        datasets: [{
-                            data: catValues,
-                            backgroundColor: catColors,
-                            borderColor: '#ffffff',
-                            borderRadius: 4,
-                            borderWidth: 3,
-                            hoverBorderColor: '#ffffff',
-                            hoverOffset: 8,
-                            spacing: 2
-                        }]
                     },
-                    options: {
-                        cutout: '62%',
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        layout: {
-                            padding: {
-                                top: 4,
-                                bottom: 4
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxHeight: 10,
+                                boxWidth: 10,
+                                color: '#334155',
+                                font: {
+                                    size: 11,
+                                    weight: '600'
+                                },
+                                padding: 14,
+                                usePointStyle: true,
+                                generateLabels: function (chart) {
+                                    var data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map(function (label, i) {
+                                            var meta = chart.getDatasetMeta(0);
+                                            var style = meta.controller.getStyle(i);
+                                            var value = data.datasets[0].data[i];
+                                            var percent = totalExpense ? ((value / totalExpense) * 100).toFixed(1) : '0.0';
+
+                                            return {
+                                                text: label + ' (' + percent + '%)',
+                                                fillStyle: style.backgroundColor,
+                                                strokeStyle: style.borderColor,
+                                                lineWidth: style.borderWidth,
+                                                hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
+                                }
                             }
                         },
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    boxHeight: 10,
-                                    boxWidth: 10,
-                                    color: '#334155',
-                                    font: {
-                                        size: 11,
-                                        weight: '600'
-                                    },
-                                    padding: 14,
-                                    usePointStyle: true,
-                                    generateLabels: function (chart) {
-                                        var data = chart.data;
-                                        if (data.labels.length && data.datasets.length) {
-                                            return data.labels.map(function (label, i) {
-                                                var meta = chart.getDatasetMeta(0);
-                                                var style = meta.controller.getStyle(i);
-                                                var value = data.datasets[0].data[i];
-                                                var percent = totalExpense ? ((value / totalExpense) * 100).toFixed(1) : '0.0';
-
-                                                return {
-                                                    text: label + ' (' + percent + '%)',
-                                                    fillStyle: style.backgroundColor,
-                                                    strokeStyle: style.borderColor,
-                                                    lineWidth: style.borderWidth,
-                                                    hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
-                                                    index: i
-                                                };
-                                            });
-                                        }
-                                        return [];
-                                    }
-                                }
-                            },
-                            tooltip: {
-                                backgroundColor: '#0f172a',
-                                borderColor: 'rgba(255,255,255,0.12)',
-                                borderWidth: 1,
-                                displayColors: true,
-                                padding: 10,
-                                callbacks: {
-                                    label: function (context) {
-                                        var label = context.label || '';
-                                        var value = context.parsed || 0;
-                                        var percent = totalExpense ? ((value / totalExpense) * 100).toFixed(1) : '0.0';
-                                        return label + ': ' + formatChartCurrency(value) + ' (' + percent + '%)';
-                                    }
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            borderColor: 'rgba(255,255,255,0.12)',
+                            borderWidth: 1,
+                            displayColors: true,
+                            padding: 10,
+                            callbacks: {
+                                label: function (context) {
+                                    var label = context.label || '';
+                                    var value = context.parsed || 0;
+                                    var percent = totalExpense ? ((value / totalExpense) * 100).toFixed(1) : '0.0';
+                                    return label + ': ' + formatChartCurrency(value) + ' (' + percent + '%)';
                                 }
                             }
                         }
-                    },
-                    plugins: [categoryCenterText]
-                });
+                    }
+                },
+                plugins: [categoryCenterText]
+            });
 
-                // 4. Render/Update Month Chart (Line)
-                var ctxMonth = document.getElementById('pieChartMonth').getContext('2d');
-                if (monthChart) {
-                    monthChart.destroy();
-                }
-                monthChart = new Chart(ctxMonth, {
-                    type: 'line',
-                    data: {
-                        labels: monthLabels,
-                        datasets: [{
-                            label: 'Monthly Expense',
-                            data: monthValues,
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.12)',
-                            fill: true,
-                            tension: 0.35,
-                            borderWidth: 3,
-                            pointBackgroundColor: '#ffffff',
-                            pointBorderColor: '#2563eb',
-                            pointBorderWidth: 2,
-                            pointHoverBackgroundColor: '#2563eb',
-                            pointHoverBorderColor: '#ffffff',
-                            pointHoverBorderWidth: 2,
-                            pointHoverRadius: 6,
-                            pointRadius: 4
-                        }]
+            // 4. Render/Update Month Chart (Line)
+            var ctxMonth = document.getElementById('pieChartMonth').getContext('2d');
+            if (monthChart) {
+                monthChart.destroy();
+            }
+            monthChart = new Chart(ctxMonth, {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [{
+                        label: 'Monthly Expense',
+                        data: monthValues,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.12)',
+                        fill: true,
+                        tension: 0.35,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#2563eb',
+                        pointBorderWidth: 2,
+                        pointHoverBackgroundColor: '#2563eb',
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 2,
+                        pointHoverRadius: 6,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
                     },
-                    options: {
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        interaction: {
-                            intersect: false,
-                            mode: 'index'
+                    plugins: {
+                        legend: {
+                            display: false
                         },
-                        plugins: {
-                            legend: {
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            borderColor: 'rgba(255,255,255,0.12)',
+                            borderWidth: 1,
+                            padding: 10,
+                            callbacks: {
+                                label: function (context) {
+                                    return 'Expense: ' + formatChartCurrency(context.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
                                 display: false
                             },
-                            tooltip: {
-                                backgroundColor: '#0f172a',
-                                borderColor: 'rgba(255,255,255,0.12)',
-                                borderWidth: 1,
-                                padding: 10,
-                                callbacks: {
-                                    label: function (context) {
-                                        return 'Expense: ' + formatChartCurrency(context.parsed.y);
-                                    }
-                                }
+                            ticks: {
+                                color: '#475569',
+                                font: {
+                                    size: 11,
+                                    weight: '600'
+                                },
+                                maxRotation: 0
                             }
                         },
-                        scales: {
-                            x: {
-                                grid: {
-                                    display: false
-                                },
-                                ticks: {
-                                    color: '#475569',
-                                    font: {
-                                        size: 11,
-                                        weight: '600'
-                                    },
-                                    maxRotation: 0
-                                }
+                        y: {
+                            beginAtZero: true,
+                            border: {
+                                display: false
                             },
-                            y: {
-                                beginAtZero: true,
-                                border: {
-                                    display: false
-                                },
-                                grid: {
-                                    color: 'rgba(148, 163, 184, 0.22)',
-                                    drawTicks: false
-                                },
-                                ticks: {
-                                    color: '#64748b',
-                                    padding: 8,
-                                    callback: function (value) {
-                                        return formatCompactChartCurrency(value);
-                                    }
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.22)',
+                                drawTicks: false
+                            },
+                            ticks: {
+                                color: '#64748b',
+                                padding: 8,
+                                callback: function (value) {
+                                    return formatCompactChartCurrency(value);
                                 }
                             }
                         }
                     }
-                });
-            }
-
-            function generateColors(count) {
-                var colors = [];
-                var baseColors = [
-                    '#2563eb', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4',
-                    '#f97316', '#14b8a6', '#64748b', '#84cc16', '#ec4899', '#0f766e'
-                ];
-                for (var i = 0; i < count; i++) {
-                    colors.push(baseColors[i % baseColors.length]);
                 }
-                return colors;
+            });
+        }
+
+        function generateColors(count) {
+            var colors = [];
+            var baseColors = [
+                '#2563eb', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#06b6d4',
+                '#f97316', '#14b8a6', '#64748b', '#84cc16', '#ec4899', '#0f766e'
+            ];
+            for (var i = 0; i < count; i++) {
+                colors.push(baseColors[i % baseColors.length]);
             }
+            return colors;
+        }
 
-        </script>
+    </script>
 
-        <div id="loaderOverlay" style="display:none;">
-            <div class="loader"></div>
-            <div class="loader-text">Please wait...</div>
-        </div>
-    </asp:Content>
+    <div id="loaderOverlay" style="display: none;">
+        <div class="loader"></div>
+        <div class="loader-text">Please wait...</div>
+    </div>
+</asp:Content>
