@@ -63,6 +63,36 @@ public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
                         System.IO.File.Delete(Path);
                     Path = PerPath;
                 }
+
+                if (callFor == "Logo")
+                {
+                    string uploadDir = context.Request.PhysicalApplicationPath + "Uploads\\Expense\\logo\\";
+                    if (!Directory.Exists(uploadDir))
+                        Directory.CreateDirectory(uploadDir);
+
+                    string ext = System.IO.Path.GetExtension(imgName).ToLower();
+                    if (string.IsNullOrEmpty(ext))
+                        ext = GetExtensionFromContentType(file.ContentType);
+
+                    if (string.IsNullOrEmpty(ext))
+                    {
+                        context.Response.StatusCode = 400;
+                        context.Response.ContentType = "text/plain";
+                        context.Response.Write("Upload failed: selected file does not have an extension and the browser did not send a supported content type. File name received: " + imgName + "; Content type received: " + (file.ContentType ?? ""));
+                        return;
+                    }
+
+                    string uniqueName = GetUniqueName(ext);
+                    string savedPath = System.IO.Path.Combine(uploadDir, uniqueName);
+                    if (System.IO.File.Exists(savedPath))
+                        System.IO.File.Delete(savedPath);
+                    file.SaveAs(savedPath);
+
+                    context.Response.ContentType = "text/plain";
+                    context.Response.Write(uniqueName + "|" + savedPath);
+                    return;
+                }
+
                 //if (callFor == "Expense")
                 //{
                 //    string ext = System.IO.Path.GetExtension(imgName);
