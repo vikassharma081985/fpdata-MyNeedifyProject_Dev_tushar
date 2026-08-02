@@ -91,6 +91,53 @@
                 .btn-save:hover {
                     background-color: #5276d1;
                 }
+.employee-type-box{
+
+    margin-top:8px;
+
+    background:#eef3ff;
+
+    border:1px solid #6d8cf0;
+
+    border-radius:14px;
+
+    padding:18px 20px;
+
+}
+
+.barber-checkbox{
+
+    display: flex !important;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    font-size: 13px;
+    margin: 0;
+
+}
+
+.barber-checkbox input[type=checkbox]{
+
+    width:22px;
+
+    height:22px;
+
+    accent-color:#6d8cf0;
+
+    cursor:pointer;
+
+}
+
+.employee-type-desc{
+
+display: block;
+    margin-top: 0px;
+    margin-left: 38px;
+    color: #777;
+    font-size: 12px;
+    line-height: 20px;
+
+}
 
                 /* Breadcrumb spacing */
                 .top-space {
@@ -137,6 +184,31 @@
                 <label for="ddlRole">Role</label>
                 <asp:DropDownList ID="ddlRole" runat="server" class="form-control"></asp:DropDownList>
             </div>
+<asp:Panel ID="pnlIsBarber" runat="server" Visible="false">
+
+    <div class="form-row">
+
+        <label>Employee Type</label>
+
+        <div class="employee-type-box">
+
+            <label class="barber-checkbox">
+
+                <input type="checkbox" id="chkIsBarber" />
+
+                <span>Works as Barber</span>
+
+            </label>
+
+            <small class="employee-type-desc">
+                Enable this option if the employee can receive customer appointments.
+            </small>
+
+        </div>
+
+    </div>
+
+</asp:Panel>
 
             <div class="form-row">
                 <label for="txtPassword">Password</label>
@@ -183,6 +255,7 @@
                 var RoleID = $('[id$=ddlRole]').val();
                 var RoleText = $('[id$=ddlRole] option:selected').text();
                 var Password = $('#txtPassword').val().trim();
+                var isBarber = $("#chkIsBarber").is(":checked");
 
                 if (Name == '') {
                     alert('Enter User Name');
@@ -212,7 +285,7 @@
                 $.ajax({
                     type: "POST",
                     url: "EmployeeMaster.aspx/Save",
-                    data: JSON.stringify({ Name: Name, Mobile: Mobile, Email: Email, RoleID: RoleID, Password: Password }),
+                    data: JSON.stringify({ Name: Name, Mobile: Mobile, Email: Email, RoleID: RoleID, Password: Password,IsBarber: isBarber }),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (response) {
