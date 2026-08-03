@@ -11,11 +11,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using BLL;
 using DAL;
+using WSBillingMaster.BAL;
 
 namespace WSBillingMaster.Pages
 {
     public partial class EmployeeMaster : System.Web.UI.Page
     {
+        public bool ShowBarberOption = false;
         private static int OrgId = 0;
         private static int EmployeeId = 0;
         protected string EmployeeListHtml = "";
@@ -30,6 +32,10 @@ namespace WSBillingMaster.Pages
                 OrgId = Convert.ToInt32(Session["OrgId"]);
                 EmployeeId = Convert.ToInt32(Session["EmployeeId"]);
             }
+            int categoryId = GetOrganizationCategory(OrgId);
+
+            ShowBarberOption = (categoryId == 3);
+            pnlIsBarber.Visible = (categoryId == 3);
             BindRole();
             BindEmployeeList();
         }
@@ -52,7 +58,20 @@ namespace WSBillingMaster.Pages
                 }
             }
         }
+        public int GetOrganizationCategory(int orgId)
+        {
+            using (BusinessLogicLayer objBal = new BusinessLogicLayer())
+            {
+                DataTable dt = objBal.GetOrganizationCategory(orgId);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    return Convert.ToInt32(dt.Rows[0]["BusinessId"]);
+                }
+                return 0;
+            }
 
+            
+        }
         private void BindEmployeeList()
         {
             using (BusinessLogicLayer objBal = new BusinessLogicLayer())
@@ -79,7 +98,7 @@ namespace WSBillingMaster.Pages
 
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string Save(string Name, string Mobile, string Email, string RoleID, string Password)
+        public static string Save(string Name, string Mobile, string Email, string RoleID, string Password, bool IsBarber)
         {
 
             try
@@ -100,6 +119,7 @@ namespace WSBillingMaster.Pages
                     sqlCommand.Parameters.AddWithValue("@RoleId", RoleID);
                     sqlCommand.Parameters.AddWithValue("@AddedBy", EmployeeId);
                     sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.Parameters.AddWithValue("@IsBarber", IsBarber);
 
                     if (objDAL.ExecuteNonQuery_RetInt(sqlCommand) > 0)
                     {

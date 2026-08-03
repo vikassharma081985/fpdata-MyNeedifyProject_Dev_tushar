@@ -2892,6 +2892,20 @@ namespace BLL
                 }
             }
         }
+        public DataTable GetOrganizationCategory(int orgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.CommandText = "Proc_GetOrganizationCategory";
+                    sqlCommand.Parameters.AddWithValue("@OrgId", orgId);
+                    sqlCommand.CommandType = CommandType.StoredProcedure;
+                    return objDAL.GetDataTable(sqlCommand);
+
+                }
+            }
+        }
 
         #endregion
     }

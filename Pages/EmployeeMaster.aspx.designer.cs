@@ -20,5 +20,8 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlRole;
+        protected global::System.Web.UI.WebControls.Panel pnlIsBarber;
+
+        protected global::System.Web.UI.WebControls.CheckBox chkIsBarber;
     }
 }

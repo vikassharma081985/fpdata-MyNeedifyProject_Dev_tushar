@@ -15,10 +15,16 @@
 
 
 
-        $('.carousel').carousel({
-            interval: 1000
-        });
+        $(function () {
 
+    $('.carousel').carousel({
+        interval: 1000
+    });
+
+    $('.MySliderDiv:first').addClass('active');
+    $('.MyBullets:first').addClass('active');
+
+});
         $(document).ready(function () {
             $('.MySliderDiv').each(function (index) {
                 if (index == 0) {

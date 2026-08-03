@@ -131,6 +131,31 @@ body {
     padding:20px;
     color:#888;
 }
+.calendar div.hasRoster::after{
+
+    content:"";
+    display: block;
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #28a745;
+    bottom: 83%;
+    left: 75%;
+}
+.disabled-date {
+
+    color: #464545;
+
+    background: #f5f5f5;
+
+    cursor: not-allowed;
+
+    pointer-events: none;
+
+    opacity: .6;
+
+}
 
 </style>
 </head>
@@ -351,15 +376,18 @@ body {
 
 <script>
 
-const API_BASE = "http://localhost:5150/api/Appointment";
+const API_BASE = "http://198.38.88.185:5150/api/Appointment";
+const sellerOrgId = sessionStorage.getItem("OrgId");
 
 const PAGE_MODE =
-    window.location.href.indexOf("ManageBarber") >= 0
+    window.location.href.indexOf("ManageBarber") >= 0&&sellerOrgId
         ? "MANAGE"
         : "BOOKING";
 
-let barbers = [];
 
+
+let barbers = [];
+let rosterDates = [];
 let selectedBarberId = '';
 let selectedBarberName = '';
 let selectedBarberOrgId = '';
@@ -379,6 +407,20 @@ window.onload = function () {
     initializePageMode();
 
 };
+async function loadRosterDates(){
+
+    if(PAGE_MODE!=="MANAGE")
+        return;
+
+    const response = await fetch(
+
+        `${API_BASE}/GetRosterDates?barberId=${selectedBarberId}&month=${currentDate.getMonth()+1}&year=${currentDate.getFullYear()}`
+
+    );
+
+    rosterDates = await response.json();
+
+}
 function loadBarberPreferences(barber) {
 
     if (!barber)
@@ -476,6 +518,9 @@ async function saveSchedule() {
         selectedOOOToRemove = [];
 
         // Reload latest data
+        await loadRosterDates();
+
+        renderCalendar();
         await loadAvailability();
 
     }
@@ -513,7 +558,22 @@ async function loadBarbers() {
 
     try {
 
-        const response = await fetch(`${API_BASE}/barbers`);
+        let apiUrl;
+
+        if (PAGE_MODE === "MANAGE") {
+
+            apiUrl = `${API_BASE}/barbers?orgId=${sellerOrgId}`;
+            // Example:
+            // GET /barbers/2
+
+        }
+        else {
+
+            apiUrl = `${API_BASE}/barbers`;
+
+        }
+
+        const response = await fetch(apiUrl);
 
         if (!response.ok) {
             throw new Error("Failed to fetch barbers");
@@ -576,8 +636,8 @@ loadBarberPreferences(barbers[0]);
     }
 }
 
-function selectBarber(el, id, name) {
-
+async function selectBarber(el, id, name) {
+    
     document.querySelectorAll('.barber')
         .forEach(b => b.classList.remove('active'));
 
@@ -590,7 +650,9 @@ function selectBarber(el, id, name) {
         x => x.barberId == id
     );
 loadBarberPreferences(selectedBarber)
+await loadRosterDates();
 
+renderCalendar();
     selectedBarberOrgId = selectedBarber?.orgId || '';
 
     if (selectedDate) {
@@ -629,21 +691,53 @@ function renderCalendar() {
 
     for (let d = 1; d <= days; d++) {
 
+        const cellDate = new Date(
+                currentDate.getFullYear(),
+                currentDate.getMonth(),
+                d
+            );
+
+        const today = new Date();
+
+        // Ignore time while comparing
+        today.setHours(0, 0, 0, 0);
+        cellDate.setHours(0, 0, 0, 0);
+
+        const isPastDate = cellDate < today;
+
+
         let c = document.createElement('div');
 
         c.innerText = d;
+            calendar.appendChild(c);
+            const dateString =
+            `${selectedYear}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 
-        c.onclick = () => selectDate(c, d);
+            if(rosterDates.includes(dateString)){
 
-        calendar.appendChild(c);
+                c.classList.add("hasRoster");
+
+            }
+        if (isPastDate) {
+
+            c.classList.add("disabled-date");
+
+        }
+        else {
+            c.onclick = () => selectDate(c, d);
+
+            
+        }
     }
 }
 
-function changeMonth(v) {
+async function changeMonth(v) {
 
     currentDate.setMonth(
         currentDate.getMonth() + v
     );
+
+    await loadRosterDates();
 
     renderCalendar();
 }
@@ -759,9 +853,27 @@ for (
             });
         }
 
+        const now = new Date();
+
+        const selected = new Date(selectedDate);
+
+        const isToday =
+            selected.toDateString() === now.toDateString();
         // RENDER SLOTS
 allSlots.forEach(slot => {
+    const slotDateTime = new Date(selectedDate);
 
+    const parts = slot.value.split(":");
+
+    slotDateTime.setHours(parts[0]);
+    slotDateTime.setMinutes(parts[1]);
+    slotDateTime.setSeconds(0);
+
+    if (isToday && slotDateTime <= now) {
+
+        return;
+
+    }
 const bookingInfo = slotStatusMap[slot.value];
 const status = bookingInfo?.bookingStatus;
 const customerName = bookingInfo?.customerName || 'Customer';
@@ -898,7 +1010,8 @@ async function saveOutOfOffice() {
             workingTo: getWorkingTo(),
             date: selectedDate,
             addSlots: selectedOOOToAdd,
-            removeSlots: selectedOOOToRemove
+            removeSlots: selectedOOOToRemove,
+            userId: sessionStorage.getItem("UserId")
         };
 
         await fetch(API_BASE + "/api/Appointment/SaveSchedule", {
