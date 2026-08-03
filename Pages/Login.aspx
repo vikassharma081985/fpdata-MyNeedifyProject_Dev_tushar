@@ -84,10 +84,12 @@
         </div>
 
         <%-- jQuery --%>
-        <script src="../Js/jquery.min.js"></script>
+
+<script src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.1.min.js" type="text/javascript"></script>     
+
         <%-- Validation Script --%>
         <script>
-            var appURL = "http://127.0.0.1:46692/";
+            var appURL = "https://myneedify.com/";
             function Validate() {
                 var User = $('[id$=txtLogin]').val().trim();
                 var Pwd = $('[id$=txtPassword]').val().trim();
