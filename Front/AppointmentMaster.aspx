@@ -376,7 +376,7 @@ body {
 
 <script>
 
-const API_BASE = "http://198.38.88.185:5150/api/Appointment";
+const API_BASE = "https://api.myneedify.com/api/Appointment";
 const sellerOrgId = sessionStorage.getItem("OrgId");
 
 const PAGE_MODE =
