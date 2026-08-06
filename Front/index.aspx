@@ -358,7 +358,7 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                        <a href="http://198.38.88.185:8082/Front/appointmentmaster.aspx"  style="color: blue;">
+                        <a href="../Front/AppointmentMaster.aspx"  style="color: blue;">
                             <h5 class="fw-bold mb-1">Salon Appointment</h5>
                             <p class="small text-muted mb-0">Schedule Your Visit</p></a>
                         </div>

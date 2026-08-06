@@ -18,6 +18,9 @@
            img[src*="logoRC.png"] {
                 max-width: 120px !important;
             }
+img[src*="mylogo.png"] {
+                max-width: 120px !important;
+            }
             img[src*="Christmas-Hat-PNG-Image.png"]{
                 max-height: 50px !important;
                 left: 24% !important;
@@ -36,7 +39,7 @@
                         <!-- Mobile logo (shown only on mobile) -->
                         <div class="text-center p-3 d-block d-md-none" style="position:relative;">
                             <img src="../Js/Snowflakes/Christmas-Hat-PNG-Image.png" class="img-fluid" style="max-height:60px; position:absolute; top:0; left:35%;" />
-                            <img src="../Images/logoRC.png" class="img-fluid mt-4" style="max-width:120px;">
+                            <img src="../Images/system/mylogo.png" class="img-fluid mt-4" style="max-width:120px;">
                         </div>
 
                         <div class="row g-0">
@@ -66,7 +69,7 @@
                             <div class="col-12 col-md-6 text-center p-4 order-2 order-md-1">
                                 <div style="position:relative;" class="d-none d-md-block">
                                     <img src="../Js/Snowflakes/Christmas-Hat-PNG-Image.png" class="img-fluid" style="max-height:100px; position:absolute; top:0; left:20%;" />
-                                    <img src="../Images/logoRC.png" class="img-fluid mt-4" style="max-width:200px;">
+                                    <img src="../Images/system/mylogo.png" class="img-fluid mt-4" style="max-width:200px;">
                                 </div>
                                 <hr />
                                 <div class="text-start mt-3" style="font-size:14px;">
