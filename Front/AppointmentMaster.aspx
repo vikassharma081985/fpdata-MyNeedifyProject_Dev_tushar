@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head runat="server">
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="description" content="Schedule your barber appointment online. Find experienced barbers nearby and book haircuts, beard trims, and grooming services instantly. Book salon appointments online for haircuts, hair styling, facials, makeup, spa, and beauty treatments at trusted salons near you." />
+<meta name="keywords" content="barber appointment, men's haircut, barber near me, grooming, haircut booking, salon appointment, beauty salon, hair spa, facial, beauty services" />
 <title>Barber Appointment Booking</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

@@ -6,6 +6,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Search and hire trusted local labour including plumbers, electricians, carpenters, painters, cleaners, and other skilled workers near your location." />
+    <meta name="keywords" content="labour near me, plumber, electrician, carpenter, painter, workers" />
     <title>Job / Card UI</title>
 
     <!-- Bootstrap CSS -->

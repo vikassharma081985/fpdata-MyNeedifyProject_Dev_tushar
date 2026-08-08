@@ -2,6 +2,8 @@
  <%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="FaduPrice.Front.index" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <meta name="description" content="Shop premium quality dairy products including pure ghee, organic honey, and other healthy essentials with doorstep delivery. Purchase authentic Hawan Samagri and puja essentials online. High-quality products for religious ceremonies and spiritual rituals." />
+    <meta name="keywords" content="dairy products, pure ghee, organic honey, milk products, online grocery, hawan samagri, puja items, yagya samagri, religious products, pooja kit" />
     <!-- Add Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
 
@@ -156,148 +158,149 @@
 
 <!-- Responsive CSS -->
 <style>
-    .card:hover{
-    transform:translateY(-3px);
-    transition:0.3s;
-}
-
-.btn-outline-success{
-    border:2px solid #28a745;
-    color:#28a745;
-    background:#fff;
-}
-
-.btn-outline-success:hover{
-    background:#28a745;
-    color:#fff;
-}
-
-.badge{
-    font-size:11px;
-    padding:6px 10px;
-}
-
-    .title{
-        font-size:20px;
-    }
-   /* Responsive Fixes for Item Tiles */
-.Tile img {
-    width: 100%;
-    height: auto;
-}
-
-/* Center item name and price on smaller screens */
-.ItemName, .ItemPrice, .ItemPriceOffer {
-    display: block;
-    text-align: center;
-    font-size: 0.9rem;
-}
-
-/* Margin bottom on items */
-.col-md-2.col-xs-6.col-sm-3 {
-    margin-bottom: 20px;
-}
-
-/* Fix padding on mobile */
-@media (max-width: 768px) {
-    .site-header {
-        padding: 15px 20px;
+    .card:hover {
+        transform: translateY(-3px);
+        transition: 0.3s;
     }
 
-    .site-header .logo {
-        font-size: 1.5rem;
+    .btn-outline-success {
+        border: 2px solid #28a745;
+        color: #28a745;
+        background: #fff;
     }
 
-    .site-header .nav-links {
-        gap: 15px;
-        flex-direction: column;
+        .btn-outline-success:hover {
+            background: #28a745;
+            color: #fff;
+        }
+
+    .badge {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+    /* Responsive Fixes for Item Tiles */
+    .Tile img {
         width: 100%;
+        height: auto;
     }
 
-    h2.text-uppercase {
-        font-size: 1.3rem;
-        text-align: center;
-        margin: 20px 0;
-    }
-
+    /* Center item name and price on smaller screens */
     .ItemName, .ItemPrice, .ItemPriceOffer {
-        font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 480px) {
-    h2.text-uppercase {
-        font-size: 1.1rem;
+        display: block;
+        text-align: center;
+        font-size: 0.9rem;
     }
 
-    .site-header {
-        flex-direction: column;
-        align-items: center;
+    /* Margin bottom on items */
+    .col-md-2.col-xs-6.col-sm-3 {
+        margin-bottom: 20px;
     }
 
-    .site-header .nav-links {
-        align-items: center;
-    }
-}
-.carousel-inner img {
-    width: 100%;
-    height: auto;
-}
+    /* Fix padding on mobile */
+    @media (max-width: 768px) {
+        .site-header {
+            padding: 15px 20px;
+        }
 
-/*For Search Button*/
+            .site-header .logo {
+                font-size: 1.5rem;
+            }
+
+            .site-header .nav-links {
+                gap: 15px;
+                flex-direction: column;
+                width: 100%;
+            }
+
+        h2.text-uppercase {
+            font-size: 1.3rem;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .ItemName, .ItemPrice, .ItemPriceOffer {
+            font-size: 0.85rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        h2.text-uppercase {
+            font-size: 1.1rem;
+        }
+
+        .site-header {
+            flex-direction: column;
+            align-items: center;
+        }
+
+            .site-header .nav-links {
+                align-items: center;
+            }
+    }
+
+    .carousel-inner img {
+        width: 100%;
+        height: auto;
+    }
+
+    /*For Search Button*/
     .input-group-btn {
         padding-bottom: 80px;
     }
     /*For Slider CSS*/
-    .carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
-    float: left;
-    max-width: 50%;
-    height: 270px;
+    .carousel-inner > .item > a > img, .carousel-inner > .item > img, .img-responsive, .thumbnail a > img, .thumbnail > img {
+        float: left;
+        max-width: 50%;
+        height: 270px;
+    }
 
-    
-}
     @media (max-width: 768px) {
-  .carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
-    float: left;
-    max-width: 100%;
-    height: 50%;
-}
+        .carousel-inner > .item > a > img, .carousel-inner > .item > img, .img-responsive, .thumbnail a > img, .thumbnail > img {
+            float: left;
+            max-width: 100%;
+            height: 50%;
+        }
 
- .carousel .item span img{
-     display:none;
- }
-
+        .carousel .item span img {
+            display: none;
+        }
     }
- /*Sahil Code for four icons */
-    .col-3{
-        border:1px solid black;
-        margin-bottom:20px;
-        border-radius:5px;
-    }
-    .sahil{
-        display:flex;
-        column-gap:10px;
+    /*Sahil Code for four icons */
+    .col-3 {
+        border: 1px solid black;
+        margin-bottom: 20px;
+        border-radius: 5px;
     }
 
-    @media (max-width: 768px){
-        .sahil{
-            display:block;
+    .sahil {
+        display: flex;
+        column-gap: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .sahil {
+            display: block;
             margin-top: 20px;
         }
-        .col-3{
-         width: 45%;
-        float: left;
-        margin-left: 10px;
+
+        .col-3 {
+            width: 45%;
+            float: left;
+            margin-left: 10px;
         }
     }
 
-      .SelectedSize {
-      border: 1px solid #09f;
-  }
+    .SelectedSize {
+        border: 1px solid #09f;
+    }
 
-  .SelectedColor {
-      border: 1px solid #09f;
-  }
+    .SelectedColor {
+        border: 1px solid #09f;
+    }
 </style>
 
   

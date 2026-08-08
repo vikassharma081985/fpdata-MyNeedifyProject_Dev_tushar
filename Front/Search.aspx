@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.master" AutoEventWireup="true" CodeBehind="Search.aspx.cs" Inherits="FaduPrice.Pages.Search" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <meta name="description" content="Discover the latest fashion trends for men, women, and kids. Shop quality clothing online at affordable prices with secure checkout." />
+    <meta name="keywords" content="online shopping, clothing, fashion, men's wear, women's wear, kids wear" />
     <style>
         #ex1Slider .slider-selection {
             background: #7c519b;
