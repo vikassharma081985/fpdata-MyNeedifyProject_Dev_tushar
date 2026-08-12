@@ -250,29 +250,40 @@ namespace WSBillingMaster.Pages
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             };
             var apiBaseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
-            string apiUrl = $"{apiBaseUrl}Expense/SaveReimbursement";
-
-            using (HttpClient client = new HttpClient(handler))
+            string apiUrl = $"{apiBaseUrl}/Expense/SaveReimbursement";
+            try
             {
-                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
-
-                var json = JsonConvert.SerializeObject(payload);
-                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-                var response = client.PostAsync(apiUrl, content).Result;
-                //string responseData = response.Content.ReadAsStringAsync().Result;
-
-                if (!response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient(handler))
                 {
-                    return JsonConvert.SerializeObject(new
-                    {
-                        error = true,
-                        message = "API Error: " + response.StatusCode
-                    });
-                }
+                    client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
-                string responseData = response.Content.ReadAsStringAsync().Result;
-                return responseData;
+                    var json = JsonConvert.SerializeObject(payload);
+                    var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync(apiUrl, content).Result;
+                    //string responseData = response.Content.ReadAsStringAsync().Result;
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string responseData1 = response.Content.ReadAsStringAsync().Result;
+                        return JsonConvert.SerializeObject(new
+                        {
+                            error = true,
+                            message = "API Error: " + response.StatusCode + ": " + responseData1
+                        });
+                    }
+
+                    string responseData = response.Content.ReadAsStringAsync().Result;
+                    return responseData;
+                }
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new
+                {
+                    error = true,
+                    message = apiUrl + "Exception: " + ex.Message
+                });
             }
         }
 
