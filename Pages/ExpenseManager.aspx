@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
+<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
     CodeBehind="ExpenseManager.aspx.cs" Inherits="WSBillingMaster.Pages.ExpenseManager" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -15,6 +15,7 @@
         <div class="Header">
             <div class="section-title">Expense Manager</div>
             <input type="hidden" id="hfUploadedFile" />
+            <input type="hidden" id="hfUploadedFile2" />
             <div class="responsive-form">
                 <div class="form-row">
                     <div class="form-group">
@@ -48,8 +49,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Upload :</label>
-                        <input type="file" id="fpUpload" onchange="FileChange(this);" />
+                        <label>Bill 1 :</label>
+                        <input type="file" id="fpUpload" onchange="FileChange(this, 'hfUploadedFile');" />
+                    </div>
+                    <div class="form-group">
+                        <label>Bill 2 :</label>
+                        <input type="file" id="fpUpload2" onchange="FileChange(this, 'hfUploadedFile2');" />
                     </div>
                     <div class="form-group">
                         <label>Bill Number :</label>
@@ -589,14 +594,20 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Current File :</label>
+                        <label>Current File 1 :</label>
                         <div id="currentFileLink"></div>
+                        <label>Replace File 1 :</label>
+                        <input type="file" id="fpEditUpload" accept="image/*,.pdf,application/pdf"
+                            onchange="EditFileChange(this, 'hfEditUploadedFile');" />
+                        <input type="hidden" id="hfEditUploadedFile" />
                     </div>
                     <div class="form-group">
-                        <label>Replace File (Optional) :</label>
-                        <input type="file" id="fpEditUpload" accept="image/*,.pdf,application/pdf"
-                            onchange="EditFileChange(this);" />
-                        <input type="hidden" id="hfEditUploadedFile" />
+                        <label>Current File 2 :</label>
+                        <div id="currentFileLink2"></div>
+                        <label>Replace File 2 :</label>
+                        <input type="file" id="fpEditUpload2" accept="image/*,.pdf,application/pdf"
+                            onchange="EditFileChange(this, 'hfEditUploadedFile2');" />
+                        <input type="hidden" id="hfEditUploadedFile2" />
                     </div>
                     <div class="form-group">
                         <label>Bill Number :</label>
@@ -1173,7 +1184,10 @@
                 html += '<strong>Amount: </strong>' + value.Amount + '<br>';
                 html += '<strong>Description: </strong>' + value.Description + '<br>';
                 if (value.ExpenseFile) {
-                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a><br>';
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill 1</a><br>';
+                }
+                if (value.ExpenseFile2) {
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile2 + '" >View Bill 2</a><br>';
                 }
                 if (value.Status != "Reimbursement Created") {
                     html += '<button type="button" class="btnn btn-warning btn-sm mt-1" onclick="OpenEditModal(' + value.ID + ')">Edit</button>';
@@ -1364,6 +1378,7 @@
             var ExpenseId = $('#ddlExpense').val();
             var SubExpenseId = $('#ddlSubExpense').val();
             var File = $('#hfUploadedFile').val();// $('#fpUpload').val();
+            var File2 = $('#hfUploadedFile2').val();
             var Description = $('#txtExpenseDescription').val();
             var Quantity = $('#txtQuantity').val();
             var Rate = $('#txtRate').val();
@@ -1389,6 +1404,7 @@
             obj.ExpenseId = ExpenseId;
             obj.SubExpenseId = SubExpenseId;
             obj.File = File;
+            obj.File2 = File2;
             obj.Description = Description;
             obj.Amount = Amount;
             obj.userId = hdnUserId;
@@ -1555,7 +1571,10 @@
                 html += '<td class="MyHeader">' + value.PaymentMode + '</td>';
                 html += '<td class="MyHeader">';
                 if (value.ExpenseFile) {
-                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill</a>';
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill 1</a><br/>';
+                }
+                if (value.ExpenseFile2) {
+                    html += '<a href="../Uploads/Expense/' + value.ExpenseFile2 + '" >View Bill 2</a>';
                 }
                 html += '</td>';
                 /*html += '<td class="MyHeader">' + value.EntryDate + '</td>';*/
@@ -1624,8 +1643,9 @@
         }
 
 
-        function FileChange(ctrl) {
-            ImgPreview(ctrl.files, ctrl);
+        function FileChange(ctrl, hdnctrl) {
+            debugger;
+            ImgPreview(ctrl.files, ctrl, hdnctrl);
         }
 
         function LogoFileChange(ctrl) {
@@ -1633,6 +1653,7 @@
         }
 
         function ImgPreview(input, ctrl) {
+            debugger;
             var file = input[0];
             var fileType = file["type"];
             var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
@@ -1651,7 +1672,8 @@
                         contentType: false,
                         processData: false,
                         success: function (response) {
-                            $('#hfUploadedFile').val(response);
+                            debugger;
+                            $('#' + ctrl).val(response);
                         }
                     });
                 }
@@ -1664,6 +1686,8 @@
             $('#ddlSubExpense').val('0');
             $('#txtAmount').val('');
             $('#fpUpload').val('');
+            $('#hfUploadedFile2').val('');
+            $('#fpUpload2').val('');
             $('#txtQuantity').val('1');
             $('#txtRate').val('0');
             $('#txtExpenseDescription').val('');
@@ -1897,20 +1921,31 @@
                 $('#ddlEditPaymentMode').prop('disabled', true).val('');
             }
             $('#hfEditUploadedFile').val(expense.ExpenseFile || '');
+            $('#hfEditUploadedFile2').val(expense.ExpenseFile2 || '');
             BindSubExpense(expense.ExpenseId, 'ddlEditSubExpense', expense.SubExpenseId);
 
             // Show current file link
             var fileHtml = '';
             if (expense.ExpenseFile) {
-                fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" style="color:#007bff;">View Current Bill</a>';
-                fileHtml += '<a href="javascript:void(0);" onclick="removeCurrentFile()" style="color:red; margin-left:10px;">[Remove]</a>';
+                fileHtml = '<a href="../Uploads/Expense/' + expense.ExpenseFile + '" style="color:#007bff;">View Current Bill 1</a>';
+                fileHtml += '<a href="javascript:void(0);" onclick="removeCurrentFile(\'hfEditUploadedFile\', \'currentFileLink\')" style="color:red; margin-left:10px;">[Remove]</a>';
             } else {
                 fileHtml = '<span style="color:gray;">No file uploaded</span>';
             }
             $('#currentFileLink').html(fileHtml);
 
+            var fileHtml2 = '';
+            if (expense.ExpenseFile2) {
+                fileHtml2 = '<a href="../Uploads/Expense/' + expense.ExpenseFile2 + '" style="color:#007bff;">View Current Bill 2</a>';
+                fileHtml2 += '<a href="javascript:void(0);" onclick="removeCurrentFile(\'hfEditUploadedFile2\', \'currentFileLink2\')" style="color:red; margin-left:10px;">[Remove]</a>';
+            } else {
+                fileHtml2 = '<span style="color:gray;">No file uploaded</span>';
+            }
+            $('#currentFileLink2').html(fileHtml2);
+
             // Clear new file input
             $('#fpEditUpload').val('');
+            $('#fpEditUpload2').val('');
 
             // Open modal
             document.getElementById("editExpenseModal").style.display = "block";
@@ -2093,10 +2128,12 @@
             });
         }
 
-        function removeCurrentFile() {
+        function removeCurrentFile(hiddenId, linkId) {
+            hiddenId = hiddenId || 'hfEditUploadedFile';
+            linkId = linkId || 'currentFileLink';
             if (confirm("Are you sure you want to remove the current bill file? This cannot be undone.")) {
-                $('#currentFileLink').html('<span style="color:orange;">File will be removed on update</span>');
-                $('#hfEditUploadedFile').val(''); // Clear any new upload too
+                $('#' + linkId).html('<span style="color:orange;">File will be removed on update</span>');
+                $('#' + hiddenId).val(''); // Clear any new upload too
             }
         }
 
@@ -2105,6 +2142,7 @@
             var ExpenseId = $('#ddlEditExpense').val();
             var SubExpenseId = $('#ddlEditSubExpense').val();
             var File = $('#hfEditUploadedFile').val(); // New file if uploaded, else old one
+            var File2 = $('#hfEditUploadedFile2').val();
             var Description = $('#txtEditDescription').val().trim();
             var Quantity = $('#txtEditQuantity').val() || '1';
             var Rate = $('#txtEditRate').val() || '0';
@@ -2135,6 +2173,7 @@
                 ExpenseId: ExpenseId,
                 SubExpenseId: SubExpenseId,
                 File: File,
+                File2: File2,
                 Description: Description,
                 Amount: Amount,
                 userId: hdnUserId,

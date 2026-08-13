@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -133,6 +133,7 @@ namespace WSBillingMaster.Pages
                     obj.SubCategoryId = data[0].SubExpenseId;
                     //obj.ExpenseFile = data[0].File.Replace(@"C:\fakepath\","");
                     obj.ExpenseFile = data[0].File?.Split('|')?[0] ?? "";
+                    obj.ExpenseFile2 = data[0].File2?.Split('|')?[0] ?? "";
                     obj.ExpenseDescription = data[0].Description;
                     obj.Amount = data[0].Amount;
 					obj.Rate = data[0].Rate;
@@ -330,6 +331,7 @@ namespace WSBillingMaster.Pages
                     obj.ExpenseId = item.ExpenseId;
                     obj.SubCategoryId = item.SubExpenseId;
                     obj.ExpenseFile = string.IsNullOrEmpty(item.File) ? "" : item.File.Split('|')[0];
+                    obj.ExpenseFile2 = string.IsNullOrEmpty(item.File2) ? "" : item.File2.Split('|')[0];
                     obj.ExpenseDescription = item.Description;
                     obj.Amount = item.Amount;
                     obj.Rate = item.Rate;
@@ -354,6 +356,7 @@ namespace WSBillingMaster.Pages
         public int ExpenseId { get; set; }
         public int SubExpenseId { get; set; }
         public string File { get; set; }
+        public string File2 { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public int userId { get; set; }

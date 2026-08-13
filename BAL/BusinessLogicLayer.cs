@@ -1597,6 +1597,7 @@ namespace BLL
         public string ExpenseDate { get; set; }
         public int ExpenseId { get; set; }
         public string ExpenseFile { get; set; }
+        public string ExpenseFile2 { get; set; }
         public string ExpenseDescription { get; set; }
 
         public DataTable GetProfitLoss()
@@ -1668,6 +1669,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
                     sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
                     sqlCommand.Parameters.AddWithValue("@File", ExpenseFile);
+                    sqlCommand.Parameters.AddWithValue("@File2", ExpenseFile2);
                     sqlCommand.Parameters.AddWithValue("@Description", ExpenseDescription);
                     sqlCommand.Parameters.AddWithValue("@Amount", Amount);
                     sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
@@ -1742,6 +1744,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
                     sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
                     sqlCommand.Parameters.AddWithValue("@File", string.IsNullOrEmpty(ExpenseFile) ? (object)DBNull.Value : ExpenseFile);
+                    sqlCommand.Parameters.AddWithValue("@File2", string.IsNullOrEmpty(ExpenseFile2) ? (object)DBNull.Value : ExpenseFile2);
                     sqlCommand.Parameters.AddWithValue("@Description", string.IsNullOrEmpty(ExpenseDescription) ? (object)DBNull.Value : ExpenseDescription);
                     sqlCommand.Parameters.AddWithValue("@Amount", Amount);
                     sqlCommand.Parameters.AddWithValue("@Rate", Rate);
