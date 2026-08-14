@@ -2037,8 +2037,8 @@
             ].join('\n');
         }
 
-        function EditFileChange(ctrl) {
-            ImgPreview(ctrl.files, ctrl, 'hfEditUploadedFile');
+        function EditFileChange(ctrl, hdnname) {
+            ImgPreview(ctrl.files, ctrl, hdnname);//'hfEditUploadedFile'
         }
 
         // Modified ImgPreview to support different hidden field
@@ -2087,13 +2087,13 @@
                 return;
             }
 
-            if (hiddenFieldId === 'hfEditUploadedFile') {
+            if (hiddenFieldId === 'hfEditUploadedFile' || hiddenFieldId === 'hfEditUploadedFile2') {
                 //alert("Starting bill file upload with diagnostics.\n\n" + uploadDiagnostics);
             }
 
             var data = new FormData();
             data.append(uploadFileName, file);
-            editUploadInProgress = hiddenFieldId === 'hfEditUploadedFile';
+            editUploadInProgress = (hiddenFieldId === 'hfEditUploadedFile' || hiddenFieldId === 'hfEditUploadedFile2');
             $.ajax({
                 url: uploadUrl,
                 type: "POST",
@@ -2113,6 +2113,8 @@
                     if (hiddenFieldId === 'hfEditUploadedFile') {
                         $('#currentFileLink').html('<span style="color:green;">New file uploaded: ' + uploadedFileName + '</span>');
                         //alert("File uploaded successfully.\n\nSaved File: " + uploadedFileName + "\n\n" + uploadDiagnostics);
+                    } else if (hiddenFieldId === 'hfEditUploadedFile2') {
+                        $('#currentFileLink2').html('<span style="color:green;">New file uploaded: ' + uploadedFileName + '</span>');
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
@@ -2121,7 +2123,7 @@
                     alert("Upload failed with detailed diagnostics.\n\nRequest Status: " + textStatus + "\n" + getUploadErrorDetails(xhr, errorThrown) + "\n\n" + uploadDiagnostics);
                 },
                 complete: function () {
-                    if (hiddenFieldId === 'hfEditUploadedFile') {
+                    if (hiddenFieldId === 'hfEditUploadedFile' || hiddenFieldId === 'hfEditUploadedFile2') {
                         editUploadInProgress = false;
                     }
                 }
