@@ -30,7 +30,7 @@
                     Discount Name
                 </div>
                 <div class="col-md-12 col-lg-12 col-xs-12">
-                    <asp:TextBox ID="txtDiscountName" Style="padding-left: 10px; width: 90%;" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtDiscountName" onkeypress="return isDiscountNameKey(event)" Style="padding-left: 10px; width: 90%;" runat="server"></asp:TextBox>
                 </div>
                 <div class="col-md-12 col-lg-12 col-xs-12" style="font-weight: bold; padding-top: 20px;">
                     Discount %
@@ -73,6 +73,21 @@
         $(document).ready(function () {
             BindData();
         });
+
+        function isDiscountNameKey(evt) {
+            var charCode = evt.which ? evt.which : evt.keyCode;
+
+            // Allow A-Z, a-z, 0-9
+            if (
+                (charCode >= 48 && charCode <= 57) ||  // 0-9
+                (charCode >= 65 && charCode <= 90) ||  // A-Z
+                (charCode >= 97 && charCode <= 122)    // a-z
+            ) {
+                return true;
+            }
+
+            return false;
+        }
 
         function BindData() {
 
@@ -161,6 +176,23 @@
 
             if (DiscountName == "") {
                 alert('Enter Discount Name');
+                return false;
+            }
+            if (DiscountName.length < 3) {
+                alert('Discount Name must be at least 3 characters.');
+                return false;
+            }
+
+            if (DiscountName.length > 15) {
+                alert('Discount Name cannot exceed 15 characters.');
+                return false;
+            }
+
+            // Only alphabets and numbers
+            var namePattern = /^[A-Za-z0-9]+$/;
+
+            if (!namePattern.test(DiscountName)) {
+                alert('Discount Name can contain only alphabets and numbers.');
                 return false;
             }
             if (DiscountPer == "") {

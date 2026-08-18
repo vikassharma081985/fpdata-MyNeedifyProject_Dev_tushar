@@ -189,6 +189,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@DiscountPer", DiscountPer);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
                     sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
+                    sqlCommand.Parameters.AddWithValue("@AddedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
             }
