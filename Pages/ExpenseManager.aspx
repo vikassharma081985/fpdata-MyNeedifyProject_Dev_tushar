@@ -73,7 +73,7 @@
                         <select id="ddlPaymentMode" class="form-control" disabled>
                             <option value="">Select</option>
                             <option value="Cash">Cash</option>
-                            <option value="Credit">Credit</option>
+                            <option value="Online">Online</option>
                         </select>
                     </div>
 
@@ -626,7 +626,7 @@
                         <select id="ddlEditPaymentMode" class="form-control" disabled>
                             <option value="">Select</option>
                             <option value="Cash">Cash</option>
-                            <option value="Credit">Credit</option>
+                            <option value="Online">Online</option>
                         </select>
                     </div>
                 </div>
