@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
+<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/SiteMaster.Master" AutoEventWireup="true"
     ValidateRequest="false" CodeBehind="AddItem.aspx.cs" Inherits="WSBillingMaster.Pages.AddItem" %>
 
     <%@ Register Assembly="CKEditor.NET" Namespace="CKEditor.NET" TagPrefix="CKEditor" %>
@@ -105,7 +105,9 @@
                             <th>Batch No</th>
                             <th>Size</th>
                             <th>Stock</th>
-                            <th>Select</th>
+                            <th>Select <br />
+                                <input type="checkbox" id="chkSelectAll" onclick="toggleSelectAll(this)" />
+                            </th>
 
                         </tr>
 
@@ -204,7 +206,7 @@
                                     </td>
 
                                     <td>
-                                        <asp:CheckBox ID="chkSelect" Checked="true" runat="server" />
+                                        <asp:CheckBox ID="chkSelect" Checked="true" runat="server" CssClass="rowCheckbox" />
                                     </td>
 
 
@@ -214,6 +216,12 @@
 
                     </table>
 
+                </div>
+                
+                <div style="margin-top: 10px; display: flex; align-items: center; justify-content: center;">
+                    <asp:Button ID="btnPrevious" runat="server" Text="Previous" OnClick="btnPrevious_Click" CausesValidation="false" CssClass="btn btn-default" />
+                    <asp:Label ID="lblPageInfo" runat="server" Style="margin: 0 15px; font-weight: bold;"></asp:Label>
+                    <asp:Button ID="btnNext" runat="server" Text="Next" OnClick="btnNext_Click" CausesValidation="false" CssClass="btn btn-default" />
                 </div>
 
 
@@ -282,6 +290,23 @@
                     $('#tblSizenStock').append(row);
                     return false;
                 }
+
+                function toggleSelectAll(selectAllCheckbox) {
+                    $('.rowCheckbox input[type="checkbox"]').prop('checked', selectAllCheckbox.checked);
+                }
+
+                function updateHeaderCheckbox() {
+                    var $allCheckboxes = $('.rowCheckbox input[type="checkbox"]');
+                    var $checkedCheckboxes = $allCheckboxes.filter(':checked');
+                    var $headerCheckbox = $('#chkSelectAll');
+                    if ($headerCheckbox.length > 0) {
+                        $headerCheckbox.prop('checked', $allCheckboxes.length > 0 && $allCheckboxes.length === $checkedCheckboxes.length);
+                    }
+                }
+
+                $(document).on('change', '.rowCheckbox input[type="checkbox"]', function() {
+                    updateHeaderCheckbox();
+                });
             </script>
 
             </div>
@@ -290,9 +315,9 @@
 
 
             <script>
-                //$(document).ready(function () {
-                //    alert('this value save');
-                //});
+                $(document).ready(function () {
+                    updateHeaderCheckbox();
+                });
 
                 function FileChange(ctrl) {
                     ImgPreview(ctrl.files);
