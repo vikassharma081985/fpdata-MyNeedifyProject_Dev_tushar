@@ -376,6 +376,7 @@
                         XML += '<Misc>' + Misc + '</Misc>';
                         XML += '<ProfitMargin>' + ProfitMargin + '</ProfitMargin>';
                         XML += '<MRP>' + MRP + '</MRP>';
+                        XML += '<Size>' + Size + '</Size>';
                         XML += '<Stock>' + Stock + '</Stock>';
                         XML += '<Remarks>' + Remarks + '</Remarks>';
 
@@ -423,6 +424,7 @@
                         XML += '<Misc>' + Misc + '</Misc>';
                         XML += '<ProfitMargin>' + ProfitMargin + '</ProfitMargin>';
                         XML += '<MRP>' + MRP + '</MRP>';
+                        XML += '<Size>' + Size + '</Size>';
                         XML += '<Stock>' + Stock + '</Stock>';
                         XML += '<Remarks>' + Remarks + '</Remarks>';
                         XML += '</Node>';
