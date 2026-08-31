@@ -886,6 +886,8 @@ namespace BLL
                     dbSqlCommand.Parameters.AddWithValue("@HSNCode", HSNCode);
                     dbSqlCommand.Parameters.AddWithValue("@GST", GST);
                     dbSqlCommand.Parameters.AddWithValue("@SupplierId", SupplierId);
+                    dbSqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
+                    dbSqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
 
                     return objDALCIILibrary.GetDataTable(dbSqlCommand);
 
