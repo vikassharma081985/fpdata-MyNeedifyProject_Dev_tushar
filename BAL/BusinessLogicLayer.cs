@@ -2291,7 +2291,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@CategoryId", CategoryId);
                     sqlCommand.Parameters.AddWithValue("@CategoryName", CategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
-                    sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
 
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
@@ -2314,7 +2314,7 @@ namespace BLL
                     //sqlCommand.Parameters.AddWithValue("@CustomerId", CustomerId);
                     sqlCommand.Parameters.AddWithValue("@SubCategoryName", SubCategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
-                    sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
                     //sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
                     //sqlCommand.Parameters.AddWithValue("@Name", FirstName);
@@ -2338,7 +2338,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@CategoryID", CategoryID);
                     sqlCommand.Parameters.AddWithValue("@SubSubCategoryName", SubSubCategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
-                    sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
                     //sqlCommand.Parameters.AddWithValue("@SettlementAmount", SettlementAmt);
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
