@@ -7,20 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WSBillingMaster.Pages {
-    
-    
-    public partial class UserDashboard {
-        
-        /// <summary>
-        /// lblEmployeeName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEmployeeName;
-        
+namespace WSBillingMaster.Pages
+{
+
+
+    public partial class UserDashboard
+    {
+
         /// <summary>
         /// lvMenu control.
         /// </summary>

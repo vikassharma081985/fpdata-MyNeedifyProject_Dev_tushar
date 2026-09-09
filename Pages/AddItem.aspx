@@ -91,11 +91,11 @@
                             <th>Amount <font color="red">*</font>
                             </th>
                             <th>Cashback %</th>
-                            <th>Vendor</th>
+                            <%--<th>Vendor</th>
                             <th>Volume</th>
                             <th>Length</th>
                             <th>Width</th>
-                            <th>Height</th>
+                            <th>Height</th>--%>
                             <th>Shipping Weight</th>
                             <th>Shipping Price</th>
                             <th>HSN Code</th>
@@ -106,8 +106,12 @@
                             <th>Size</th>
                             <th>Stock</th>
                             <th>Select <br />
-                                <input type="checkbox" id="chkSelectAll" onclick="toggleSelectAll(this)" />
-                            </th>
+                            <input type="checkbox" id="chkSelectAll" onclick="toggleSelectAll(this)" /></th>
+                                <th>Vendor</th>
+<th>Volume</th>
+<th>Length</th>
+<th>Width</th>
+<th>Height</th>
 
                         </tr>
 
@@ -150,7 +154,7 @@
                                         <asp:TextBox ID="txtCashback" runat="server" CssClass="form-control"
                                             Text='<%# Eval("Cashback") %>' />
                                     </td>
-                                    <td>
+                                    <%--<td>
                                         <asp:TextBox ID="txtVendor" runat="server" CssClass="form-control"
                                             Text='<%# Eval("Vendor") %>' />
                                     </td>
@@ -165,7 +169,7 @@
                                     </td>
                                     <td>
                                         <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control" />
-                                    </td>
+                                    </td>--%>
                                     <td>
                                         <asp:TextBox ID="txtShippingWeight" runat="server" CssClass="form-control" />
                                     </td>
@@ -208,7 +212,22 @@
                                     <td>
                                         <asp:CheckBox ID="chkSelect" Checked="true" runat="server" CssClass="rowCheckbox" />
                                     </td>
-
+                                    <td>
+    <asp:TextBox ID="txtVendor" runat="server" CssClass="form-control"
+        Text='<%# Eval("Vendor") %>' />
+</td>
+<td>
+    <asp:TextBox ID="txtVolume" runat="server" CssClass="form-control" />
+</td>
+<td>
+    <asp:TextBox ID="txtLength" runat="server" CssClass="form-control" />
+</td>
+<td>
+    <asp:TextBox ID="txtWidth" runat="server" CssClass="form-control" />
+</td>
+<td>
+    <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control" />
+</td>
 
                                 </tr>
                             </ItemTemplate>

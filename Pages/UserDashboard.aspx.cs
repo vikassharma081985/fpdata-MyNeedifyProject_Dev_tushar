@@ -17,7 +17,7 @@ namespace WSBillingMaster.Pages
         {
             if (Session["EmployeeId"] != null && Session["RoleId"] != null)
             {
-                lblEmployeeName.Text = Session["EmployeeName"].ToString();
+                //lblEmployeeName.Text = Session["EmployeeName"].ToString();
                 RoleId = Session["RoleId"].ToString();
                 BindRoleWiseMenu(Convert.ToInt32(RoleId));
             }
