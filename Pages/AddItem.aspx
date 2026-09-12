@@ -74,51 +74,51 @@
                 </div>
                 <br />
 
-                <div style="width:100%; overflow-x:auto;">
+                <div class="table-responsive" style="width: 100%; overflow-x: auto; margin-top: 15px;">
 
-                    <table style="width:100%; border-collapse:collapse;" border="1" cellpadding="5">
+                    <table class="table table-bordered table-hover table-striped" style="min-width: 2500px; border-collapse: collapse; background: #fff;">
 
                         <!-- HEADER -->
-                        <tr style="background:#2f4f6f; color:#fff;">
-                            <th>Product Code</th>
-                            <th>Product Name <font color="red">*</font>
+                        <tr style="background:#2f4f6f; color:#fff; white-space: nowrap; text-align: center;">
+                            <th style="min-width: 120px;">Product Code</th>
+                            <th style="min-width: 200px;">Product Name <font color="red">*</font>
                             </th>
-                            <th>Brand</th>
-                            <th>Model</th>
-                            <th>Department</th>
-                            <th>Color</th>
-                            <th>MRP</th>
-                            <th>Amount <font color="red">*</font>
+                            <th style="min-width: 80px;">Brand</th>
+                            <th style="min-width: 80px;">Model</th>
+                            <th style="min-width: 100px;">Department</th>
+                            <th style="min-width: 60px;">Color</th>
+                            <th style="min-width: 60px;">MRP</th>
+                            <th style="min-width: 80px;">Amount <font color="red">*</font>
                             </th>
-                            <th>Cashback %</th>
+                            <th style="min-width: 80px;">Cashback %</th>
                             <%--<th>Vendor</th>
                             <th>Volume</th>
                             <th>Length</th>
                             <th>Width</th>
                             <th>Height</th>--%>
-                            <th>Shipping Weight</th>
-                            <th>Shipping Price</th>
-                            <th>HSN Code</th>
-                            <th>Image <font color="red">*</font>
+                            <th style="min-width: 60px;">Shipping Wt.</th>
+                            <th style="min-width: 60px;">Shipping Price</th>
+                            <th style="min-width: 60px;">HSN Code</th>
+                            <th style="min-width: 150px; text-align: center;">Image <font color="red">*</font>
                             </th>
-                            <th>COD</th>
-                            <th>Batch No</th>
-                            <th>Size</th>
-                            <th>Stock</th>
-                            <th>Select <br />
-                            <input type="checkbox" id="chkSelectAll" onclick="toggleSelectAll(this)" /></th>
-                                <th>Vendor</th>
-<th>Volume</th>
-<th>Length</th>
-<th>Width</th>
-<th>Height</th>
+                            <th style="min-width: 80px;">COD</th>
+                            <th style="min-width: 100px;">Batch No</th>
+                            <th style="min-width: 80px;">Size</th>
+                            <th style="min-width: 80px;">Stock</th>
+                            <th style="min-width: 80px; text-align: center;">Select <br />
+                            <input type="checkbox" id="chkSelectAll" onclick="toggleSelectAll(this)" style="margin-top: 5px; cursor: pointer;" /></th>
+                                <th style="min-width: 100px;">Vendor</th>
+                                <th style="min-width: 80px;">Volume</th>
+                                <th style="min-width: 80px;">Length</th>
+                                <th style="min-width: 80px;">Width</th>
+                                <th style="min-width: 80px;">Height</th>
 
                         </tr>
 
                         <!-- ROW -->
                         <asp:Repeater ID="rptItems" runat="server" OnItemDataBound="rptItems_ItemDataBound">
                             <ItemTemplate>
-                                <tr>
+                                <tr style="vertical-align: middle;">
                                     <td>
                                         <asp:HiddenField ID="hdnItemId" runat="server"
                                             Value='<%# Eval("ProductCode") %>' />
@@ -179,13 +179,13 @@
                                     <td>
                                         <asp:TextBox ID="txtHSNCode" runat="server" CssClass="form-control" />
                                     </td>
-                                    <td>
-                                        <div id="divImg" runat="server">
+                                    <td style="text-align: center;">
+                                        <div id="divImg" runat="server" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                             <asp:Image ID="imgItem" runat="server"
                                                 ImageUrl='<%# string.IsNullOrEmpty(Eval("ItemImage").ToString()) ? "" : "~/Images/Items/" + Eval("ItemImage") %>'
-                                                Width="50" Height="50"
+                                                Width="50" Height="50" style="border-radius: 4px; object-fit: cover;"
                                                 Visible='<%# !string.IsNullOrEmpty(Eval("ItemImage").ToString()) %>' />
-                                            <asp:FileUpload ID="fuItemImage" runat="server" />
+                                            <asp:FileUpload ID="fuItemImage" runat="server" style="width: 100%; font-size: 11px;" />
                                             <asp:HiddenField ID="hdnExistingImage" runat="server"
                                                 Value='<%# Eval("ItemImage") %>' />
                                         </div>
@@ -209,25 +209,25 @@
                                             Text='<%# Eval("Stock") %>' />
                                     </td>
 
-                                    <td>
-                                        <asp:CheckBox ID="chkSelect" Checked="true" runat="server" CssClass="rowCheckbox" />
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <asp:CheckBox ID="chkSelect" Checked="true" runat="server" CssClass="rowCheckbox" style="transform: scale(1.3); cursor: pointer;" />
                                     </td>
                                     <td>
-    <asp:TextBox ID="txtVendor" runat="server" CssClass="form-control"
-        Text='<%# Eval("Vendor") %>' />
-</td>
-<td>
-    <asp:TextBox ID="txtVolume" runat="server" CssClass="form-control" />
-</td>
-<td>
-    <asp:TextBox ID="txtLength" runat="server" CssClass="form-control" />
-</td>
-<td>
-    <asp:TextBox ID="txtWidth" runat="server" CssClass="form-control" />
-</td>
-<td>
-    <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control" />
-</td>
+                                        <asp:TextBox ID="txtVendor" runat="server" CssClass="form-control"
+                                            Text='<%# Eval("Vendor") %>' />
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtVolume" runat="server" CssClass="form-control" />
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtLength" runat="server" CssClass="form-control" />
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtWidth" runat="server" CssClass="form-control" />
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control" />
+                                    </td>
 
                                 </tr>
                             </ItemTemplate>
