@@ -10,7 +10,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
-    <div class="container">
+    <div class="container-fluid">
         <!-- ======================== Expense Entry Section ========================= -->
         <div class="Header">
             <div class="section-title">Expense Manager</div>
@@ -788,11 +788,11 @@
             color: #000;
         }
 
-        .container {
+        /*.container {
             width: 100%;
             padding: 10px 15px;
             box-sizing: border-box;
-        }
+        }*/
 
         .section-title {
             font-weight: bold;
