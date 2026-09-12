@@ -55,18 +55,18 @@
 
 
     <div id="services" class="container-fluid text-center">
-        <h2>Welcome,
+        <%--<h2>Welcome,
             <asp:Label ID="lblEmployeeName" runat="server" Text="User"></asp:Label>
-        </h2>
+        </h2>--%>
 
-        <br>
+        <br/>
         <div class="row slideanim">
             <div>
                 <asp:ListView runat="server" ID="lvMenu">
                     <ItemTemplate>
 
                         <a class="Admin Booking" href="<%# Eval("MenuUrl")%>">
-                            <div class="col-xs-6 col-sm-4 col-md-3">
+                            <div class="col-xs-6 col-sm-3 col-md-2">
                                 <span class="glyphicon <%# Eval("MenuClass")%> logo-small"></span>
                                 <h4><%# Eval("MenuName")%></h4>
                             </div>

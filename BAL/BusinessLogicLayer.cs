@@ -190,6 +190,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@DiscountPer", DiscountPer);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
                     sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
+                    sqlCommand.Parameters.AddWithValue("@AddedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
                 }
             }
@@ -901,6 +902,8 @@ namespace BLL
                     dbSqlCommand.Parameters.AddWithValue("@HSNCode", HSNCode);
                     dbSqlCommand.Parameters.AddWithValue("@GST", GST);
                     dbSqlCommand.Parameters.AddWithValue("@SupplierId", SupplierId);
+                    dbSqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
+                    dbSqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
 
                     return objDALCIILibrary.GetDataTable(dbSqlCommand);
 
@@ -1613,6 +1616,7 @@ namespace BLL
         public string ExpenseDate { get; set; }
         public int ExpenseId { get; set; }
         public string ExpenseFile { get; set; }
+        public string ExpenseFile2 { get; set; }
         public string ExpenseDescription { get; set; }
 
         public DataTable GetProfitLoss()
@@ -1669,6 +1673,8 @@ namespace BLL
         public int ExpenseStatus { get; set; }
         public string FetchUserId { get; set; }
         public string ExpenseDataStatus { get; set; }
+        public string BillNumber { get; set; }
+        public bool IsPaid { get; set; }
         public int SaveExpense()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -1682,6 +1688,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
                     sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
                     sqlCommand.Parameters.AddWithValue("@File", ExpenseFile);
+                    sqlCommand.Parameters.AddWithValue("@File2", ExpenseFile2);
                     sqlCommand.Parameters.AddWithValue("@Description", ExpenseDescription);
                     sqlCommand.Parameters.AddWithValue("@Amount", Amount);
                     sqlCommand.Parameters.AddWithValue("@UserId", FetchUserId);
@@ -1689,6 +1696,9 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
                     sqlCommand.Parameters.AddWithValue("@Rate", Rate);
                     sqlCommand.Parameters.AddWithValue("@Quantity", Quantity);
+                    sqlCommand.Parameters.AddWithValue("@BillNumber", string.IsNullOrEmpty(BillNumber) ? (object)DBNull.Value : BillNumber);
+                    sqlCommand.Parameters.AddWithValue("@IsPaid", IsPaid);
+                    sqlCommand.Parameters.AddWithValue("@PaymentMode", string.IsNullOrEmpty(PaymentMode) ? (object)DBNull.Value : PaymentMode);
                     //sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
 
 
@@ -1753,6 +1763,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@ExpenseId", ExpenseId);
                     sqlCommand.Parameters.AddWithValue("@SubExpenseId", SubCategoryId);
                     sqlCommand.Parameters.AddWithValue("@File", string.IsNullOrEmpty(ExpenseFile) ? (object)DBNull.Value : ExpenseFile);
+                    sqlCommand.Parameters.AddWithValue("@File2", string.IsNullOrEmpty(ExpenseFile2) ? (object)DBNull.Value : ExpenseFile2);
                     sqlCommand.Parameters.AddWithValue("@Description", string.IsNullOrEmpty(ExpenseDescription) ? (object)DBNull.Value : ExpenseDescription);
                     sqlCommand.Parameters.AddWithValue("@Amount", Amount);
                     sqlCommand.Parameters.AddWithValue("@Rate", Rate);
@@ -1761,6 +1772,9 @@ namespace BLL
                     // EmpId and OrgId usually don't change during edit, but included for completeness
                     sqlCommand.Parameters.AddWithValue("@EmpId", EmpId);
                     sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
+                    sqlCommand.Parameters.AddWithValue("@BillNumber", string.IsNullOrEmpty(BillNumber) ? (object)DBNull.Value : BillNumber);
+                    sqlCommand.Parameters.AddWithValue("@IsPaid", IsPaid);
+                    sqlCommand.Parameters.AddWithValue("@PaymentMode", string.IsNullOrEmpty(PaymentMode) ? (object)DBNull.Value : PaymentMode);
 
                     // Use your existing GetDataTable method
                     DataTable dt = objDAL.GetDataTable(sqlCommand);
@@ -2293,7 +2307,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@CategoryId", CategoryId);
                     sqlCommand.Parameters.AddWithValue("@CategoryName", CategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
-                    sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
 
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);
@@ -2316,7 +2330,7 @@ namespace BLL
                     //sqlCommand.Parameters.AddWithValue("@CustomerId", CustomerId);
                     sqlCommand.Parameters.AddWithValue("@SubCategoryName", SubCategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
-                    sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
                     //sqlCommand.Parameters.AddWithValue("@Mobile", Mobile);
                     //sqlCommand.Parameters.AddWithValue("@Name", FirstName);
@@ -2340,7 +2354,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@CategoryID", CategoryID);
                     sqlCommand.Parameters.AddWithValue("@SubSubCategoryName", SubSubCategoryName);
                     sqlCommand.Parameters.AddWithValue("@IsActive", IsActive);
-                    sqlCommand.Parameters.AddWithValue("@CreatedBy", CreatedBy);
+                    sqlCommand.Parameters.AddWithValue("@CreatedBy", Convert.ToInt32(HttpContext.Current.Session["UserId"]));
                     sqlCommand.Parameters.AddWithValue("@Action", Action);
                     //sqlCommand.Parameters.AddWithValue("@SettlementAmount", SettlementAmt);
                     return objDAL.ExecuteNonQuery_RetInt(sqlCommand);

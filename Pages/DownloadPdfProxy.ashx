@@ -26,11 +26,69 @@ public class DownloadPdfProxy : HttpTaskAsyncHandler
         // Fallback for safety
         if (string.IsNullOrEmpty(apiBaseUrl))
         {
-            apiBaseUrl = "http://198.38.88.185:8081/api";
+            apiBaseUrl = "https://api.myneedify.com/api/";
         }
 
         // Remove trailing slash
         apiBaseUrl = apiBaseUrl.TrimEnd('/');
+
+        //string targetUrl = apiBaseUrl
+        //    + "/Download/DownloadPdf?fileName="
+        //    + HttpUtility.UrlEncode(fileName);
+
+        //using (WebClient client = new WebClient())
+        //{
+        //    try
+        //    {
+        //        byte[] fileBytes = await client.DownloadDataTaskAsync(new Uri(targetUrl));
+
+        //        context.Response.Clear();
+        //        context.Response.ContentType = "application/pdf";
+        //        context.Response.AddHeader(
+        //            "Content-Disposition",
+        //            "inline; filename=" + fileName
+        //        );
+        //        context.Response.BinaryWrite(fileBytes);
+        //        context.Response.End();
+        //    }
+        //    catch (WebException ex)
+        //    {
+        //        context.Response.StatusCode = 500;
+        //        string message = ex.Message;
+
+        //        if (ex.Response != null)
+        //        {
+        //            HttpWebResponse httpResponse = ex.Response as HttpWebResponse;
+        //            if (httpResponse != null)
+        //            {
+        //                context.Response.StatusCode = (int)httpResponse.StatusCode;
+        //            }
+
+        //            Stream responseStream = ex.Response.GetResponseStream();
+        //            if (responseStream != null)
+        //            {
+        //                using (StreamReader reader = new StreamReader(responseStream))
+        //                {
+        //                    message += " - " + reader.ReadToEnd();
+        //                }
+        //            }
+        //        }
+
+        //        context.Response.Write("Error downloading file: " + message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        context.Response.StatusCode = 500;
+        //        context.Response.Write("Error: " + ex.Message);
+        //    }
+        //}
+        ServicePointManager.ServerCertificateValidationCallback =
+    delegate
+    {
+        return true;
+    };
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
         string targetUrl = apiBaseUrl
             + "/Download/DownloadPdf?fileName="
@@ -40,46 +98,61 @@ public class DownloadPdfProxy : HttpTaskAsyncHandler
         {
             try
             {
-                byte[] fileBytes = await client.DownloadDataTaskAsync(new Uri(targetUrl));
+                byte[] fileBytes =
+                    await client.DownloadDataTaskAsync(new Uri(targetUrl));
 
                 context.Response.Clear();
                 context.Response.ContentType = "application/pdf";
+
                 context.Response.AddHeader(
                     "Content-Disposition",
                     "inline; filename=" + fileName
                 );
+
                 context.Response.BinaryWrite(fileBytes);
                 context.Response.End();
             }
             catch (WebException ex)
             {
                 context.Response.StatusCode = 500;
-                string message = ex.Message;
+
+                string message = ex.ToString();
 
                 if (ex.Response != null)
                 {
-                    HttpWebResponse httpResponse = ex.Response as HttpWebResponse;
+                    HttpWebResponse httpResponse =
+                        ex.Response as HttpWebResponse;
+
                     if (httpResponse != null)
                     {
-                        context.Response.StatusCode = (int)httpResponse.StatusCode;
+                        context.Response.StatusCode =
+                            (int)httpResponse.StatusCode;
                     }
 
-                    Stream responseStream = ex.Response.GetResponseStream();
-                    if (responseStream != null)
+                    using (Stream responseStream =
+                           ex.Response.GetResponseStream())
                     {
-                        using (StreamReader reader = new StreamReader(responseStream))
+                        if (responseStream != null)
                         {
-                            message += " - " + reader.ReadToEnd();
+                            using (StreamReader reader =
+                                   new StreamReader(responseStream))
+                            {
+                                message += " - " + reader.ReadToEnd();
+                            }
                         }
                     }
                 }
 
-                context.Response.Write("Error downloading file: " + message);
+                context.Response.Write(
+                    "Error downloading file: " + message
+                );
             }
             catch (Exception ex)
             {
                 context.Response.StatusCode = 500;
-                context.Response.Write("Error: " + ex.Message);
+                context.Response.Write(
+                    "Error: " + ex.ToString()
+                );
             }
         }
     }

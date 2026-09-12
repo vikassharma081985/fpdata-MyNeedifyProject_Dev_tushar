@@ -51,13 +51,13 @@
                             <li class="shopping-basket-product cartItem">
                                 <div class="col-img">
                                     <a href="#" class="product-link">
-                                        <img src='<%#"../Images/Item/"+Eval("ItemImage") %>' class="img-responsive" style="max-height: 150px;" />
+                                        <img src='<%#"../Images/Items/"+Eval("ItemImage") %>' class="img-responsive" style="max-height: 150px;" />
                                     </a>
                                 </div>
                                 <div class="col-descr">
                                     <div class="text-holder">
                                         <strong class="title">
-                                            <a href='<%#"https://myneedify.com//Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>' class="product-link"><%#Eval("ItemName") %>
+                                            <a href='<%#"https://myneedify.com/Front/ItemDescription.aspx?ItemId="+Eval("ItemId") %>' class="product-link"><%#Eval("ItemName") %>
 
                                             </a></strong>
                                         <div class="item-options">

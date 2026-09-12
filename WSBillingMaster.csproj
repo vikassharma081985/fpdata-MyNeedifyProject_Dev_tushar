@@ -1136,6 +1136,7 @@
     <Content Include=".vs\WSBillingMaster\v17\.suo" />
     <Content Include="Front\jsconfig.json" />
     <None Include="packages.config" />
+    <Content Include="Pages\DownloadPdfProxy.ashx" />
     <None Include="Properties\PublishProfiles\WSBilling.pubxml" />
     <Content Include="Reports\BillReceiptRpt.rpt" />
     <None Include="Web.Debug.config">

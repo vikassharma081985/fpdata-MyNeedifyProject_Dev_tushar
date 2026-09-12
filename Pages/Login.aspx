@@ -92,7 +92,7 @@ img[src*="mylogo.png"] {
 
         <%-- Validation Script --%>
         <script>
-            var appURL = "https://myneedify.com/";
+            var appURL = "http://localhost:46692/";
             function Validate() {
                 var User = $('[id$=txtLogin]').val().trim();
                 var Pwd = $('[id$=txtPassword]').val().trim();

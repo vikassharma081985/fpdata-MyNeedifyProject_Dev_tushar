@@ -38,12 +38,22 @@ namespace WSBillingMaster.Pages
             if (Session["OrgId"] != null)
             {
                 bindSellerLogo(Convert.ToInt32(Session["OrgId"]));
-            }            
+                if (Session["UserName"] != null)
+                {
+                    lblEmployeeName.Text = Session["UserName"].ToString();
+                }
+            }
             
             else if (Session["UserName"] != null || Session["UserId"] != null)
             {
                 imgSellerLogo.Src = "../Images/system/mylogo.png";
+                lblEmployeeName.Text = Session["UserName"].ToString();
             }
+
+            //if (Session["EmployeeId"] != null && Session["RoleId"] != null)
+            //{
+                
+            //}
 
             else
             {

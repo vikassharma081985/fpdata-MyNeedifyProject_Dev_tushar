@@ -25,7 +25,7 @@
                 margin-bottom: 0;
                 background-color: #f1f1f1;
                 color: #999;
-                min-height: 60px;
+                min-height: 90px;
             }
         </style>
         <style>
@@ -43,44 +43,109 @@
                 padding: 15px;
                 color: #000;
             }
+
+            .welcome-section {
+                text-align: center;
+            }
+
+                .welcome-section h2 {
+                    font-size: 26px;
+                    margin: 20px 0;
+                }
+
+            /* Mobile view */
+            @media (max-width: 767px) {
+                .welcome-section {
+                    padding: 0 5px;
+                    text-align: left;
+                }
+
+                    .welcome-section h2 {
+                        font-size: 8px;
+                        line-height: 20px;
+                        white-space: nowrap;
+                        text-align: center;
+                    }
+            }
         </style>
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" style="font-size: 28px; font-family: cursive; font-weight: 600;"
-                        href="#">
-                        <img src="../Images/system/mylogo.png" id="imgSellerLogo" runat="server" style="width: 117px; margin-left: 0%; margin-top: -43%;" />
-                    </a>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" style="font-size: 28px; font-family: cursive; font-weight: 600;"
+                                    href="#">
+                                    <img src="../Images/system/mylogo.png" id="imgSellerLogo" runat="server" style="width: 117px; margin-left: 0%; margin-top: -20%;" />
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                &nbsp;
+                            </div>
+                            <%--<div class="col-md-4">
+                                <h2>Welcome,
+                                    <asp:Label ID="lblEmployeeName" runat="server" Text="User"></asp:Label>
+                                </h2>
+                            </div>--%>
+                            <div class="col-md-4 welcome-section">
+                                <h2>Hi,
+       
+                                    <asp:Label
+                                        ID="lblEmployeeName"
+                                        runat="server"
+                                        Text="User">
+        </asp:Label>
+                                </h2>
+                            </div>
+                            <div class="col-md-2">
+                                &nbsp;
+                            </div>
+                            <div class="col-md-2">
+                                <div class="collapse navbar-collapse" id="myNavbar">
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li><a href="UserDashboard.aspx" style="color: #000 !important">Home</a></li>
+                                        <li>
+                                            <asp:LinkButton
+                                                ID="lnkLogout"
+                                                runat="server"
+                                                OnClick="lnkLogout_Click"
+                                                Style="color: #000 !important">
+                                                Logout
+                                            </asp:LinkButton>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="collapse navbar-collapse" id="myNavbar">
+                <%--<div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="UserDashboard.aspx" style="color: #000 !important">Home</a></li>
-                        <%-- <li><a href="#" style="color: #000 !important">Add Item</a></li>
-                        <li><a href="#" style="color: #000 !important">Manage Item</a></li>--%>
-                        <%--<li><a href="../Front/index.aspx" style="color: #000 !important">Logout</a></li>--%>
                         <li>
-                            <asp:LinkButton 
-                                ID="lnkLogout" 
-                                runat="server" 
+                            <asp:LinkButton
+                                ID="lnkLogout"
+                                runat="server"
                                 OnClick="lnkLogout_Click"
-                                Style="color:#000 !important">
+                                Style="color: #000 !important">
                                 Logout
                             </asp:LinkButton>
                         </li>
 
                     </ul>
-                </div>
+                </div>--%>
             </div>
         </nav>
 
 
 
-        <div class="container-fluid" style="margin: 0px; padding: 0px; margin-top: -10px;">
+        <div class="container-fluid" style="margin: 0px; padding: 0px; margin-top: 10px;">
 
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>

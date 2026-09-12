@@ -1,4 +1,4 @@
-﻿using BLL;
+using BLL;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,6 +14,33 @@ namespace WSBillingMaster.Pages
 {
     public partial class AddItem : System.Web.UI.Page
     {
+        public int CurrentPage
+        {
+            get
+            {
+                object obj = this.ViewState["_CurrentPage"];
+                if (obj == null)
+                    return 0;
+                return (int)obj;
+            }
+            set
+            {
+                this.ViewState["_CurrentPage"] = value;
+            }
+        }
+
+        protected void btnPrevious_Click(object sender, EventArgs e)
+        {
+            CurrentPage -= 1;
+            BindItems();
+        }
+
+        protected void btnNext_Click(object sender, EventArgs e)
+        {
+            CurrentPage += 1;
+            BindItems();
+        }
+
         private bool HasSelectedItems()
         {
             foreach (RepeaterItem item in rptItems.Items)
@@ -42,7 +69,18 @@ namespace WSBillingMaster.Pages
                         // Create an empty row if no data found
                         dt.Rows.Add(dt.NewRow());
                     }
-                    rptItems.DataSource = dt;
+
+                    PagedDataSource pds = new PagedDataSource();
+                    pds.DataSource = dt.DefaultView;
+                    pds.AllowPaging = true;
+                    pds.PageSize = 20;
+                    pds.CurrentPageIndex = CurrentPage;
+
+                    btnPrevious.Enabled = !pds.IsFirstPage;
+                    btnNext.Enabled = !pds.IsLastPage;
+                    lblPageInfo.Text = "Page " + (CurrentPage + 1) + " of " + pds.PageCount;
+
+                    rptItems.DataSource = pds;
                     rptItems.DataBind();
                 }
             }
@@ -68,6 +106,7 @@ namespace WSBillingMaster.Pages
             }
             ddlSubCatgeory.Items.Insert(0, new ListItem("---Select---", "0"));
             ddlSubSubCategory.Items.Insert(0, new ListItem("---Select---", "0"));
+            CurrentPage = 0;
             BindItems();
         }
 
@@ -89,11 +128,13 @@ namespace WSBillingMaster.Pages
                 }
             }
             ddlSubSubCategory.Items.Insert(0, new ListItem("---Select---", "0"));
+            CurrentPage = 0;
             BindItems();
         }
 
         protected void ddlSubSubCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
+            CurrentPage = 0;
             BindItems();
         }
 
@@ -187,8 +228,8 @@ namespace WSBillingMaster.Pages
                                     ddlCategory.DataTextField = "Category";
                                     ddlCategory.DataValueField = "CategoryId";
                                     ddlCategory.DataBind();
-
                                 }
+                                ddlCategory.Items.Insert(0, new ListItem("---Select---", "0"));
                             }
                         }
                         tabIndex++;
@@ -202,8 +243,8 @@ namespace WSBillingMaster.Pages
                                     ddlSubCatgeory.DataTextField = "SubCategory";
                                     ddlSubCatgeory.DataValueField = "SubCategoryId";
                                     ddlSubCatgeory.DataBind();
-
                                 }
+                                ddlSubCatgeory.Items.Insert(0, new ListItem("---Select---", "0"));
                             }
                         }
                         tabIndex++;
@@ -217,8 +258,8 @@ namespace WSBillingMaster.Pages
                                     ddlSubSubCategory.DataTextField = "SubSubCategory";
                                     ddlSubSubCategory.DataValueField = "SubSubCategoryId";
                                     ddlSubSubCategory.DataBind();
-
                                 }
+                                ddlSubSubCategory.Items.Insert(0, new ListItem("---Select---", "0"));
                             }
                         }
                         tabIndex++;
@@ -245,7 +286,7 @@ namespace WSBillingMaster.Pages
                                 }
                             }
                         }
-                        BindItems();
+                        //BindItems();
                     }
                     tabIndex++;
                     if (dsMain.Tables.Count > tabIndex)

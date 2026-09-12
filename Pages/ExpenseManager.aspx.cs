@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -133,10 +133,14 @@ namespace WSBillingMaster.Pages
                     obj.SubCategoryId = data[0].SubExpenseId;
                     //obj.ExpenseFile = data[0].File.Replace(@"C:\fakepath\","");
                     obj.ExpenseFile = data[0].File?.Split('|')?[0] ?? "";
+                    obj.ExpenseFile2 = data[0].File2?.Split('|')?[0] ?? "";
                     obj.ExpenseDescription = data[0].Description;
                     obj.Amount = data[0].Amount;
 					obj.Rate = data[0].Rate;
                     obj.Quantity = data[0].Quantity;
+                    obj.BillNumber = data[0].BillNumber;
+                    obj.IsPaid = data[0].IsPaid;
+                    obj.PaymentMode = data[0].PaymentMode;
                     string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
 					int idx = url.IndexOf('?');
 					string query = idx >= 0 ? url.Substring(idx) : "";
@@ -247,29 +251,40 @@ namespace WSBillingMaster.Pages
                 HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             };
             var apiBaseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
-            string apiUrl = $"{apiBaseUrl}Expense/SaveReimbursement";
-
-            using (HttpClient client = new HttpClient(handler))
+            string apiUrl = $"{apiBaseUrl}/Expense/SaveReimbursement";
+            try
             {
-                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
-
-                var json = JsonConvert.SerializeObject(payload);
-                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-                var response = client.PostAsync(apiUrl, content).Result;
-                //string responseData = response.Content.ReadAsStringAsync().Result;
-
-                if (!response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient(handler))
                 {
-                    return JsonConvert.SerializeObject(new
-                    {
-                        error = true,
-                        message = "API Error: " + response.StatusCode
-                    });
-                }
+                    client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
-                string responseData = response.Content.ReadAsStringAsync().Result;
-                return responseData;
+                    var json = JsonConvert.SerializeObject(payload);
+                    var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync(apiUrl, content).Result;
+                    //string responseData = response.Content.ReadAsStringAsync().Result;
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string responseData1 = response.Content.ReadAsStringAsync().Result;
+                        return JsonConvert.SerializeObject(new
+                        {
+                            error = true,
+                            message = "API Error: " + response.StatusCode + ": " + responseData1
+                        });
+                    }
+
+                    string responseData = response.Content.ReadAsStringAsync().Result;
+                    return responseData;
+                }
+            }
+            catch (Exception ex)
+            {
+                return JsonConvert.SerializeObject(new
+                {
+                    error = true,
+                    message = apiUrl + "Exception: " + ex.Message
+                });
             }
         }
 
@@ -316,10 +331,14 @@ namespace WSBillingMaster.Pages
                     obj.ExpenseId = item.ExpenseId;
                     obj.SubCategoryId = item.SubExpenseId;
                     obj.ExpenseFile = string.IsNullOrEmpty(item.File) ? "" : item.File.Split('|')[0];
+                    obj.ExpenseFile2 = string.IsNullOrEmpty(item.File2) ? "" : item.File2.Split('|')[0];
                     obj.ExpenseDescription = item.Description;
                     obj.Amount = item.Amount;
                     obj.Rate = item.Rate;
                     obj.Quantity = item.Quantity;
+                    obj.BillNumber = item.BillNumber;
+                    obj.IsPaid = item.IsPaid;
+                    obj.PaymentMode = item.PaymentMode;
                     obj.FetchUserId = item.userId.ToString();
 
                     int result = obj.UpdateExpense(); // Implement in BLL
@@ -337,12 +356,14 @@ namespace WSBillingMaster.Pages
         public int ExpenseId { get; set; }
         public int SubExpenseId { get; set; }
         public string File { get; set; }
+        public string File2 { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public int userId { get; set; }
         public decimal Rate { get; set; }
         public int Quantity { get; set; }
-
-
+        public string BillNumber { get; set; }
+        public bool IsPaid { get; set; }
+        public string PaymentMode { get; set; }
     }
 }
