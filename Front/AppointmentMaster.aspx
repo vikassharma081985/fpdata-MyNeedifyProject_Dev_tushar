@@ -21,7 +21,15 @@ body {
     background:var(--bg);
     font-family:'Segoe UI',sans-serif;
 }
-
+.btn-login-2{
+background-color: #F6861F !important;
+    color: #fff !important;
+    height: 35px;
+    padding: 7px;
+    width: 50%;
+    text-align: center;
+    border: none;
+}
 .header {
     background:linear-gradient(180deg,#fff3e0,#faf7f2);
     padding:20px;
@@ -312,7 +320,7 @@ body {
                 data-bs-toggle="modal"
                 data-bs-target="#confirmModal">
 
-            Confirm Booking
+            Request for Appointment
 
         </button>
         <button id="btnSaveOOO" class="btn btn-danger" type="button">
@@ -371,6 +379,47 @@ body {
 </div>
 
 </form>
+<!-- Login Required Modal -->
+<div id="loginRequiredModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title">
+                    Login Required
+                </h4>
+            </div>
+
+            <div class="modal-body text-center">
+                <i class="fa fa-lock"
+                   style="font-size:40px; margin-bottom:15px;"></i>
+
+                <p>
+                    Please login first to book a Salon Appointment.
+                </p>
+            </div>
+
+            <div class="modal-footer text-center">
+
+
+                <a 
+                    onclick="redirectToLogin();"
+                   class="btn btn-login-2">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -405,8 +454,39 @@ let currentDate = new Date();
 window.onload = function () {
 
     initializePageMode();
+    checkLoginBeforeAppointment();
 
 };
+    function checkLoginBeforeAppointment() {
+
+    var userId = $('[id$=MasterhdnUserId]').val();
+    if (userId && userId.trim() !== "" && userId.trim() !== "0") {
+        // User is logged in
+        return true;
+    }
+    
+    // User is not logged in
+       var modalElement = document.getElementById('loginRequiredModal');
+
+    var loginModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modalElement.classList.add("in");
+    loginModal.show();
+    return false;
+    // Stop the <a> from navigating
+    
+}
+function redirectToLogin() {
+
+    var modalElement = document.getElementById("loginRequiredModal");
+
+    var modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+    // When modal has completely finished closing
+    window.location.href = "/Front/index.aspx";
+    modal.hide();
+var loginModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modalElement.classList.remove("in");
+}
 async function loadRosterDates(){
 
     if(PAGE_MODE!=="MANAGE")

@@ -1764,7 +1764,7 @@ Address</a></div>
                 <!-- NOT LOGGED IN -->
                 <div id="mySidenav">
                 <div id="NotLoggedIn">
-                    <button type="button" onclick="OpenLogin()" class="btn btn-login btn-sm">Login/Signup</button>
+                    <button id="loginBtnClick" type="button" onclick="OpenLogin()" class="btn btn-login btn-sm">Login/Signup</button>
                 </div>
                     </div>
             </div>
@@ -2403,7 +2403,7 @@ Address</a></div>
             style="background-color: #fff; border: 1px solid #ccc; padding: 5%; height: 205px; border-radius: 5px;"
           >
             <div style="float: left; color: #666; font-size: 20px; margin-bottom: 10px;">
-              Sign Up
+              Reset Password
             </div>
 
             <br /><br />
@@ -2442,7 +2442,7 @@ Address</a></div>
       </div>
 
       <div class="modal-body text-center">
-        <p style="color:#777;">Please enter the 4-digit OTP sent to your email.</p>
+        <p style="color:#777;">Please enter the 4-digit OTP sent to your phone.</p>
 
         <div id="otpInputs" style="display:flex; justify-content:center; gap:10px; margin:20px 0;">
           <input type="number" maxlength="1" class="otp-box" />
@@ -2604,7 +2604,7 @@ function sendOtp() {
     $.ajax({
         type: "POST",
         url: appURL+"Front/ForgotPassword.aspx/SendOtp",
-        data: JSON.stringify({ email: email }),
+        data: JSON.stringify({ emailOrPhone: email }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
