@@ -8,11 +8,24 @@ using BLL;
 using System.Web.Script.Services;
 using DocumentFormat.OpenXml.Spreadsheet;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Configuration;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Collections.Generic;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace FaduPrice.Front
 {
+    
     public partial class ForgotPassword : System.Web.UI.Page
     {
+        public class UserDetails
+        {
+            public int UserId { get; set; }
+            public string Email { get; set; }
+            public string Mobile { get; set; }
+        }
         private static string connStr;
         //=
         //    System.Configuration.ConfigurationManager
@@ -39,27 +52,57 @@ namespace FaduPrice.Front
             }
         }
 
-        [WebMethod]
+        [WebMethod(EnableSession = true)]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string SendOtp(string email)
+        public static string SendOtp(string emailOrPhone)
         {
-            int userId = GetUserIdByEmail(email);
-            if (userId == 0)
-                return "Email not registered";
-
-            string otp = OtpHelper.GenerateOTP();
-
-            int result = SaveOtp(userId, otp);
-            if (result > 0)
+            try
             {
-                //EmailHelper.SendOtpEmail(email, otp);
+                if (string.IsNullOrWhiteSpace(emailOrPhone))
+                    return "Please enter email or phone number";
+                BusinessLogicLayer objBLL = new BusinessLogicLayer();
+                
+                objBLL.Input = emailOrPhone.Trim();
+                DataTable dtUser = objBLL.GetUserDetailsByEmailOrPhone();
+
+
+                //UserDetails user =
+                //    GetUserDetailsByEmailOrPhone(emailOrPhone.Trim());
+                DataRow row = dtUser.Rows[0];
+
+                int userId = Convert.ToInt32(row["UserId"]);
+
+                string mobileNumber = row["Mobile"] == DBNull.Value
+                    ? ""
+                    : row["Mobile"].ToString();
+
+                if (dtUser == null || dtUser.Rows.Count == 0)
+                    return "Email or phone number is not registered";
+
+                if (string.IsNullOrWhiteSpace(mobileNumber))
+                    return "No mobile number is registered with this account";
+
+                string otp = OtpHelper.GenerateOTP();
+
+                int result = SaveOtp(userId, otp);
+
+                if (result <= 0)
+                    return "Unable to generate OTP";
+
+                // Send OTP to user's registered phone
+                EmailHelper.SendOtpSms(mobileNumber, otp);
+
                 HttpContext.Current.Session["ResetUserId"] = userId;
-                return "OTP sent";
+                HttpContext.Current.Session["ResetUserPhone"] = mobileNumber;
 
+                return "OTP sent";
             }
-            else
+            catch (Exception ex)
             {
-                return "0";
+                // Log ex
+                System.Diagnostics.Debug.WriteLine(
+            "SendOtp Error: " + ex);
+                return "Server error. Please try again.";
             }
         }
         [WebMethod]
@@ -112,7 +155,45 @@ namespace FaduPrice.Front
                 }
             }
         }
+        private static UserDetails GetUserDetailsByEmailOrPhone(string input)
+        {
+            UserDetails user = null;
 
+            using (SqlConnection con = new SqlConnection(
+                ConfigurationManager.ConnectionStrings["YourConnectionString"].ConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(
+                    "Proc_GetUserDetailsByEmailOrPhone", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.Add("@Input", SqlDbType.NVarChar, 100).Value =
+                        input.Trim();
+
+                    con.Open();
+
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            user = new UserDetails
+                            {
+                                UserId = Convert.ToInt32(dr["UserId"]),
+                                Email = dr["Email"] == DBNull.Value
+                                    ? ""
+                                    : dr["Email"].ToString(),
+
+                                Mobile = dr["MobileNumber"] == DBNull.Value
+                                    ? ""
+                                    : dr["MobileNumber"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+
+            return user;
+        }
         private static int SaveOtp(int userId, string otp)
         {
 
@@ -158,6 +239,111 @@ namespace FaduPrice.Front
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(mail);
             }
+            private static readonly HttpClient _httpClient = new HttpClient();
+
+            public static void SendOtpSms(string mobileNumber, string otp)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(mobileNumber))
+                        throw new ArgumentException("Mobile number is required.");
+
+                    if (string.IsNullOrWhiteSpace(otp))
+                        throw new ArgumentException("OTP is required.");
+
+                    // Remove spaces, + and -
+                    string cleanMobile = mobileNumber
+                        .Trim()
+                        .Replace(" ", "")
+                        .Replace("-", "")
+                        .Replace("+", "");
+
+                    // If your database contains 10-digit Indian numbers,
+                    // add country code if required by your provider.
+                    if (cleanMobile.Length == 10)
+                    {
+                        //cleanMobile = cleanMobile;
+                    }
+
+                    string username = ConfigurationManager.AppSettings["VialogueUsername"];
+                    string apiKey = ConfigurationManager.AppSettings["VialogueApiKey"];
+                    string entityId = ConfigurationManager.AppSettings["VialogueEntityId"];
+
+                    string templateId = "1277178619545929442";
+                    string signature = "MYNEED";
+
+                    string message =
+                        $"Your MyNeedify Password Reset OTP is {otp}. " +
+                        $"This OTP is valid for 15 minutes. " +
+                        $"Please do not share it with anyone. " +
+                        $"Rahul Enterprises";
+
+                    var requestData = new
+                    {
+                        username = username,
+
+                        dest = new List<long>
+                {
+                    long.Parse("+917889000646")
+                },
+
+                        apikey = apiKey,
+
+                        signature = signature,
+
+                        msgtxt = message,
+
+                        entityid = entityId,
+
+                        templateid = templateId,
+
+                        source = "otp"
+                    };
+
+                    string json = JsonConvert.SerializeObject(requestData);
+
+                    using (var content = new StringContent(
+                        json,
+                        Encoding.UTF8,
+                        "application/json"))
+                    {
+                        HttpResponseMessage response =
+                            _httpClient
+                                .PostAsync(
+                                    "https://smsapi.vialogue.io/pushapi",
+                                    content)
+                                .GetAwaiter()
+                                .GetResult();
+
+                        string responseBody =
+                            response.Content
+                                .ReadAsStringAsync()
+                                .GetAwaiter()
+                                .GetResult();
+
+                        // Log responseBody here while testing
+                        System.Diagnostics.Debug.WriteLine(
+    "VIALOGUE HTTP STATUS: " + (int)response.StatusCode);
+
+                        System.Diagnostics.Debug.WriteLine(
+                            "VIALOGUE RESPONSE: " + responseBody);
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            throw new Exception(
+                                "Vialogue API failed. HTTP " +
+                                (int)response.StatusCode +
+                                ". Response: " +
+                                responseBody);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log ex here
+                    throw;
+                }
+            }
+
         }
 
     }

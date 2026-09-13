@@ -47,6 +47,15 @@
 
 <!-- Responsive CSS -->
 <style>
+.btn-login-2{
+background-color: #F6861F !important;
+    color: #fff !important;
+    height: 35px;
+    padding: 7px;
+    width: 50%;
+    text-align: center;
+    border: none;
+}
    /* Responsive Fixes for Item Tiles */
 .Tile img {
     width: 100%;
@@ -235,6 +244,8 @@
         margin-bottom: 20px;
     }
 }
+
+
 </style>
 
     
@@ -358,9 +369,13 @@ style="border-radius: 20px;">
                <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
 style="border-radius: 20px;">
                    <div class="text-start">
-                        <a href="../Front/AppointmentMaster.aspx"  style="color: blue;">
+                        <a href="../Front/AppointmentMaster.aspx"
+                           style="color: blue;"
+                           onclick="return checkLoginBeforeAppointment();">
+
                             <h5 class="fw-bold mb-1">Salon Appointment</h5>
-                            <p class="small text-muted mb-0">Schedule Your Visit</p></a>
+                            <p class="small text-muted mb-0">Schedule Your Visit</p>
+                        </a>
                         </div>
                         <img src="../Images/System/salon.PNG"
     width="50" alt="Kids">
@@ -816,41 +831,140 @@ style="border-radius: 20px;">
 <script src="./slick/slick.min.js"></script>
 <script>
     $(document).ready(function () {
+        
+                            $('.regular.slider').slick({
+                                dots: true,
+                                infinite: false,
+                                speed: 300,
+                                slidesToShow: 4,
+                                slidesToScroll: 4,
+                                responsive: [
+                                    {
+                                        breakpoint: 1024,
+                                        settings: {
+                                            slidesToShow: 3,
+                                            slidesToScroll: 3,
+                                            infinite: true,
+                                            dots: true
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 768,
+                                        settings: {
+                                            slidesToShow: 2,
+                                            slidesToScroll: 2
+                                        }
+                                    },
+                                    {
+                                        breakpoint: 480,
+                                        settings: {
+                                            slidesToShow: 1,
+                                            slidesToScroll: 1
+                                        }
+                                    }
+                                ]
+                            })
+                        });
 
-        $('.regular.slider').slick({
-            dots: true,
-            infinite: false,
-            speed: 300,
-            slidesToShow: 4,
-            slidesToScroll: 4,
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3,
-                        infinite: true,
-                        dots: true
-                    }
-                },
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1
-                    }
-                }
-            ]
-        })
-    })
+            function checkLoginBeforeAppointment() {
+
+    var userId = $('[id$=MasterhdnUserId]').val();
+    if (userId && userId.trim() !== "" && userId.trim() !== "0") {
+        // User is logged in
+        return true;
+    }
+    
+    // User is not logged in
+       var modalElement = document.getElementById('loginRequiredModal');
+
+    var loginModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modalElement.classList.add("in");
+    loginModal.show();
+    return false;
+    // Stop the <a> from navigating
+    
+}
+function redirectToLogin() {
+
+    var modalElement = document.getElementById("loginRequiredModal");
+
+    var modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+    // When modal has completely finished closing
+    modalElement.addEventListener("hidden.bs.modal", function () {
+
+        var loginButton = document.getElementById("loginBtnClick");
+
+        if (loginButton) {
+            loginButton.click();
+        }
+
+    }, { once: true });
+
+    // Close the popup
+    modal.hide();
+var loginModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modalElement.classList.remove("in");
+}
+function closePop(){
+    var modalElement = document.getElementById("loginRequiredModal");
+
+    var modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+    // When modal has completely finished closing
+
+    // Close the popup
+    modal.hide();
+    var loginModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modalElement.classList.remove("in");
+}
 </script>
+<!-- Login Required Modal -->
+<div id="loginRequiredModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title">
+                    Login Required
+                </h4>
+            </div>
+
+            <div class="modal-body text-center">
+                <i class="fa fa-lock"
+                   style="font-size:40px; margin-bottom:15px;"></i>
+
+                <p>
+                    Please login first to book a Salon Appointment.
+                </p>
+            </div>
+
+            <div class="modal-footer text-center">
+
+                <button type="button"
+                        onclick="closePop();"
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+
+                <a 
+                    onclick="redirectToLogin();"
+                   class="btn btn-login-2">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </asp:Content>

@@ -174,6 +174,7 @@ namespace BLL
         public string Landmark { get; set; }
         public string PincodeVal { get; set; }
         public int HireId { get; set; }
+        public string Input { get; set; }
 
         public int ManageDiscount()
         {
@@ -465,6 +466,21 @@ namespace BLL
                     dbSqlCommand.CommandType = CommandType.StoredProcedure;
                     dbSqlCommand.Parameters.AddWithValue("@UserName", UserName);
                     dbSqlCommand.Parameters.AddWithValue("@Password", Password);
+                    return objDALCIILibrary.GetDataTable(dbSqlCommand);
+                }
+            }
+        }
+        public DataTable GetUserDetailsByEmailOrPhone()
+        {
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandText = "Proc_GetUserDetailsByEmailOrPhone";
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+
+                    dbSqlCommand.Parameters.AddWithValue("@Input", Input);
+
                     return objDALCIILibrary.GetDataTable(dbSqlCommand);
                 }
             }
