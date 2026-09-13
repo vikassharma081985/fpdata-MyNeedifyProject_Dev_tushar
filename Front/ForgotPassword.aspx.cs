@@ -284,7 +284,7 @@ namespace FaduPrice.Front
 
                         dest = new List<long>
                 {
-                    long.Parse("+917889000646")
+                    long.Parse(mobileNumber)
                 },
 
                         apikey = apiKey,
