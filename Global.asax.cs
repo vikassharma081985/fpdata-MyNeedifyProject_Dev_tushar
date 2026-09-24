@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Web;
 
 namespace WSBillingMaster
@@ -8,6 +8,8 @@ namespace WSBillingMaster
         protected void Application_Start(object sender, EventArgs e)
         {
             // Runs once when app starts
+            // Enable TLS 1.2 globally for all outbound HTTP requests
+            System.Net.ServicePointManager.SecurityProtocol |= (System.Net.SecurityProtocolType)3072;
         }
 
         protected void Session_Start(object sender, EventArgs e)
