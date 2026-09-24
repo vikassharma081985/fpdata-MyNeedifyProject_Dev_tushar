@@ -246,184 +246,175 @@ background-color: #F6861F !important;
 }
 
 
+
+/* Dashboard-only layout: independent of the existing Bootstrap 3/5 mix. */
+.needify-dashboard { width: 100%; max-width: 1280px; margin: 0 auto; padding: 24px 24px 40px; color: #202c28; font-family: Arial, sans-serif; }
+.needify-dashboard, .needify-dashboard * { box-sizing: border-box; }
+.needify-dashboard .dashboard-intro { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 36px 40px; margin-bottom: 30px; border: 1px solid #dce9d5; border-radius: 24px; background: linear-gradient(110deg, #edf6e6 0%, #f6faee 58%, #fff1d9 100%); }
+.needify-dashboard .dashboard-eyebrow { margin: 0 0 12px; color: #467039; font-size: 12px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; }
+.needify-dashboard h1 { max-width: 650px; margin: 0 0 14px; color: #203c2d; font-size: 38px; line-height: 1.18; font-weight: 700; letter-spacing: -1px; }
+.needify-dashboard .dashboard-description { max-width: 580px; margin: 0; color: #546257; font-size: 16px; line-height: 1.65; }
+.needify-dashboard .dashboard-art { flex: 0 0 200px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; transform: rotate(-6deg); }
+.needify-dashboard .dashboard-art span { display: flex; align-items: center; justify-content: center; height: 86px; border: 1px solid #ffffff; border-radius: 20px; background: rgba(255,255,255,.8); }
+.needify-dashboard .dashboard-art img { width: 58px; height: 58px; object-fit: contain; }
+.needify-dashboard .dashboard-categories { width: 100%; padding: 0; margin: 0; }
+.needify-dashboard .dashboard-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.needify-dashboard .dashboard-section-heading .title { margin: 0; color: #202c28; font-size: 25px; font-weight: 700; line-height: 1.3; }
+.needify-dashboard .dashboard-section-heading p { margin: 0; color: #68746d; font-size: 14px; }
+.needify-dashboard .dashboard-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin: 0; }
+.needify-dashboard .dashboard-grid::before, .needify-dashboard .dashboard-grid::after { content: none; }
+.needify-dashboard .dashboard-grid > .dashboard-category { width: auto; min-width: 0; float: none; padding: 0; margin: 0; }
+.needify-dashboard .dashboard-card { position: relative; display: flex; flex-direction: column; height: 100%; min-height: 224px; padding: 20px; border: 1px solid #e3e8e1; border-radius: 18px; background: #fff; box-shadow: 0 3px 12px rgba(32,60,45,.035); transition: border-color .18s, box-shadow .18s; }
+.needify-dashboard .dashboard-card:hover, .needify-dashboard .dashboard-card:focus-within { border-color: #97b77c; box-shadow: 0 6px 20px rgba(32,60,45,.09); }
+.needify-dashboard .dashboard-icon { display: flex; align-items: center; justify-content: center; width: 100%; height: 110px; margin-bottom: 18px; border-radius: 12px; background: #f1f6ec; }
+.needify-dashboard .dashboard-category:nth-child(4n+2) .dashboard-icon { background: #fff3e6; }
+.needify-dashboard .dashboard-category:nth-child(4n+3) .dashboard-icon { background: #edf4fb; }
+.needify-dashboard .dashboard-category:nth-child(4n+4) .dashboard-icon { background: #f7eff6; }
+.needify-dashboard .dashboard-icon img { display: block; width: 76px; height: 76px; max-width: 100%; object-fit: contain; }
+.needify-dashboard .dashboard-card h5 { margin: 0 0 7px; font-size: 16px; font-weight: 700; line-height: 1.35; overflow-wrap: anywhere; }
+.needify-dashboard .dashboard-card p { margin: 0; padding-right: 18px; color: #6b746e; font-size: 13px; line-height: 1.5; }
+.needify-dashboard .dashboard-card a { color: #263b2c; text-decoration: none; }
+.needify-dashboard .dashboard-card a::after { content: ''; position: absolute; inset: 0; border-radius: 18px; }
+.needify-dashboard .dashboard-card a:focus-visible { outline: none; }
+.needify-dashboard .dashboard-card a:focus-visible::after { outline: 3px solid #426f28; outline-offset: 3px; }
+.needify-dashboard .dashboard-arrow { position: absolute; right: 18px; bottom: 20px; color: #628443; font-size: 20px; pointer-events: none; }
+@media (max-width: 991px) {
+    .needify-dashboard { padding: 20px 20px 32px; }
+    .needify-dashboard .dashboard-intro { padding: 28px; }
+    .needify-dashboard h1 { font-size: 30px; }
+    .needify-dashboard .dashboard-art { flex-basis: 156px; gap: 8px; }
+    .needify-dashboard .dashboard-art span { height: 70px; }
+    .needify-dashboard .dashboard-grid { gap: 12px; }
+    .needify-dashboard .dashboard-card { padding: 14px; }
+}
+@media (max-width: 767px) {
+    .needify-dashboard { padding: 16px 14px 28px; }
+    .needify-dashboard .dashboard-intro { padding: 24px; margin-bottom: 24px; border-radius: 18px; }
+    .needify-dashboard h1 { font-size: 28px; }
+    .needify-dashboard .dashboard-description { font-size: 14px; }
+    .needify-dashboard .dashboard-art { display: none; }
+    .needify-dashboard .dashboard-section-heading { display: block; }
+    .needify-dashboard .dashboard-section-heading .title { font-size: 22px; margin-bottom: 6px; }
+    .needify-dashboard .dashboard-section-heading p { font-size: 13px; }
+    .needify-dashboard .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .needify-dashboard .dashboard-card { min-height: 210px; border-radius: 14px; }
+    .needify-dashboard .dashboard-icon { height: 96px; margin-bottom: 14px; }
+    .needify-dashboard .dashboard-icon img { width: 64px; height: 64px; }
+    .needify-dashboard .dashboard-card h5 { font-size: 15px; }
+}
+@media (max-width: 359px) {
+    .needify-dashboard .dashboard-grid { gap: 8px; }
+    .needify-dashboard .dashboard-card { padding: 10px; }
+    .needify-dashboard .dashboard-card h5 { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .needify-dashboard .dashboard-card { transition: none; }
+}
 </style>
 
     
-    <div class="container">
-        <div class="container my-1">
-            <p class="title text-center mb-3">What are you looking for?
-</p>
-            <div class="row g-3">
-
-                                <%--<div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                                <a href="../Pages/RegistrationList.aspx" target="_blank" style="color: blue;">
-
-                            <h5 class="fw-bold mb-1">Job</h5>
-                            <p class="small text-muted mb-0">Registration</p>
-                        </div>
-                        <img src="../Images/System/calculators.PNG"
-                            width="50" alt="Kids"></a>
-                    </div>
-                </div>--%>
-                                <%--<div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                                <a href="../Pages/Job.aspx" target="_blank" style="color: blue;">
-
-                            <h5 class="fw-bold mb-1">Job</h5>
-                            <p class="small text-muted mb-0">Search</p>
-                        </div>
-                        <img src="../Images/System/calculators.PNG"
-                            width="50" alt="Kids"></a>
-                    </div>
-                </div>--%>
-
-                <!-- Kids -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                                <a href="../Pages/ExpenseManager.aspx"  style="color: blue;">
-
-                            <h5 class="fw-bold mb-1">Daily</h5>
-                            <p class="small text-muted mb-0">Expenses</p>
-                        </div>
-                        <img src="../Images/System/calculators.PNG"
-                            width="50" alt="Kids"></a>
-                    </div>
-                </div>
-
-                <!-- Grooming -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                       <a href="../Pages/RegistrationList.aspx" style="color: blue;">
-                            <h5 class="fw-bold mb-1">Looking For Job?</h5>
-                            <p class="small text-muted mb-0">Registration</p>
-                        </div>
-                      <img src="../Images/System/posting.PNG"
-    width="50" alt="Kids"></a>
-                    </div>
-                </div>
-
-                <!-- Accessories -->
-                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                       <a href="../Pages/Job.aspx"  style="color: blue;">
-                            <h5 class="fw-bold mb-1">Manpower Required?</h5>
-                            <p class="small text-muted mb-0">Search here</p>
-                        </div>
-                        <img src="../Images/System/electrician.PNG"
-    width="50" alt="Kids"></a>
-                    </div>
-                </div>
-
-                <!-- Footwear -->
-                <div class="col-6 col-md-3">
-<%--                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center rounded">--%>
-                    <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-     style="border-radius: 20px;">
-
+    <div class="container needify-dashboard">
+        <section class="dashboard-intro" aria-label="Welcome to My Needify">
+            <div>
+                <p class="dashboard-eyebrow">Your everyday, made easier</p>
+                <h1>Everyday needs.<br />All in one place.</h1>
+                <p class="dashboard-description">Shop local finds, discover services and manage your day with My Needify.</p>
+            </div>
+            <div class="dashboard-art" aria-hidden="true">
+                <span><img src="../Images/System/products.PNG" alt="" /></span>
+                <span><img src="../Images/System/salon.PNG" alt="" /></span>
+                <span><img src="../Images/System/fashion.PNG" alt="" /></span>
+                <span><img src="../Images/System/calculators.PNG" alt="" /></span>
+            </div>
+        </section>
+        <div class="container my-1 dashboard-categories">
+            <div class="dashboard-section-heading">
+                <h2 class="title">What are you looking for?</h2>
+                <p>Explore your everyday essentials</p>
+            </div>
+            <div class="row g-3 dashboard-grid">
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/calculators.PNG" width="76" height="76" alt="" /></div>
                         <div class="text-start">
-                     <a href="../Front/Apparels.aspx" style="color: blue;">
-
-                            <h5 class="fw-bold mb-1">Looking for Desi Products?</h5>
-                            <p class="small text-muted mb-0"> Here I am</p>
+                            <h5 class="fw-bold mb-1"><a href="../Pages/ExpenseManager.aspx">Daily Expenses</a></h5>
+                            <p class="small text-muted mb-0">Manage your everyday spending</p>
                         </div>
-                        <img src="../Images/System/products.PNG"
-    width="50" alt="Kids">
+                        <span class="dashboard-arrow" aria-hidden="true">&#8599;</span>
                     </div>
-                                        </div>
-
-
-
-
-
-
-
-
-                  <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                       <a href="../Pages/AddOrganization.aspx"  style="color: blue;">
-                            <h5 class="fw-bold mb-1">Register as Seller</h5>
+                </div>
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/posting.PNG" width="76" height="76" alt="" /></div>
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1"><a href="../Pages/RegistrationList.aspx">Looking for a Job?</a></h5>
+                            <p class="small text-muted mb-0">Register and take the next step</p>
+                        </div>
+                        <span class="dashboard-arrow" aria-hidden="true">&#8599;</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/electrician.PNG" width="76" height="76" alt="" /></div>
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1"><a href="../Pages/Job.aspx">Manpower Required?</a></h5>
+                            <p class="small text-muted mb-0">Find the help you need</p>
+                        </div>
+                        <span class="dashboard-arrow" aria-hidden="true">&#8599;</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/products.PNG" width="76" height="76" alt="" /></div>
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1"><a href="../Front/Apparels.aspx">Desi Products</a></h5>
+                            <p class="small text-muted mb-0">Discover something local</p>
+                        </div>
+                        <span class="dashboard-arrow" aria-hidden="true">&#8599;</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/seller.PNG" width="76" height="76" alt="" /></div>
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1"><a href="../Pages/AddOrganization.aspx">Register as Seller</a></h5>
                             <p class="small text-muted mb-0">Start selling today</p>
                         </div>
-                        <img src="../Images/System/seller.PNG"
-    width="50" alt="Kids"></a>
+                        <span class="dashboard-arrow" aria-hidden="true">&#8599;</span>
                     </div>
                 </div>
-
-
-
-
-                                                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                        <a href="../Front/AppointmentMaster.aspx"
-                           style="color: blue;"
-                           onclick="return checkLoginBeforeAppointment();">
-
-                            <h5 class="fw-bold mb-1">Salon Appointment</h5>
-                            <p class="small text-muted mb-0">Schedule Your Visit</p>
-                        </a>
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/salon.PNG" width="76" height="76" alt="" /></div>
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1"><a href="../Front/AppointmentMaster.aspx" onclick="return checkLoginBeforeAppointment();">Salon Appointment</a></h5>
+                            <p class="small text-muted mb-0">Schedule your visit</p>
                         </div>
-                        <img src="../Images/System/salon.PNG"
-    width="50" alt="Kids">
+                        <span class="dashboard-arrow" aria-hidden="true">&#8599;</span>
                     </div>
                 </div>
-
-
-
-
-                                                                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                            <h5 class="fw-bold mb-1">Homer Decore</h5>
-                            <p class="small text-muted mb-0">Search Here</p>
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/staircase.PNG" width="76" height="76" alt="" /></div>
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1">Home Decor</h5>
+                            <p class="small text-muted mb-0">Make room for inspiration</p>
                         </div>
-                        <img src="../Images/System/staircase.PNG"
-    width="50" alt="Kids">
+
                     </div>
                 </div>
-
-
-
-
-                                                                <div class="col-6 col-md-3">
-               <div class="border bg-white p-3 d-flex justify-content-between align-items-center"
-style="border-radius: 20px;">
-                   <div class="text-start">
-                                               <a href="../Front/indexShubh.aspx"  style="color: blue;">
-
-                            <h5 class="fw-bold mb-1">Apparels</h5>
-                            <p class="small text-muted mb-0">Search here</p></a>
+                <div class="col-6 col-md-3 dashboard-category">
+                    <div class="dashboard-card">
+                        <div class="dashboard-icon"><img src="../Images/System/fashion.PNG" width="76" height="76" alt="" /></div>
+                        <div class="text-start">
+                            <h5 class="fw-bold mb-1"><a href="../Front/indexShubh.aspx">Apparels</a></h5>
+                            <p class="small text-muted mb-0">Find your everyday style</p>
                         </div>
-                        <img src="../Images/System/fashion.PNG"
-    width="50" alt="Kids">
+                        <span class="dashboard-arrow" aria-hidden="true">&#8599;</span>
                     </div>
                 </div>
-
-
-
-
-     <!-- NEW PRODUCTS ROW WITH HOVER EFFECT, RATINGS, AND ICONS -->
+            </div>
         </div>
-
-                </div>
-
-
-
 
 <div class="container my-4" style="visibility:hidden; display: none;">
     <p class="title text-center mb-3">Latest Collection</p>    
