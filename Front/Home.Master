@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Home.Master.cs" Inherits="FaduPrice.Pages.Site1" %>
 
 <!DOCTYPE html>
 
@@ -1625,6 +1625,119 @@ margin-left: 0px;                    font-size: 13px;
 
 
 
+
+    <!-- Shared storefront chrome; scoped to avoid changing page controls. -->
+    <style>
+        .needify-header, .needify-header *, .needify-footer, .needify-footer * { box-sizing: border-box; }
+        .needify-header.navbar { margin: 0; padding: 0; border: 0; border-bottom: 1px solid #e3c536; border-radius: 0; background: linear-gradient(90deg, #F7DA44 0%, #F7D000 50%, #FFE082 100%) !important; color: #263b2c; font-family: Arial, sans-serif; box-shadow: 0 2px 8px rgba(75,61,12,.08) !important; z-index: 1030; }
+        .needify-header.navbar > .container-fluid { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; padding: 12px 24px; }
+        .needify-header > .container-fluid::before, .needify-header > .container-fluid::after { content: none; }
+        .needify-header .navbar-brand { flex-shrink: 0; float: none; height: auto; margin: 0; padding: 0; line-height: normal; }
+        .needify-header .navbar-brand img { display: block; width: 106px; height: 62px; margin: 0; object-fit: contain; }
+        .needify-header .search-box { flex: 1 1 230px; min-width: 0; height: 48px !important; margin: 0 !important; padding: 0 16px !important; border: 1px solid rgba(93,76,18,.18) !important; border-radius: 10px !important; background: #fff; }
+        .needify-header .search-box:focus-within { border-color: #a98a19 !important; box-shadow: 0 0 0 3px rgba(169,138,25,.15); }
+        .needify-header .search-box input { min-width: 0; height: 44px; padding: 8px; color: #263b2c; background: transparent; font-size: 14px; }
+        .needify-header .search-box .bi-search { color: #557247 !important; font-size: 19px; }
+        .needify-header .right-icons { gap: 16px !important; flex-shrink: 0; }
+        .needify-header .right-icons div { margin-left: 0; color: #34483a; font-size: 12px; }
+        .needify-header .right-icons a { color: #34483a; text-decoration: none; }
+        .needify-header .right-icons i { margin-bottom: 3px; color: #333522; font-size: 20px; line-height: 1.2; }
+        .needify-header .login-buttons { flex-wrap: wrap; justify-content: flex-end; gap: 8px !important; max-width: 240px; margin: 0 !important; }
+        .needify-header .btn { border-radius: 9px; font-weight: 600; }
+        .needify-header .login-buttons .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; margin: 0; padding: 9px 13px; font-size: 12px; }
+        .needify-header .btn-login, .needify-header .btn-seller { background: #52782f; border-color: #52782f; color: #fff; }
+        .needify-header .btn-admin { background: rgba(255,255,255,.65); border-color: rgba(93,76,18,.15); color: #343722; }
+        .needify-header .btn-login:hover, .needify-header .btn-seller:hover, .needify-header .btn-admin:hover { background: #385b20 !important; color: #fff !important; }
+        .needify-header a:focus-visible, .needify-header button:focus-visible, .needify-footer a:focus-visible { outline: 3px solid #90b55e; outline-offset: 3px; }
+        .needify-header .dropdown-menu { padding: 10px; border: 1px solid #e2e9de; border-radius: 12px; box-shadow: 0 10px 30px rgba(32,60,45,.14); }
+        .needify-header .dropdown-item { padding: 10px 12px; border-radius: 6px; font-size: 13px; }
+        .needify-header .dropdown-item:hover { background: #f1f6eb; color: #385b20; }
+        .needify-header [id$="divmenu"] { flex: 0 0 100%; min-width: 0; border-top: 1px solid rgba(93,76,18,.15); }
+        .needify-header [id$="divmenu"] > ul { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 8px 0; list-style: none; }
+        .needify-header [id$="divmenu"] > ul > li { float: none; }
+        .needify-header [id$="divmenu"] > ul > li > a { display: block; padding: 10px 8px; color: #3d503f; font-size: 13px; font-weight: 600; text-decoration: none; }
+        .needify-header [id$="divmenu"]:empty { display: none !important; }
+        .needify-footer { margin-top: 12px; background: #212121 !important; color: #e6e6e6 !important; font-family: Arial, sans-serif; }
+        .needify-footer > .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 28px 24px 20px !important; }
+        .needify-footer .footer-intro { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid #3c3c3c; }
+        .needify-footer .footer-brand { margin: 0 0 6px; color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -.5px; }
+        .needify-footer .footer-description { margin: 0; color: #bdbdbd; font-size: 13px; line-height: 1.6; }
+        .needify-footer .footer-tagline { color: #e7d88b; font-size: 13px; }
+        .needify-footer .footer-columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; margin: 0; }
+        .needify-footer .footer-columns::before, .needify-footer .footer-columns::after { content: none; }
+        .needify-footer .footer-columns > div { float: none; width: auto; min-width: 0; margin: 0 !important; padding: 0; }
+        .needify-footer h6.footer-link { margin: 0 0 10px !important; color: #f6d84a !important; font-size: 12px !important; font-weight: 700; letter-spacing: 1.2px; }
+        .needify-footer .list-unstyled { margin: 0; padding: 0; list-style: none; }
+        .needify-footer a.footer-link { display: inline-block; padding: 5px 0; color: #ccc; font-size: 13px; line-height: 1.5; text-decoration: none; }
+        .needify-footer a.footer-link:hover { color: #ffe082; text-decoration: underline; }
+        .needify-footer .footer-social { float: none; width: 100%; margin: 20px 0 0 !important; padding: 16px 0 0; border-top: 1px solid #3c3c3c; display: flex; align-items: center; gap: 20px; }
+        .needify-footer .footer-social h6 { margin: 0; color: #ddd; font-size: 12px !important; letter-spacing: 1px; }
+        .needify-footer .footer-social > div { gap: 10px !important; margin: 0 !important; }
+        .needify-footer .social-icon { width: 36px; height: 36px; border: 1px solid #4a4a4a; border-radius: 50%; background: #303030; color: #f3f3f3; text-decoration: none; }
+        .needify-footer .social-icon:hover { background: #f7d000; color: #212121; }
+        .needify-footer .footer-bottom { height: auto !important; padding: 14px 24px !important; border-top: 1px solid #373737; background: #191919 !important; color: #aaa !important; font-size: 12px !important; line-height: 1.6; }
+        @media (min-width: 992px) {
+            .needify-header #mainNav { flex: 0 0 0; width: 0; min-height: 0; padding: 0; margin: 0; }
+        }
+        @media (max-width: 991px) {
+            .needify-header.navbar > .container-fluid { gap: 12px; padding: 12px 20px 16px; }
+            .needify-header .mobile-topbar { gap: 10px; flex-wrap: wrap; }
+            .needify-header .navbar-brand img { width: 92px; height: 50px; }
+            .needify-header .navbar-toggler { min-width: 40px; min-height: 40px; margin-right: 8px !important; padding: 8px; border: 1px solid #e1e8dc; border-radius: 9px; }
+            .needify-header .mobile-right { min-width: 0; margin-left: auto; }
+            .needify-header .mobile-right .right-icons { gap: 14px !important; flex-wrap: wrap; justify-content: flex-end; }
+            .needify-header .mobile-right .dropdown-toggle { display: inline-block; max-width: 125px; overflow-wrap: anywhere; }
+            .needify-header .search-box { flex: 0 0 100%; width: 100%; }
+            .needify-header #mainNav.collapse:not(.show):not(.in) { display: none !important; }
+            .needify-header #mainNav.collapse.show, .needify-header #mainNav.collapse.in { display: block !important; }
+            .needify-header #mainNav { z-index: 1040; width: min(340px, 88vw); padding: 24px 20px; background: #fff; }
+            .needify-header #mainNav .btn { min-height: 42px; padding: 10px 14px; }
+            .needify-header #mainNav .nav > li { padding-left: 0 !important; }
+            .needify-header #mainNav .nav > li > a { padding: 12px; }
+            .needify-header .mobile-topbar .dropdown-menu { max-width: calc(100vw - 40px); }
+            .needify-footer .footer-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+        }
+        @media (max-width: 575px) {
+            .needify-header.navbar > .container-fluid { padding: 10px 14px 14px; }
+            .needify-header .navbar-brand img { width: 76px; height: 44px; }
+            .needify-header .mobile-right .right-icons { gap: 10px !important; }
+            .needify-header .right-icons div { font-size: 11px; }
+            .needify-header .search-box input { font-size: 13px; }
+            .needify-footer > .container { padding: 24px 20px 18px !important; }
+            .needify-footer .footer-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+            .needify-footer .footer-columns > div:last-child { grid-column: 1 / -1; }
+            .needify-footer .footer-social { flex-wrap: wrap; gap: 14px; }
+            .needify-footer a.footer-link { padding: 8px 0; }
+        }
+
+        /* Mobile drawer: reset desktop mega-menu geometry, retain JS visibility. */
+        @media (max-width: 991px) {
+            .needify-header #mainNav { top: 0; left: 0; height: 100vh !important; height: 100dvh !important; max-height: 100dvh; margin: 0 !important; width: min(360px, 92vw); padding: 0 16px 24px; border: 0; border-radius: 0 18px 18px 0; overflow-y: auto !important; overflow-x: hidden !important; overscroll-behavior: contain; box-shadow: 8px 0 32px rgba(0,0,0,.18); text-align: left; }
+            .needify-header #mainNav .mobile-menu-heading { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between !important; gap: 12px; margin: 0 -16px 16px; padding: 14px 16px; background: linear-gradient(90deg, #f7da44, #ffe082); border-bottom: 1px solid #e8d15a; }
+            .needify-header #mainNav .mobile-menu-title { margin: 0; color: #292b20; font-size: 19px; font-weight: 700; }
+            .needify-header #mainNav .mobile-menu-heading .btn { display: flex; align-items: center; justify-content: center; width: 40px; min-height: 40px; padding: 0; border: 1px solid rgba(80,68,10,.16); border-radius: 10px; background: rgba(255,255,255,.6); font-size: 18px !important; text-decoration: none; }
+            .needify-header #mainNav .mobile-menu-categories { margin: 0 !important; }
+            .needify-header #mainNav .navbar-nav { display: block; float: none !important; width: 100%; margin: 0; padding: 0; list-style: none; }
+            .needify-header #mainNav .navbar-nav:empty { display: none; }
+            .needify-header #mainNav .nav > li { display: block; float: none; width: 100%; margin: 0 0 6px; padding: 0 !important; border-bottom: 1px solid #f0f0e9; }
+            .needify-header #mainNav .nav > li > a { display: flex; align-items: center; justify-content: space-between; gap: 12px; float: none; width: 100%; height: auto; min-height: 48px; margin: 0; padding: 13px 12px !important; border-radius: 9px; color: #30352b !important; background: transparent; font-size: 15px !important; font-weight: 600; line-height: 1.5; text-transform: none; white-space: normal; overflow-wrap: anywhere; text-decoration: none; }
+            .needify-header #mainNav .nav > li > a:hover, .needify-header #mainNav .nav > li > a:focus, .needify-header #mainNav .nav > li.open > a { background: #fff7d6; color: #3c451f !important; }
+            .needify-header #mainNav .nav > li > a .caret { flex: 0 0 auto; margin: 0 3px 0 0; color: #777b69; }
+            .needify-header #mainNav .dropdown-menu { position: static !important; float: none !important; inset: auto !important; transform: none !important; width: 100% !important; min-width: 0; max-width: 100%; margin: 0 0 10px !important; padding: 6px 12px 10px; border: 0; border-radius: 10px; background: #f7f8f3; box-shadow: none; }
+            .needify-header #mainNav .dropdown-menu > li { float: none !important; width: 100% !important; min-width: 0; margin: 0; padding: 0; }
+            .needify-header #mainNav .dropdown-menu ul { display: block; margin: 0; padding: 0; list-style: none; }
+            .needify-header #mainNav .dropdown-menu ul > li { display: block; float: none; padding: 0; margin: 0; }
+            .needify-header #mainNav .dropdown-menu .dropdown-header { padding: 14px 8px 6px !important; color: #617243 !important; font-size: 12px; font-weight: 700; line-height: 1.5; letter-spacing: .5px; text-transform: uppercase; white-space: normal; overflow-wrap: anywhere; }
+            .needify-header #mainNav .dropdown-menu a { display: block; min-height: 44px; margin: 0 0 0 8px; padding: 11px 12px; border-left: 2px solid #dfe5d2; border-radius: 0 7px 7px 0; color: #454b3f; font-size: 14px; font-weight: 400; line-height: 1.6; text-align: left; text-transform: none; text-decoration: none; white-space: normal; overflow-wrap: anywhere; }
+            .needify-header #mainNav .dropdown-menu a:hover, .needify-header #mainNav .dropdown-menu a:focus { color: #365426; background: #eaf0df; border-left-color: #84a453; }
+            .needify-header #mainNav .mobile-menu-actions { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px !important; margin-top: 20px !important; padding-top: 18px; border-top: 1px solid #e8ebdf; }
+            .needify-header #mainNav .mobile-menu-actions > .btn, .needify-header #mainNav .mobile-menu-actions > div { min-width: 0; margin: 0; }
+            .needify-header #mainNav .mobile-menu-actions > div.btn { padding: 0; }
+            .needify-header #mainNav .mobile-menu-actions .btn { width: 100%; min-height: 44px; padding: 12px 8px; font-size: 13px; line-height: 1.4; white-space: normal; }
+            .needify-header #mainNav .mobile-menu-actions > div > .btn { border: 0; }
+        }
+    </style>
+
 </head>
 
 
@@ -1636,7 +1749,7 @@ margin-left: 0px;                    font-size: 13px;
 
 
 
-<nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm">
+<nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm needify-header" aria-label="Main navigation">
     <div class="container-fluid">
         <asp:HiddenField ID="MasterhdnUserId" runat="server" Value="0" />
         <!-- MOBILE TOPBAR -->
@@ -1672,7 +1785,7 @@ margin-left: 0px;                    font-size: 13px;
             </div>
         </div>
 
-        <div><i class="bi bi-heart"></i>Wishlistt</div>
+        <div><i class="bi bi-heart"></i>Wishlist</div>
         <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
        
 
@@ -1781,8 +1894,9 @@ Address</a></div>
         <!-- COLLAPSIBLE NAV (MOBILE) -->
         <div class="collapse navbar-collapse" id="mainNav">
 
-            <div class="d-flex justify-content-end d-lg-none">
-                <button class="btn btn-link text-dark fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <div class="d-flex justify-content-end d-lg-none mobile-menu-heading">
+                <p class="mobile-menu-title">MyNeedify</p>
+                <button aria-label="Close menu" class="btn btn-link text-dark fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
@@ -1790,12 +1904,12 @@ Address</a></div>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
 
             <!-- MENU FROM SERVER -->
-            <div class="d-lg-none mt-3">
+            <div class="d-lg-none mt-3 mobile-menu-categories">
                 <%= divmenu.InnerHtml %>
             </div>
 
             <!-- LOGIN BUTTONS MOBILE -->
-            <div class="d-lg-none mt-3 d-flex flex-column gap-2">
+            <div class="d-lg-none mt-3 d-flex flex-column gap-2 mobile-menu-actions">
 
                
                 <a  class="btn btn-admin btn-sm" href="<%=appURL%>Front/index.aspx">Home</a>
@@ -1915,9 +2029,16 @@ Address</a></div>
 
        
     <!-- Footer -->
-    <footer style="background-color: #212121; color: #fff;">
+    <footer class="needify-footer" style="background-color: #212121; color: #fff;">
         <div class="container py-5">
-            <div class="row text-start">
+                        <div class="footer-intro">
+                <div>
+                    <p class="footer-brand">My Needify<span style="color: #f7d000;">.</span></p>
+                    <p class="footer-description">Your everyday needs, all in one place.</p>
+                </div>
+                <span class="footer-tagline">Discover. Connect. Make life easier.</span>
+            </div>
+            <div class="row text-start footer-columns">
                 <!-- Column 1 -->
                 <div class="col-6 col-md-2 mb-3">
                     <h6 class="fw-bold mb-3 footer-link" >MEN</h6>
@@ -1969,19 +2090,19 @@ Address</a></div>
                 </div>
             </div>
 
-            <div class="col-6 col-md-2 mb-3">
+            <div class="col-6 col-md-2 mb-3 footer-social">
                 <h6 style="font-size: 14px;">FOLLOW US</h6>
                 <div class="d-flex gap-2 mt-2">
-                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="social-icon" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-icon" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon" aria-label="Youtube"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
         </div>
 
         <!-- Footer Bottom -->
-        <div class="text-center py-3" style="background-color: #212121; color: #fff; font-size: 14px;     height: 100px;">
+        <div class="text-center py-3 footer-bottom" style="background-color: #212121; color: #fff; font-size: 14px;     height: 100px;">
             &copy; 2025 My Needify. All rights reserved.
         </div>
     </footer>
