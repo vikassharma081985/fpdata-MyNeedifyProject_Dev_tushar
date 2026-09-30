@@ -23,7 +23,7 @@
     <link href="../Css/MyStyle.css" rel="stylesheet" />
     <link href="../Css/Common.css?v=0.1" rel="stylesheet" />
     <link rel="icon" href="../Images/System/favicon.ico" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <%-- Use the existing Bootstrap 3 runtime for shared jQuery controls. Bootstrap 5 CSS is layout-only. --%>
 
 
     <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
@@ -67,7 +67,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: appURL+"Front/index.aspx/LoginDetails",
+                    url: appURL + "Front/index.aspx/LoginDetails",
                     //url: "https://myneedify.com/Front/index.aspx/LoginDetails",
                     //url: "http://198.38.88.185:8082/Front/index.aspx/LoginDetails",
                     data: JSON.stringify({
@@ -134,8 +134,11 @@
                         alert('fail');
                     },
                     error: function (response) {
-                        alert(response.responseText);
-
+                        alert('Unable to sign in. Please try again.');
+                    },
+                    complete: function () {
+                        $('[id*=loader]').hide();
+                        $('#myModal [id$=btnSubmit]').val('Login');
                     }
                 });
                 return false;
@@ -315,7 +318,7 @@
             });
 
             $('#addrModalTitle').text('Edit Address');
-$('#btnSaveAddress').text('Update Address');
+            $('#btnSaveAddress').text('Update Address');
 
             $('#addAddressModal').modal('show');
             return false;
@@ -488,69 +491,69 @@ $('#btnSaveAddress').text('Update Address');
     </script>
 
     <script>
-const API_BASE = "https://api.myneedify.com";
-let pendingBookings=[];
+        const API_BASE = "https://api.myneedify.com";
+        let pendingBookings = [];
 
-function formatDate(value){
+        function formatDate(value) {
 
-    return new Date(value)
-        .toLocaleDateString();
+            return new Date(value)
+                .toLocaleDateString();
 
-}
+        }
 
-function formatTime(time){
+        function formatTime(time) {
 
-    return time.substring(0,5);
+            return time.substring(0, 5);
 
-}
-function attachEvents(){
+        }
+        function attachEvents() {
 
-    $(".btnApprove").click(function (e) {
-e.preventDefault();
-    var id = $(this).data("id");
+            $(".btnApprove").click(function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
 
-    var comment = $("#comment_" + id).val();
+                var comment = $("#comment_" + id).val();
 
-    acceptBooking(id, comment);
+                acceptBooking(id, comment);
 
-});
+            });
 
-$(".btnReject").click(function (e) {
-e.preventDefault();
-    var id = $(this).data("id");
+            $(".btnReject").click(function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
 
-    var txt = $("#comment_" + id);
+                var txt = $("#comment_" + id);
 
-    var comment = txt.val().trim();
+                var comment = txt.val().trim();
 
-    // Validation
-    if (comment === "") {
+                // Validation
+                if (comment === "") {
 
-        txt.css("border", "1px solid #d9534f");
-        txt.focus();
+                    txt.css("border", "1px solid #d9534f");
+                    txt.focus();
 
-        alert("Comments are required when rejecting a booking.");
+                    alert("Comments are required when rejecting a booking.");
 
-        return;
-    }
+                    return;
+                }
 
-    rejectBooking(id, comment);
+                rejectBooking(id, comment);
 
-});
-$(".booking-comment").on("input", function () {
+            });
+            $(".booking-comment").on("input", function () {
 
-    $(this).css("border", "");
+                $(this).css("border", "");
 
-});
+            });
 
-}
-function showBookings(){
-    console.log("show bookings");
-    let html="";
+        }
+        function showBookings() {
+            console.log("show bookings");
+            let html = "";
 
-    pendingBookings.forEach(b=>{
+            pendingBookings.forEach(b => {
 
-        html+=`
+                html += `
 
         <div class="booking-card">
 
@@ -615,118 +618,118 @@ type="button"
 
         `;
 
-    });
+            });
 
-    document.getElementById("bookingList").innerHTML=html;
+            document.getElementById("bookingList").innerHTML = html;
 
-    attachEvents();
+            attachEvents();
 
-    $("#bookingModal").modal("show");
+            $("#bookingModal").modal("show");
 
-}
+        }
 
-function closeModal (){
-$("#bookingModal").modal("hide");
-}
+        function closeModal() {
+            $("#bookingModal").modal("hide");
+        }
 
-async function acceptBooking(id, comment) {
-const orgId = sessionStorage.getItem("OrgId");
-const userId = sessionStorage.getItem("UserId");
-    try {
+        async function acceptBooking(id, comment) {
+            const orgId = sessionStorage.getItem("OrgId");
+            const userId = sessionStorage.getItem("UserId");
+            try {
 
-        await $.ajax({
+                await $.ajax({
 
-            url: API_BASE + "/api/Appointment/AcceptBooking",
+                    url: API_BASE + "/api/Appointment/AcceptBooking",
 
-            type: "POST",
-contentType: "application/json",
-            data: JSON.stringify({
-                appointmentId: id,
-                comments: comment
-            })
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        appointmentId: id,
+                        comments: comment
+                    })
 
-        });
+                });
 
-        await loadEmployeeBookings(orgId,userId);
+                await loadEmployeeBookings(orgId, userId);
 
-        showBookings();
+                showBookings();
 
-    }
-    catch (ex) {
+            }
+            catch (ex) {
 
-        alert("Unable to approve booking.");
+                alert("Unable to approve booking.");
 
-        console.error(ex);
+                console.error(ex);
 
-    }
+            }
 
-}
-async function rejectBooking(id, comment) {
-const orgId = sessionStorage.getItem("OrgId");
-const userId = sessionStorage.getItem("UserId");
-    try {
+        }
+        async function rejectBooking(id, comment) {
+            const orgId = sessionStorage.getItem("OrgId");
+            const userId = sessionStorage.getItem("UserId");
+            try {
 
-        await $.ajax({
+                await $.ajax({
 
-            url: API_BASE + "/api/Appointment/RejectBooking",
-contentType: "application/json",
-            type: "POST",
+                    url: API_BASE + "/api/Appointment/RejectBooking",
+                    contentType: "application/json",
+                    type: "POST",
 
-            data: JSON.stringify({
-                appointmentId: id,
-                comments: comment
-            })
+                    data: JSON.stringify({
+                        appointmentId: id,
+                        comments: comment
+                    })
 
-        });
+                });
 
-        await loadEmployeeBookings(orgId,userId);
+                await loadEmployeeBookings(orgId, userId);
 
-        showBookings();
+                showBookings();
 
-    }
-    catch (ex) {
+            }
+            catch (ex) {
 
-        alert("Unable to reject booking.");
+                alert("Unable to reject booking.");
 
-        console.error(ex);
+                console.error(ex);
 
-    }
+            }
 
-}
-
-
+        }
 
 
-async function loadEmployeeBookings(orgId, employeeId){
 
-    const response=await fetch(
-        `${API_BASE}/api/Appointment/GetEmployeeBookings?orgId=${orgId}&employeeId=${employeeId}`
-    );
 
-    const bookings=await response.json();
+        async function loadEmployeeBookings(orgId, employeeId) {
 
-    pendingBookings=bookings.filter(
-        x=>x.bookingStatus==="Pending"
-    );
+            const response = await fetch(
+                `${API_BASE}/api/Appointment/GetEmployeeBookings?orgId=${orgId}&employeeId=${employeeId}`
+            );
 
-    updateNotification();
-}
-function updateNotification(){
-    const badge=document.getElementById("bookingBadge");
+            const bookings = await response.json();
 
-    if(pendingBookings.length){
+            pendingBookings = bookings.filter(
+                x => x.bookingStatus === "Pending"
+            );
 
-        badge.style.display="block";
+            updateNotification();
+        }
+        function updateNotification() {
+            const badge = document.getElementById("bookingBadge");
 
-        badge.innerText="You have "+pendingBookings.length+" booking requests";
-        badge.onclick=showBookings;
-    }
-    else{
+            if (pendingBookings.length) {
 
-        badge.style.display="none";
-    }
+                badge.style.display = "block";
 
-}
+                badge.innerText = "You have " + pendingBookings.length + " booking requests";
+                badge.onclick = showBookings;
+            }
+            else {
+
+                badge.style.display = "none";
+            }
+
+        }
 
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
@@ -749,6 +752,10 @@ function updateNotification(){
                     $(this).toggleClass('open');
                 }
             );
+
+            $('#myModal, #myModalsignup, #forgotPass, #otpModal, #setPasswordModal').on('show.bs.modal', function () {
+                $('#myModal, #myModalsignup, #forgotPass, #otpModal, #setPasswordModal').not(this).filter('.in').modal('hide');
+            });
 
             $('#addPass').on('show.bs.modal', function () {
                 var userId = $('[id$=MasterhdnUserId]').val();
@@ -845,11 +852,11 @@ function updateNotification(){
             }
 
         });
-$("#bookingModal").on("hidden.bs.modal", function () {
+        $("#bookingModal").on("hidden.bs.modal", function () {
 
-    loadEmployeeBookings();   // Refresh pending bookings
+            loadEmployeeBookings();   // Refresh pending bookings
 
-});
+        });
     </script>
     <script>
         var flag = true;
@@ -898,9 +905,7 @@ $("#bookingModal").on("hidden.bs.modal", function () {
         });
         //var j = jQuery.noConflict();
         function OpenLogin() {
-            closeNav();
-            //j('#myModal').modal('show');
-            jQuery.noConflict();
+            if (window.mnCloseDrawer) window.mnCloseDrawer();
             $('#myModal').modal('show');
             return false;
         }
@@ -932,26 +937,28 @@ $("#bookingModal").on("hidden.bs.modal", function () {
     <style>
         body {
             background-color: #f8f9fa;
-font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif;
         }
+
         .slider-box img {
-    height: 350px;
-    object-fit: cover;
-    border-radius: 0; 
-}
+            height: 350px;
+            object-fit: cover;
+            border-radius: 0;
+        }
 
 
 
 
         .navbar {
-    background: linear-gradient(90deg, #F7DA44 0%, #F7D000 50%, #FFE082 100%);
-}
+            background: linear-gradient(90deg, #F7DA44 0%, #F7D000 50%, #FFE082 100%);
+        }
 
 
         .carousel-inner img {
-    width: 100%;
-    height: 250px !important;
-}
+            width: 100%;
+            height: 250px !important;
+        }
+
         @media (min-width: 1200px) {
             .container {
                 width: 100% !important;
@@ -974,7 +981,7 @@ font-family: Arial, sans-serif;
             }
 
 
-     /*   .navbar {
+        /*   .navbar {
             background-color: #fff;
             padding: 0.3rem 1rem;
         }*/
@@ -1012,16 +1019,16 @@ font-family: Arial, sans-serif;
             border-radius: 0;
             margin-top: 0;
         }
-         .dropdown-item{
-                             text-align: left;
 
-         }
-        .dropdown-item:hover {
-            background-color: #f8f9fa;
-            color: #0AA6BF;
-                text-align: left;
-
+        .dropdown-item {
+            text-align: left;
         }
+
+            .dropdown-item:hover {
+                background-color: #f8f9fa;
+                color: #0AA6BF;
+                text-align: left;
+            }
 
         .dropdown-header {
             padding: 0 !important;
@@ -1031,12 +1038,14 @@ font-family: Arial, sans-serif;
         .navbar-expand-lg .navbar-nav .dropdown-menu {
             margin-left: -15px !important;
         }
-        .navbar>.container, .navbar>.container-fluid, .navbar>.container-lg, .navbar>.container-md, .navbar>.container-sm, .navbar>.container-xl, .navbar>.container-xxl {
-    display: contents;
-    flex-wrap: inherit;
-    align-items: center;
-    justify-content: space-between;
-}
+
+        .navbar > .container, .navbar > .container-fluid, .navbar > .container-lg, .navbar > .container-md, .navbar > .container-sm, .navbar > .container-xl, .navbar > .container-xxl {
+            display: contents;
+            flex-wrap: inherit;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         .dropdown-header {
             padding: 0 !important;
             color: #000 !important;
@@ -1185,8 +1194,7 @@ font-family: Arial, sans-serif;
         @media (max-width: 768px) {
             .navbar-brand img {
                 height: 50px;
-                        margin-top: 0px;
-
+                margin-top: 0px;
             }
 
             .category-card h6 {
@@ -1299,7 +1307,8 @@ font-family: Arial, sans-serif;
             }
 
                 .mobile-right div {
-margin-left: 0px;                    font-size: 13px;
+                    margin-left: 0px;
+                    font-size: 13px;
                     text-align: center;
                 }
 
@@ -1399,196 +1408,178 @@ margin-left: 0px;                    font-size: 13px;
             }
 
 
-            
-            /* FIX NAVBAR STRETCH ON MOBILE PROFILE DROPDOWN */
-@media (max-width: 991.98px) {
 
-    .mobile-topbar {
-        position: relative;
-        overflow: visible;
-    }
+        /* FIX NAVBAR STRETCH ON MOBILE PROFILE DROPDOWN */
+        @media (max-width: 991.98px) {
 
-    .mobile-topbar .dropdown {
-        position: static;
-    }
+            .mobile-topbar {
+                position: relative;
+                overflow: visible;
+            }
 
-    .mobile-topbar .dropdown-menu {
-        position: absolute !important;
-        top: 100% !important;
-        right: 0;
-        left: auto;
-        transform: none !important;
-        min-width: 180px;
-        z-index: 1055;
-    }
+                .mobile-topbar .dropdown {
+                    position: static;
+                }
 
-    /* prevent navbar height jump */
-    .navbar {
-        align-items: center;
-    }
-}
+                .mobile-topbar .dropdown-menu {
+                    position: absolute !important;
+                    top: 100% !important;
+                    right: 0;
+                    left: auto;
+                    transform: none !important;
+                    min-width: 180px;
+                    z-index: 1055;
+                }
+
+            /* prevent navbar height jump */
+            .navbar {
+                align-items: center;
+            }
+        }
 
 
-   #addAddressModal {
-       z-index: 1060;
-   }
+        #addAddressModal {
+            z-index: 1060;
+        }
 
-   #addAddressModal .modal-dialog {
-       z-index: 1061;
-   }
+            #addAddressModal .modal-dialog {
+                z-index: 1061;
+            }
 
-   .location-box {
-       border: 1px solid #ddd;
-       border-radius: 10px;
-       padding: 10px;
-       margin-bottom: 10px;
-       cursor: pointer;
-       background: #fff;
-       transition: 0.3s;
-   }
+        .location-box {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: #fff;
+            transition: 0.3s;
+        }
 
-   .location-box.active {
-       border: 2px solid #007bff;
-       background: #eef5ff;
-   }
+            .location-box.active {
+                border: 2px solid #007bff;
+                background: #eef5ff;
+            }
 
-   .location-box:hover {
-       background: #f7f7f7;
-   }
+            .location-box:hover {
+                background: #f7f7f7;
+            }
 
-   .location-name {
-       font-weight: bold;
-       text-transform: capitalize;
-   }
+        .location-name {
+            font-weight: bold;
+            text-transform: capitalize;
+        }
 
-   .location-address {
-       font-size: 13px;
-       color: #555;
-   }
+        .location-address {
+            font-size: 13px;
+            color: #555;
+        }
 
-   .default-tag {
-       font-size: 12px;
-       color: #007bff;
-       margin-top: 5px;
-   }
+        .default-tag {
+            font-size: 12px;
+            color: #007bff;
+            margin-top: 5px;
+        }
 
-   .modal-title-custom {
-       font-size: 18px;
-       font-weight: 600;
-   }
+        .modal-title-custom {
+            font-size: 18px;
+            font-weight: 600;
+        }
 
-   .bottom-links {
-       display: flex;
-       justify-content: space-between;
-       margin-top: 10px;
-       font-size: 14px;
-   }
+        .bottom-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+        }
 
-   .bottom-links a {
-       color: #007bff;
-       text-decoration: none;
-   }
+            .bottom-links a {
+                color: #007bff;
+                text-decoration: none;
+            }
 
-.notification-bell{
+        .notification-bell {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 9999;
+            font-size: 28px;
+        }
 
-    position:fixed;
-    top:20px;
-    right:20px;
+        .booking-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fafafa;
+        }
 
-    width:60px;
-    height:60px;
+        .booking-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
 
-    border-radius:50%;
+        .booking-actions {
+            margin-top: 15px;
+            text-align: right;
+        }
 
-    background:#fff;
+            .booking-actions button {
+                margin-left: 8px;
+            }
 
-    box-shadow:0 4px 15px rgba(0,0,0,.2);
+        .address-form-group {
+            margin-bottom: 10px;
+        }
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+            .address-form-group label {
+                font-size: 13px;
+                color: #555;
+                margin-bottom: 4px;
+                display: block;
+            }
 
-    cursor:pointer;
+            .address-form-group input {
+                width: 100%;
+                padding: 8px 10px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 14px;
+            }
 
-    z-index:9999;
+        .address-form-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
 
-    font-size:28px;
-}
+        .btn-save-address {
+            background-color: #F6861F;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            flex: 1;
+        }
 
-.booking-card{
-
-    border:1px solid #ddd;
-
-    border-radius:10px;
-
-    padding:15px;
-
-    margin-bottom:15px;
-
-    background:#fafafa;
-}
-
-.booking-name{
-
-    font-weight:bold;
-
-    font-size:18px;
-
-    margin-bottom:8px;
-}
-
-.booking-actions{
-
-    margin-top:15px;
-    text-align:right;
-}
-
-.booking-actions button{
-
-    margin-left:8px;
-}
-   .address-form-group {
-       margin-bottom: 10px;
-   }
-
-   .address-form-group label {
-       font-size: 13px;
-       color: #555;
-       margin-bottom: 4px;
-       display: block;
-   }
-
-   .address-form-group input {
-       width: 100%;
-       padding: 8px 10px;
-       border: 1px solid #ccc;
-       border-radius: 6px;
-       font-size: 14px;
-   }
-
-   .address-form-actions {
-       margin-top: 15px;
-       display: flex;
-       gap: 10px;
-   }
-
-   .btn-save-address {
-       background-color: #F6861F;
-       color: #fff;
-       border: none;
-       padding: 8px 16px;
-       border-radius: 6px;
-       flex: 1;
-   }
-
-   .btn-cancel-address {
-       background-color: #fff;
-       color: #555;
-       border: 1px solid #ccc;
-       padding: 8px 16px;
-       border-radius: 6px;
-       flex: 1;
-   }
+        .btn-cancel-address {
+            background-color: #fff;
+            color: #555;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 6px;
+            flex: 1;
+        }
     </style>
     <script>
         function AddToCart(ItemId) {
@@ -1628,120 +1619,710 @@ margin-left: 0px;                    font-size: 13px;
 
     <!-- Shared storefront chrome; scoped to avoid changing page controls. -->
     <style>
-        .needify-header, .needify-header *, .needify-footer, .needify-footer * { box-sizing: border-box; }
-        .needify-header.navbar { margin: 0; padding: 0; border: 0; border-bottom: 1px solid #e3c536; border-radius: 0; background: linear-gradient(90deg, #F7DA44 0%, #F7D000 50%, #FFE082 100%) !important; color: #263b2c; font-family: Arial, sans-serif; box-shadow: 0 2px 8px rgba(75,61,12,.08) !important; z-index: 1030; }
-        .needify-header.navbar > .container-fluid { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; padding: 12px 24px; }
-        .needify-header > .container-fluid::before, .needify-header > .container-fluid::after { content: none; }
-        .needify-header .navbar-brand { flex-shrink: 0; float: none; height: auto; margin: 0; padding: 0; line-height: normal; }
-        .needify-header .navbar-brand img { display: block; width: 106px; height: 62px; margin: 0; object-fit: contain; }
-        .needify-header .search-box { flex: 1 1 230px; min-width: 0; height: 48px !important; margin: 0 !important; padding: 0 16px !important; border: 1px solid rgba(93,76,18,.18) !important; border-radius: 10px !important; background: #fff; }
-        .needify-header .search-box:focus-within { border-color: #a98a19 !important; box-shadow: 0 0 0 3px rgba(169,138,25,.15); }
-        .needify-header .search-box input { min-width: 0; height: 44px; padding: 8px; color: #263b2c; background: transparent; font-size: 14px; }
-        .needify-header .search-box .bi-search { color: #557247 !important; font-size: 19px; }
-        .needify-header .right-icons { gap: 16px !important; flex-shrink: 0; }
-        .needify-header .right-icons div { margin-left: 0; color: #34483a; font-size: 12px; }
-        .needify-header .right-icons a { color: #34483a; text-decoration: none; }
-        .needify-header .right-icons i { margin-bottom: 3px; color: #333522; font-size: 20px; line-height: 1.2; }
-        .needify-header .login-buttons { flex-wrap: wrap; justify-content: flex-end; gap: 8px !important; max-width: 240px; margin: 0 !important; }
-        .needify-header .btn { border-radius: 9px; font-weight: 600; }
-        .needify-header .login-buttons .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; margin: 0; padding: 9px 13px; font-size: 12px; }
-        .needify-header .btn-login, .needify-header .btn-seller { background: #52782f; border-color: #52782f; color: #fff; }
-        .needify-header .btn-admin { background: rgba(255,255,255,.65); border-color: rgba(93,76,18,.15); color: #343722; }
-        .needify-header .btn-login:hover, .needify-header .btn-seller:hover, .needify-header .btn-admin:hover { background: #385b20 !important; color: #fff !important; }
-        .needify-header a:focus-visible, .needify-header button:focus-visible, .needify-footer a:focus-visible { outline: 3px solid #90b55e; outline-offset: 3px; }
-        .needify-header .dropdown-menu { padding: 10px; border: 1px solid #e2e9de; border-radius: 12px; box-shadow: 0 10px 30px rgba(32,60,45,.14); }
-        .needify-header .dropdown-item { padding: 10px 12px; border-radius: 6px; font-size: 13px; }
-        .needify-header .dropdown-item:hover { background: #f1f6eb; color: #385b20; }
-        .needify-header [id$="divmenu"] { flex: 0 0 100%; min-width: 0; border-top: 1px solid rgba(93,76,18,.15); }
-        .needify-header [id$="divmenu"] > ul { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 8px 0; list-style: none; }
-        .needify-header [id$="divmenu"] > ul > li { float: none; }
-        .needify-header [id$="divmenu"] > ul > li > a { display: block; padding: 10px 8px; color: #3d503f; font-size: 13px; font-weight: 600; text-decoration: none; }
-        .needify-header [id$="divmenu"]:empty { display: none !important; }
-        .needify-footer { margin-top: 12px; background: #212121 !important; color: #e6e6e6 !important; font-family: Arial, sans-serif; }
-        .needify-footer > .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 28px 24px 20px !important; }
-        .needify-footer .footer-intro { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid #3c3c3c; }
-        .needify-footer .footer-brand { margin: 0 0 6px; color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -.5px; }
-        .needify-footer .footer-description { margin: 0; color: #bdbdbd; font-size: 13px; line-height: 1.6; }
-        .needify-footer .footer-tagline { color: #e7d88b; font-size: 13px; }
-        .needify-footer .footer-columns { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; margin: 0; }
-        .needify-footer .footer-columns::before, .needify-footer .footer-columns::after { content: none; }
-        .needify-footer .footer-columns > div { float: none; width: auto; min-width: 0; margin: 0 !important; padding: 0; }
-        .needify-footer h6.footer-link { margin: 0 0 10px !important; color: #f6d84a !important; font-size: 12px !important; font-weight: 700; letter-spacing: 1.2px; }
-        .needify-footer .list-unstyled { margin: 0; padding: 0; list-style: none; }
-        .needify-footer a.footer-link { display: inline-block; padding: 5px 0; color: #ccc; font-size: 13px; line-height: 1.5; text-decoration: none; }
-        .needify-footer a.footer-link:hover { color: #ffe082; text-decoration: underline; }
-        .needify-footer .footer-social { float: none; width: 100%; margin: 20px 0 0 !important; padding: 16px 0 0; border-top: 1px solid #3c3c3c; display: flex; align-items: center; gap: 20px; }
-        .needify-footer .footer-social h6 { margin: 0; color: #ddd; font-size: 12px !important; letter-spacing: 1px; }
-        .needify-footer .footer-social > div { gap: 10px !important; margin: 0 !important; }
-        .needify-footer .social-icon { width: 36px; height: 36px; border: 1px solid #4a4a4a; border-radius: 50%; background: #303030; color: #f3f3f3; text-decoration: none; }
-        .needify-footer .social-icon:hover { background: #f7d000; color: #212121; }
-        .needify-footer .footer-bottom { height: auto !important; padding: 14px 24px !important; border-top: 1px solid #373737; background: #191919 !important; color: #aaa !important; font-size: 12px !important; line-height: 1.6; }
+        .needify-header, .needify-header *, .needify-footer, .needify-footer * {
+            box-sizing: border-box;
+        }
+
+            .needify-header.navbar {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                border-bottom: 1px solid #e3c536;
+                border-radius: 0;
+                background: linear-gradient(90deg, #F7DA44 0%, #F7D000 50%, #FFE082 100%) !important;
+                color: #263b2c;
+                font-family: Arial, sans-serif;
+                box-shadow: 0 2px 8px rgba(75,61,12,.08) !important;
+                z-index: 1030;
+            }
+
+                .needify-header.navbar > .container-fluid {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                    align-items: center;
+                    width: 100%;
+                    max-width: 1280px;
+                    margin: 0 auto;
+                    padding: 12px 24px;
+                }
+
+            .needify-header > .container-fluid::before, .needify-header > .container-fluid::after {
+                content: none;
+            }
+
+            .needify-header .navbar-brand {
+                flex-shrink: 0;
+                float: none;
+                height: auto;
+                margin: 0;
+                padding: 0;
+                line-height: normal;
+            }
+
+                .needify-header .navbar-brand img {
+                    display: block;
+                    width: 106px;
+                    height: 62px;
+                    margin: 0;
+                    object-fit: contain;
+                }
+
+            .needify-header .search-box {
+                flex: 1 1 230px;
+                min-width: 0;
+                height: 48px !important;
+                margin: 0 !important;
+                padding: 0 16px !important;
+                border: 1px solid rgba(93,76,18,.18) !important;
+                border-radius: 10px !important;
+                background: #fff;
+            }
+
+                .needify-header .search-box:focus-within {
+                    border-color: #a98a19 !important;
+                    box-shadow: 0 0 0 3px rgba(169,138,25,.15);
+                }
+
+                .needify-header .search-box input {
+                    min-width: 0;
+                    height: 44px;
+                    padding: 8px;
+                    color: #263b2c;
+                    background: transparent;
+                    font-size: 14px;
+                }
+
+                .needify-header .search-box .bi-search {
+                    color: #557247 !important;
+                    font-size: 19px;
+                }
+
+            .needify-header .right-icons {
+                gap: 16px !important;
+                flex-shrink: 0;
+            }
+
+                .needify-header .right-icons div {
+                    margin-left: 0;
+                    color: #34483a;
+                    font-size: 12px;
+                }
+
+                .needify-header .right-icons a {
+                    color: #34483a;
+                    text-decoration: none;
+                }
+
+                .needify-header .right-icons i {
+                    margin-bottom: 3px;
+                    color: #333522;
+                    font-size: 20px;
+                    line-height: 1.2;
+                }
+
+            .needify-header .login-buttons {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 8px !important;
+                max-width: 240px;
+                margin: 0 !important;
+            }
+
+            .needify-header .btn {
+                border-radius: 9px;
+                font-weight: 600;
+            }
+
+            .needify-header .login-buttons .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 40px;
+                margin: 0;
+                padding: 9px 13px;
+                font-size: 12px;
+            }
+
+            .needify-header .btn-login, .needify-header .btn-seller {
+                background: #52782f;
+                border-color: #52782f;
+                color: #fff;
+            }
+
+            .needify-header .btn-admin {
+                background: rgba(255,255,255,.65);
+                border-color: rgba(93,76,18,.15);
+                color: #343722;
+            }
+
+                .needify-header .btn-login:hover, .needify-header .btn-seller:hover, .needify-header .btn-admin:hover {
+                    background: #385b20 !important;
+                    color: #fff !important;
+                }
+
+            .needify-header a:focus-visible, .needify-header button:focus-visible, .needify-footer a:focus-visible {
+                outline: 3px solid #90b55e;
+                outline-offset: 3px;
+            }
+
+            .needify-header .dropdown-menu {
+                padding: 10px;
+                border: 1px solid #e2e9de;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(32,60,45,.14);
+            }
+
+            .needify-header .dropdown-item {
+                padding: 10px 12px;
+                border-radius: 6px;
+                font-size: 13px;
+            }
+
+                .needify-header .dropdown-item:hover {
+                    background: #f1f6eb;
+                    color: #385b20;
+                }
+
+            .needify-header [id$="divmenu"] {
+                flex: 0 0 100%;
+                min-width: 0;
+                border-top: 1px solid rgba(93,76,18,.15);
+            }
+
+                .needify-header [id$="divmenu"] > ul {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px 18px;
+                    margin: 0;
+                    padding: 8px 0;
+                    list-style: none;
+                }
+
+                    .needify-header [id$="divmenu"] > ul > li {
+                        float: none;
+                    }
+
+                        .needify-header [id$="divmenu"] > ul > li > a {
+                            display: block;
+                            padding: 10px 8px;
+                            color: #3d503f;
+                            font-size: 13px;
+                            font-weight: 600;
+                            text-decoration: none;
+                        }
+
+                .needify-header [id$="divmenu"]:empty {
+                    display: none !important;
+                }
+
+        .needify-footer {
+            margin-top: 12px;
+            background: #212121 !important;
+            color: #e6e6e6 !important;
+            font-family: Arial, sans-serif;
+        }
+
+            .needify-footer > .container {
+                width: 100%;
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 28px 24px 20px !important;
+            }
+
+            .needify-footer .footer-intro {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 16px;
+                margin-bottom: 22px;
+                padding-bottom: 18px;
+                border-bottom: 1px solid #3c3c3c;
+            }
+
+            .needify-footer .footer-brand {
+                margin: 0 0 6px;
+                color: #fff;
+                font-size: 22px;
+                font-weight: 700;
+                letter-spacing: -.5px;
+            }
+
+            .needify-footer .footer-description {
+                margin: 0;
+                color: #bdbdbd;
+                font-size: 13px;
+                line-height: 1.6;
+            }
+
+            .needify-footer .footer-tagline {
+                color: #e7d88b;
+                font-size: 13px;
+            }
+
+            .needify-footer .footer-columns {
+                display: grid;
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+                gap: 24px;
+                margin: 0;
+            }
+
+                .needify-footer .footer-columns::before, .needify-footer .footer-columns::after {
+                    content: none;
+                }
+
+                .needify-footer .footer-columns > div {
+                    float: none;
+                    width: auto;
+                    min-width: 0;
+                    margin: 0 !important;
+                    padding: 0;
+                }
+
+            .needify-footer h6.footer-link {
+                margin: 0 0 10px !important;
+                color: #f6d84a !important;
+                font-size: 12px !important;
+                font-weight: 700;
+                letter-spacing: 1.2px;
+            }
+
+            .needify-footer .list-unstyled {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            .needify-footer a.footer-link {
+                display: inline-block;
+                padding: 5px 0;
+                color: #ccc;
+                font-size: 13px;
+                line-height: 1.5;
+                text-decoration: none;
+            }
+
+                .needify-footer a.footer-link:hover {
+                    color: #ffe082;
+                    text-decoration: underline;
+                }
+
+            .needify-footer .footer-social {
+                float: none;
+                width: 100%;
+                margin: 20px 0 0 !important;
+                padding: 16px 0 0;
+                border-top: 1px solid #3c3c3c;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+                .needify-footer .footer-social h6 {
+                    margin: 0;
+                    color: #ddd;
+                    font-size: 12px !important;
+                    letter-spacing: 1px;
+                }
+
+                .needify-footer .footer-social > div {
+                    gap: 10px !important;
+                    margin: 0 !important;
+                }
+
+            .needify-footer .social-icon {
+                width: 36px;
+                height: 36px;
+                border: 1px solid #4a4a4a;
+                border-radius: 50%;
+                background: #303030;
+                color: #f3f3f3;
+                text-decoration: none;
+            }
+
+                .needify-footer .social-icon:hover {
+                    background: #f7d000;
+                    color: #212121;
+                }
+
+            .needify-footer .footer-bottom {
+                height: auto !important;
+                padding: 14px 24px !important;
+                border-top: 1px solid #373737;
+                background: #191919 !important;
+                color: #aaa !important;
+                font-size: 12px !important;
+                line-height: 1.6;
+            }
+
         @media (min-width: 992px) {
-            .needify-header #mainNav { flex: 0 0 0; width: 0; min-height: 0; padding: 0; margin: 0; }
+            .needify-header #mainNav {
+                flex: 0 0 0;
+                width: 0;
+                min-height: 0;
+                padding: 0;
+                margin: 0;
+            }
         }
+
         @media (max-width: 991px) {
-            .needify-header.navbar > .container-fluid { gap: 12px; padding: 12px 20px 16px; }
-            .needify-header .mobile-topbar { gap: 10px; flex-wrap: wrap; }
-            .needify-header .navbar-brand img { width: 92px; height: 50px; }
-            .needify-header .navbar-toggler { min-width: 40px; min-height: 40px; margin-right: 8px !important; padding: 8px; border: 1px solid #e1e8dc; border-radius: 9px; }
-            .needify-header .mobile-right { min-width: 0; margin-left: auto; }
-            .needify-header .mobile-right .right-icons { gap: 14px !important; flex-wrap: wrap; justify-content: flex-end; }
-            .needify-header .mobile-right .dropdown-toggle { display: inline-block; max-width: 125px; overflow-wrap: anywhere; }
-            .needify-header .search-box { flex: 0 0 100%; width: 100%; }
-            .needify-header #mainNav.collapse:not(.show):not(.in) { display: none !important; }
-            .needify-header #mainNav.collapse.show, .needify-header #mainNav.collapse.in { display: block !important; }
-            .needify-header #mainNav { z-index: 1040; width: min(340px, 88vw); padding: 24px 20px; background: #fff; }
-            .needify-header #mainNav .btn { min-height: 42px; padding: 10px 14px; }
-            .needify-header #mainNav .nav > li { padding-left: 0 !important; }
-            .needify-header #mainNav .nav > li > a { padding: 12px; }
-            .needify-header .mobile-topbar .dropdown-menu { max-width: calc(100vw - 40px); }
-            .needify-footer .footer-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+            .needify-header.navbar > .container-fluid {
+                gap: 12px;
+                padding: 12px 20px 16px;
+            }
+
+            .needify-header .mobile-topbar {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .needify-header .navbar-brand img {
+                width: 92px;
+                height: 50px;
+            }
+
+            .needify-header .navbar-toggler {
+                min-width: 40px;
+                min-height: 40px;
+                margin-right: 8px !important;
+                padding: 8px;
+                border: 1px solid #e1e8dc;
+                border-radius: 9px;
+            }
+
+            .needify-header .mobile-right {
+                min-width: 0;
+                margin-left: auto;
+            }
+
+                .needify-header .mobile-right .right-icons {
+                    gap: 14px !important;
+                    flex-wrap: wrap;
+                    justify-content: flex-end;
+                }
+
+                .needify-header .mobile-right .dropdown-toggle {
+                    display: inline-block;
+                    max-width: 125px;
+                    overflow-wrap: anywhere;
+                }
+
+            .needify-header .search-box {
+                flex: 0 0 100%;
+                width: 100%;
+            }
+
+            .needify-header #mainNav.collapse:not(.show):not(.in) {
+                display: none !important;
+            }
+
+            .needify-header #mainNav.collapse.show, .needify-header #mainNav.collapse.in {
+                display: block !important;
+            }
+
+            .needify-header #mainNav {
+                z-index: 1040;
+                width: min(340px, 88vw);
+                padding: 24px 20px;
+                background: #fff;
+            }
+
+                .needify-header #mainNav .btn {
+                    min-height: 42px;
+                    padding: 10px 14px;
+                }
+
+                .needify-header #mainNav .nav > li {
+                    padding-left: 0 !important;
+                }
+
+                    .needify-header #mainNav .nav > li > a {
+                        padding: 12px;
+                    }
+
+            .needify-header .mobile-topbar .dropdown-menu {
+                max-width: calc(100vw - 40px);
+            }
+
+            .needify-footer .footer-columns {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 24px;
+            }
         }
+
         @media (max-width: 575px) {
-            .needify-header.navbar > .container-fluid { padding: 10px 14px 14px; }
-            .needify-header .navbar-brand img { width: 76px; height: 44px; }
-            .needify-header .mobile-right .right-icons { gap: 10px !important; }
-            .needify-header .right-icons div { font-size: 11px; }
-            .needify-header .search-box input { font-size: 13px; }
-            .needify-footer > .container { padding: 24px 20px 18px !important; }
-            .needify-footer .footer-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-            .needify-footer .footer-columns > div:last-child { grid-column: 1 / -1; }
-            .needify-footer .footer-social { flex-wrap: wrap; gap: 14px; }
-            .needify-footer a.footer-link { padding: 8px 0; }
+            .needify-header.navbar > .container-fluid {
+                padding: 10px 14px 14px;
+            }
+
+            .needify-header .navbar-brand img {
+                width: 76px;
+                height: 44px;
+            }
+
+            .needify-header .mobile-right .right-icons {
+                gap: 10px !important;
+            }
+
+            .needify-header .right-icons div {
+                font-size: 11px;
+            }
+
+            .needify-header .search-box input {
+                font-size: 13px;
+            }
+
+            .needify-footer > .container {
+                padding: 24px 20px 18px !important;
+            }
+
+            .needify-footer .footer-columns {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 20px;
+            }
+
+                .needify-footer .footer-columns > div:last-child {
+                    grid-column: 1 / -1;
+                }
+
+            .needify-footer .footer-social {
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+
+            .needify-footer a.footer-link {
+                padding: 8px 0;
+            }
         }
 
         /* Mobile drawer: reset desktop mega-menu geometry, retain JS visibility. */
         @media (max-width: 991px) {
-            .needify-header #mainNav { top: 0; left: 0; height: 100vh !important; height: 100dvh !important; max-height: 100dvh; margin: 0 !important; width: min(360px, 92vw); padding: 0 16px 24px; border: 0; border-radius: 0 18px 18px 0; overflow-y: auto !important; overflow-x: hidden !important; overscroll-behavior: contain; box-shadow: 8px 0 32px rgba(0,0,0,.18); text-align: left; }
-            .needify-header #mainNav .mobile-menu-heading { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between !important; gap: 12px; margin: 0 -16px 16px; padding: 14px 16px; background: linear-gradient(90deg, #f7da44, #ffe082); border-bottom: 1px solid #e8d15a; }
-            .needify-header #mainNav .mobile-menu-title { margin: 0; color: #292b20; font-size: 19px; font-weight: 700; }
-            .needify-header #mainNav .mobile-menu-heading .btn { display: flex; align-items: center; justify-content: center; width: 40px; min-height: 40px; padding: 0; border: 1px solid rgba(80,68,10,.16); border-radius: 10px; background: rgba(255,255,255,.6); font-size: 18px !important; text-decoration: none; }
-            .needify-header #mainNav .mobile-menu-categories { margin: 0 !important; }
-            .needify-header #mainNav .navbar-nav { display: block; float: none !important; width: 100%; margin: 0; padding: 0; list-style: none; }
-            .needify-header #mainNav .navbar-nav:empty { display: none; }
-            .needify-header #mainNav .nav > li { display: block; float: none; width: 100%; margin: 0 0 6px; padding: 0 !important; border-bottom: 1px solid #f0f0e9; }
-            .needify-header #mainNav .nav > li > a { display: flex; align-items: center; justify-content: space-between; gap: 12px; float: none; width: 100%; height: auto; min-height: 48px; margin: 0; padding: 13px 12px !important; border-radius: 9px; color: #30352b !important; background: transparent; font-size: 15px !important; font-weight: 600; line-height: 1.5; text-transform: none; white-space: normal; overflow-wrap: anywhere; text-decoration: none; }
-            .needify-header #mainNav .nav > li > a:hover, .needify-header #mainNav .nav > li > a:focus, .needify-header #mainNav .nav > li.open > a { background: #fff7d6; color: #3c451f !important; }
-            .needify-header #mainNav .nav > li > a .caret { flex: 0 0 auto; margin: 0 3px 0 0; color: #777b69; }
-            .needify-header #mainNav .dropdown-menu { position: static !important; float: none !important; inset: auto !important; transform: none !important; width: 100% !important; min-width: 0; max-width: 100%; margin: 0 0 10px !important; padding: 6px 12px 10px; border: 0; border-radius: 10px; background: #f7f8f3; box-shadow: none; }
-            .needify-header #mainNav .dropdown-menu > li { float: none !important; width: 100% !important; min-width: 0; margin: 0; padding: 0; }
-            .needify-header #mainNav .dropdown-menu ul { display: block; margin: 0; padding: 0; list-style: none; }
-            .needify-header #mainNav .dropdown-menu ul > li { display: block; float: none; padding: 0; margin: 0; }
-            .needify-header #mainNav .dropdown-menu .dropdown-header { padding: 14px 8px 6px !important; color: #617243 !important; font-size: 12px; font-weight: 700; line-height: 1.5; letter-spacing: .5px; text-transform: uppercase; white-space: normal; overflow-wrap: anywhere; }
-            .needify-header #mainNav .dropdown-menu a { display: block; min-height: 44px; margin: 0 0 0 8px; padding: 11px 12px; border-left: 2px solid #dfe5d2; border-radius: 0 7px 7px 0; color: #454b3f; font-size: 14px; font-weight: 400; line-height: 1.6; text-align: left; text-transform: none; text-decoration: none; white-space: normal; overflow-wrap: anywhere; }
-            .needify-header #mainNav .dropdown-menu a:hover, .needify-header #mainNav .dropdown-menu a:focus { color: #365426; background: #eaf0df; border-left-color: #84a453; }
-            .needify-header #mainNav .mobile-menu-actions { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px !important; margin-top: 20px !important; padding-top: 18px; border-top: 1px solid #e8ebdf; }
-            .needify-header #mainNav .mobile-menu-actions > .btn, .needify-header #mainNav .mobile-menu-actions > div { min-width: 0; margin: 0; }
-            .needify-header #mainNav .mobile-menu-actions > div.btn { padding: 0; }
-            .needify-header #mainNav .mobile-menu-actions .btn { width: 100%; min-height: 44px; padding: 12px 8px; font-size: 13px; line-height: 1.4; white-space: normal; }
-            .needify-header #mainNav .mobile-menu-actions > div > .btn { border: 0; }
+            .needify-header #mainNav {
+                top: 0;
+                left: 0;
+                height: 100vh !important;
+                height: 100dvh !important;
+                max-height: 100dvh;
+                margin: 0 !important;
+                width: min(360px, 92vw);
+                padding: 0 16px 24px;
+                border: 0;
+                border-radius: 0 18px 18px 0;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                overscroll-behavior: contain;
+                box-shadow: 8px 0 32px rgba(0,0,0,.18);
+                text-align: left;
+            }
+
+                .needify-header #mainNav .mobile-menu-heading {
+                    position: sticky;
+                    top: 0;
+                    z-index: 2;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between !important;
+                    gap: 12px;
+                    margin: 0 -16px 16px;
+                    padding: 14px 16px;
+                    background: linear-gradient(90deg, #f7da44, #ffe082);
+                    border-bottom: 1px solid #e8d15a;
+                }
+
+                .needify-header #mainNav .mobile-menu-title {
+                    margin: 0;
+                    color: #292b20;
+                    font-size: 19px;
+                    font-weight: 700;
+                }
+
+                .needify-header #mainNav .mobile-menu-heading .btn {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    min-height: 40px;
+                    padding: 0;
+                    border: 1px solid rgba(80,68,10,.16);
+                    border-radius: 10px;
+                    background: rgba(255,255,255,.6);
+                    font-size: 18px !important;
+                    text-decoration: none;
+                }
+
+                .needify-header #mainNav .mobile-menu-categories {
+                    margin: 0 !important;
+                }
+
+                .needify-header #mainNav .navbar-nav {
+                    display: block;
+                    float: none !important;
+                    width: 100%;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+
+                    .needify-header #mainNav .navbar-nav:empty {
+                        display: none;
+                    }
+
+                .needify-header #mainNav .nav > li {
+                    display: block;
+                    float: none;
+                    width: 100%;
+                    margin: 0 0 6px;
+                    padding: 0 !important;
+                    border-bottom: 1px solid #f0f0e9;
+                }
+
+                    .needify-header #mainNav .nav > li > a {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        gap: 12px;
+                        float: none;
+                        width: 100%;
+                        height: auto;
+                        min-height: 48px;
+                        margin: 0;
+                        padding: 13px 12px !important;
+                        border-radius: 9px;
+                        color: #30352b !important;
+                        background: transparent;
+                        font-size: 15px !important;
+                        font-weight: 600;
+                        line-height: 1.5;
+                        text-transform: none;
+                        white-space: normal;
+                        overflow-wrap: anywhere;
+                        text-decoration: none;
+                    }
+
+                        .needify-header #mainNav .nav > li > a:hover, .needify-header #mainNav .nav > li > a:focus, .needify-header #mainNav .nav > li.open > a {
+                            background: #fff7d6;
+                            color: #3c451f !important;
+                        }
+
+                        .needify-header #mainNav .nav > li > a .caret {
+                            flex: 0 0 auto;
+                            margin: 0 3px 0 0;
+                            color: #777b69;
+                        }
+
+                .needify-header #mainNav .dropdown-menu {
+                    position: static !important;
+                    float: none !important;
+                    inset: auto !important;
+                    transform: none !important;
+                    width: 100% !important;
+                    min-width: 0;
+                    max-width: 100%;
+                    margin: 0 0 10px !important;
+                    padding: 6px 12px 10px;
+                    border: 0;
+                    border-radius: 10px;
+                    background: #f7f8f3;
+                    box-shadow: none;
+                }
+
+                    .needify-header #mainNav .dropdown-menu > li {
+                        float: none !important;
+                        width: 100% !important;
+                        min-width: 0;
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    .needify-header #mainNav .dropdown-menu ul {
+                        display: block;
+                        margin: 0;
+                        padding: 0;
+                        list-style: none;
+                    }
+
+                        .needify-header #mainNav .dropdown-menu ul > li {
+                            display: block;
+                            float: none;
+                            padding: 0;
+                            margin: 0;
+                        }
+
+                    .needify-header #mainNav .dropdown-menu .dropdown-header {
+                        padding: 14px 8px 6px !important;
+                        color: #617243 !important;
+                        font-size: 12px;
+                        font-weight: 700;
+                        line-height: 1.5;
+                        letter-spacing: .5px;
+                        text-transform: uppercase;
+                        white-space: normal;
+                        overflow-wrap: anywhere;
+                    }
+
+                    .needify-header #mainNav .dropdown-menu a {
+                        display: block;
+                        min-height: 44px;
+                        margin: 0 0 0 8px;
+                        padding: 11px 12px;
+                        border-left: 2px solid #dfe5d2;
+                        border-radius: 0 7px 7px 0;
+                        color: #454b3f;
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: 1.6;
+                        text-align: left;
+                        text-transform: none;
+                        text-decoration: none;
+                        white-space: normal;
+                        overflow-wrap: anywhere;
+                    }
+
+                        .needify-header #mainNav .dropdown-menu a:hover, .needify-header #mainNav .dropdown-menu a:focus {
+                            color: #365426;
+                            background: #eaf0df;
+                            border-left-color: #84a453;
+                        }
+
+                .needify-header #mainNav .mobile-menu-actions {
+                    display: grid !important;
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                    gap: 10px !important;
+                    margin-top: 20px !important;
+                    padding-top: 18px;
+                    border-top: 1px solid #e8ebdf;
+                }
+
+                    .needify-header #mainNav .mobile-menu-actions > .btn, .needify-header #mainNav .mobile-menu-actions > div {
+                        min-width: 0;
+                        margin: 0;
+                    }
+
+                        .needify-header #mainNav .mobile-menu-actions > div.btn {
+                            padding: 0;
+                        }
+
+                    .needify-header #mainNav .mobile-menu-actions .btn {
+                        width: 100%;
+                        min-height: 44px;
+                        padding: 12px 8px;
+                        font-size: 13px;
+                        line-height: 1.4;
+                        white-space: normal;
+                    }
+
+                    .needify-header #mainNav .mobile-menu-actions > div > .btn {
+                        border: 0;
+                    }
         }
     </style>
 
+<link rel="stylesheet" href="../Css/marketplace.css?v=4" />
 </head>
 
 
-<body >
+<body><a class="mn-skip" href="#main-content">Skip to content</a>
     <form id="form1" runat="server">
 
 
@@ -1755,12 +2336,12 @@ margin-left: 0px;                    font-size: 13px;
         <!-- MOBILE TOPBAR -->
         <div class="mobile-topbar d-lg-none w-100 d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <button class="navbar-toggler me-2" type="button" data-mn-drawer aria-label="Browse categories">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand" href="#">
-                    <%--<img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">--%>
-                    <img src="../Images/system/mylogo.png" width="80" alt="Logo">
+                <a class="navbar-brand" href="index.aspx">
+                    <%--<img src="../Images/System/mylogoo.PNG" width="80" alt="MyNeedify">--%>
+                    <img src="../Images/system/mylogo.png" width="80" alt="MyNeedify">
                 </a>
             </div>
 
@@ -1773,7 +2354,7 @@ margin-left: 0px;                    font-size: 13px;
         <!-- LOGGED IN USER -->
         <div id="LoggedinUser" style="display:none;">
             <div class="dropdown">
-                <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-bs-toggle="dropdown">
+                <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-toggle="dropdown">
                     <i class="bi bi-person"></i>
                     <span id="lblUserName"></span>
                 </span>
@@ -1785,15 +2366,13 @@ margin-left: 0px;                    font-size: 13px;
             </div>
         </div>
 
-        <div><i class="bi bi-heart"></i>Wishlist</div>
-        <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
+        <div><a href="Wishlist.aspx" aria-label="Wishlist"><i class="bi bi-heart" aria-hidden="true"></i><span class="d-none d-lg-inline">Wishlist</span></a></div>
+        <div><a href="#" onclick="OpenCart(); return false;" aria-label="Open cart"><i class="bi bi-bag" aria-hidden="true"></i><span class="d-none d-lg-inline">Cart</span><span class="Cart-Counter" aria-live="polite" style="display:none"></span></a></div>
        
 
         <!-- NOTIFICATION -->
 <div class="dropdown">
-    <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown">
-        <i class="bi bi-bell"></i>
-    </span>
+    <button type="button" class="mn-icon-button dropdown-toggle" data-toggle="dropdown" aria-label="Notifications" aria-expanded="false"><i class="bi bi-bell" aria-hidden="true"></i></button>
 
     <div class="dropdown-menu  mt-2 " style="width:250px;" id="divNotificationsMobile" runat="server">
               <%--<a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
@@ -1808,17 +2387,17 @@ margin-left: 0px;                    font-size: 13px;
 
 
         <!-- DESKTOP LOGO -->
-        <a class="navbar-brand d-none d-lg-block" href="#">
-                    <%--<img src="../Images/System/mylogoo.PNG" width="80" alt="Logo">--%>
-                    <img src="../Images/system/mylogo.png" width="80" alt="Logo">
+        <a class="navbar-brand d-none d-lg-block" href="index.aspx">
+                    <%--<img src="../Images/System/mylogoo.PNG" width="80" alt="MyNeedify">--%>
+                    <img src="../Images/system/mylogo.png" width="80" alt="MyNeedify">
         </a>
 
-        <!-- SEARCH BAR -->
+        <button type="button" class="mn-address" data-toggle="modal" data-target="#addPass" aria-label="Change delivery address"><i class="bi bi-geo-alt" aria-hidden="true"></i><span><small>Delivering to</small><strong id="mn-address-label">Choose your address</strong></span><span>Change</span></button><!-- SEARCH BAR -->
         <div class="search-box mx-auto d-none d-lg-flex align-items-center border rounded-pill px-3"
              style="max-width: 600px; width:100%; height:40px;">
-            <i class="bi bi-search me-2 text-secondary" onclick="Search();"></i>
-            <input type="text" class="form-control border-0 shadow-none" id="txtGlobalSearch"
-                   placeholder="Search for products, brands and more" onkeydown="if (event.key === 'Enter') { event.preventDefault(); Search(); }">
+            <button type="button" class="mn-search-submit" onclick="mnSearch('txtGlobalSearch')" aria-label="Search"><i class="bi bi-search" aria-hidden="true"></i></button>
+            <input type="text" class="form-control border-0 shadow-none" id="txtGlobalSearch" enterkeyhint="search"
+                   aria-label="Search products and services" placeholder="Search products, services and more" onkeydown="if (event.key === 'Enter') { event.preventDefault(); mnSearch('txtGlobalSearch'); }">
         </div>
 
         <!-- DESKTOP RIGHT ICONS -->
@@ -1826,18 +2405,14 @@ margin-left: 0px;                    font-size: 13px;
 
           
 
-            <div><i class="bi bi-heart"></i>Wishlist</div>
-            <div><a href="#" onclick="OpenCart();"><i class="bi bi-bag"></i>Bag</a></div>
+            <div><a href="Wishlist.aspx" aria-label="Wishlist"><i class="bi bi-heart" aria-hidden="true"></i><span class="d-none d-lg-inline">Wishlist</span></a></div>
+            <div><a href="#" onclick="OpenCart(); return false;" aria-label="Open cart"><i class="bi bi-bag" aria-hidden="true"></i><span class="d-none d-lg-inline">Cart</span><span class="Cart-Counter" aria-live="polite" style="display:none"></span></a></div>
 
-<div> <a href="#" data-toggle="modal" data-target="#addPass"; style="color: #39f;">
-       <i class="bi bi-geo-alt"></i> 
-Address</a></div>
+
 
             <!-- NOTIFICATION ICON -->
 <div class="dropdown">
-    <span class="dropdown-toggle" style="cursor:pointer;" data-bs-toggle="dropdown">
-        <i class="bi bi-bell"></i>
-    </span>
+    <button type="button" class="mn-icon-button dropdown-toggle" data-toggle="dropdown" aria-label="Notifications" aria-expanded="false"><i class="bi bi-bell" aria-hidden="true"></i></button>
 
     <div class="dropdown-menu  mt-2" style="width:250px;" id="divNotificationsDesktop" runat="server">
          <%--<a href="../Pages/NewHire.aspx" class="dropdown-item">New Nofification 1</a>
@@ -1861,7 +2436,7 @@ Address</a></div>
                   <!-- LOGGED IN USER -->
   <div id="LoggedinUser" style="display:none;">
       <div class="dropdown">
-          <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-bs-toggle="dropdown">
+          <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-toggle="dropdown">
               <i class="bi bi-person"></i>
               <span id="lblUserName"></span>
           </span>
@@ -1886,17 +2461,17 @@ Address</a></div>
 
         <!-- MOBILE SEARCH -->
         <div class="search-box d-flex align-items-center mt-3 border rounded-pill px-3 d-lg-none">
-            <i class="bi bi-search me-2 text-secondary"></i>
-            <input type="text" onclick="Search();" class="form-control border-0 shadow-none"
-                   placeholder="Search for products, brands and more">
+            <button type="button" class="mn-search-submit" onclick="mnSearch('mnMobileSearch')" aria-label="Search"><i class="bi bi-search" aria-hidden="true"></i></button>
+            <input type="search" id="mnMobileSearch" enterkeyhint="search" onkeydown="if(event.key === 'Enter'){event.preventDefault();mnSearch('mnMobileSearch');}" class="form-control border-0 shadow-none"
+                   aria-label="Search products and services" placeholder="Search products, services and more">
         </div>
 
         <!-- COLLAPSIBLE NAV (MOBILE) -->
         <div class="collapse navbar-collapse" id="mainNav">
 
             <div class="d-flex justify-content-end d-lg-none mobile-menu-heading">
-                <p class="mobile-menu-title">MyNeedify</p>
-                <button aria-label="Close menu" class="btn btn-link text-dark fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <p class="mobile-menu-title">Browse categories</p>
+                <button aria-label="Close menu" class="btn btn-link text-dark fs-4" type="button">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </div>
@@ -2029,81 +2604,33 @@ Address</a></div>
 
        
     <!-- Footer -->
-    <footer class="needify-footer" style="background-color: #212121; color: #fff;">
-        <div class="container py-5">
-                        <div class="footer-intro">
-                <div>
-                    <p class="footer-brand">My Needify<span style="color: #f7d000;">.</span></p>
-                    <p class="footer-description">Your everyday needs, all in one place.</p>
-                </div>
-                <span class="footer-tagline">Discover. Connect. Make life easier.</span>
-            </div>
-            <div class="row text-start footer-columns">
-                <!-- Column 1 -->
-                <div class="col-6 col-md-2 mb-3">
-                    <h6 class="fw-bold mb-3 footer-link" >MEN</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">T-Shirts</a></li>
-                        <li><a href="#" class="footer-link">Shirts</a></li>
-                        <li><a href="#" class="footer-link">Jeans</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 2 -->
-                <div class="col-6 col-md-2 mb-3">
-                    <h6 class="fw-bold mb-3 footer-link">WOMEN</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">Dresses</a></li>
-                        <li><a href="#" class="footer-link">Tops</a></li>
-                        <li><a href="#" class="footer-link">Kurtas</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 3 -->
-                <div class="col-6 col-md-2 mb-3">
-                    <h6 class="fw-bold mb-3 footer-link">KIDS</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">Boys Clothing</a></li>
-                        <li><a href="#" class="footer-link">Girls Clothing</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 4 -->
-                <div class="col-6 col-md-2 mb-3">
-                    <h6 class="fw-bold mb-3 footer-link">SUPPORT</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">Contact Us</a></li>
-                        <li><a href="#" class="footer-link">FAQ</a></li>
-                        <li><a href="#" class="footer-link">Shipping</a></li>
-                    </ul>
-                </div>
-
-                <!-- Column 5 -->
-                <div class="col-12 col-md-4 mb-3">
-                    <h6 class="fw-bold mb-3 footer-link">ABOUT US</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">Company Info</a></li>
-                        <li><a href="#" class="footer-link">Careers</a></li>
-                        <li><a href="#" class="footer-link">Terms & Conditions</a></li>
-                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-2 mb-3 footer-social">
-                <h6 style="font-size: 14px;">FOLLOW US</h6>
-                <div class="d-flex gap-2 mt-2">
-                    <a href="#" class="social-icon" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="social-icon" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
-                    <a href="#" class="social-icon" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="social-icon" aria-label="Youtube"><i class="bi bi-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer Bottom -->
-        <div class="text-center py-3 footer-bottom" style="background-color: #212121; color: #fff; font-size: 14px;     height: 100px;">
-            &copy; 2025 My Needify. All rights reserved.
+    <footer class="mn-footer">
+        <div class="mn-footer-inner">
+            <%--<div class="mn-footer-grid">--%>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <a href="index.aspx"><img src="../Images/System/mylogo.png" alt="MyNeedify" width="100" height="60" /></a>
+                        </div>
+                        <div class="col-md-3">
+                            Your everyday needs, all in one place. Discover local products, connect with skilled people and make life easier.
+                        </div>
+                        <div class="col-md-4">
+                            <h2>Get to know us</h2>
+                            <a href="AboutUs.aspx">About MyNeedify</a>
+                            <a href="ContactUs.aspx">Contact &amp; support</a>
+                        </div>
+                        <div class="col-md-4">
+                            <h2>For businesses</h2>
+                            <a href="../Pages/AddOrganization.aspx">Register your shop</a>
+                            <a href="../Pages/Login.aspx">Seller login</a>
+                            <a href="ContactUs.aspx">Partner with us</a>
+                            <a href="../Pages/RegistrationList.aspx">Find opportunities</a>
+                        </div>
+                        </div>
+                     </div>
+                <%--</div>--%>
+            <div class="mn-copyright">&copy; <%= DateTime.Now.Year %> MyNeedify. All rights reserved.</div>
         </div>
     </footer>
 
@@ -2655,26 +3182,26 @@ Address</a></div>
 
         if (otp.length === 4) {
             $.ajax({
-                    type: "POST",
-                    url: appURL+"Front/ForgotPassword.aspx/VerifyOtp",
-                    data: JSON.stringify({ email: email, otp: otp }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.d) {
-                            $("#otpModal").modal("hide");
-                                setTimeout(() => {
-                                    $("#setPasswordModal").modal("show");
-                                }, 400);
-                        } else {
-                            alert(response.d);
-                        }
-                    },
-                    error: function (err) {
-                        alert(err.responseText);
+                type: "POST",
+                url: appURL + "Front/ForgotPassword.aspx/VerifyOtp",
+                data: JSON.stringify({ email: email, otp: otp }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.d) {
+                        $("#otpModal").modal("hide");
+                        setTimeout(() => {
+                            $("#setPasswordModal").modal("show");
+                        }, 400);
+                    } else {
+                        alert(response.d);
                     }
-                });
-            
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                }
+            });
+
         } else {
             alert("Please enter all 4 digits.");
         }
@@ -2691,55 +3218,55 @@ Address</a></div>
             alert("Passwords do not match!");
         } else {
             $.ajax({
-        type: "POST",
-        url: appURL+"Front/ForgotPassword.aspx/SetPassword",
-        data: JSON.stringify({ email: email, password: newPass }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            if (response.d === "SUCCESS") {
-                alert("Password successfully set!");
-                $("#setPasswordModal").modal("hide");
-            }
-            else{
-                alert("Password change failed !");
-                $("#setPasswordModal").modal("hide");
-            }
-        },
-        error: function (err) {
-            alert(err.responseText);
-        }
-    });
-            
+                type: "POST",
+                url: appURL + "Front/ForgotPassword.aspx/SetPassword",
+                data: JSON.stringify({ email: email, password: newPass }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.d === "SUCCESS") {
+                        alert("Password successfully set!");
+                        $("#setPasswordModal").modal("hide");
+                    }
+                    else {
+                        alert("Password change failed !");
+                        $("#setPasswordModal").modal("hide");
+                    }
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                }
+            });
+
         }
     }
-function sendOtp() {
-    var email = $('[id$=forgotEmail]').val().trim();
-    //var email = $("#txtForgotEmail").val();
+    function sendOtp() {
+        var email = $('[id$=forgotEmail]').val().trim();
+        //var email = $("#txtForgotEmail").val();
 
-    if (!email) {
-        alert("Please enter email");
-        return;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: appURL+"Front/ForgotPassword.aspx/SendOtp",
-        data: JSON.stringify({ emailOrPhone: email }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            if (response.d === "SUCCESS") {
-                openOtpModal();
-            } else {
-                alert(response.d);
-            }
-        },
-        error: function (err) {
-            alert(err.responseText);
+        if (!email) {
+            alert("Please enter email");
+            return;
         }
-    });
-}
+
+        $.ajax({
+            type: "POST",
+            url: appURL + "Front/ForgotPassword.aspx/SendOtp",
+            data: JSON.stringify({ emailOrPhone: email }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                if (response.d === "SUCCESS") {
+                    openOtpModal();
+                } else {
+                    alert(response.d);
+                }
+            },
+            error: function (err) {
+                alert(err.responseText);
+            }
+        });
+    }
 
 </script>
 
@@ -2752,7 +3279,7 @@ function sendOtp() {
         <div class="Layout" style="display: none;"></div>
         <div id="myCart" style="background-color: #fff; height: 100%; width: 450px; position: fixed; top: 0px; right: 0px; z-index: 99999999; padding: 0px; border: 1px solid #ccc; display: none;">
             <div style="width: 100%; background-color: #7C519B; color: #fff; padding: 0px; height: 45px; padding-left: 40px; padding-top: 10px; padding-right: 20px; font-size: 22px;">
-                My Cart(<span id="CartCtr"></span>) <a href="#" onclick="CloseCart();"><i class="fa fa-close" style="float: right; font-size: 16px; color: #fff;"></i></a>
+                My Cart(<span id="CartCtr"></span>) <button type="button" onclick="CloseCart();" aria-label="Close cart" style="float:right; min-width:32px; min-height:32px; margin-top:-4px; border:0; background:transparent; color:#fff;"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
             </div>
             <div style="float: left; width: 100%; padding: 15px; margin-left: 10px;">
 
@@ -2871,7 +3398,7 @@ function sendOtp() {
                                 for (var i = 0; i < CartData.length; i++) {
                                     html += '<div class="row" style="margin-bottom: 30px;">';
                                     html += '<div class="col-md-5">';
-                                    html += '<img src="'+ appURL + '/Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
+                                    html += '<img src="' + appURL + '/Images/Items/' + CartData[i].ItemImage + '" class="img-thumbnail img-responsive" style="max-height: 150px;" />';
                                     html += '<p style="padding: 15px;text-align: center;empty-cells: hide;color: red;"><a href="#" style="color:red;text-decoration:none;" onClick="RemoveCartItem(' + CartData[i].CartId + ',this);">Remove</a><p>';
                                     html += '</div>';
                                     html += '<div class="col-md-7">';
@@ -2962,12 +3489,14 @@ function sendOtp() {
                     $('[id$=txtPassword1]').css('border', '1px solid #ccc');
                 }
                 if (flag) {
-                    //return true;
+                    var $signupButton = $('#myModalsignup [id$=btnSignup]');
+                    if ($signupButton.prop('disabled')) return false;
+                    $signupButton.prop('disabled', true).val('Please Wait');
                     $.ajax({
                         //url: "https://myneedify.com//Front/index.aspx/btnSignup",
-                        url: appURL+"Front/index.aspx/btnSignup",
-                        async: false,
-                        data: '{txtFirstName:"' + FName + '", txtLastName:"' + LName + '", txtMobile:"' + Mobile + '", txtEmail:"' + Email + '", txtPassword1:"' + Password + '"}',
+                        url: appURL + "Front/index.aspx/btnSignup",
+                        async: true,
+                        data: JSON.stringify({ txtFirstName: FName, txtLastName: LName, txtMobile: Mobile, txtEmail: Email, txtPassword1: Password }),
                         contentType: "application/json; charset=utf-8",
                         type: "POST", // data has to be Posted 
                         timeout: 120000,
@@ -2981,12 +3510,16 @@ function sendOtp() {
                                 alert('User created successfully.');
                                 window.location.href = window.location.href;
                             }
+                        },
+                        error: function () {
+                            alert('Unable to create your account. Please try again.');
+                        },
+                        complete: function () {
+                            $signupButton.prop('disabled', false).val('Submit');
                         }
                     });
                 }
-                else {
-                    return false;
-                }
+                return false;
             }
 
             function Search() {
@@ -3047,7 +3580,7 @@ function sendOtp() {
                 </h5>
 
                 <button class="btn-close" type="button" onclick="closeModal();"
-                        data-bs-dismiss="modal">
+                        data-dismiss="modal">
                 </button>
 
             </div>
@@ -3065,5 +3598,8 @@ function sendOtp() {
 </div>
 <!-- Bookings notification -->
     </form>
+<div id="mn-drawer-backdrop" class="mn-drawer-backdrop" hidden></div>
+<nav class="mn-bottom" aria-label="Mobile navigation"><a href="index.aspx"><i class="bi bi-house" aria-hidden="true"></i>Home</a><button type="button" data-mn-drawer><i class="bi bi-grid" aria-hidden="true"></i>Categories</button><a href="MyOrders.aspx"><i class="bi bi-receipt" aria-hidden="true"></i>Orders</a><button type="button" onclick="OpenCart()"><i class="bi bi-bag" aria-hidden="true"></i>Cart<span class="Cart-Counter" aria-live="polite" style="display:none"></span></button><button type="button" onclick="mnAccount()"><i class="bi bi-person" aria-hidden="true"></i>Account</button></nav>
+<script src="../Js/marketplace.js?v=4"></script>
 </body>
 </html>

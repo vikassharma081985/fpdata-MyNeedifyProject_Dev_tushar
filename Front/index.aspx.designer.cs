@@ -33,24 +33,6 @@ namespace FaduPrice.Front
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divWomenCollNoRecord;
 
         /// <summary>
-        /// litBullets control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litBullets;
-
-        /// <summary>
-        /// rptSlider control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptSlider;
-
-        /// <summary>
         /// rptMenCollection control.
         /// </summary>
         /// <remarks>
@@ -85,5 +67,23 @@ namespace FaduPrice.Front
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divElectronicsNoRecord;
+
+        /// <summary>
+        /// rptSlider control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptSlider;
+
+        /// <summary>
+        /// litBullets control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litBullets;
     }
 }
