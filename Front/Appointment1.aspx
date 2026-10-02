@@ -33,8 +33,10 @@
 </head>
 <body>
 <div class="container py-5">
-    <h2 class="text-center">Appointment Master</h2>
-
+    <div class="row">
+        <h5><a href="index.aspx">Home</a></h5>
+        <h2 class="text-center">Appointment Master</h2>
+    </div>
     <!-- STAFF -->
     <div class="card mb-4 shadow-sm">
         <div class="card-header">Add Barber</div>

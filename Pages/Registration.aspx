@@ -176,7 +176,7 @@
     <body class="bg-light">
         <form id="form1" runat="server" enctype="multipart/form-data" class="container py-4">
             <asp:HiddenField ID="hdnUserId" runat="server" />
-
+            <h5><a href="../Front/index.aspx">Home</a></h5>
             <div class="card">
                 <div class="card-header text-white d-flex justify-content-between align-items-center"
                     style="background-color: #F48B1E">
