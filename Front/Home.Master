@@ -2318,7 +2318,7 @@ type="button"
         }
     </style>
 
-<link rel="stylesheet" href="../Css/marketplace.css?v=4" />
+<link rel="stylesheet" href="../Css/marketplace.css?v=6" />
 </head>
 
 
@@ -2352,16 +2352,18 @@ type="button"
     <div class="right-icons d-flex align-items-center gap-3">
 
         <!-- LOGGED IN USER -->
-        <div id="LoggedinUser" style="display:none;">
-            <div class="dropdown">
-                <span class="dropdown-toggle" style="cursor:pointer; font-weight:600;" data-toggle="dropdown">
-                    <i class="bi bi-person"></i>
-                    <span id="lblUserName"></span>
-                </span>
+        <div id="mobileNotLoggedIn">
+            <button type="button" class="mn-icon-button" onclick="OpenLogin()" aria-label="Login/Signup" title="Login/Signup"><i class="bi bi-person" aria-hidden="true"></i></button>
+        </div>
+        <div id="mobileLoggedinUser" style="display:none;">
+            <div class="mn-mobile-account">
+                <button type="button" class="mn-icon-button dropdown-toggle" data-toggle="dropdown" aria-label="My account" title="My account" aria-expanded="false">
+                    <i class="bi bi-person" aria-hidden="true"></i>
+                </button>
                 <div class="dropdown-menu mt-2 shadow-sm">
                     <a class="dropdown-item" href="/Front/MyAccount.aspx">My Account</a>
                     <a class="dropdown-item" href="/Front/MyOrders.aspx">My Orders</a>
-                    <a class="dropdown-item" href="#" id="lnkLogout2" onclick="return lnkLogout_ClickNew();">Logout</a>
+                    <a class="dropdown-item" href="#" id="mobileLogout" onclick="return lnkLogout_ClickNew();">Logout</a>
                 </div>
             </div>
         </div>
@@ -2497,15 +2499,9 @@ Address</a></div>
      <a href="../Pages/UserDashboard.aspx" target="_blank" class="btn btn-login btn-sm">Seller</a>
  </div>
 
-                 <div class="btn btn-seller btn-sm" id="NotLoggedIn">
-     <button class="btn btn-seller btn-sm" type="button" onclick="OpenLogin()">Login/Signup</button>
- </div>
                 <%--<a href="../Pages/Login.aspx" target="_blank" class="btn btn-admin btn-sm">Admin-Login</a>
                 <a href="../Pages/Login.aspx" target="_blank" class="btn btn-seller btn-sm">Seller-Login</a>--%>
 
-                <div id="logoutMobileSection" style="display:none;">
-                    <button class="btn btn-login btn-sm" type="button" onclick="logoutUser()">Logout</button>
-                </div>
             </div>
 
         </div>
@@ -2627,7 +2623,12 @@ Address</a></div>
                             <a href="ContactUs.aspx">Partner with us</a>
                             <a href="../Pages/RegistrationList.aspx">Find opportunities</a>
                         </div>
-                        </div>
+                    </div>
+                    <div class="mn-footer-links">
+                        <a href="../TermsAndConditions.aspx">Term and condition</a>
+                        <a href="../PrivacyPolicy.aspx">Privacy policy</a>
+                        <a href="../Careers.aspx">Careers</a>
+                    </div>
                      </div>
                 <%--</div>--%>
             <div class="mn-copyright">&copy; <%= DateTime.Now.Year %> MyNeedify. All rights reserved.</div>
@@ -3600,6 +3601,6 @@ Address</a></div>
     </form>
 <div id="mn-drawer-backdrop" class="mn-drawer-backdrop" hidden></div>
 <nav class="mn-bottom" aria-label="Mobile navigation"><a href="index.aspx"><i class="bi bi-house" aria-hidden="true"></i>Home</a><button type="button" data-mn-drawer><i class="bi bi-grid" aria-hidden="true"></i>Categories</button><a href="MyOrders.aspx"><i class="bi bi-receipt" aria-hidden="true"></i>Orders</a><button type="button" onclick="OpenCart()"><i class="bi bi-bag" aria-hidden="true"></i>Cart<span class="Cart-Counter" aria-live="polite" style="display:none"></span></button><button type="button" onclick="mnAccount()"><i class="bi bi-person" aria-hidden="true"></i>Account</button></nav>
-<script src="../Js/marketplace.js?v=6"></script>
+<script src="../Js/marketplace.js?v=7"></script>
 </body>
 </html>

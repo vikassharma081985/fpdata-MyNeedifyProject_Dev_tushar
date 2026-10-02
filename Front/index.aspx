@@ -100,18 +100,18 @@
         <section class="mn-section" id="more-products">
             <div class="mn-section-head">
                 <h2>More to discover</h2>
-                <a href="front/Search.aspx?Search=Apparels">View all &rarr;</a>
+                <a href='<%= ResolveUrl("~/Front/Search.aspx?Search=Apparels") %>'>View all &rarr;</a>
             </div>
             <div class="mn-product-grid">
                 <asp:Repeater ID="rptMenCollection" runat="server">
                     <itemtemplate>
                         <article class="mn-product">
-                            <a class="mn-product-image" href='<%# "ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+                            <a class="mn-product-image" href='<%# ResolveUrl("~/Front/ItemDescription.aspx") + "?ItemId=" + Eval("ItemId") %>'>
                                 <img loading="lazy" decoding="async" width="240" height="200" onerror="this.onerror=null;this.src='../Images/System/products.png';" src='<%# "../Images/Items/" + HttpUtility.HtmlAttributeEncode(Convert.ToString(Eval("ImageName"))) %>' alt='<%# HttpUtility.HtmlAttributeEncode(Convert.ToString(Eval("ItemName"))) %>' />
                             </a>
                             <div class="mn-product-info">
                                 <h3>
-                                    <a href='<%# "ItemDescription.aspx?ItemId=" + Eval("ItemId") %>'>
+                                    <a href='<%# ResolveUrl("~/Front/ItemDescription.aspx") + "?ItemId=" + Eval("ItemId") %>'>
                                         <%#: Eval("ItemName") %>
                                     </a>
                                 </h3>
@@ -123,7 +123,7 @@
                                         <del>&#8377; <%#: Eval("ItemPrice") %>
                                         </del>
                                     </div>
-                                    <a class="mn-add" href='<%# "ItemDescription.aspx?ItemId=" + Eval("ItemId") %>' aria-label='<%# "Choose options for " + HttpUtility.HtmlAttributeEncode(Convert.ToString(Eval("ItemName"))) %>'>View options</a>
+                                    <a class="mn-add" href='<%# ResolveUrl("~/Front/ItemDescription.aspx") + "?ItemId=" + Eval("ItemId") %>' aria-label='<%# "Choose options for " + HttpUtility.HtmlAttributeEncode(Convert.ToString(Eval("ItemName"))) %>'>View options</a>
                                 </div>
                             </div>
                         </article>

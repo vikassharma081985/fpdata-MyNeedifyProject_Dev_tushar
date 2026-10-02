@@ -99,7 +99,7 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(-
 .mn-address>span:last-child{margin-left:auto}
 .needify-header .mobile-topbar{order:0}
 .needify-header .search-box.d-lg-none{order:2;margin-top:4px!important}
-.needify-header .mobile-topbar [id$=LoggedinUser]{display:none!important}
+.needify-header .mobile-topbar [id$=LoggedinUser] .dropdown-menu{left:auto;right:0}
 .needify-header .mobile-right .right-icons{gap:18px!important}
 .needify-header #mainNav{position:fixed!important;z-index:1040}
 .mn-bottom{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:1028;justify-content:space-around;background:#fff;border-top:1px solid var(--mn-border);padding:5px 8px calc(5px + env(safe-area-inset-bottom));transition:transform .22s;box-shadow:0 -4px 18px #203e3108}
@@ -284,3 +284,13 @@ html{scroll-behavior:auto!important}
 .modal.in { opacity:1; }
 .modal-backdrop.in { opacity:.5; }
 .modal .modal-dialog { margin:30px auto; max-width:calc(100% - 24px); }
+
+/* Keep the mobile account menu on Bootstrap's tap-controlled path. */
+@media (max-width:991.98px) {
+  .needify-header .mn-mobile-account.open > .dropdown-menu { display:block; }
+}
+.mn-footer-links { display:flex; flex-wrap:nowrap; align-items:center; gap:16px; margin-top:20px; }
+.mn-footer-links > a { white-space:nowrap; }
+@media (max-width:575px) {
+  .mn-footer-links { gap:12px; font-size:12px; }
+}
