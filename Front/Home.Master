@@ -3600,6 +3600,6 @@ Address</a></div>
     </form>
 <div id="mn-drawer-backdrop" class="mn-drawer-backdrop" hidden></div>
 <nav class="mn-bottom" aria-label="Mobile navigation"><a href="index.aspx"><i class="bi bi-house" aria-hidden="true"></i>Home</a><button type="button" data-mn-drawer><i class="bi bi-grid" aria-hidden="true"></i>Categories</button><a href="MyOrders.aspx"><i class="bi bi-receipt" aria-hidden="true"></i>Orders</a><button type="button" onclick="OpenCart()"><i class="bi bi-bag" aria-hidden="true"></i>Cart<span class="Cart-Counter" aria-live="polite" style="display:none"></span></button><button type="button" onclick="mnAccount()"><i class="bi bi-person" aria-hidden="true"></i>Account</button></nav>
-<script src="../Js/marketplace.js?v=4"></script>
+<script src="../Js/marketplace.js?v=6"></script>
 </body>
 </html>

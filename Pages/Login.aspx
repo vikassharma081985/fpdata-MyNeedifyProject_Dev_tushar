@@ -38,7 +38,7 @@ img[src*="mylogo.png"] {
 
                         <!-- Mobile logo (shown only on mobile) -->
                         <div class="text-center p-3 d-block d-md-none" style="position:relative;">
-                            <img src="../Js/Snowflakes/Christmas-Hat-PNG-Image.png" class="img-fluid" style="max-height:60px; position:absolute; top:0; left:35%;" />
+                            <img src="../Js/Snowflakes/Christmas-Hat-PNG-Image.png" class="img-fluid" style="max-height:60px; position:absolute; top:0; left:35%; display:none;" />
                             <img src="../Images/system/mylogo.png" class="img-fluid mt-4" style="max-width:120px;">
                         </div>
 
@@ -68,16 +68,16 @@ img[src*="mylogo.png"] {
                             <!-- Logo & Address (hidden logo on mobile, visible on desktop) -->
                             <div class="col-12 col-md-6 text-center p-4 order-2 order-md-1">
                                 <div style="position:relative;" class="d-none d-md-block">
-                                    <img src="../Js/Snowflakes/Christmas-Hat-PNG-Image.png" class="img-fluid" style="max-height:100px; position:absolute; top:0; left:20%;" />
+                                    <img src="../Js/Snowflakes/Christmas-Hat-PNG-Image.png" class="img-fluid" style="max-height:100px; position:absolute; top:0; left:20%; display:none;" />
                                     <img src="../Images/system/mylogo.png" class="img-fluid mt-4" style="max-width:200px;">
                                 </div>
                                 <hr />
                                 <div class="text-start mt-3" style="font-size:14px;">
-                                    <p>
+                                    <%--<p>
                                         <strong>Address:</strong> Rahul Collection, VPO Rehan, Teh Fatehpur, Distt. Kangra (H.P.) Pin code - 176022 <br />
                                         <strong>Phone:</strong> 9650362525 <br />
                                         <strong>Email:</strong> rahulrocker88@gmail.com
-                                    </p>
+                                    </p>--%>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@ img[src*="mylogo.png"] {
 
         <%-- Validation Script --%>
         <script>
-            var appURL = "http://localhost:46692/";
+            var appURL = "https://myneedify.com/";
             function Validate() {
                 var User = $('[id$=txtLogin]').val().trim();
                 var Pwd = $('[id$=txtPassword]').val().trim();
