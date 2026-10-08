@@ -65,5 +65,13 @@ namespace WSBillingMaster.Pages {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rptItems;
+
+        protected global::System.Web.UI.WebControls.Label lblItemEmpty;
+        protected global::System.Web.UI.WebControls.Panel pnlItemPager;
+        protected global::System.Web.UI.WebControls.Button btnItemFirst;
+        protected global::System.Web.UI.WebControls.Button btnItemPrevious;
+        protected global::System.Web.UI.WebControls.Label lblItemPage;
+        protected global::System.Web.UI.WebControls.Button btnItemNext;
+        protected global::System.Web.UI.WebControls.Button btnItemLast;
     }
 }

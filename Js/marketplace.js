@@ -2,7 +2,7 @@
 (function () {
     'use strict';
     var categories = [
-        ['Grocery', 'basket2', '../Front/Search.aspx?SubSubCategory=3', 'essentials'], ['Saloon', 'scissors', '../Front/Appointment1.aspx', 'services'],
+        ['Grocery', 'basket2', '../Front/Search.aspx?SubSubCategory=3', 'essentials'], ['Saloon', 'scissors', '../Front/AppointmentMaster.aspx', 'services'],
         ['Ladies Accessories', 'handbag', '../Front/Search.aspx?SubSubCategory=7', ''], ['Home Decor', 'house-heart', '../Front/Search.aspx?SubSubCategory=10010', 'local'], ['Jobs', 'briefcase', '../Pages/Registration.aspx', ''],
         ['Home Services', 'tools', '../Pages/Job.aspx', 'services'], ['Skilled Services', 'person-gear', '../Pages/Job.aspx', 'services'], ['Desi Products', 'flower1', '../Front/Search.aspx?SubSubCategory=10005', 'local'],
         ['Home Essentials', 'house', '../Front/Search.aspx?SubSubCategory=10012', 'essentials'],

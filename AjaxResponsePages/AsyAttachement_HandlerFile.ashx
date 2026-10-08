@@ -21,6 +21,11 @@ public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
 
         try
         {
+            if (callFor == "ItemImages")
+            {
+                ProcessItemImages(context);
+                return;
+            }
             if (context.Request.Files.Count > 0)
             {
                 HttpFileCollection files = context.Request.Files;
@@ -179,6 +184,66 @@ public class AsyAttachement_HandlerFile : IHttpHandler, IReadOnlySessionState
             context.Response.Write("Upload failed on server: " + ex.Message);
         }
     }
+    private void ProcessItemImages(HttpContext context)
+    {
+        int itemId;
+        string action = context.Request["action"] ?? "List";
+        if (!int.TryParse(context.Request["ItemId"], out itemId) || itemId <= 0 ||
+            (action != "List" && action != "Add" && action != "Remove"))
+            throw new InvalidOperationException("Invalid item image request.");
+        if (action != "List" && context.Request.HttpMethod != "POST")
+            throw new InvalidOperationException("Image changes require POST.");
+        string savedPath = null;
+        using (BusinessLogicLayer bll = new BusinessLogicLayer())
+        {
+            bll.ItemId = itemId;
+            if (action == "Add")
+            {
+                if (context.Request.Files.Count != 1 || context.Request.Files[0].ContentLength == 0)
+                    throw new InvalidOperationException("Select an image.");
+                HttpPostedFile file = context.Request.Files[0];
+                string ext = System.IO.Path.GetExtension(file.FileName).ToLowerInvariant();
+                if (ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif")
+                    throw new InvalidOperationException("Only JPG, PNG and GIF images are allowed.");
+                using (System.Drawing.Image image = System.Drawing.Image.FromStream(file.InputStream))
+                {
+                    if (!image.RawFormat.Equals(ImageFormat.Jpeg) && !image.RawFormat.Equals(ImageFormat.Png) && !image.RawFormat.Equals(ImageFormat.Gif))
+                        throw new InvalidOperationException("Invalid image content.");
+                }
+                file.InputStream.Position = 0;
+                bll.ImageName = itemId + "_" + Guid.NewGuid().ToString("N") + ext;
+                string directory = context.Server.MapPath("~/Images/Items/");
+                Directory.CreateDirectory(directory);
+                savedPath = System.IO.Path.Combine(directory, bll.ImageName);
+                file.SaveAs(savedPath);
+            }
+            else if (action == "Remove")
+            {
+                bll.ImageName = context.Request["ImageName"];
+                if (string.IsNullOrEmpty(bll.ImageName)) throw new InvalidOperationException("Select an image to remove.");
+            }
+            try
+            {
+                using (DataTable images = bll.ManageItemImages(action))
+                {
+                    var result = new System.Collections.Generic.List<object>();
+                    foreach (DataRow row in images.Rows)
+                    {
+                        string name = Convert.ToString(row["ImageName"]);
+                        result.Add(new { ImageName = name, Url = VirtualPathUtility.ToAbsolute("~/Images/Items/") + Uri.EscapeDataString(name) });
+                    }
+                    context.Response.ContentType = "application/json";
+                    context.Response.Write(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(result));
+                }
+            }
+            catch
+            {
+                if (savedPath != null && File.Exists(savedPath)) File.Delete(savedPath);
+                throw;
+            }
+        }
+    }
+
     private string GetUniqueName(string extension)
     {
         return DateTime.Now.ToString("yyyyMMddHHmmssfff")

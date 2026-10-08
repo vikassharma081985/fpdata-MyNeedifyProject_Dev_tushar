@@ -105,11 +105,14 @@
 
                         </div>
                         <div class="col-md-2" style="padding: 5px; padding-left: 15px; text-align: center;">
-                            <asp:FileUpload ID="fuImage" runat="server" onchange="FileChange(this);" />
+                            <asp:FileUpload ID="fuImage" runat="server" AllowMultiple="true" accept="image/jpeg,image/png,image/gif" onchange="FileChange(this);" />
                             <input type="hidden" id="hdnItemId" value='<%#Eval("ItemId") %>' />
                         </div>
                         <div class="col-md-3" style="padding: 5px; padding-left: 15px; text-align: center;">
-                            <img id="ImgPreView" style="height: 50px; width: 50px;" src='<%#Eval("ItemImage") %>' />
+                            <div class="item-images" data-item-id='<%#Eval("ItemId") %>' data-images='<%#GetItemImages(Eval("ItemId")) %>'>
+                                <img style="height: 50px; width: 50px;" src='<%#Eval("ItemImage") %>' />
+                            </div>
+                            <span class="item-image-status" role="status"></span>
 
                         </div>
 
@@ -117,6 +120,14 @@
                 </ItemTemplate>
             </asp:Repeater>
         </div>
+        <asp:Label ID="lblItemEmpty" runat="server" Text="No items found." Visible="false" Style="display: block; padding: 10px;" />
+        <asp:Panel ID="pnlItemPager" runat="server" Visible="false" Style="clear: both; padding: 10px; text-align: center;">
+            <asp:Button ID="btnItemFirst" runat="server" Text="First" CommandArgument="First" OnCommand="ItemPage_Command" CausesValidation="false" CssClass="btn btn-default" />
+            <asp:Button ID="btnItemPrevious" runat="server" Text="Previous" CommandArgument="Previous" OnCommand="ItemPage_Command" CausesValidation="false" CssClass="btn btn-default" />
+            <asp:Label ID="lblItemPage" runat="server" Style="margin: 0 10px;" />
+            <asp:Button ID="btnItemNext" runat="server" Text="Next" CommandArgument="Next" OnCommand="ItemPage_Command" CausesValidation="false" CssClass="btn btn-default" />
+            <asp:Button ID="btnItemLast" runat="server" Text="Last" CommandArgument="Last" OnCommand="ItemPage_Command" CausesValidation="false" CssClass="btn btn-default" />
+        </asp:Panel>
    <link href="../Css/jquery-ui.css" rel="stylesheet" />
     <script src="../Js/jquery-ui.js"></script>
 
@@ -142,62 +153,82 @@
 
         }
 
-        function FileChange(ctrl) {
-            var ItemId = $(ctrl).next().val();
-            ImgPreview(ctrl.files, ItemId, ctrl);
+        function ImageRequest(gallery, action, data) {
+            return $.ajax({
+                url: "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=ItemImages&ItemId=" +
+                    encodeURIComponent(gallery.attr('data-item-id')) + "&action=" + action,
+                type: "POST", data: data, dataType: "json", contentType: false, processData: false,
+                timeout: 60000, global: false
+            });
         }
-
-        function ImgPreview(input, ItemId, ctrl) {
-            debugger
-            var file = input[0];
-            //if (file.size > 2097152) {
-            //    alert('File size is greater than 2 MB')
-            //    input.value = null;
-            //    $('#ImgPreView').attr('src', 'ORImages/Add-Image.jpg');
-            //    return false;
-            //}
-            var fileType = file["type"];
-            var ValidImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
-            if ($.inArray(fileType, ValidImageTypes) < 0) {
-                alert("Only '.jpeg', '.jpg', '.png', '.gif' formats are allowed");
-                // $('#ImgPreView').attr('src', '../images/drag-drop-upload.gif');
-                return false;
-            }
-            else {
-                debugger;
-                if (input && input[0]) {
-                    var filerdr = new FileReader();
-                    filerdr.onload = function (e) {
-
-                        // $('#divImages').append("<div style='position:relative;float:left;display:flex;'><img src='../images/System/Delete.gif' style='position: absolute;right: 0;top: 0;background-color: #fff;border-radius: 100%;padding: 3px;' onclick='Delete(this);' /><img id='imgPackImage' src='" + e.target.result + "' style='max-height:100px;float:left;display:flex;' class='img-responsive img-thumbnail PackageImage' /><input type='hidden' id='hdnUploadedImage' value='" + input[0].name.replace('^', '') + "'></div>");
-                        $(ctrl).parent().parent().find('#ImgPreView').attr('src', e.target.result);
-                    }
-                    filerdr.readAsDataURL(input[0]);
-
-                    //            var fileUpload = $('[id$=' + input.id + ']').get(0);
-                    //            var files = fileUpload.files;
+        function ImageControls(gallery, disabled) {
+            gallery.closest('.col-md-12').find('input[type=file], .item-images button').prop('disabled', disabled);
+        }
+        function ShowItemImages(gallery, images) {
+            gallery.empty();
+            $.each(images, function (_, image) {
+                var card = $('<div>').css({ position: 'relative', display: 'inline-block', margin: '4px', verticalAlign: 'top' });
+                $('<img>').attr({ src: image.Url, alt: 'Item image' }).css({ display: 'block', height: '50px', width: '50px' }).appendTo(card);
+                $('<button type="button">').text('×').attr({ title: 'Remove image', 'aria-label': 'Remove image' }).css({
+                    position: 'absolute', top: '0', right: '0', width: '18px', height: '18px',
+                    padding: '0', border: '1px solid #ccc', borderRadius: '50%',
+                    backgroundColor: '#fff', color: '#c00', fontSize: '16px', lineHeight: '14px', cursor: 'pointer'
+                }).on('click', function () {
+                    ImageControls(gallery, true);
                     var data = new FormData();
-                    //            for (var i = 0; i < files.length; i++) {
-                    data.append(input[0].name, input[0]);
-                    // }
-                    //var Path = '../images/Slider/Temp';
-                    $('#hdnFileName').val(input[0].name);
-                    $.ajax({
-                        url: "../AjaxResponsePages/AsyAttachement_HandlerFile.ashx?callFor=Items&ItemId=" + ItemId,
-                        type: "POST",
-                        async: true,
-                        data: data,
-                        contentType: false,
-                        processData: false,
-                        success: function (result) {
-                            //  $('#ImgPreView').attr('src', e.target.result);
-                        },
-                        error: function (err) {
-
-                        }
-                    });
+                    data.append('ImageName', image.ImageName);
+                    ImageRequest(gallery, 'Remove', data).done(function (images) {
+                        ShowItemImages(gallery, images);
+                        gallery.siblings('.item-image-status').text('Image removed.');
+                    }).fail(function () {
+                        gallery.siblings('.item-image-status').text('Unable to remove image. Please retry.');
+                    }).always(function () { ImageControls(gallery, false); });
+                }).appendTo(card);
+                card.appendTo(gallery);
+            });
+        }
+        $(function () {
+            $('.item-images').each(function () {
+                var gallery = $(this);
+                ShowItemImages(gallery, JSON.parse(gallery.attr('data-images') || '[]'));
+            });
+        });
+        function FileChange(ctrl) {
+            var files = Array.prototype.slice.call(ctrl.files || []);
+            if (!files.length) return;
+            for (var i = 0; i < files.length; i++) {
+                if (!/\.(jpe?g|png|gif)$/i.test(files[i].name)) {
+                    alert("Only '.jpeg', '.jpg', '.png', '.gif' formats are allowed");
+                    ctrl.value = '';
+                    return;
                 }
             }
+            var gallery = $(ctrl).closest('.col-md-12').find('.item-images');
+            var status = gallery.siblings('.item-image-status');
+            ImageControls(gallery, true);
+            var uploaded = 0;
+            function uploadNext() {
+                if (uploaded === files.length) {
+                    status.text(uploaded + ' image(s) uploaded.');
+                    ctrl.value = '';
+                    ImageControls(gallery, false);
+                    return;
+                }
+                status.text('Uploading image ' + (uploaded + 1) + ' of ' + files.length + '...');
+                var data = new FormData();
+                data.append('image', files[uploaded]);
+                ImageRequest(gallery, 'Add', data).done(function (images) {
+                    ShowItemImages(gallery, images);
+                    ImageControls(gallery, true);
+                    uploaded++;
+                    uploadNext();
+                }).fail(function () {
+                    status.text(uploaded + ' image(s) uploaded. Upload failed; select remaining files to retry.');
+                    ctrl.value = '';
+                    ImageControls(gallery, false);
+                });
+            }
+            uploadNext();
         }
 
         function EditItem(ItemId,ctrl) {

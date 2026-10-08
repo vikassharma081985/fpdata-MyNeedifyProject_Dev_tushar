@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1382,6 +1382,48 @@ namespace BLL
         }
 
 
+
+        public DataTable GetManagedItemImages(string itemIdsXml)
+        {
+            using (DataAccessLayer dal = new DataAccessLayer())
+            using (SqlCommand cmd = new SqlCommand(@"
+                DECLARE @Ids XML = @ItemIds;
+                SELECT images.ItemId, images.ImageName, MIN(images.ImageOrder) AS ImageOrder
+                FROM (
+                    SELECT i.ItemId, i.ItemImage AS ImageName, CAST(0 AS BIGINT) AS ImageOrder
+                    FROM dbo.tblItem i
+                    INNER JOIN @Ids.nodes('/items/item') ids(n) ON i.ItemId = ids.n.value('@id', 'bigint')
+                    WHERE NULLIF(i.ItemImage, '') IS NOT NULL
+                    UNION ALL
+                    SELECT x.ItemId, x.ImageName, x.ItemImageId AS ImageOrder
+                    FROM dbo.tblItemImage x
+                    INNER JOIN @Ids.nodes('/items/item') ids(n) ON x.ItemId = ids.n.value('@id', 'bigint')
+                ) images
+                GROUP BY images.ItemId, images.ImageName
+                ORDER BY images.ItemId, ImageOrder"))
+            {
+                cmd.CommandTimeout = 30;
+                cmd.Parameters.Add("@ItemIds", SqlDbType.Xml).Value = itemIdsXml;
+                DataTable images = dal.GetDataTable(cmd);
+                if (images == null) throw new InvalidOperationException("Unable to load item images. Check database setup.");
+                return images;
+            }
+        }
+
+        public DataTable ManageItemImages(string action)
+        {
+            using (DataAccessLayer dal = new DataAccessLayer())
+            using (SqlCommand cmd = new SqlCommand("Proc_ManageItemImages"))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ItemId", ItemId);
+                cmd.Parameters.AddWithValue("@Action", action);
+                cmd.Parameters.AddWithValue("@ImageName", (object)ImageName ?? DBNull.Value);
+                DataTable images = dal.GetDataTable(cmd);
+                if (images == null) throw new InvalidOperationException("Unable to manage item images. Check database setup.");
+                return images;
+            }
+        }
 
         public DataTable GetManageItemData(int type)
         {
