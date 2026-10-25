@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -2971,6 +2971,536 @@ namespace BLL
             }
         }
 
+        #endregion
+
+
+        #region Team Hierarchy Management
+        public bool IsSuperAdminRole(int roleId)
+        {
+            try
+            {
+                using (DataAccessLayer objDAL = new DataAccessLayer())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT RoleId, Role FROM tblRole WHERE RoleId = @RoleId";
+                        cmd.Parameters.AddWithValue("@RoleId", roleId);
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            string role = dt.Rows[0]["Role"].ToString().Trim();
+                            return role.IndexOf("Super", StringComparison.OrdinalIgnoreCase) >= 0
+                                || role.Equals("Super Admin", StringComparison.OrdinalIgnoreCase)
+                                || role.Equals("SuperAdmin", StringComparison.OrdinalIgnoreCase)
+                                || (role.Equals("Admin", StringComparison.OrdinalIgnoreCase) && roleId == 1);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                if (roleId == 1) return true;
+            }
+            return false;
+        }
+
+        public DataTable GetTeamHierarchy(int? orgId, int? roleId, string search)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_GET_TEAM_HIERARCHY";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (orgId.HasValue && orgId.Value > 0)
+                            cmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+
+                        if (roleId.HasValue && roleId.Value > 0)
+                            cmd.Parameters.AddWithValue("@RoleId", roleId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@RoleId", DBNull.Value);
+
+                        if (!string.IsNullOrWhiteSpace(search))
+                            cmd.Parameters.AddWithValue("@Search", search.Trim());
+                        else
+                            cmd.Parameters.AddWithValue("@Search", DBNull.Value);
+
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null) return dt;
+                    }
+                    catch
+                    {
+                        // Fallback to inline query if stored procedure has not been executed yet
+                    }
+
+                    using (SqlCommand fallbackCmd = new SqlCommand())
+                    {
+                        fallbackCmd.CommandType = CommandType.Text;
+                        fallbackCmd.CommandText = @"
+                            WITH UserHierarchyCTE AS (
+                                SELECT 
+                                    u.UserId,
+                                    u.UserName,
+                                    u.FirstName,
+                                    u.LastName,
+                                    ISNULL(NULLIF(LTRIM(RTRIM(ISNULL(u.FirstName,'') + ' ' + ISNULL(u.LastName,''))),''), u.UserName) AS FullName,
+                                    u.Email,
+                                    u.Mobile,
+                                    u.EmployeeId,
+                                    u.RoleId,
+                                    u.OrgId,
+                                    u.IsActive,
+                                    u.JoinedOn,
+                                    u.ManagerId,
+                                    CAST(NULL AS NVARCHAR(250)) AS ManagerName,
+                                    1 AS HierarchyLevel,
+                                    CAST('/' + RIGHT('0000000000' + CAST(u.UserId AS VARCHAR(10)), 10) + '/' AS VARCHAR(MAX)) AS HierarchyPath,
+                                    CAST(ISNULL(NULLIF(LTRIM(RTRIM(ISNULL(u.FirstName,'') + ' ' + ISNULL(u.LastName,''))),''), u.UserName) AS NVARCHAR(MAX)) AS HierarchyBreadcrumb
+                                FROM tblUser u
+                                WHERE (u.ManagerId IS NULL OR u.ManagerId = 0 OR u.ManagerId = u.UserId
+                                       OR u.ManagerId NOT IN (SELECT UserId FROM tblUser))
+                                  AND (@OrgId IS NULL OR u.OrgId = @OrgId)
+
+                                UNION ALL
+
+                                SELECT 
+                                    u.UserId,
+                                    u.UserName,
+                                    u.FirstName,
+                                    u.LastName,
+                                    CAST(ISNULL(NULLIF(LTRIM(RTRIM(ISNULL(u.FirstName,'') + ' ' + ISNULL(u.LastName,''))),''), u.UserName) AS NVARCHAR(250)) AS FullName,
+                                    u.Email,
+                                    u.Mobile,
+                                    u.EmployeeId,
+                                    u.RoleId,
+                                    u.OrgId,
+                                    u.IsActive,
+                                    u.JoinedOn,
+                                    u.ManagerId,
+                                    CAST(cte.FullName AS NVARCHAR(250)) AS ManagerName,
+                                    cte.HierarchyLevel + 1 AS HierarchyLevel,
+                                    CAST(cte.HierarchyPath + RIGHT('0000000000' + CAST(u.UserId AS VARCHAR(10)), 10) + '/' AS VARCHAR(MAX)) AS HierarchyPath,
+                                    CAST(cte.HierarchyBreadcrumb + ' > ' + ISNULL(NULLIF(LTRIM(RTRIM(ISNULL(u.FirstName,'') + ' ' + ISNULL(u.LastName,''))),''), u.UserName) AS VARCHAR(MAX)) AS HierarchyBreadcrumb
+                                FROM tblUser u
+                                INNER JOIN UserHierarchyCTE cte ON u.ManagerId = cte.UserId
+                                WHERE cte.HierarchyPath NOT LIKE '%/' + RIGHT('0000000000' + CAST(u.UserId AS VARCHAR(10)), 10) + '/%'
+                                  AND (@OrgId IS NULL OR u.OrgId = @OrgId)
+                            )
+                            SELECT 
+                                h.UserId,
+                                h.UserName,
+                                h.FirstName,
+                                h.LastName,
+                                h.FullName,
+                                h.Email,
+                                h.Mobile,
+                                h.EmployeeId,
+                                h.RoleId,
+                                ISNULL(r.[Role], 'Employee') AS RoleName,
+                                h.OrgId,
+                                h.IsActive,
+                                h.JoinedOn,
+                                h.ManagerId,
+                                ISNULL(h.ManagerName, 'None (Top Level / Root)') AS ManagerName,
+                                h.HierarchyLevel,
+                                h.HierarchyPath,
+                                h.HierarchyBreadcrumb,
+                                (SELECT COUNT(1) FROM tblUser sub WHERE sub.ManagerId = h.UserId) AS DirectReportsCount
+                            FROM UserHierarchyCTE h
+                            LEFT JOIN tblRole r ON h.RoleId = r.RoleId
+                            WHERE (@RoleId IS NULL OR h.RoleId = @RoleId)
+                              AND (
+                                  @Search IS NULL 
+                                  OR h.FullName LIKE '%' + @Search + '%' 
+                                  OR h.UserName LIKE '%' + @Search + '%' 
+                                  OR h.Email LIKE '%' + @Search + '%' 
+                                  OR h.Mobile LIKE '%' + @Search + '%'
+                                  OR CAST(h.EmployeeId AS VARCHAR(50)) LIKE '%' + @Search + '%'
+                                  OR r.[Role] LIKE '%' + @Search + '%'
+                              )
+                            ORDER BY h.HierarchyPath;
+                        ";
+
+                        if (orgId.HasValue && orgId.Value > 0)
+                            fallbackCmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            fallbackCmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+
+                        if (roleId.HasValue && roleId.Value > 0)
+                            fallbackCmd.Parameters.AddWithValue("@RoleId", roleId.Value);
+                        else
+                            fallbackCmd.Parameters.AddWithValue("@RoleId", DBNull.Value);
+
+                        if (!string.IsNullOrWhiteSpace(search))
+                            fallbackCmd.Parameters.AddWithValue("@Search", search.Trim());
+                        else
+                            fallbackCmd.Parameters.AddWithValue("@Search", DBNull.Value);
+
+                        return objDAL.GetDataTable(fallbackCmd);
+                    }
+                }
+            }
+        }
+
+        public bool UpdateUserManager(int userId, int? managerId, int updatedBy, out string message)
+        {
+            message = string.Empty;
+            if (userId <= 0)
+            {
+                message = "Invalid User ID.";
+                return false;
+            }
+
+            if (managerId.HasValue && managerId.Value > 0 && managerId.Value == userId)
+            {
+                message = "A user cannot report to themselves.";
+                return false;
+            }
+
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                try
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandText = "PROC_UPDATE_USER_MANAGER";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        cmd.Parameters.AddWithValue("@ManagerId", (object)managerId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@UpdatedBy", updatedBy > 0 ? (object)updatedBy : DBNull.Value);
+
+                        SqlParameter pStatus = new SqlParameter("@Status", SqlDbType.Bit) { Direction = ParameterDirection.Output };
+                        SqlParameter pMessage = new SqlParameter("@Message", SqlDbType.VarChar, 250) { Direction = ParameterDirection.Output };
+                        cmd.Parameters.Add(pStatus);
+                        cmd.Parameters.Add(pMessage);
+
+                        objDAL.ExecuteNonQuery_RetInt(cmd);
+
+                        bool status = pStatus.Value != DBNull.Value && Convert.ToBoolean(pStatus.Value);
+                        message = pMessage.Value != DBNull.Value ? pMessage.Value.ToString() : (status ? "Manager updated successfully." : "Failed to update manager.");
+                        return status;
+                    }
+                }
+                catch
+                {
+                    // Fallback direct execution
+                    try
+                    {
+                        if (managerId.HasValue && managerId.Value > 0)
+                        {
+                            // Circular check
+                            using (SqlCommand checkCmd = new SqlCommand())
+                            {
+                                checkCmd.CommandType = CommandType.Text;
+                                checkCmd.CommandText = @"
+                                    WITH AncestorCTE AS (
+                                        SELECT UserId, ManagerId FROM tblUser WHERE UserId = @ManagerId
+                                        UNION ALL
+                                        SELECT u.UserId, u.ManagerId FROM tblUser u
+                                        INNER JOIN AncestorCTE a ON u.UserId = a.ManagerId
+                                        WHERE a.ManagerId IS NOT NULL AND a.ManagerId > 0 AND a.ManagerId <> a.UserId
+                                    )
+                                    SELECT COUNT(1) FROM AncestorCTE WHERE UserId = @UserId;
+                                ";
+                                checkCmd.Parameters.AddWithValue("@ManagerId", managerId.Value);
+                                checkCmd.Parameters.AddWithValue("@UserId", userId);
+                                DataTable dtCheck = objDAL.GetDataTable(checkCmd);
+                                if (dtCheck != null && dtCheck.Rows.Count > 0 && Convert.ToInt32(dtCheck.Rows[0][0]) > 0)
+                                {
+                                    message = "Circular hierarchy detected: cannot assign a subordinate as manager.";
+                                    return false;
+                                }
+                            }
+                        }
+
+                        using (SqlCommand updateCmd = new SqlCommand())
+                        {
+                            updateCmd.CommandType = CommandType.Text;
+                            updateCmd.CommandText = @"
+                                UPDATE tblUser
+                                SET ManagerId = @ManagerId
+                                WHERE UserId = @UserId;
+                            ";
+                            updateCmd.Parameters.AddWithValue("@UserId", userId);
+                            if (managerId.HasValue && managerId.Value > 0)
+                                updateCmd.Parameters.AddWithValue("@ManagerId", managerId.Value);
+                            else
+                                updateCmd.Parameters.AddWithValue("@ManagerId", DBNull.Value);
+
+                            int rows = objDAL.ExecuteNonQuery_RetInt(updateCmd);
+                            if (rows > 0)
+                            {
+                                message = "Reporting manager updated successfully.";
+                                return true;
+                            }
+                            else
+                            {
+                                message = "User not found or no changes made.";
+                                return false;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        message = "Error updating manager: " + ex.Message;
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public DataTable GetPotentialManagers(int userId, int? orgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_GET_POTENTIAL_MANAGERS";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        if (orgId.HasValue && orgId.Value > 0)
+                            cmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null) return dt;
+                    }
+                    catch
+                    {
+                        // Fallback
+                    }
+
+                    using (SqlCommand fallbackCmd = new SqlCommand())
+                    {
+                        fallbackCmd.CommandType = CommandType.Text;
+                        fallbackCmd.CommandText = @"
+                            WITH SubordinateCTE AS (
+                                SELECT UserId FROM tblUser WHERE ManagerId = @UserId
+                                UNION ALL
+                                SELECT u.UserId FROM tblUser u
+                                INNER JOIN SubordinateCTE s ON u.ManagerId = s.UserId
+                                WHERE u.ManagerId IS NOT NULL AND u.ManagerId > 0 AND u.ManagerId <> u.UserId
+                            )
+                            SELECT 
+                                u.UserId,
+                                ISNULL(NULLIF(LTRIM(RTRIM(ISNULL(u.FirstName,'') + ' ' + ISNULL(u.LastName,''))),''), u.UserName) AS FullName,
+                                u.UserName,
+                                u.EmployeeId,
+                                ISNULL(r.[Role], 'No Role') AS RoleName,
+                                u.Email,
+                                u.Mobile,
+                                u.IsActive
+                            FROM tblUser u
+                            LEFT JOIN tblRole r ON u.RoleId = r.RoleId
+                            WHERE u.UserId <> @UserId
+                              AND u.UserId NOT IN (SELECT UserId FROM SubordinateCTE)
+                              AND (@OrgId IS NULL OR u.OrgId = @OrgId)
+                            ORDER BY FullName ASC;
+                        ";
+                        fallbackCmd.Parameters.AddWithValue("@UserId", userId);
+                        if (orgId.HasValue && orgId.Value > 0)
+                            fallbackCmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            fallbackCmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+
+                        return objDAL.GetDataTable(fallbackCmd);
+                    }
+                }
+            }
+        }
+
+        public bool BulkReassignSubordinates(int oldManagerId, int? newManagerId, int updatedBy, out string message)
+        {
+            message = string.Empty;
+            if (oldManagerId <= 0)
+            {
+                message = "Invalid source manager.";
+                return false;
+            }
+
+            if (newManagerId.HasValue && newManagerId.Value == oldManagerId)
+            {
+                message = "Source manager and destination manager cannot be the same.";
+                return false;
+            }
+
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                try
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandText = "PROC_BULK_REASSIGN_SUBORDINATES";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@OldManagerId", oldManagerId);
+                        cmd.Parameters.AddWithValue("@NewManagerId", (object)newManagerId ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@UpdatedBy", updatedBy > 0 ? (object)updatedBy : DBNull.Value);
+
+                        SqlParameter pStatus = new SqlParameter("@Status", SqlDbType.Bit) { Direction = ParameterDirection.Output };
+                        SqlParameter pMessage = new SqlParameter("@Message", SqlDbType.VarChar, 250) { Direction = ParameterDirection.Output };
+                        cmd.Parameters.Add(pStatus);
+                        cmd.Parameters.Add(pMessage);
+
+                        objDAL.ExecuteNonQuery_RetInt(cmd);
+
+                        bool status = pStatus.Value != DBNull.Value && Convert.ToBoolean(pStatus.Value);
+                        message = pMessage.Value != DBNull.Value ? pMessage.Value.ToString() : (status ? "Reassigned successfully." : "Failed to reassign.");
+                        return status;
+                    }
+                }
+                catch
+                {
+                    // Fallback
+                    try
+                    {
+                        using (SqlCommand updateCmd = new SqlCommand())
+                        {
+                            updateCmd.CommandType = CommandType.Text;
+                            updateCmd.CommandText = @"
+                                UPDATE tblUser
+                                SET ManagerId = @NewManagerId
+                                WHERE ManagerId = @OldManagerId;
+                            ";
+                            updateCmd.Parameters.AddWithValue("@OldManagerId", oldManagerId);
+                            if (newManagerId.HasValue && newManagerId.Value > 0)
+                                updateCmd.Parameters.AddWithValue("@NewManagerId", newManagerId.Value);
+                            else
+                                updateCmd.Parameters.AddWithValue("@NewManagerId", DBNull.Value);
+
+                            int rows = objDAL.ExecuteNonQuery_RetInt(updateCmd);
+                            message = "Successfully reassigned " + rows + " team member(s).";
+                            return true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        message = "Error during bulk reassign: " + ex.Message;
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public DataTable GetAllRolesForHierarchy()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "SELECT RoleId, Role FROM tblRole ORDER BY Role ASC";
+                    return objDAL.GetDataTable(cmd);
+                }
+            }
+        }
+
+        public DataTable GetTeamHierarchyStats(int? orgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_GET_TEAM_HIERARCHY_STATS";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        if (orgId.HasValue && orgId.Value > 0)
+                            cmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null) return dt;
+                    }
+                    catch
+                    {
+                        // Fallback
+                    }
+
+                    using (SqlCommand fallbackCmd = new SqlCommand())
+                    {
+                        fallbackCmd.CommandType = CommandType.Text;
+                        fallbackCmd.CommandText = @"
+                            SELECT 
+                                (SELECT COUNT(1) FROM tblUser WHERE (@OrgId IS NULL OR OrgId = @OrgId)) AS TotalUsers,
+                                (SELECT COUNT(1) FROM tblUser WHERE (ManagerId IS NULL OR ManagerId = 0) AND (@OrgId IS NULL OR OrgId = @OrgId)) AS TopLevelUsers,
+                                (SELECT COUNT(DISTINCT ManagerId) FROM tblUser WHERE ManagerId IS NOT NULL AND ManagerId > 0 AND (@OrgId IS NULL OR OrgId = @OrgId)) AS TotalManagersWithReports,
+                                1 AS MaxHierarchyDepth;
+                        ";
+                        if (orgId.HasValue && orgId.Value > 0)
+                            fallbackCmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            fallbackCmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+
+                        return objDAL.GetDataTable(fallbackCmd);
+                    }
+                }
+            }
+        }
+        public DataTable GetOrganizationsList()
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"
+                        IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'tblOrganizationMaster')
+                        BEGIN
+                            SELECT 
+                                SellerId AS OrgId, 
+                                ISNULL(NULLIF(LTRIM(RTRIM(BrandName)), ''), ISNULL(NULLIF(LTRIM(RTRIM(SellerName)), ''), 'Organization #' + CAST(SellerId AS VARCHAR))) AS OrgName
+                            FROM tblOrganizationMaster
+                            ORDER BY OrgName ASC;
+                        END
+                        ELSE
+                        BEGIN
+                            SELECT DISTINCT 
+                                OrgId, 
+                                'Organization #' + CAST(OrgId AS VARCHAR) AS OrgName
+                            FROM tblUser 
+                            WHERE OrgId IS NOT NULL AND OrgId > 0
+                            ORDER BY OrgId ASC;
+                        END
+                    ";
+                    return objDAL.GetDataTable(cmd);
+                }
+            }
+        }
+
+        public DataTable GetEmployeesByOrg(int orgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = @"
+                        SELECT 
+                            u.UserId,
+                            ISNULL(NULLIF(LTRIM(RTRIM(ISNULL(u.FirstName,'') + ' ' + ISNULL(u.LastName,''))),''), u.UserName) AS FullName,
+                            u.UserName,
+                            u.EmployeeId,
+                            u.ManagerId,
+                            ISNULL(r.Role, 'Employee') AS RoleName
+                        FROM tblUser u
+                        LEFT JOIN tblRole r ON u.RoleId = r.RoleId
+                        WHERE u.OrgId = @OrgId
+                        ORDER BY FullName ASC;
+                    ";
+                    cmd.Parameters.AddWithValue("@OrgId", orgId);
+                    return objDAL.GetDataTable(cmd);
+                }
+            }
+        }
         #endregion
     }
 
