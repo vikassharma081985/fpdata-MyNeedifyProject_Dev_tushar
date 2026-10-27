@@ -1717,6 +1717,7 @@ namespace BLL
         public string ExpenseDataStatus { get; set; }
         public string BillNumber { get; set; }
         public bool IsPaid { get; set; }
+        public bool ManagerApproval { get; set; } = true;
         public int SaveExpense()
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -1741,6 +1742,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@BillNumber", string.IsNullOrEmpty(BillNumber) ? (object)DBNull.Value : BillNumber);
                     sqlCommand.Parameters.AddWithValue("@IsPaid", IsPaid);
                     sqlCommand.Parameters.AddWithValue("@PaymentMode", string.IsNullOrEmpty(PaymentMode) ? (object)DBNull.Value : PaymentMode);
+                    sqlCommand.Parameters.AddWithValue("@ManagerApproval", ManagerApproval);
                     //sqlCommand.Parameters.AddWithValue("@Action", ExpenseStatus);
 
 
@@ -1817,6 +1819,7 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@BillNumber", string.IsNullOrEmpty(BillNumber) ? (object)DBNull.Value : BillNumber);
                     sqlCommand.Parameters.AddWithValue("@IsPaid", IsPaid);
                     sqlCommand.Parameters.AddWithValue("@PaymentMode", string.IsNullOrEmpty(PaymentMode) ? (object)DBNull.Value : PaymentMode);
+                    sqlCommand.Parameters.AddWithValue("@ManagerApproval", ManagerApproval);
 
                     // Use your existing GetDataTable method
                     DataTable dt = objDAL.GetDataTable(sqlCommand);

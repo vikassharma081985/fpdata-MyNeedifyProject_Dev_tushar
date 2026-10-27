@@ -123,6 +123,7 @@ namespace WSBillingMaster.Pages
                     obj.FetchUserId = OrgId > 0 ? Convert.ToString(EmployeeId) : Convert.ToString(data[0].userId);
                     obj.OrgId = OrgId;
                     obj.EmpId = EmployeeId;
+                    obj.ManagerApproval = data[0].ManagerApproval;
 
                     int a = obj.SaveExpense();
                     return "1";
@@ -292,6 +293,7 @@ namespace WSBillingMaster.Pages
                     obj.IsPaid = item.IsPaid;
                     obj.PaymentMode = item.PaymentMode;
                     obj.FetchUserId = item.userId.ToString();
+                    obj.ManagerApproval = item.ManagerApproval;
 
                     int result = obj.UpdateExpense();
                     return result > 0 ? "1" : "0";
@@ -528,5 +530,6 @@ namespace WSBillingMaster.Pages
         public string BillNumber { get; set; }
         public bool IsPaid { get; set; }
         public string PaymentMode { get; set; }
+        public bool ManagerApproval { get; set; } = true;
     }
 }

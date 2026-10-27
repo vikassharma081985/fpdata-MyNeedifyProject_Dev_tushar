@@ -104,6 +104,11 @@
                         <input type="text" class="form-control" id="txtExpenseDescription" />
                     </div>
 
+                    <div class="form-group" style="width: auto; min-width: 140px; margin-top: 25px; display: flex; flex-direction: row; align-items: center; gap: 6px;" title="Check for Manager Approval. Uncheck to auto-approve this expense.">
+                        <input type="checkbox" id="chkManagerApproval" checked="checked" style="width: 18px; height: 18px; margin: 0; cursor: pointer;" />
+                        <label for="chkManagerApproval" style="margin: 0; cursor: pointer; font-weight: 600; white-space: nowrap;">Manager Approval</label>
+                    </div>
+
                     <div class="form-group" style="width: 100px; margin-top: 25px;">
                         <input type="button" class="btn btn-danger w-100" value="Save" onclick="Save();" />
 
@@ -935,6 +940,12 @@
                     <div class="form-group" style="flex: 1;">
                         <label>Description :</label>
                         <textarea class="form-control" id="txtEditDescription" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-row" style="margin-top: 5px; margin-bottom: 10px;">
+                    <div class="form-group" style="display: flex; flex-direction: row; align-items: center; gap: 6px;" title="Check for Manager Approval. Uncheck to auto-approve this expense.">
+                        <input type="checkbox" id="chkEditManagerApproval" checked="checked" style="width: 18px; height: 18px; margin: 0; cursor: pointer;" />
+                        <label for="chkEditManagerApproval" style="margin: 0; cursor: pointer; font-weight: 600;">Manager Approval</label>
                     </div>
                 </div>
                 <div class="form-row center">
@@ -1781,6 +1792,7 @@
             obj.BillNumber = BillNumber;
             obj.IsPaid = IsPaid;
             obj.PaymentMode = PaymentMode;
+            obj.ManagerApproval = $('#chkManagerApproval').is(':checked');
             data.push(obj);
 
             $.ajax({
@@ -1793,7 +1805,11 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.d == "1") {
-                        alert('Expense entered successfully!');
+                        if (obj.ManagerApproval) {
+                            alert('Expense entered successfully!');
+                        } else {
+                            alert('Expense entered and auto-approved successfully!');
+                        }
                         Search();
                         Clear();
                     } else {
@@ -1941,7 +1957,9 @@
                 var appStatus = value.ApprovalStatus || 'Pending';
                 var appHtml = '';
                 if (appStatus === 'Approved') {
-                    var apprTooltip = 'Approved by ' + (value.ApproverName || 'Manager') + (value.ApprovedOn ? ' on ' + value.ApprovedOn : '');
+                    var apprTooltip = (value.ApproverRemarks === 'Auto Approved')
+                        ? 'Auto Approved (No manager approval required)' + (value.ApprovedOn ? ' on ' + value.ApprovedOn : '')
+                        : 'Approved by ' + (value.ApproverName || 'Manager') + (value.ApprovedOn ? ' on ' + value.ApprovedOn : '');
                     appHtml = '<span class="label label-success" style="font-size: 11px; padding: 4px 8px; border-radius: 4px;" title="' + apprTooltip + '"><span class="glyphicon glyphicon-ok"></span> Approved</span>';
                 } else if (appStatus === 'Rejected') {
                     var rejReason = (value.RejectionReason || 'No reason provided').replace(/"/g, '&quot;');
@@ -2075,6 +2093,7 @@
             $('#txtBillNumber').val('');
             $('#ddlIsPaid').val('No');
             $('#ddlPaymentMode').val('').prop('disabled', true);
+            $('#chkManagerApproval').prop('checked', true);
         }
 
         function parseDateSafe(dateStr) {
@@ -2316,6 +2335,11 @@
             }
 
             // Populate modal fields
+            if (expense.ApprovalStatus === 'Approved' && expense.ApproverRemarks === 'Auto Approved') {
+                $('#chkEditManagerApproval').prop('checked', false);
+            } else {
+                $('#chkEditManagerApproval').prop('checked', true);
+            }
             $('#txtEditExpenseDate').val(expense.ExpenseDate);
             $('#ddlEditExpense').val(expense.ExpenseId);
             $('#txtEditRate').val(expense.Rate || 0);
@@ -2594,7 +2618,8 @@
                 Rate: Rate,
                 BillNumber: BillNumber,
                 IsPaid: IsPaid,
-                PaymentMode: PaymentMode
+                PaymentMode: PaymentMode,
+                ManagerApproval: $('#chkEditManagerApproval').is(':checked')
             };
             showLoader();
             $.ajax({
@@ -2607,7 +2632,11 @@
                 success: function (result) {
                     hideLoader();
                     if (result.d == "1") {
-                        alert('Expense updated successfully and resubmitted for manager approval!');
+                        if (obj.ManagerApproval) {
+                            alert('Expense updated successfully and resubmitted for manager approval!');
+                        } else {
+                            alert('Expense updated and auto-approved successfully!');
+                        }
                         closeEditExpenseModal();
                         Search(); // Refresh table
                     } else {
