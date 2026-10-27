@@ -3005,6 +3005,57 @@ namespace BLL
             return false;
         }
 
+        public bool IsAdminRole(int roleId)
+        {
+            try
+            {
+                using (DataAccessLayer objDAL = new DataAccessLayer())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT RoleId, Role FROM tblRole WHERE RoleId = @RoleId";
+                        cmd.Parameters.AddWithValue("@RoleId", roleId);
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            string role = dt.Rows[0]["Role"].ToString().Trim();
+                            return role.IndexOf("Admin", StringComparison.OrdinalIgnoreCase) >= 0;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                if (roleId == 1 || roleId == 2) return true;
+            }
+            return false;
+        }
+
+        public bool CanManageHierarchy(int roleId)
+        {
+            return IsSuperAdminRole(roleId) || IsAdminRole(roleId);
+        }
+
+        public bool CheckUserHasSubordinates(int userId)
+        {
+            try
+            {
+                using (DataAccessLayer objDAL = new DataAccessLayer())
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT TOP 1 1 FROM tblUser WHERE ManagerId = @UserId";
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        return (dt != null && dt.Rows.Count > 0);
+                    }
+                }
+            }
+            catch { return false; }
+        }
+
         public DataTable GetTeamHierarchy(int? orgId, int? roleId, string search)
         {
             using (DataAccessLayer objDAL = new DataAccessLayer())
@@ -3501,6 +3552,325 @@ namespace BLL
                 }
             }
         }
+
+        #region Expense Approval Process
+        public DataTable GetExpensesForApproval(int approverUserId, int? orgId, string approvalStatus, string fromDate, string toDate, int? subordinateUserId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_GET_EXPENSES_FOR_APPROVAL";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 120;
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        if (orgId.HasValue && orgId.Value > 0)
+                            cmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+
+                        if (!string.IsNullOrEmpty(approvalStatus))
+                            cmd.Parameters.AddWithValue("@ApprovalStatus", approvalStatus);
+                        else
+                            cmd.Parameters.AddWithValue("@ApprovalStatus", "Pending");
+
+                        if (!string.IsNullOrEmpty(fromDate))
+                            cmd.Parameters.AddWithValue("@FromDate", Convert.ToDateTime(fromDate).ToString("yyyy-MM-dd"));
+                        else
+                            cmd.Parameters.AddWithValue("@FromDate", DBNull.Value);
+
+                        if (!string.IsNullOrEmpty(toDate))
+                            cmd.Parameters.AddWithValue("@ToDate", Convert.ToDateTime(toDate).ToString("yyyy-MM-dd"));
+                        else
+                            cmd.Parameters.AddWithValue("@ToDate", DBNull.Value);
+
+                        if (subordinateUserId.HasValue && subordinateUserId.Value > 0)
+                            cmd.Parameters.AddWithValue("@SubordinateUserId", subordinateUserId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@SubordinateUserId", DBNull.Value);
+
+                        return objDAL.GetDataTable(cmd);
+                    }
+                    catch
+                    {
+                        cmd.Parameters.Clear();
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = @"
+                            ;WITH SubordinatesCTE AS (
+                                SELECT u.UserId, u.ManagerId, CAST(1 AS INT) AS [Level]
+                                FROM tblUser u WHERE u.ManagerId = @ApproverUserId
+                                UNION ALL
+                                SELECT u.UserId, u.ManagerId, CAST(sub.[Level] + 1 AS INT) AS [Level]
+                                FROM tblUser u INNER JOIN SubordinatesCTE sub ON u.ManagerId = sub.UserId
+                            )
+                            SELECT 
+                                e.ID,
+                                CONVERT(VARCHAR, e.dtEntry, 106) AS EntryDate,
+                                CONVERT(VARCHAR, e.ExpenseDate, 106) AS ExpenseDate,
+                                e.ExpenseDate AS RawExpenseDate,
+                                ISNULL(e.Amount, 0) AS Amount,
+                                ISNULL(e.Rate, 0) AS Rate,
+                                ISNULL(e.Quantity, 0) AS Quantity,
+                                ISNULL(e.Description, '') AS [Description],
+                                ISNULL(em.Expense, '') AS Category,
+                                ISNULL(esm.ExpenseSubMaster, '') AS SubCategory,
+                                ISNULL(e.ExpenseFile, '') AS ExpenseFile,
+                                ISNULL(e.ExpenseFile2, '') AS ExpenseFile2,
+                                ISNULL(e.BillNumber, '') AS BillNumber,
+                                ISNULL(e.PaymentMode, '') AS PaymentMode,
+                                ISNULL(e.IsPaid, 0) AS IsPaid,
+                                ISNULL(e.[Status], '') AS ReimbursementStatus,
+                                ISNULL(e.ApprovalStatus, 'Pending') AS ApprovalStatus,
+                                e.ApprovedBy,
+                                CONVERT(VARCHAR, e.ApprovedOn, 106) AS ApprovedOn,
+                                ISNULL(e.RejectionReason, '') AS RejectionReason,
+                                ISNULL(e.ApproverRemarks, '') AS ApproverRemarks,
+                                e.UserId AS SubmitterUserId,
+                                CAST(ISNULL(subUser.FirstName, '') + CASE WHEN subUser.LastName IS NULL OR subUser.LastName = '' THEN '' ELSE ' ' + subUser.LastName END AS NVARCHAR(250)) AS SubmitterName,
+                                ISNULL(subUser.EmployeeId, '') AS SubmitterEmployeeId,
+                                ISNULL(subUser.Email, '') AS SubmitterEmail,
+                                ISNULL(rSub.[Role], 'Employee') AS SubmitterRole,
+                                CAST(ISNULL(appUser.FirstName, '') + CASE WHEN appUser.LastName IS NULL OR appUser.LastName = '' THEN '' ELSE ' ' + appUser.LastName END AS NVARCHAR(250)) AS ApproverName,
+                                ISNULL(tree.[Level], 1) AS HierarchyLevel,
+                                e.OrgId
+                            FROM tblExpense e
+                            INNER JOIN tblExpenseMaster em ON em.ExpenseId = e.ExpenseId
+                            LEFT JOIN tblExpenseSubMaster esm ON esm.Id = e.SubExpenseId
+                            LEFT JOIN tblUser subUser ON subUser.UserId = e.UserId
+                            LEFT JOIN tblRole rSub ON rSub.RoleId = subUser.RoleId
+                            LEFT JOIN tblUser appUser ON appUser.UserId = e.ApprovedBy
+                            LEFT JOIN SubordinatesCTE tree ON tree.UserId = e.UserId
+                            WHERE e.UserId <> @ApproverUserId
+                              AND (tree.UserId IS NOT NULL OR @ApproverUserId IN (SELECT u2.UserId FROM tblUser u2 WHERE u2.RoleId IN (SELECT RoleId FROM tblRole WHERE [Role] LIKE '%Admin%')))
+                              AND (@ApprovalStatus = 'All' OR ISNULL(e.ApprovalStatus, 'Pending') = @ApprovalStatus)
+                            ORDER BY CASE WHEN ISNULL(e.ApprovalStatus, 'Pending') = 'Pending' THEN 0 ELSE 1 END, e.ExpenseDate DESC, e.ID DESC;
+                        ";
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        cmd.Parameters.AddWithValue("@ApprovalStatus", string.IsNullOrEmpty(approvalStatus) ? "Pending" : approvalStatus);
+                        return objDAL.GetDataTable(cmd);
+                    }
+                }
+            }
+        }
+
+        public int ApproveExpense(long expenseId, int approverUserId, string remarks)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_APPROVE_EXPENSE";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 100;
+                        cmd.Parameters.AddWithValue("@ExpenseId", expenseId);
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            return Convert.ToInt32(dt.Rows[0]["Result"]);
+                        }
+                        return 1;
+                    }
+                    catch
+                    {
+                        cmd.Parameters.Clear();
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = @"
+                            UPDATE tblExpense
+                            SET ApprovalStatus = 'Approved',
+                                ApprovedBy = @ApproverUserId,
+                                ApprovedOn = GETDATE(),
+                                RejectionReason = NULL,
+                                ApproverRemarks = @Remarks
+                            WHERE ID = @ExpenseId AND UserId <> @ApproverUserId;
+                        ";
+                        cmd.Parameters.AddWithValue("@ExpenseId", expenseId);
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
+                        return objDAL.ExecuteNonQuery_RetInt(cmd);
+                    }
+                }
+            }
+        }
+
+        public int RejectExpense(long expenseId, int approverUserId, string reason)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_REJECT_EXPENSE";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 100;
+                        cmd.Parameters.AddWithValue("@ExpenseId", expenseId);
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        cmd.Parameters.AddWithValue("@RejectionReason", reason);
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            return Convert.ToInt32(dt.Rows[0]["Result"]);
+                        }
+                        return 1;
+                    }
+                    catch
+                    {
+                        cmd.Parameters.Clear();
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = @"
+                            UPDATE tblExpense
+                            SET ApprovalStatus = 'Rejected',
+                                ApprovedBy = @ApproverUserId,
+                                ApprovedOn = GETDATE(),
+                                RejectionReason = @RejectionReason,
+                                ApproverRemarks = NULL
+                            WHERE ID = @ExpenseId AND UserId <> @ApproverUserId;
+                        ";
+                        cmd.Parameters.AddWithValue("@ExpenseId", expenseId);
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        cmd.Parameters.AddWithValue("@RejectionReason", reason);
+                        return objDAL.ExecuteNonQuery_RetInt(cmd);
+                    }
+                }
+            }
+        }
+
+        public int BulkApproveExpenses(string expenseIds, int approverUserId, string remarks)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_BULK_APPROVE_EXPENSES";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 120;
+                        cmd.Parameters.AddWithValue("@ExpenseIds", expenseIds);
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        cmd.Parameters.AddWithValue("@Remarks", string.IsNullOrEmpty(remarks) ? (object)DBNull.Value : remarks);
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            return Convert.ToInt32(dt.Rows[0]["ApprovedCount"]);
+                        }
+                        return 1;
+                    }
+                    catch
+                    {
+                        var ids = expenseIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        int count = 0;
+                        foreach (var idStr in ids)
+                        {
+                            long id;
+                            if (long.TryParse(idStr.Trim(), out id))
+                            {
+                                count += ApproveExpense(id, approverUserId, remarks);
+                            }
+                        }
+                        return count;
+                    }
+                }
+            }
+        }
+
+        public int BulkRejectExpenses(string expenseIds, int approverUserId, string reason)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_BULK_REJECT_EXPENSES";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 120;
+                        cmd.Parameters.AddWithValue("@ExpenseIds", expenseIds);
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        cmd.Parameters.AddWithValue("@RejectionReason", reason);
+                        DataTable dt = objDAL.GetDataTable(cmd);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            return Convert.ToInt32(dt.Rows[0]["RejectedCount"]);
+                        }
+                        return 1;
+                    }
+                    catch
+                    {
+                        var ids = expenseIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        int count = 0;
+                        foreach (var idStr in ids)
+                        {
+                            long id;
+                            if (long.TryParse(idStr.Trim(), out id))
+                            {
+                                count += RejectExpense(id, approverUserId, reason);
+                            }
+                        }
+                        return count;
+                    }
+                }
+            }
+        }
+
+        public DataTable GetApproverDashboardStats(int approverUserId, int? orgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_GET_APPROVER_DASHBOARD_STATS";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 100;
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        if (orgId.HasValue && orgId.Value > 0)
+                            cmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+                        return objDAL.GetDataTable(cmd);
+                    }
+                    catch
+                    {
+                        return new DataTable();
+                    }
+                }
+            }
+        }
+
+        public DataTable GetSubordinatesForApproval(int approverUserId, int? orgId)
+        {
+            using (DataAccessLayer objDAL = new DataAccessLayer())
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    try
+                    {
+                        cmd.CommandText = "PROC_GET_SUBORDINATES_FOR_APPROVAL";
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 100;
+                        cmd.Parameters.AddWithValue("@ApproverUserId", approverUserId);
+                        if (orgId.HasValue && orgId.Value > 0)
+                            cmd.Parameters.AddWithValue("@OrgId", orgId.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@OrgId", DBNull.Value);
+                        return objDAL.GetDataTable(cmd);
+                    }
+                    catch
+                    {
+                        return new DataTable();
+                    }
+                }
+            }
+        }
+        #endregion
         #endregion
     }
 

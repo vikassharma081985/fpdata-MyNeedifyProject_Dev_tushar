@@ -9,8 +9,30 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:HiddenField runat="server" ID="hdnUserId" Value="0" />
-    <div class="container-fluid">
+    <asp:HiddenField runat="server" ID="hdnUserId" ClientIDMode="Static" Value="0" />
+    <asp:HiddenField runat="server" ID="hdnRoleId" ClientIDMode="Static" Value="0" />
+    <asp:HiddenField runat="server" ID="hdnOrgId" ClientIDMode="Static" Value="0" />
+    <asp:HiddenField runat="server" ID="hdnIsApprover" ClientIDMode="Static" Value="0" />
+        <div class="container-fluid">
+        <!-- Main Expense Navigation Tabs -->
+        <div id="expenseNavContainer" style="margin-top: 15px; margin-bottom: 20px;">
+            <ul class="nav nav-tabs" style="border-bottom: 2px solid #3498db; background: #ffffff; padding: 8px 15px 0 15px; border-radius: 8px 8px 0 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; gap: 8px;">
+                <li class="active" id="tabNavMyExpenses">
+                    <a href="javascript:void(0);" onclick="switchExpenseTab('myExpenses')" style="font-weight: 700; font-size: 15px; padding: 10px 22px; border-radius: 6px 6px 0 0; cursor: pointer;">
+                        My Expenses
+                    </a>
+                </li>
+                <li id="tabNavApprovals" style="display: none;">
+                    <a href="javascript:void(0);" onclick="switchExpenseTab('approvals')" style="font-weight: 700; font-size: 15px; padding: 10px 22px; border-radius: 6px 6px 0 0; cursor: pointer;">
+                        Team Expenses Approval 
+                        <span id="badgePendingCount" class="badge" style="background-color: #e74c3c; margin-left: 8px; font-size: 12px; padding: 3px 8px; display: none;">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- VIEW 1: MY EXPENSES (Entry & History) -->
+        <div id="secMyExpenses">
         <!-- ======================== Expense Entry Section ========================= -->
         <div class="Header">
             <div class="section-title">Expense Manager</div>
@@ -84,11 +106,13 @@
 
                     <div class="form-group" style="width: 100px; margin-top: 25px;">
                         <input type="button" class="btn btn-danger w-100" value="Save" onclick="Save();" />
+
                     </div>
                 </div>
             </div>
 
-            <!-- ======================== All Expenses Section ========================= -->
+        </div><!-- End Header -->
+        <!-- ======================== All Expenses Section ========================= -->
             <%-- <div class="Header" style="margin-top: 20px;">
                     <div class="section-title">All Expenses</div>
                     <div class="section-title">Total Expense : Rs. <span id="lblExpenseAmt"
@@ -257,6 +281,7 @@
                         <th class="MyHeader">Description</th>
                         <th class="MyHeader">Bill No</th>
                         <th class="MyHeader">Payment Type</th>
+                        <th class="MyHeader">Approval</th>
                         <th class="MyHeader">File</th>
                         <th class="MyHeader">Edit</th>
                     </tr>
@@ -277,12 +302,237 @@
             </div>
 
 
+        </div><!-- End secMyExpenses -->
+
+        <!-- ==================================================================== -->
+        <!-- VIEW 2: TEAM EXPENSES APPROVAL (Hierarchy-Based Workflow)           -->
+        <!-- ==================================================================== -->
+        <div id="secApprovals" style="display: none;">
+            
+            <!-- Approver Stats Dashboard Cards -->
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-3 col-sm-6" style="margin-bottom: 12px;">
+                    <div style="background: #ffffff; border-left: 5px solid #f39c12; border-radius: 8px; padding: 16px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+                        <div style="font-size: 13px; color: #7f8c8d; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Pending Approvals</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px;">
+                            <span id="cardPendingCount" style="font-size: 26px; font-weight: 700; color: #f39c12;">0</span>
+                            <span style="font-size: 13px; color: #95a5a6;">Amount: <strong id="cardPendingAmount" style="color: #2c3e50;">Rs. 0</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6" style="margin-bottom: 12px;">
+                    <div style="background: #ffffff; border-left: 5px solid #27ae60; border-radius: 8px; padding: 16px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+                        <div style="font-size: 13px; color: #7f8c8d; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Approved Expenses</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px;">
+                            <span id="cardApprovedCount" style="font-size: 26px; font-weight: 700; color: #27ae60;">0</span>
+                            <span style="font-size: 13px; color: #27ae60;"> Verified</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6" style="margin-bottom: 12px;">
+                    <div style="background: #ffffff; border-left: 5px solid #e74c3c; border-radius: 8px; padding: 16px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+                        <div style="font-size: 13px; color: #7f8c8d; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Rejected Expenses</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px;">
+                            <span id="cardRejectedCount" style="font-size: 26px; font-weight: 700; color: #e74c3c;">0</span>
+                            <span style="font-size: 13px; color: #e74c3c;"> Returned</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6" style="margin-bottom: 12px;">
+                    <div style="background: #ffffff; border-left: 5px solid #3498db; border-radius: 8px; padding: 16px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+                        <div style="font-size: 13px; color: #7f8c8d; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Team Members</div>
+                        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px;">
+                            <span id="cardSubordinatesCount" style="font-size: 26px; font-weight: 700; color: #3498db;">0</span>
+                            <span style="font-size: 13px; color: #3498db;"> In Hierarchy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approvals Filter & Actions Header -->
+            <div class="Header" style="background: #ffffff; padding: 18px 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.06); margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #edf2f7; padding-bottom: 12px;">
+                    <div>
+                        <h4 style="margin: 0; font-weight: 700; color: #2c3e50;">
+                             Team Expense Approvals
+                        </h4>
+                        <span style="font-size: 13px; color: #7f8c8d;">Review and take action on expenses submitted by your reporting team.</span>
+                    </div>
+
+                    <!-- Bulk Actions -->
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button type="button" class="btn btn-success" onclick="bulkApproveSelected()" style="font-weight: 600; font-size: 13px; padding: 7px 15px;">
+                             Approve Selected
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="bulkRejectSelected()" style="font-weight: 600; font-size: 13px; padding: 7px 15px;">
+                             Reject Selected
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Controls -->
+                <div class="responsive-form" style="width: 100%;">
+                    <div class="form-row" style="display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap;">
+                        <div class="form-group" style="min-width: 220px; flex: 1;">
+                            <label style="font-weight: 600; font-size: 13px; color: #34495e;">Filter by Employee:</label>
+                            <select id="ddlApprovalSubordinate" class="form-control" style="font-size: 13px; height: 38px;">
+                                <option value="0">All Team Members</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="min-width: 170px;">
+                            <label style="font-weight: 600; font-size: 13px; color: #34495e;">Approval Status:</label>
+                            <select id="ddlApprovalStatus" class="form-control" style="font-size: 13px; height: 38px;">
+                                <option value="Pending" selected>Pending Approval</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="All">All Statuses</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="min-width: 140px;">
+                            <label style="font-weight: 600; font-size: 13px; color: #34495e;">From Date:</label>
+                            <input type="text" class="form-control datepicker" id="txtAppFromDate" style="height: 38px; font-size: 13px;" />
+                        </div>
+
+                        <div class="form-group" style="min-width: 140px;">
+                            <label style="font-weight: 600; font-size: 13px; color: #34495e;">To Date:</label>
+                            <input type="text" class="form-control datepicker" id="txtAppToDate" style="height: 38px; font-size: 13px;" />
+                        </div>
+
+                        <div class="form-group" style="margin-top: 25px;">
+                            <button type="button" class="btn btn-primary" onclick="loadTeamApprovals()" style="height: 38px; font-weight: 600; padding: 0 20px;">
+                                Filter
+                            </button>
+                            <button type="button" class="btn btn-default" onclick="resetApprovalFilters()" style="height: 38px; font-weight: 600; margin-left: 5px;">
+                                
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Approvals Table Container -->
+            <div style="background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.06);">
+                <div class="table-responsive">
+                    <table id="tblTeamApprovals" class="table table-bordered table-hover" style="width: 100%; font-size: 13px;">
+                        <thead style="background: #f7f9fa; color: #2c3e50;">
+                            <tr>
+                                <th style="width: 40px; text-align: center;">
+                                    <input type="checkbox" id="chkAppSelectAll" />
+                                </th>
+                                <th style="width: 50px; text-align: center;">SNo.</th>
+                                <th>Submitted By</th>
+                                <th style="cursor: pointer;" onclick="sortApprovalsByDate()">Date <span id="appDateSortIcon">&#9650;</span></th>
+                                <th>Expense Category</th>
+                                <th>Rate</th>
+                                <th>Qty</th>
+                                <th>Amount (Rs.)</th>
+                                <th style="max-width: 250px;">Description</th>
+                                <th>Bill No</th>
+                                <th>Payment Type</th>
+                                <th>Bills</th>
+                                <th>Status</th>
+                                <th style="width: 150px; text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="approvalsEmptyMessage" style="display: none; text-align: center; padding: 40px 20px; color: #95a5a6;">
+                    
+                    <h4 style="font-weight: 600; color: #34495e;">No Expenses Found</h4>
+                    <p style="margin: 0; font-size: 13px;">There are no expenses matching the selected filter criteria.</p>
+                </div>
+
+                <!-- Approvals Pagination -->
+                <div id="approvalsPagination" style="margin-top: 15px; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                    <button type="button" class="btn btn-default btn-sm" onclick="prevApprovalPage()">
+                         Prev
+                    </button>
+                    <span id="approvalPageInfo" style="font-size: 13px; font-weight: 600; color: #7f8c8d;"></span>
+                    <button type="button" class="btn btn-default btn-sm" onclick="nextApprovalPage()">
+                        Next 
+                    </button>
+                </div>
+            </div>
+
+    <!-- End secApprovals -->
         </div>
     </div>
 
 
 
     <!-- ====================== Reimbursement History Modal ====================== -->
+    <!-- ====================== Reject Expense Modal ====================== -->
+    <div id="modalRejectExpense" class="modal" style="display: none; background: rgba(0,0,0,0.5);">
+        <div class="modal-content" style="max-width: 520px; border-radius: 8px; padding: 25px; margin: 10% auto;">
+            <span class="close" onclick="closeRejectModal()">&times;</span>
+            <h4 style="font-weight: 700; color: #e74c3c; margin-top: 0;">
+                Reject Expense
+            </h4>
+            <p id="rejectModalInfo" style="color: #555; font-size: 13px; margin: 10px 0 15px 0;">
+                Please provide a specific reason for rejecting this expense. This will be visible to the employee.
+            </p>
+            <input type="hidden" id="hfRejectExpenseId" value="0" />
+            <input type="hidden" id="hfIsBulkReject" value="0" />
+
+            <div class="form-group">
+                <label style="font-weight: 600; font-size: 13px; color: #34495e;">Rejection Reason <span style="color: #e74c3c;">*</span>:</label>
+                <textarea id="txtRejectReason" class="form-control" rows="4" placeholder="Enter reason for rejection (e.g. Incomplete bill, policy limit exceeded, missing tax invoice)..." style="resize: vertical; font-size: 13px;"></textarea>
+            </div>
+
+            <div style="text-align: right; margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" class="btn btn-default" onclick="closeRejectModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="confirmRejectExpense()" style="font-weight: 600;">
+                   Confirm Rejection
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== View Rejection Reason Modal ====================== -->
+    <div id="modalViewRejection" class="modal" style="display: none; background: rgba(0,0,0,0.5);">
+        <div class="modal-content" style="max-width: 480px; border-radius: 8px; padding: 25px; margin: 10% auto;">
+            <span class="close" onclick="closeViewRejectionModal()">&times;</span>
+            <h4 style="font-weight: 700; color: #e74c3c; margin-top: 0;">
+                Rejection Reason
+            </h4>
+            <div style="background: #fdf2f2; border: 1px solid #f8b4b4; border-radius: 6px; padding: 15px; margin: 15px 0; font-size: 14px; color: #9b1c1c; word-break: break-word;" id="lblViewRejectionText">
+            </div>
+            <div style="text-align: right;">
+                <button type="button" class="btn btn-default" onclick="closeViewRejectionModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== Bill Image Preview Modal ====================== -->
+    <div id="modalBillPreview" class="modal" style="display: none; background: rgba(0,0,0,0.7);">
+        <div class="modal-content" style="max-width: 750px; border-radius: 8px; padding: 20px; margin: 5% auto; text-align: center;">
+            <span class="close" onclick="closeBillPreview()">&times;</span>
+            <h4 id="billPreviewTitle" style="font-weight: 700; color: #2c3e50; margin-top: 0; text-align: left;">Bill Preview</h4>
+            <div style="max-height: 520px; overflow: auto; margin: 15px 0; background: #f8f9fa; border-radius: 6px; padding: 10px;">
+                <img id="imgBillPreview" src="" alt="Bill Preview" style="max-width: 100%; max-height: 500px; object-fit: contain;" />
+                <div id="divBillPdfNotice" style="display: none; padding: 40px 20px;">
+                    
+                    <p style="font-weight: 600; color: #2c3e50;">This document is a PDF.</p>
+                    <a id="btnBillPdfDownload" href="#" target="_blank" class="btn btn-primary">Open PDF in New Tab</a>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <a id="btnDownloadBill" href="#" target="_blank" download class="btn btn-sm btn-info">
+                    Download File
+                </a>
+                <button type="button" class="btn btn-default" onclick="closeBillPreview()">Close</button>
+            </div>
+        </div>
+    </div>
     <div id="historyModal" class="modal">
         <div class="modal-content" style="max-width: 1100px;">
             <span class="close" onclick="closeHistoryModal()">&times;</span>
@@ -312,6 +562,23 @@
                 <span class="close" onclick="closeSubmitModal();">&times;</span>
                 <h3>Details which needs to be displayed on header </h3>
                 <div id="rbmPopup" title="Submit Reimbursement" style="display: visible;">
+                <input type="hidden" id="hfExistingBatchId" value="" />
+                <!-- Batch Re-use Notice Banner -->
+                <div id="divExistingBatchNotice" style="display: none; background: #e8f4fd; border: 1px solid #b8daff; border-radius: 6px; padding: 12px; margin-bottom: 15px; color: #004085;">
+                    <div style="font-weight: 700; margin-bottom: 4px;">
+                        <span class="glyphicon glyphicon-repeat"></span> Batch Re-use Detected (Batch #<span id="lblExistingBatchId"></span>)
+                    </div>
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        These expenses are linked to existing Reimbursement Batch <strong>#<span id="lblExistingBatchCode"></span></strong>.
+                    </div>
+                    <label style="font-weight: 600; font-size: 13px; cursor: pointer; color: #004085; display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" id="chkReUseBatch" checked style="margin: 0; width: 16px; height: 16px;" /> 
+                        Update existing batch and overwrite summary PDF (Recommended)
+                    </label>
+                    <div style="font-size: 11px; color: #6c757d; margin-top: 4px;">
+                        When checked, the existing batch record will be updated and the previous PDF file will be replaced with the updated details.
+                    </div>
+                </div>
                     <label>Reporting Manager</label>
                     <input type="text" id="txtManager" class="form-control" />
 
@@ -350,6 +617,23 @@
             <h3>Details which needs to be displayed on header</h3>
 
             <div id="rbmPopup" title="Submit Reimbursement" style="display: visible;">
+                <input type="hidden" id="hfExistingBatchId" value="" />
+                <!-- Batch Re-use Notice Banner -->
+                <div id="divExistingBatchNotice" style="display: none; background: #e8f4fd; border: 1px solid #b8daff; border-radius: 6px; padding: 12px; margin-bottom: 15px; color: #004085;">
+                    <div style="font-weight: 700; margin-bottom: 4px;">
+                        Batch Re-use Detected (Batch #<span id="lblExistingBatchId"></span>)
+                    </div>
+                    <div style="font-size: 13px; margin-bottom: 8px;">
+                        These expenses are linked to existing Reimbursement Batch <strong>#<span id="lblExistingBatchCode"></span></strong>.
+                    </div>
+                    <label style="font-weight: 600; font-size: 13px; cursor: pointer; color: #004085; display: flex; align-items: center; gap: 8px; margin: 0;">
+                        <input type="checkbox" id="chkReUseBatch" checked style="margin: 0; width: 16px; height: 16px;" /> 
+                        Update existing batch and overwrite summary PDF (Recommended)
+                    </label>
+                    <div style="font-size: 11px; color: #6c757d; margin-top: 4px;">
+                        When checked, the existing batch record will be updated and the previous PDF file will be replaced with the updated details.
+                    </div>
+                </div>
 
                 <div class="form-grid">
 
@@ -561,6 +845,23 @@
         <div class="modal-content" style="max-width: 800px;">
             <span class="close" onclick="closeEditExpenseModal()">&times;</span>
             <h3 style="text-align: center;">Edit Expense</h3>
+            <!-- Rejection Notice Banner -->
+            <div id="divEditRejectionNotice" style="display: none; background: #fdf2f2; border: 1px solid #f8b4b4; border-radius: 6px; padding: 12px; margin: 10px 0 15px 0;">
+                <div style="font-weight: 700; color: #e74c3c; margin-bottom: 4px;">
+                    <span class="glyphicon glyphicon-remove-circle"></span> Expense Previously Rejected by Manager
+                </div>
+                <div style="color: #9b1c1c; font-size: 13px; margin-bottom: 6px;">
+                    <strong>Rejection Reason: </strong><span id="lblEditRejectionReason"></span>
+                </div>
+                <div style="font-size: 11px; color: #7f8c8d;">
+                    <span class="glyphicon glyphicon-info-sign"></span> Modifying and saving this expense will reset its status to <strong>Pending</strong> and automatically resubmit it for manager approval.
+                </div>
+            </div>
+
+            <!-- Approved Notice Banner -->
+            <div id="divEditApprovedNotice" style="display: none; background: #fef9e7; border: 1px solid #f9e79f; border-radius: 6px; padding: 12px; margin: 10px 0 15px 0; color: #7d6608; font-size: 12px;">
+                <span class="glyphicon glyphicon-info-sign"></span> <strong>Note:</strong> This expense was previously approved. Any modification will reset its status to <strong>Pending</strong>, requiring manager re-approval.
+            </div>
             <div class="responsive-form">
                 <div class="form-row">
                     <div class="form-group">
@@ -1025,6 +1326,14 @@
     <script src="../Js/jquery-ui.js"></script>
     <script>
 
+        function showLoader() {
+            $('#loaderOverlay').show();
+        }
+
+        function hideLoader() {
+            $('#loaderOverlay').hide();
+        }
+
         function openHistoryModal() {
             document.getElementById("historyModal").style.display = "block";
             renderHistoryFromExpenseData();
@@ -1035,7 +1344,7 @@
         }
 
         function GetExpenseHistoryHistoryData() {
-            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var hdnUserId = $('#hdnUserId').val() || $('#ContentPlaceHolder1_hdnUserId').val() || $('[id$=hdnUserId]').val();
             var UserId = hdnUserId;//localStorage.getItem("UserId");
             $.ajax({
                 url: "ExpenseManager.aspx/ReimbursementHistoryData",
@@ -1260,6 +1569,53 @@
 
 
         function OpenRbmPopup() {
+            var selectedIds = [];
+            var hasUnapproved = false;
+            $('#tblExpense tr').not(':first').each(function () {
+                var chk = $(this).find('.chkSingle');
+                if (chk.is(':checked')) {
+                    var id = chk.attr('data-id');
+                    if (id) {
+                        selectedIds.push(Number(id));
+                        var exp = expenseData.find(x => x.ID == id);
+                        if (exp && exp.ApprovalStatus !== 'Approved' && exp.Status !== 'Reimbursement Created') {
+                            hasUnapproved = true;
+                        }
+                    }
+                }
+            });
+
+            if (selectedIds.length === 0) {
+                alert("Please select at least one expense to submit for reimbursement.");
+                return;
+            }
+
+            if (hasUnapproved) {
+                alert("One or more selected expenses are pending manager approval. Only Approved expenses can be submitted for reimbursement.");
+                return;
+            }
+            // Check if selected expenses belong to an existing batch
+            var existingBatchIds = [];
+            var existingBatchCodes = [];
+            selectedIds.forEach(function (id) {
+                var exp = expenseData.find(function (x) { return x.ID == id; });
+                if (exp && exp.BatchID && existingBatchIds.indexOf(exp.BatchID) === -1) {
+                    existingBatchIds.push(exp.BatchID);
+                    if (exp.ReimbursementCode) existingBatchCodes.push(exp.ReimbursementCode);
+                }
+            });
+
+            if (existingBatchIds.length === 1) {
+                $('#hfExistingBatchId').val(existingBatchIds[0]);
+                $('#lblExistingBatchId').text(existingBatchIds[0]);
+                $('#lblExistingBatchCode').text(existingBatchCodes[0] || ('Batch ' + existingBatchIds[0]));
+                $('#chkReUseBatch').prop('checked', true);
+                $('#divExistingBatchNotice').show();
+            } else {
+                $('#hfExistingBatchId').val('');
+                $('#divExistingBatchNotice').hide();
+            }
+
             $('#txtManager').val('');
             $('#txtEmpCode').val('');
             $('#txtPlant').val('');
@@ -1272,6 +1628,8 @@
 
         function closeSubmitModal() {
             document.getElementById("submitModal").style.display = "none";
+            $('#hfExistingBatchId').val('');
+            $('#divExistingBatchNotice').hide();
         }
 
 
@@ -1300,6 +1658,16 @@
 
         $(document).ready(function () {
             BindExpenseMaster();
+            var isApproverVal = $('#hdnIsApprover').val() || 
+                                $('#ContentPlaceHolder1_hdnIsApprover').val() || 
+                                $('[id$=hdnIsApprover]').val() || '0';
+            var isApprover = isApproverVal === '1';
+            if (isApprover) {
+                $('#tabNavApprovals').show();
+                loadApproverStats();
+                loadSubordinatesForFilter();
+                try { var urlP = new URLSearchParams(window.location.search); if (urlP.get('tab') === 'approvals') switchExpenseTab('approvals'); } catch (e) { }
+            }
             Search();
             calculateAmount();
 
@@ -1386,7 +1754,7 @@
             var BillNumber = $('#txtBillNumber').val();
             var IsPaid = $('#ddlIsPaid').val() === 'Yes';
             var PaymentMode = $('#ddlPaymentMode').val();
-            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var hdnUserId = $('#hdnUserId').val() || $('#ContentPlaceHolder1_hdnUserId').val() || $('[id$=hdnUserId]').val();
 
             if (Date == "" || ExpenseId == "" || Amount == "" || SubExpenseId == "0") {
                 alert('Date, Expense On, Sub Expense, and Amount are mandatory fields');
@@ -1490,7 +1858,7 @@
             var FromDate = $('#txtFromDate').val();
             var ToDate = $('#txtToDate').val();
             var ExpenseId = $('#ddlExpenseSearch').val() || "0";
-            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var hdnUserId = $('#hdnUserId').val() || $('#ContentPlaceHolder1_hdnUserId').val() || $('[id$=hdnUserId]').val();
             var UserId = hdnUserId;//localStorage.getItem("UserId");
             var totExpense = 0;
             $.ajax({
@@ -1569,6 +1937,19 @@
                 html += '<td class="MyHeader" style="width: 200px; white-space: normal; word-wrap: break-word;">' + value.Description + '</td>';
                 html += '<td class="MyHeader">' + value.BillNumber + '</td>';
                 html += '<td class="MyHeader">' + value.PaymentMode + '</td>';
+                // Approval Status column
+                var appStatus = value.ApprovalStatus || 'Pending';
+                var appHtml = '';
+                if (appStatus === 'Approved') {
+                    var apprTooltip = 'Approved by ' + (value.ApproverName || 'Manager') + (value.ApprovedOn ? ' on ' + value.ApprovedOn : '');
+                    appHtml = '<span class="label label-success" style="font-size: 11px; padding: 4px 8px; border-radius: 4px;" title="' + apprTooltip + '"><span class="glyphicon glyphicon-ok"></span> Approved</span>';
+                } else if (appStatus === 'Rejected') {
+                    var rejReason = (value.RejectionReason || 'No reason provided').replace(/"/g, '&quot;');
+                    appHtml = '<span class="label label-danger" style="font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer;" onclick="viewRejectionReason(\'' + rejReason + '\')" title="Click to view rejection reason"><span class="glyphicon glyphicon-remove"></span> Rejected</span>';
+                } else {
+                    appHtml = '<span class="label label-warning" style="font-size: 11px; padding: 4px 8px; border-radius: 4px;"><span class="glyphicon glyphicon-time"></span> Pending</span>';
+                }
+                html += '<td class="MyHeader">' + appHtml + '</td>';
                 html += '<td class="MyHeader">';
                 if (value.ExpenseFile) {
                     html += '<a href="../Uploads/Expense/' + value.ExpenseFile + '" >View Bill 1</a><br/>';
@@ -1750,9 +2131,14 @@
             var startDateStr = startObj.original;
             var endDateStr = endObj.original;
             showLoader();
-            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var hdnUserId = $('#hdnUserId').val() || $('#ContentPlaceHolder1_hdnUserId').val() || $('[id$=hdnUserId]').val();
             var rawLogo = $('#hfLogoUploadedFile').val();
             var finalLogoPath = rawLogo ? (rawLogo.indexOf('|') !== -1 ? '\\Uploads\\Expense\\logo\\' + rawLogo.split('|')[0] : rawLogo) : '';
+
+            var existingBatchId = null;
+            if ($('#chkReUseBatch').is(':checked') && $('#hfExistingBatchId').val()) {
+                existingBatchId = Number($('#hfExistingBatchId').val());
+            }
 
             var payload = {
                 createdBy: hdnUserId,
@@ -1766,7 +2152,8 @@
                 id: selectedIds[0],
                 expenseIds: selectedIds,
                 startExpenseDate: startDateStr,
-                endExpenseDate: endDateStr
+                endExpenseDate: endDateStr,
+                existingBatchId: existingBatchId
             };
             $.ajax({
                 url: "ExpenseManager.aspx/CallSaveReimbursementAPI",
@@ -1776,7 +2163,15 @@
                 success: function (res) {
                     hideLoader();
                     var result = JSON.parse(res.d);
-                    alert("Reimbursement Created with batch id: " + result.batchID);
+                    if (result.error) {
+                        alert(result.message || "Failed to process reimbursement.");
+                        return;
+                    }
+                    if (existingBatchId) {
+                        alert("Reimbursement Batch #" + result.batchID + " updated successfully! Existing PDF has been overwritten.");
+                    } else {
+                        alert("Reimbursement Created with batch id: " + result.batchID);
+                    }
                     Search();
                     closeSubmitModal();
                 },
@@ -1906,6 +2301,20 @@
 
             currentEditingId = expense.ID;
 
+            // Show Rejection or Approved notice
+            if (expense.ApprovalStatus === 'Rejected') {
+                var rejText = expense.RejectionReason || 'No specific rejection reason provided.';
+                $('#lblEditRejectionReason').text(rejText);
+                $('#divEditRejectionNotice').show();
+                $('#divEditApprovedNotice').hide();
+            } else if (expense.ApprovalStatus === 'Approved') {
+                $('#divEditRejectionNotice').hide();
+                $('#divEditApprovedNotice').show();
+            } else {
+                $('#divEditRejectionNotice').hide();
+                $('#divEditApprovedNotice').hide();
+            }
+
             // Populate modal fields
             $('#txtEditExpenseDate').val(expense.ExpenseDate);
             $('#ddlEditExpense').val(expense.ExpenseId);
@@ -1953,6 +2362,8 @@
 
         function closeEditExpenseModal() {
             document.getElementById("editExpenseModal").style.display = "none";
+            $('#divEditRejectionNotice').hide();
+            $('#divEditApprovedNotice').hide();
             currentEditingId = 0;
         }
 
@@ -2152,7 +2563,7 @@
             var BillNumber = $('#txtEditBillNumber').val().trim();
             var IsPaid = $('#ddlEditIsPaid').val() === 'Yes';
             var PaymentMode = $('#ddlEditPaymentMode').val();
-            var hdnUserId = $('#ContentPlaceHolder1_hdnUserId').val();
+            var hdnUserId = $('#hdnUserId').val() || $('#ContentPlaceHolder1_hdnUserId').val() || $('[id$=hdnUserId]').val();
 
             if (editUploadInProgress) {
                 alert('Please wait. The selected bill file is still uploading.');
@@ -2196,7 +2607,7 @@
                 success: function (result) {
                     hideLoader();
                     if (result.d == "1") {
-                        alert('Expense updated successfully!');
+                        alert('Expense updated successfully and resubmitted for manager approval!');
                         closeEditExpenseModal();
                         Search(); // Refresh table
                     } else {
@@ -2515,6 +2926,439 @@
             return colors;
         }
 
+        // ==============================================================================
+        // EXPENSE APPROVAL PROCESS (HIERARCHY-BASED) JAVASCRIPT
+        // ==============================================================================
+        var teamApprovalsData = [];
+        var currentApprovalPage = 1;
+        var approvalPageSize = 10;
+        var approvalSortAsc = false;
+
+        function switchExpenseTab(tab) {
+            if (tab === 'myExpenses') {
+                $('#tabNavMyExpenses').addClass('active');
+                $('#tabNavApprovals').removeClass('active');
+                $('#secMyExpenses').show();
+                $('#secApprovals').hide();
+            } else if (tab === 'approvals') {
+                $('#tabNavApprovals').addClass('active');
+                $('#tabNavMyExpenses').removeClass('active');
+                $('#secMyExpenses').hide();
+                $('#secApprovals').show();
+                loadTeamApprovals();
+                loadApproverStats();
+            }
+        }
+
+        function loadApproverStats() {
+            $.ajax({
+                url: "ExpenseManager.aspx/GetApproverDashboardStatsAjax",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    try {
+                        var stats = typeof res.d === "string" ? JSON.parse(res.d) : res.d;
+                        if (stats && stats.length > 0) {
+                            var s = stats[0];
+                            $('#cardPendingCount').text(s.PendingCount || 0);
+                            $('#cardPendingAmount').text('Rs. ' + parseFloat(s.PendingAmount || 0).toFixed(2));
+                            $('#cardApprovedCount').text(s.ApprovedCount || 0);
+                            $('#cardRejectedCount').text(s.RejectedCount || 0);
+                            $('#cardSubordinatesCount').text(s.TotalSubordinatesCount || 0);
+
+                            var pending = s.PendingCount || 0;
+                            if (pending > 0) {
+                                $('#badgePendingCount').text(pending).show();
+                            } else {
+                                $('#badgePendingCount').hide();
+                            }
+                        }
+                    } catch (e) { console.error("Error parsing stats", e); }
+                }
+            });
+        }
+
+        function loadSubordinatesForFilter() {
+            $.ajax({
+                url: "ExpenseManager.aspx/GetSubordinatesForFilterAjax",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (res) {
+                    try {
+                        var list = typeof res.d === "string" ? JSON.parse(res.d) : res.d;
+                        var $ddl = $('#ddlApprovalSubordinate');
+                        $ddl.empty();
+                        $ddl.append('<option value="0">All Team Members</option>');
+                        if (list && list.length > 0) {
+                            $.each(list, function (i, item) {
+                                var levelBadge = item.Level ? ' (L' + item.Level + ')' : '';
+                                $ddl.append('<option value="' + item.UserId + '">' + item.FullName + ' [' + item.EmployeeCode + ']' + levelBadge + '</option>');
+                            });
+                        }
+                    } catch (e) { console.error("Error loading subordinates", e); }
+                }
+            });
+        }
+
+        function loadTeamApprovals() {
+            showLoader();
+            var fromDate = $('#txtAppFromDate').val() || "";
+            var toDate = $('#txtAppToDate').val() || "";
+            var status = $('#ddlApprovalStatus').val() || "Pending";
+            var subId = parseInt($('#ddlApprovalSubordinate').val() || "0");
+
+            $.ajax({
+                url: "ExpenseManager.aspx/GetTeamExpensesForApproval",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ FromDate: fromDate, ToDate: toDate, Status: status, SubordinateUserId: subId }),
+                dataType: "json",
+                success: function (res) {
+                    hideLoader();
+                    try {
+                        var raw = (res && res.hasOwnProperty('d')) ? res.d : res; if (typeof raw === "string") { try { raw = JSON.parse(raw); } catch (e) { raw = $.parseJSON(raw); } } if (typeof raw === "string") { try { raw = JSON.parse(raw); } catch (e) { raw = $.parseJSON(raw); } } teamApprovalsData = Array.isArray(raw) ? raw : [];
+                        if (!Array.isArray(teamApprovalsData)) teamApprovalsData = [];
+                        currentApprovalPage = 1;
+                        renderTeamApprovalsTable();
+                    } catch (e) {
+                        console.error("Error loading approvals", e);
+                        teamApprovalsData = [];
+                        renderTeamApprovalsTable();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    hideLoader();
+                    alert("Failed to load team expenses for approval.");
+                }
+            });
+        }
+
+        function resetApprovalFilters() {
+            $('#ddlApprovalSubordinate').val('0');
+            $('#ddlApprovalStatus').val('Pending');
+            $('#txtAppFromDate').val('');
+            $('#txtAppToDate').val('');
+            loadTeamApprovals();
+        }
+
+        function renderTeamApprovalsTable() {
+            console.log("renderTeamApprovalsTable called, data count:", teamApprovalsData ? teamApprovalsData.length : 0); var $table = $('#tblTeamApprovals'); var $tbody = $table.find('tbody'); if ($tbody.length === 0) { $table.append('<tbody></tbody>'); $tbody = $table.find('tbody'); }
+            $tbody.empty();
+            $('#chkAppSelectAll').prop('checked', false);
+
+            if (!teamApprovalsData || teamApprovalsData.length === 0) {
+                $('#approvalsEmptyMessage').show();
+                $('#approvalsPagination').hide();
+                return;
+            }
+
+            $('#approvalsEmptyMessage').hide();
+            $('#approvalsPagination').show();
+
+            var start = (currentApprovalPage - 1) * approvalPageSize;
+            var end = start + approvalPageSize;
+            var pageData = teamApprovalsData.slice(start, end);
+
+            $.each(pageData, function (idx, item) {
+                var statusBadge = '';
+                var status = item.ApprovalStatus || 'Pending';
+                if (status === 'Approved') {
+                    statusBadge = '<span class="label label-success" style="font-size:11px; padding:4px 8px; border-radius:4px;"><span class="glyphicon glyphicon-ok"></span> Approved</span>';
+                } else if (status === 'Rejected') {
+                    var reasonSafe = (item.RejectionReason || 'No reason provided').replace(/"/g, '&quot;');
+                    statusBadge = '<span class="label label-danger" style="font-size:11px; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="viewRejectionReason(\'' + reasonSafe + '\')" title="Click to view reason"><span class="glyphicon glyphicon-remove"></span> Rejected</span>';
+                } else {
+                    statusBadge = '<span class="label label-warning" style="font-size:11px; padding:4px 8px; border-radius:4px;"><span class="glyphicon glyphicon-time"></span> Pending</span>';
+                }
+
+                var levelBadge = '';
+                if (item.HierarchyLevel === 1) {
+                    levelBadge = '<span class="badge" style="background:#2ecc71; font-size:10px; margin-left:4px;" title="Direct Report">Direct</span>';
+                } else if (item.HierarchyLevel > 1) {
+                    levelBadge = '<span class="badge" style="background:#95a5a6; font-size:10px; margin-left:4px;" title="Subordinate Level ' + item.HierarchyLevel + '">L' + item.HierarchyLevel + '</span>';
+                }
+
+                var subName = item.SubmitterName || ('User ' + (item.SubmitterUserId || '')); var subNameSafe = String(subName).replace(/'/g, "\\'"); var billsHtml = '';
+                if (item.ExpenseFile) {
+                    billsHtml += '<a href="javascript:void(0);" onclick="previewBill(\'../Uploads/Expense/' + item.ExpenseFile + '\', \'Bill 1 - ' + subNameSafe + '\')" class="btn btn-default btn-xs" style="margin-right:2px;"> Bill 1</a>';
+                }
+                if (item.ExpenseFile2) {
+                    billsHtml += '<a href="javascript:void(0);" onclick="previewBill(\'../Uploads/Expense/' + item.ExpenseFile2 + '\', \'Bill 2 - ' + subNameSafe + '\')" class="btn btn-default btn-xs"> Bill 2</a>';
+                }
+                if (!billsHtml) billsHtml = '<span class="text-muted" style="font-size:11px;">None</span>';
+
+                var actionHtml = '';
+                if (status === 'Pending') {
+                    actionHtml = '<button type="button" class="btn btn-success btn-xs" onclick="approveSingleExpense(' + item.ID + ')" style="margin-right:4px; font-weight:600;"> Approve</button>' +
+                                 '<button type="button" class="btn btn-danger btn-xs" onclick="openRejectModal(' + item.ID + ', \'' + subNameSafe + '\', ' + parseFloat(item.Amount || 0) + ')" style="font-weight:600;"> Reject</button>';
+                } else if (status === 'Approved') {
+                    var info = item.ApproverName ? 'By: ' + item.ApproverName + (item.ApprovedOn ? ' on ' + item.ApprovedOn : '') : 'Approved';
+                    actionHtml = '<span class="text-success" style="font-size:11px; display:block; margin-bottom:3px;" title="' + info + '"> ' + (item.ApproverName ? item.ApproverName.split(' ')[0] : 'Approved') + '</span>' +
+                                 '<button type="button" class="btn btn-default btn-xs" onclick="openRejectModal(' + item.ID + ', \'' + subNameSafe + '\', ' + parseFloat(item.Amount || 0) + ')" style="color:#c0392b;" title="Revoke approval and reject"> Reject</button>';
+                } else if (status === 'Rejected') {
+                    actionHtml = '<button type="button" class="btn btn-default btn-xs" onclick="approveSingleExpense(' + item.ID + ')" style="color:#27ae60;" title="Reconsider and approve"> Approve</button>';
+                }
+
+                var tr = '<tr>' +
+                    '<td style="text-align:center;"><input type="checkbox" class="chkAppSingle" data-id="' + item.ID + '" /></td>' +
+                    '<td style="text-align:center;">' + (start + idx + 1) + '</td>' +
+                    '<td><strong>' + subName + '</strong> ' + levelBadge + '<br/><span class="text-muted" style="font-size:11px;">' + (item.SubmitterEmployeeId && item.SubmitterEmployeeId !== 0 ? 'Emp: ' + item.SubmitterEmployeeId : (item.SubmitterRole || '')) + '</span></td>' +
+                    '<td>' + (item.ExpenseDate || '-') + '</td>' +
+                    '<td><strong>' + (item.Category || '-') + '</strong>' + (item.SubCategory ? '<br/><span class="text-muted" style="font-size:11px;">' + item.SubCategory + '</span>' : '') + '</td>' +
+                    '<td>' + (item.Rate || '-') + '</td>' +
+                    '<td>' + (item.Quantity || '-') + '</td>' +
+                    '<td><strong>Rs. ' + parseFloat(item.Amount || 0).toFixed(2) + '</strong></td>' +
+                    '<td style="max-width:250px; word-break:break-word;">' + (item.Description || '-') + '</td>' +
+                    '<td>' + (item.BillNumber || '-') + '</td>' +
+                    '<td>' + (item.PaymentMode || '-') + '</td>' +
+                    '<td>' + billsHtml + '</td>' +
+                    '<td>' + statusBadge + '</td>' +
+                    '<td style="text-align:center;">' + actionHtml + '</td>' +
+                    '</tr>';
+                $tbody.append(tr);
+            });
+            var totalPages = Math.ceil(teamApprovalsData.length / approvalPageSize);
+            $('#approvalPageInfo').text('Page ' + currentApprovalPage + ' of ' + (totalPages || 1) + ' (' + teamApprovalsData.length + ' total)');
+        }
+
+        function prevApprovalPage() {
+            if (currentApprovalPage > 1) {
+                currentApprovalPage--;
+                renderTeamApprovalsTable();
+            }
+        }
+
+        function nextApprovalPage() {
+            var totalPages = Math.ceil(teamApprovalsData.length / approvalPageSize);
+            if (currentApprovalPage < totalPages) {
+                currentApprovalPage++;
+                renderTeamApprovalsTable();
+            }
+        }
+
+        function sortApprovalsByDate() {
+            approvalSortAsc = !approvalSortAsc;
+            $('#appDateSortIcon').html(approvalSortAsc ? '&#9650;' : '&#9660;');
+            teamApprovalsData.sort(function (a, b) {
+                var da = new Date(a.RawExpenseDate || a.ExpenseDate);
+                var db = new Date(b.RawExpenseDate || b.ExpenseDate);
+                return approvalSortAsc ? (da - db) : (db - da);
+            });
+            currentApprovalPage = 1;
+            renderTeamApprovalsTable();
+        }
+
+        $(document).on('change', '#chkAppSelectAll', function () {
+            $('.chkAppSingle').prop('checked', $(this).is(':checked'));
+        });
+        $(document).on('change', '.chkAppSingle', function () {
+            if (!$(this).is(':checked')) {
+                $('#chkAppSelectAll').prop('checked', false);
+            } else if ($('.chkAppSingle:checked').length === $('.chkAppSingle').length) {
+                $('#chkAppSelectAll').prop('checked', true);
+            }
+        });
+
+        function approveSingleExpense(id) {
+            if (!confirm("Are you sure you want to approve this expense?")) return;
+            showLoader();
+            $.ajax({
+                url: "ExpenseManager.aspx/ApproveExpenseAjax",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ ExpenseId: id, Remarks: "" }),
+                dataType: "json",
+                success: function (res) {
+                    hideLoader();
+                    var data = typeof res.d === "string" ? JSON.parse(res.d) : res.d;
+                    if (data.success) {
+                        alert("Expense approved successfully.");
+                        loadTeamApprovals();
+                        loadApproverStats();
+                    } else {
+                        alert(data.message || "Failed to approve expense.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    hideLoader();
+                    alert("Error communicating with server.");
+                }
+            });
+        }
+
+        function openRejectModal(id, employeeName, amount) {
+            $('#hfRejectExpenseId').val(id);
+            $('#hfIsBulkReject').val('0');
+            $('#txtRejectReason').val('');
+            $('#rejectModalInfo').html('Rejecting expense of <strong>Rs. ' + parseFloat(amount || 0).toFixed(2) + '</strong> submitted by <strong>' + employeeName + '</strong>.');
+            $('#modalRejectExpense').show();
+        }
+
+        function closeRejectModal() {
+            $('#modalRejectExpense').hide();
+            $('#hfRejectExpenseId').val('0');
+            $('#hfIsBulkReject').val('0');
+            $('#txtRejectReason').val('');
+        }
+
+        function confirmRejectExpense() {
+            var reason = $('#txtRejectReason').val().trim();
+            if (!reason) {
+                alert("Please enter a rejection reason.");
+                $('#txtRejectReason').focus();
+                return;
+            }
+
+            var isBulk = $('#hfIsBulkReject').val() === '1';
+            if (isBulk) {
+                var selectedIds = [];
+                $('.chkAppSingle:checked').each(function () {
+                    selectedIds.push(parseInt($(this).attr('data-id')));
+                });
+                if (selectedIds.length === 0) {
+                    alert("No expenses selected.");
+                    return;
+                }
+
+                showLoader();
+                $.ajax({
+                    url: "ExpenseManager.aspx/BulkRejectExpensesAjax",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ ExpenseIds: selectedIds, Reason: reason }),
+                    dataType: "json",
+                    success: function (res) {
+                        hideLoader();
+                        closeRejectModal();
+                        var data = typeof res.d === "string" ? JSON.parse(res.d) : res.d;
+                        if (data.success) {
+                            alert(data.message || "Expenses rejected.");
+                            loadTeamApprovals();
+                            loadApproverStats();
+                        } else {
+                            alert(data.message || "Failed to reject expenses.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        hideLoader();
+                        alert("Error communicating with server.");
+                    }
+                });
+            } else {
+                var id = parseInt($('#hfRejectExpenseId').val());
+                if (!id) return;
+
+                showLoader();
+                $.ajax({
+                    url: "ExpenseManager.aspx/RejectExpenseAjax",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ ExpenseId: id, Reason: reason }),
+                    dataType: "json",
+                    success: function (res) {
+                        hideLoader();
+                        closeRejectModal();
+                        var data = typeof res.d === "string" ? JSON.parse(res.d) : res.d;
+                        if (data.success) {
+                            alert(data.message || "Expense rejected.");
+                            loadTeamApprovals();
+                            loadApproverStats();
+                        } else {
+                            alert(data.message || "Failed to reject expense.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        hideLoader();
+                        alert("Error communicating with server.");
+                    }
+                });
+            }
+        }
+
+        function bulkApproveSelected() {
+            var selectedIds = [];
+            $('.chkAppSingle:checked').each(function () {
+                selectedIds.push(parseInt($(this).attr('data-id')));
+            });
+
+            if (selectedIds.length === 0) {
+                alert("Please select at least one expense to approve.");
+                return;
+            }
+
+            if (!confirm("Are you sure you want to approve " + selectedIds.length + " selected expense(s)?")) return;
+
+            showLoader();
+            $.ajax({
+                url: "ExpenseManager.aspx/BulkApproveExpensesAjax",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ ExpenseIds: selectedIds, Remarks: "" }),
+                dataType: "json",
+                success: function (res) {
+                    hideLoader();
+                    var data = typeof res.d === "string" ? JSON.parse(res.d) : res.d;
+                    if (data.success) {
+                        alert(data.message || "Expenses approved successfully.");
+                        loadTeamApprovals();
+                        loadApproverStats();
+                    } else {
+                        alert(data.message || "Failed to bulk approve expenses.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    hideLoader();
+                    alert("Error communicating with server.");
+                }
+            });
+        }
+
+        function bulkRejectSelected() {
+            var selectedIds = [];
+            $('.chkAppSingle:checked').each(function () {
+                selectedIds.push(parseInt($(this).attr('data-id')));
+            });
+
+            if (selectedIds.length === 0) {
+                alert("Please select at least one expense to reject.");
+                return;
+            }
+
+            $('#hfRejectExpenseId').val('0');
+            $('#hfIsBulkReject').val('1');
+            $('#txtRejectReason').val('');
+            $('#rejectModalInfo').html('Rejecting <strong>' + selectedIds.length + ' selected expense(s)</strong>. Please provide a reason.');
+            $('#modalRejectExpense').show();
+        }
+
+        function viewRejectionReason(reason) {
+            $('#lblViewRejectionText').text(reason || "No rejection reason provided.");
+            $('#modalViewRejection').show();
+        }
+        function closeViewRejectionModal() {
+            $('#modalViewRejection').hide();
+        }
+
+        function previewBill(url, title) {
+            $('#billPreviewTitle').text(title || "Bill Preview");
+            var lower = url.toLowerCase();
+            if (lower.indexOf('.pdf') >= 0) {
+                $('#imgBillPreview').hide();
+                $('#divBillPdfNotice').show();
+                $('#btnBillPdfDownload').attr('href', url);
+            } else {
+                $('#divBillPdfNotice').hide();
+                $('#imgBillPreview').attr('src', url).show();
+            }
+            $('#btnDownloadBill').attr('href', url);
+            $('#modalBillPreview').show();
+        }
+        function closeBillPreview() {
+            $('#modalBillPreview').hide();
+            $('#imgBillPreview').attr('src', '');
+        }
     </script>
 
     <div id="loaderOverlay" style="display: none;">

@@ -393,6 +393,7 @@
     <Content Include="Pages\StockInHand.aspx" />
     <Content Include="Pages\StockReports.aspx" />
     <Content Include="Pages\SupplierList.aspx" />
+    <Content Include="Pages\ManageTeamHierarchy.aspx" />
     <Content Include="Pages\UserDashboard.aspx" />
     <Content Include="Pages\UserDashboard1.aspx" />
     <Content Include="Pages\VendorItemReport.aspx" />
@@ -1084,6 +1085,13 @@
     </Compile>
     <Compile Include="Pages\SupplierList.aspx.designer.cs">
       <DependentUpon>SupplierList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ManageTeamHierarchy.aspx.cs">
+      <DependentUpon>ManageTeamHierarchy.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\ManageTeamHierarchy.aspx.designer.cs">
+      <DependentUpon>ManageTeamHierarchy.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\UserDashboard.aspx.cs">
       <DependentUpon>UserDashboard.aspx</DependentUpon>

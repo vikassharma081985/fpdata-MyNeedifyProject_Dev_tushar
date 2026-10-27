@@ -19,21 +19,13 @@ namespace WSBillingMaster.Pages
 {
     public partial class ExpenseManager : System.Web.UI.Page
     {
-        //public static string apiBaseUrl = "https://localhost:7089/api/";
-        //public static string apiBaseUrl = "https://198.38.88.185/api/";
         public static string apiKey = "nQuWK7pMKI@";
         private static int OrgId = 0;
         private static int EmployeeId = 0;
 
         protected void Page_Load(object sender, EventArgs e)
-        
         {
-            if (Session["OrgId"] != null)
-            {
-
-            }
-
-            else if (Session["UserName"] == null || Session["UserId"] == null)
+            if (Session["UserName"] == null && Session["UserId"] == null && Session["EmployeeId"] == null)
             {
                 Session.Clear();
                 Session.Abandon();
@@ -52,44 +44,32 @@ namespace WSBillingMaster.Pages
 
             if (!IsPostBack)
             {
-                if (Session["OrgId"] != null)
+                int currentUserId = 0;
+                int currentRoleId = 0;
+                int currentOrgId = 0;
+
+                if (Session["UserId"] != null) int.TryParse(Session["UserId"].ToString(), out currentUserId);
+                else if (Session["EmployeeId"] != null) int.TryParse(Session["EmployeeId"].ToString(), out currentUserId);
+
+                if (Session["RoleId"] != null) int.TryParse(Session["RoleId"].ToString(), out currentRoleId);
+                if (Session["OrgId"] != null) int.TryParse(Session["OrgId"].ToString(), out currentOrgId);
+
+                hdnUserId.Value = currentUserId.ToString();
+                hdnRoleId.Value = currentRoleId.ToString();
+                hdnOrgId.Value = currentOrgId.ToString();
+
+                OrgId = currentOrgId;
+                EmployeeId = currentUserId;
+
+                using (BusinessLogicLayer bll = new BusinessLogicLayer())
                 {
-                    string userName = Session["EmployeeName"].ToString();
-                    string userId = Session["EmployeeId"].ToString();
-                    hdnUserId.Value = userId;
-                    OrgId = Convert.ToInt32(Session["OrgId"]);
-                    EmployeeId = Convert.ToInt32(Session["EmployeeId"]);
-                }
-                else
-                {
-                    string userName = Session["UserName"].ToString();
-                    string userId = Session["UserId"].ToString();
-                    hdnUserId.Value = userId;
-                    OrgId = 0;
-                    EmployeeId = 0;
+                    bool isSuperAdmin = bll.IsSuperAdminRole(currentRoleId);
+                    bool isAdmin = bll.IsAdminRole(currentRoleId);
+                    bool hasSubordinates = bll.CheckUserHasSubordinates(currentUserId);
+                    bool isApprover = isSuperAdmin || isAdmin || hasSubordinates;
+                    hdnIsApprover.Value = isApprover ? "1" : "0";
                 }
             }
-            //if (!IsPostBack)
-            //{
-            //    if (Session["UserName"] == null || Session["UserId"] == null)
-            //    {
-            //        Session.Clear();
-            //        Session.Abandon();
-            //        //Response.Redirect("~/Front/Index.aspx", true);
-            //        ScriptManager.RegisterStartupScript(
-            //            this,
-            //            this.GetType(),
-            //            "SessionExpired",
-            //            "alert('Please login first to use this tool.'); window.location.href='/Front/Index.aspx';",
-            //            true
-            //        );
-
-            //        return;
-            //    }
-            //    string userName = Session["UserName"].ToString();
-            //    string userId = Session["UserId"].ToString();
-            //    hdnUserId.Value = userId;
-            //}
         }
 
         [WebMethod]
@@ -128,26 +108,21 @@ namespace WSBillingMaster.Pages
             {
                 try
                 {
-                    obj.ExpenseDate =  Convert.ToDateTime(data[0].Date).ToString("yyyy-MM-dd");
+                    obj.ExpenseDate = Convert.ToDateTime(data[0].Date).ToString("yyyy-MM-dd");
                     obj.ExpenseId = data[0].ExpenseId;
                     obj.SubCategoryId = data[0].SubExpenseId;
-                    //obj.ExpenseFile = data[0].File.Replace(@"C:\fakepath\","");
                     obj.ExpenseFile = data[0].File?.Split('|')?[0] ?? "";
                     obj.ExpenseFile2 = data[0].File2?.Split('|')?[0] ?? "";
                     obj.ExpenseDescription = data[0].Description;
                     obj.Amount = data[0].Amount;
-					obj.Rate = data[0].Rate;
+                    obj.Rate = data[0].Rate;
                     obj.Quantity = data[0].Quantity;
                     obj.BillNumber = data[0].BillNumber;
                     obj.IsPaid = data[0].IsPaid;
                     obj.PaymentMode = data[0].PaymentMode;
-                    string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
-					int idx = url.IndexOf('?');
-					string query = idx >= 0 ? url.Substring(idx) : "";
-                    obj.FetchUserId = OrgId > 0 ? Convert.ToString(EmployeeId) : Convert.ToString(data[0].userId); // (HttpUtility.ParseQueryString(query).Get("UserId"));
-                    obj.OrgId = OrgId;//Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("OrgId"));
-                    obj.EmpId = EmployeeId;// Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("EmpId"));
-
+                    obj.FetchUserId = OrgId > 0 ? Convert.ToString(EmployeeId) : Convert.ToString(data[0].userId);
+                    obj.OrgId = OrgId;
+                    obj.EmpId = EmployeeId;
 
                     int a = obj.SaveExpense();
                     return "1";
@@ -159,52 +134,42 @@ namespace WSBillingMaster.Pages
             }
         }
 
-       [WebMethod]
+        [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public static string SearchExpense(string FromDate, string ToDate, int? ExpenseId = null, string UserId=null)
+        public static string SearchExpense(string FromDate, string ToDate, int? ExpenseId = null, string UserId = null)
         {
             using (BusinessLogicLayer obj = new BusinessLogicLayer())
             {
                 try
                 {
-                    if (FromDate != null && FromDate != "")
+                    if (!string.IsNullOrEmpty(FromDate))
                         obj.FromDate = Convert.ToDateTime(FromDate).ToString("yyyy-MM-dd");
-                    if (ToDate != null && ToDate != "")
+                    if (!string.IsNullOrEmpty(ToDate))
                         obj.ToDate = Convert.ToDateTime(ToDate).ToString("yyyy-MM-dd");
-                    if (ExpenseId != null || ExpenseId != 0)
-                    {
-                        obj.ExpenseId = ExpenseId ?? 0;
-                    }
-                    string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
-                    int idx = url.IndexOf('?');
-                    string query = idx >= 0 ? url.Substring(idx) : "";
+                    if (ExpenseId.HasValue && ExpenseId.Value != 0)
+                        obj.ExpenseId = ExpenseId.Value;
+
                     string uID = UserId;
-                    string uID2 = HttpUtility.ParseQueryString(query).Get("UserId");
-                    if (uID != null && uID != "")
-                        obj.FetchUserId = (uID);
-                    obj.OrgId = Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("OrgId"));
-                    obj.EmpId = Convert.ToInt32(HttpUtility.ParseQueryString(query).Get("EmpId"));
-                    //int ExpStatus;
-                     if (uID != null && uID != "" && Convert.ToInt32(obj.FetchUserId) > 0)
-                    {
+                    if (!string.IsNullOrEmpty(uID))
+                        obj.FetchUserId = uID;
+
+                    obj.OrgId = OrgId;
+                    obj.EmpId = EmployeeId;
+
+                    if (!string.IsNullOrEmpty(uID) && Convert.ToInt32(obj.FetchUserId) > 0)
                         obj.ExpenseStatus = 1;
-                    }
                     else if (obj.OrgId > 0)
-                    {
                         obj.ExpenseStatus = 2;
-                    }
+
                     obj.FetchUserId = uID;
                     obj.ExpenseDataStatus = "Reimbursement Created";
                     using (DataTable dt = obj.SearchExpense())
                     {
-                        string rtrn = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
-                        return rtrn;
+                        return Newtonsoft.Json.JsonConvert.SerializeObject(dt);
                     }
-
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
                     return ex.Message;
                 }
             }
@@ -218,24 +183,14 @@ namespace WSBillingMaster.Pages
             {
                 try
                 {
-                    string url = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString();
-                    int idx = url.IndexOf('?');
-                    string query = idx >= 0 ? url.Substring(idx) : "";
                     string uID = LoggedInUserID;
-                    //if (uID != null && uID != "")
-                    //    obj.FetchUserId = (uID);
-                    //obj.FetchUserId = uID;
-                    //obj.ExpenseDataStatus = "Reimbursement Created";
                     using (DataTable dt = obj.ReimbursementHistoryData(uID))
                     {
-                        string rtrn = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
-                        return rtrn;
+                        return Newtonsoft.Json.JsonConvert.SerializeObject(dt);
                     }
-
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
                     return ex.Message;
                 }
             }
@@ -247,8 +202,7 @@ namespace WSBillingMaster.Pages
         {
             var handler = new HttpClientHandler
             {
-                ServerCertificateCustomValidationCallback =
-                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
             };
             var apiBaseUrl = ConfigurationManager.AppSettings["ApiBaseUrl"];
             string apiUrl = $"{apiBaseUrl}/Expense/SaveReimbursement";
@@ -262,7 +216,6 @@ namespace WSBillingMaster.Pages
                     var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
                     var response = client.PostAsync(apiUrl, content).Result;
-                    //string responseData = response.Content.ReadAsStringAsync().Result;
 
                     if (!response.IsSuccessStatusCode)
                     {
@@ -293,7 +246,6 @@ namespace WSBillingMaster.Pages
         {
             try
             {
-                // Remove base64 header
                 string base64 = imageData.Replace("data:image/png;base64,", "");
                 byte[] bytes = Convert.FromBase64String(base64);
 
@@ -310,7 +262,7 @@ namespace WSBillingMaster.Pages
                 string fullPath = Path.Combine(folderPath, fileName);
                 File.WriteAllBytes(fullPath, bytes);
 
-                return fileName; // or relative path
+                return fileName;
             }
             catch
             {
@@ -341,12 +293,223 @@ namespace WSBillingMaster.Pages
                     obj.PaymentMode = item.PaymentMode;
                     obj.FetchUserId = item.userId.ToString();
 
-                    int result = obj.UpdateExpense(); // Implement in BLL
+                    int result = obj.UpdateExpense();
                     return result > 0 ? "1" : "0";
                 }
                 catch { return "0"; }
             }
         }
+
+        #region Hierarchy-Based Expense Approvals WebMethods
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GetTeamExpensesForApproval(string FromDate, string ToDate, string Status, int? SubordinateUserId = null)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    int currentUserId = 0;
+                    int currentOrgId = 0;
+
+                    if (HttpContext.Current.Session["UserId"] != null)
+                        int.TryParse(HttpContext.Current.Session["UserId"].ToString(), out currentUserId);
+                    else if (HttpContext.Current.Session["EmployeeId"] != null)
+                        int.TryParse(HttpContext.Current.Session["EmployeeId"].ToString(), out currentUserId);
+
+                    if (HttpContext.Current.Session["OrgId"] != null)
+                        int.TryParse(HttpContext.Current.Session["OrgId"].ToString(), out currentOrgId);
+
+                    using (DataTable dt = obj.GetExpensesForApproval(currentUserId, currentOrgId > 0 ? (int?)currentOrgId : null, Status, FromDate, ToDate, SubordinateUserId))
+                    {
+                        return JsonConvert.SerializeObject(dt);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return JsonConvert.SerializeObject(new { error = true, message = ex.Message });
+                }
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string ApproveExpenseAjax(long ExpenseId, string Remarks = "")
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    int currentUserId = 0;
+                    if (HttpContext.Current.Session["UserId"] != null)
+                        int.TryParse(HttpContext.Current.Session["UserId"].ToString(), out currentUserId);
+                    else if (HttpContext.Current.Session["EmployeeId"] != null)
+                        int.TryParse(HttpContext.Current.Session["EmployeeId"].ToString(), out currentUserId);
+
+                    if (currentUserId <= 0)
+                        return JsonConvert.SerializeObject(new { success = false, message = "Session expired. Please log in again." });
+
+                    int result = obj.ApproveExpense(ExpenseId, currentUserId, Remarks);
+                    return JsonConvert.SerializeObject(new { success = (result > 0), message = result > 0 ? "Expense approved successfully." : "Failed to approve expense." });
+                }
+                catch (Exception ex)
+                {
+                    return JsonConvert.SerializeObject(new { success = false, message = ex.Message });
+                }
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string RejectExpenseAjax(long ExpenseId, string Reason)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(Reason))
+                        return JsonConvert.SerializeObject(new { success = false, message = "Rejection reason is required." });
+
+                    int currentUserId = 0;
+                    if (HttpContext.Current.Session["UserId"] != null)
+                        int.TryParse(HttpContext.Current.Session["UserId"].ToString(), out currentUserId);
+                    else if (HttpContext.Current.Session["EmployeeId"] != null)
+                        int.TryParse(HttpContext.Current.Session["EmployeeId"].ToString(), out currentUserId);
+
+                    if (currentUserId <= 0)
+                        return JsonConvert.SerializeObject(new { success = false, message = "Session expired. Please log in again." });
+
+                    int result = obj.RejectExpense(ExpenseId, currentUserId, Reason.Trim());
+                    return JsonConvert.SerializeObject(new { success = (result > 0), message = result > 0 ? "Expense rejected." : "Failed to reject expense." });
+                }
+                catch (Exception ex)
+                {
+                    return JsonConvert.SerializeObject(new { success = false, message = ex.Message });
+                }
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string BulkApproveExpensesAjax(List<long> ExpenseIds, string Remarks = "")
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    if (ExpenseIds == null || ExpenseIds.Count == 0)
+                        return JsonConvert.SerializeObject(new { success = false, message = "No expenses selected." });
+
+                    int currentUserId = 0;
+                    if (HttpContext.Current.Session["UserId"] != null)
+                        int.TryParse(HttpContext.Current.Session["UserId"].ToString(), out currentUserId);
+                    else if (HttpContext.Current.Session["EmployeeId"] != null)
+                        int.TryParse(HttpContext.Current.Session["EmployeeId"].ToString(), out currentUserId);
+
+                    string idList = string.Join(",", ExpenseIds);
+                    int count = obj.BulkApproveExpenses(idList, currentUserId, Remarks);
+                    return JsonConvert.SerializeObject(new { success = true, count = count, message = $"{count} expense(s) approved successfully." });
+                }
+                catch (Exception ex)
+                {
+                    return JsonConvert.SerializeObject(new { success = false, message = ex.Message });
+                }
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string BulkRejectExpensesAjax(List<long> ExpenseIds, string Reason)
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    if (ExpenseIds == null || ExpenseIds.Count == 0)
+                        return JsonConvert.SerializeObject(new { success = false, message = "No expenses selected." });
+
+                    if (string.IsNullOrWhiteSpace(Reason))
+                        return JsonConvert.SerializeObject(new { success = false, message = "Rejection reason is required." });
+
+                    int currentUserId = 0;
+                    if (HttpContext.Current.Session["UserId"] != null)
+                        int.TryParse(HttpContext.Current.Session["UserId"].ToString(), out currentUserId);
+                    else if (HttpContext.Current.Session["EmployeeId"] != null)
+                        int.TryParse(HttpContext.Current.Session["EmployeeId"].ToString(), out currentUserId);
+
+                    string idList = string.Join(",", ExpenseIds);
+                    int count = obj.BulkRejectExpenses(idList, currentUserId, Reason.Trim());
+                    return JsonConvert.SerializeObject(new { success = true, count = count, message = $"{count} expense(s) rejected." });
+                }
+                catch (Exception ex)
+                {
+                    return JsonConvert.SerializeObject(new { success = false, message = ex.Message });
+                }
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GetApproverDashboardStatsAjax()
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    int currentUserId = 0;
+                    int currentOrgId = 0;
+                    if (HttpContext.Current.Session["UserId"] != null)
+                        int.TryParse(HttpContext.Current.Session["UserId"].ToString(), out currentUserId);
+                    else if (HttpContext.Current.Session["EmployeeId"] != null)
+                        int.TryParse(HttpContext.Current.Session["EmployeeId"].ToString(), out currentUserId);
+
+                    if (HttpContext.Current.Session["OrgId"] != null)
+                        int.TryParse(HttpContext.Current.Session["OrgId"].ToString(), out currentOrgId);
+
+                    using (DataTable dt = obj.GetApproverDashboardStats(currentUserId, currentOrgId > 0 ? (int?)currentOrgId : null))
+                    {
+                        return JsonConvert.SerializeObject(dt);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return JsonConvert.SerializeObject(new { error = true, message = ex.Message });
+                }
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public static string GetSubordinatesForFilterAjax()
+        {
+            using (BusinessLogicLayer obj = new BusinessLogicLayer())
+            {
+                try
+                {
+                    int currentUserId = 0;
+                    int currentOrgId = 0;
+                    if (HttpContext.Current.Session["UserId"] != null)
+                        int.TryParse(HttpContext.Current.Session["UserId"].ToString(), out currentUserId);
+                    else if (HttpContext.Current.Session["EmployeeId"] != null)
+                        int.TryParse(HttpContext.Current.Session["EmployeeId"].ToString(), out currentUserId);
+
+                    if (HttpContext.Current.Session["OrgId"] != null)
+                        int.TryParse(HttpContext.Current.Session["OrgId"].ToString(), out currentOrgId);
+
+                    using (DataTable dt = obj.GetSubordinatesForApproval(currentUserId, currentOrgId > 0 ? (int?)currentOrgId : null))
+                    {
+                        return JsonConvert.SerializeObject(dt);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return JsonConvert.SerializeObject(new { error = true, message = ex.Message });
+                }
+            }
+        }
+
+        #endregion
     }
 
     public class Expense

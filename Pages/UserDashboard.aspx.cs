@@ -31,7 +31,11 @@ namespace WSBillingMaster.Pages
             using (BusinessLogicLayer obj = new BusinessLogicLayer())
             {
                 bool isSuperAdmin = obj.IsSuperAdminRole(RoleID);
+                bool isAdmin = obj.IsAdminRole(RoleID);
+                bool canManageHierarchy = isSuperAdmin || isAdmin;
                 Session["IsSuperAdmin"] = isSuperAdmin;
+                Session["IsAdmin"] = isAdmin;
+                Session["CanManageHierarchy"] = canManageHierarchy;
 
                 using (DataTable dt = obj.GetDashboardROLEWISEMENU(RoleID))
                 {
@@ -48,7 +52,7 @@ namespace WSBillingMaster.Pages
                         string url = row["MenuUrl"] != null ? row["MenuUrl"].ToString() : "";
                         if (url.IndexOf("ManageTeamHierarchy.aspx", StringComparison.OrdinalIgnoreCase) >= 0)
                         {
-                            if (!isSuperAdmin)
+                            if (!canManageHierarchy)
                             {
                                 menuDt.Rows.RemoveAt(i);
                             }
@@ -59,8 +63,8 @@ namespace WSBillingMaster.Pages
                         }
                     }
 
-                    // For Super Admin: ensure Employee Hierarchy tile appears on dashboard
-                    if (isSuperAdmin && !hasHierarchyMenu)
+                    // For Super Admin and Admin: ensure Employee Hierarchy tile appears on dashboard
+                    if (canManageHierarchy && !hasHierarchyMenu)
                     {
                         DataRow newRow = menuDt.NewRow();
                         newRow["MenuName"] = "Employee Hierarchy";

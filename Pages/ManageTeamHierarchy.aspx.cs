@@ -38,13 +38,16 @@ namespace WSBillingMaster.Pages
                 int.TryParse(Session["EmployeeId"].ToString(), out CurrentUserId);
             }
 
-            // 2. Authorization Check: Super Admin Role Only
+            // 2. Authorization Check: Super Admin and Admin Roles
             using (BusinessLogicLayer bll = new BusinessLogicLayer())
             {
                 bool isSuperAdmin = bll.IsSuperAdminRole(CurrentRoleId);
+                bool isAdmin = bll.IsAdminRole(CurrentRoleId);
+                bool canManage = isSuperAdmin || isAdmin;
                 Session["IsSuperAdmin"] = isSuperAdmin;
+                Session["IsAdmin"] = isAdmin;
 
-                if (!isSuperAdmin)
+                if (!canManage)
                 {
                     pnlAccessDenied.Visible = true;
                     pnlMainContent.Visible = false;
@@ -65,21 +68,56 @@ namespace WSBillingMaster.Pages
         {
             using (BusinessLogicLayer bll = new BusinessLogicLayer())
             {
+                bool isSuperAdmin = Session["IsSuperAdmin"] != null && (bool)Session["IsSuperAdmin"];
+                int sessionOrgId = 0;
+                if (Session["OrgId"] != null)
+                {
+                    int.TryParse(Session["OrgId"].ToString(), out sessionOrgId);
+                }
+
                 DataTable dtOrgs = bll.GetOrganizationsList();
                 if (dtOrgs != null && dtOrgs.Rows.Count > 0)
                 {
-                    ddlOrganization.DataSource = dtOrgs;
-                    ddlOrganization.DataTextField = "OrgName";
-                    ddlOrganization.DataValueField = "OrgId";
-                    ddlOrganization.DataBind();
-
-                    // Pre-select current Session OrgId if available
-                    if (Session["OrgId"] != null)
+                    if (!isSuperAdmin && sessionOrgId > 0)
                     {
-                        string currentOrgId = Session["OrgId"].ToString();
-                        if (ddlOrganization.Items.FindByValue(currentOrgId) != null)
+                        // Admin role: scoped to their assigned organization
+                        DataView dv = dtOrgs.DefaultView;
+                        dv.RowFilter = "OrgId = " + sessionOrgId;
+                        DataTable dtFiltered = dv.ToTable();
+                        if (dtFiltered.Rows.Count > 0)
                         {
-                            ddlOrganization.SelectedValue = currentOrgId;
+                            ddlOrganization.DataSource = dtFiltered;
+                            ddlOrganization.DataTextField = "OrgName";
+                            ddlOrganization.DataValueField = "OrgId";
+                            ddlOrganization.DataBind();
+                            ddlOrganization.SelectedValue = sessionOrgId.ToString();
+                            ddlOrganization.Enabled = false;
+                            lblSelectedOrgInfo.Text = "<span class='label label-info' style='font-size:12px;'><span class='glyphicon glyphicon-lock'></span> Organization: " + dtFiltered.Rows[0]["OrgName"].ToString() + " (Admin View)</span>";
+                        }
+                        else
+                        {
+                            ddlOrganization.DataSource = dtOrgs;
+                            ddlOrganization.DataTextField = "OrgName";
+                            ddlOrganization.DataValueField = "OrgId";
+                            ddlOrganization.DataBind();
+                            if (ddlOrganization.Items.FindByValue(sessionOrgId.ToString()) != null)
+                                ddlOrganization.SelectedValue = sessionOrgId.ToString();
+                            ddlOrganization.Enabled = false;
+                        }
+                    }
+                    else
+                    {
+                        // Super Admin: can view and manage any organization
+                        ddlOrganization.DataSource = dtOrgs;
+                        ddlOrganization.DataTextField = "OrgName";
+                        ddlOrganization.DataValueField = "OrgId";
+                        ddlOrganization.DataBind();
+                        ddlOrganization.Enabled = true;
+
+                        // Pre-select current Session OrgId if available
+                        if (sessionOrgId > 0 && ddlOrganization.Items.FindByValue(sessionOrgId.ToString()) != null)
+                        {
+                            ddlOrganization.SelectedValue = sessionOrgId.ToString();
                         }
                     }
 

@@ -125,13 +125,13 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="container" style="max-width: 1050px; margin-top: 25px; margin-bottom: 50px;">
 
-        <!-- ACCESS DENIED PANEL (Non-Super Admin) -->
+        <!-- ACCESS DENIED PANEL (Non-Admin / Non-Super Admin) -->
         <asp:Panel ID="pnlAccessDenied" runat="server" Visible="false">
             <div class="denied-card">
                 <span class="glyphicon glyphicon-lock" style="font-size: 48px; color: #e74c3c; margin-bottom: 15px;"></span>
-                <h3 style="font-weight: 700; color: #2c3e50;">Super Admin Access Only</h3>
+                <h3 style="font-weight: 700; color: #2c3e50;">Admin Access Required</h3>
                 <p style="color: #7f8c8d; font-size: 14px; margin: 15px 0 25px 0;">
-                    You must be logged in as a <strong>Super Admin</strong> to manage employee hierarchy.
+                    You must be logged in as an <strong>Admin</strong> or <strong>Super Admin</strong> to manage employee hierarchy.
                 </p>
                 <a href="UserDashboard.aspx" class="btn btn-default" style="font-weight: 600;">
                     <span class="glyphicon glyphicon-arrow-left"></span> Back to Dashboard
