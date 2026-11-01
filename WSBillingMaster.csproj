@@ -247,6 +247,7 @@
     <Content Include="Front\Account.aspx" />
     <Content Include="Front\Apparels.aspx" />
     <Content Include="Front\AsyncUploadFile.ashx" />
+    <Content Include="Front\UploadSignature.ashx" />
     <Content Include="Front\CheckBrowser.html" />
     <Content Include="Front\Checkout.aspx" />
     <Content Include="Front\ContactUs.aspx">
@@ -255,6 +256,7 @@
     <Content Include="Front\Appointment1.aspx" />
     <Content Include="Front\AppointmentMaster.aspx" />
     <Content Include="Front\AsyncUploadFile.ashx" />
+    <Content Include="Front\UploadSignature.ashx" />
     <Content Include="Front\CheckBrowser.html" />
     <Content Include="Front\Checkout.aspx" />
     <Content Include="Front\ContactUs.aspx" />

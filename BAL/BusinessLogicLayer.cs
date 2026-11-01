@@ -42,6 +42,7 @@ namespace BLL
         public string UserId { get; set; }
         //public int FetchUserId { get; set; }
         public string UserName { get; set; }
+        public string Signature { get; set; }
 
         public int Quantity { get; set; }
         public int SizeId { get; set; }
@@ -843,6 +844,57 @@ namespace BLL
                 }
             }
         }
+        public int UpdateUserSignature()
+        {
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandText = "Proc_UpdateUserSignature";
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    int uId = 0;
+                    if (int.TryParse(UserId, out uId))
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@UserId", uId);
+                    }
+                    else
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@UserId", UserId);
+                    }
+                    dbSqlCommand.Parameters.AddWithValue("@Signature", string.IsNullOrEmpty(Signature) ? (object)DBNull.Value : Signature);
+                    return objDALCIILibrary.ExecuteNonQuery_RetInt(dbSqlCommand);
+                }
+            }
+        }
+
+        public int RemoveUserSignature()
+        {
+            Signature = null;
+            return UpdateUserSignature();
+        }
+
+        public DataTable GetUserSignature()
+        {
+            using (SqlCommand dbSqlCommand = new SqlCommand())
+            {
+                using (DataAccessLayer objDALCIILibrary = new DataAccessLayer())
+                {
+                    dbSqlCommand.CommandText = "Proc_GetUserSignature";
+                    dbSqlCommand.CommandType = CommandType.StoredProcedure;
+                    int uId = 0;
+                    if (int.TryParse(UserId, out uId))
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@UserId", uId);
+                    }
+                    else
+                    {
+                        dbSqlCommand.Parameters.AddWithValue("@UserId", UserId);
+                    }
+                    return objDALCIILibrary.GetDataTable(dbSqlCommand);
+                }
+            }
+        }
+
         public int DeleteSlider()
         {
             using (SqlCommand dbSqlCommand = new SqlCommand())

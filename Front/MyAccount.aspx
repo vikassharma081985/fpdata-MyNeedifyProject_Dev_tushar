@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.Master" AutoEventWireup="true" CodeBehind="MyAccount.aspx.cs" Inherits="FaduPrice.Pages.MyAccount" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Front/Home.Master" AutoEventWireup="true" CodeBehind="MyAccount.aspx.cs" Inherits="FaduPrice.Pages.MyAccount" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
@@ -361,6 +361,8 @@
     </div>
 
 
+    </div>
+
     <!-- DATABASE ADDRESSES -->
     <asp:Repeater ID="Repeater1" runat="server">
         <ItemTemplate>
@@ -395,6 +397,59 @@
 
             </div>
 
+
+            <h3>My Signature</h3>
+            <div class="MyClass">
+                <div class="row" style="padding: 10px; font-size: 14px; font-weight: bold">
+                    Manage Signature
+                    <asp:HiddenField ID="hdnSignature" runat="server" ClientIDMode="Static" />
+                </div>
+
+                <div class="row" style="margin-top: 10px; margin-bottom: 20px;">
+
+                    <!-- STATE 1: SIMPLE UPLOAD (shown when no signature exists or removed) -->
+                    <div id="divUploadSignature" runat="server" ClientIDMode="Static" class="col-md-6 col-xs-12" style="display: none;">
+                        <label style="font-weight: 600; color: #555;">Upload Signature</label>
+                        <div style="margin-top: 5px;">
+                            <input type="file" id="fileSignature" accept="image/png, image/jpeg, image/jpg" class="form-control" style="padding: 4px 10px; height: 35px !important;" onchange="previewSignature(this);" />
+                            <span style="font-size: 11px; color: #888; display: block; margin-top: 4px;">Supported formats: PNG, JPG, JPEG (Max 2MB)</span>
+                        </div>
+
+                        <!-- Selected Preview Box -->
+                        <div id="divPreviewContainer" style="display: none; margin-top: 15px; padding: 12px; border: 1px dashed #7C519B; border-radius: 6px; background: #fff; text-align: center;">
+                            <div style="font-size: 12px; font-weight: 600; color: #7C519B; margin-bottom: 6px;">Selected Preview</div>
+                            <img id="imgSignaturePreview" src="#" alt="Preview" style="max-height: 90px; max-width: 100%; object-fit: contain; border: 1px solid #eee; padding: 4px; background: #fafafa;" />
+                            <div style="margin-top: 6px;">
+                                <a href="javascript:void(0);" onclick="cancelSignaturePreview();" style="color: #d9534f; font-size: 12px; text-decoration: underline; cursor: pointer;">Cancel</a>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px;">
+                            <button type="button" id="btnUploadSig" class="btn" style="color: #fff; background-color: #7C519B; width: 160px; font-weight: 500;" onclick="uploadSignature();">
+                                <span id="btnUploadSigText">Upload</span>
+                            </button>
+                            <span id="sigUploadMsg" style="margin-left: 10px; font-size: 13px; font-weight: 500;"></span>
+                        </div>
+                    </div>
+
+                    <!-- STATE 2: SIGNATURE DISPLAY & REMOVE (shown on side when signature exists) -->
+                    <div id="divViewSignature" runat="server" ClientIDMode="Static" class="col-md-6 col-xs-12" style="display: none;">
+                        <label style="font-weight: 600; color: #555;">Your Signature</label>
+                        <div style="margin-top: 5px; padding: 15px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+                            <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 10px; flex: 1; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                                <asp:Image ID="imgCurrentSignature" ClientIDMode="Static" runat="server" CssClass="img-responsive" Style="max-height: 100px; max-width: 100%; object-fit: contain; display: inline-block; cursor: pointer;" title="Click to view full size" onclick="viewFullSignature();" />
+                            </div>
+                            <div>
+                                <button type="button" id="btnRemoveSig" class="btn btn-danger" style="font-weight: 500; padding: 8px 16px;" onclick="removeSignature();">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </div>
+                        </div>
+                        <span style="font-size: 11px; color: #888; display: block; margin-top: 6px;">To upload a different signature, remove the current signature first.</span>
+                    </div>
+
+                </div>
+            </div>
 
             <h3>Change Password</h3>
             <div class="MyClass">
@@ -616,4 +671,210 @@ function saveAddress() {
         });
     </script>
 
+    <script>
+        var selectedSignatureBase64 = "";
+        var selectedSignatureFileName = "";
+
+        function previewSignature(input) {
+            if (input.files && input.files[0]) {
+                var file = input.files[0];
+                var validTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+                if ($.inArray(file.type.toLowerCase(), validTypes) < 0 && !file.name.match(/\.(png|jpe?g)$/i)) {
+                    alert("Please select a valid image file (PNG, JPG, or JPEG).");
+                    input.value = "";
+                    cancelSignaturePreview();
+                    return;
+                }
+
+                // Check file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("Image file size should not exceed 2MB.");
+                    input.value = "";
+                    cancelSignaturePreview();
+                    return;
+                }
+
+                selectedSignatureFileName = file.name;
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    selectedSignatureBase64 = e.target.result;
+                    $('#imgSignaturePreview').attr('src', selectedSignatureBase64);
+                    $('#divPreviewContainer').show();
+                    $('#sigStatusMsg').text('').css('color', '');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function cancelSignaturePreview() {
+            selectedSignatureBase64 = "";
+            selectedSignatureFileName = "";
+            $('#fileSignature').val('');
+            $('#imgSignaturePreview').attr('src', '#');
+            $('#divPreviewContainer').hide();
+            $('#sigStatusMsg').text('');
+        }
+
+        function viewFullSignature() {
+            var src = $('#imgCurrentSignature').attr('src');
+            if (src && src !== '#' && src !== '') {
+                window.open(src, '_blank');
+            }
+        }
+
+        function uploadSignature() {
+            var userId = $('[id$=hdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("User session not found. Please log in again.");
+                return;
+            }
+
+            var fileInput = document.getElementById('fileSignature');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert("Please select a signature image file first.");
+                return;
+            }
+
+            var file = fileInput.files[0];
+            var validTypes = ["image/png", "image/jpeg", "image/jpg"];
+            if ($.inArray(file.type.toLowerCase(), validTypes) < 0 && !file.name.match(/\.(png|jpe?g)$/i)) {
+                alert("Please select a valid image file (PNG, JPG, or JPEG).");
+                return;
+            }
+
+            if (file.size > 4 * 1024 * 1024) {
+                alert("File size exceeds 4MB. Please select a smaller image.");
+                return;
+            }
+
+            $('#btnUploadSig').prop('disabled', true);
+            $('#btnUploadSigText').text('Uploading...');
+            $('#sigUploadMsg').text('Uploading signature...').css('color', '#7C519B');
+
+            var formData = new FormData();
+            formData.append("signatureFile", file);
+            formData.append("userId", userId);
+
+            $.ajax({
+                url: "UploadSignature.ashx",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                timeout: 120000,
+                success: function (res) {
+                    $('#btnUploadSig').prop('disabled', false);
+                    $('#btnUploadSigText').text('Upload');
+
+                    if (typeof res === "string") {
+                        try {
+                            res = JSON.parse(res);
+                        } catch (e) { }
+                    }
+
+                    if (res && res.success) {
+                        alert(res.message || 'Signature uploaded successfully!');
+                        var updatedUrl = res.imageUrl + '?t=' + new Date().getTime();
+                        $('#imgCurrentSignature').attr('src', updatedUrl);
+                        $('[id$=hdnSignature]').val(res.fileName);
+                        cancelSignaturePreview();
+
+                        // Switch state: Hide upload option, show signature with remove button
+                        $('#divUploadSignature').hide();
+                        $('#divViewSignature').show();
+                    } else {
+                        var errMsg = (res && res.message) ? res.message : 'Upload failed. Please check the file and try again.';
+                        alert(errMsg);
+                        $('#sigUploadMsg').text(errMsg).css('color', 'red');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#btnUploadSig').prop('disabled', false);
+                    $('#btnUploadSigText').text('Upload');
+
+                    var errMsg = 'Error uploading signature.';
+                    if (xhr.responseJSON) {
+                        errMsg = xhr.responseJSON.Message || xhr.responseJSON.message || xhr.responseJSON.ExceptionMessage || errMsg;
+                    } else if (xhr.responseText) {
+                        try {
+                            var json = JSON.parse(xhr.responseText);
+                            errMsg = json.Message || json.message || json.ExceptionMessage || errMsg;
+                        } catch (e) {
+                            if (xhr.status === 413) {
+                                errMsg = "The file is too large to upload. Please choose an image under 4MB.";
+                            } else if (xhr.status === 404) {
+                                errMsg = "Upload handler not found on server.";
+                            } else if (xhr.status === 500) {
+                                errMsg = "Server error during upload. Please verify database stored procedures.";
+                            } else {
+                                errMsg = error || status || errMsg;
+                            }
+                        }
+                    }
+                    alert(errMsg);
+                    $('#sigUploadMsg').text(errMsg).css('color', 'red');
+                }
+            });
+        }
+
+        function removeSignature() {
+            if (!confirm("Are you sure you want to remove your signature?")) {
+                return;
+            }
+
+            var userId = $('[id$=hdnUserId]').val();
+            if (!userId || userId === "0") {
+                alert("User session not found. Please log in again.");
+                return;
+            }
+
+            $('#btnRemoveSig').prop('disabled', true).text('Removing...');
+
+            $.ajax({
+                url: "MyAccount.aspx/RemoveSignature",
+                type: "POST",
+                data: JSON.stringify({ userId: userId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                timeout: 120000,
+                success: function (response) {
+                    $('#btnRemoveSig').prop('disabled', false).html('<span class="glyphicon glyphicon-trash"></span> Remove');
+
+                    var res = response.d;
+                    if (typeof res === "string") {
+                        try { res = JSON.parse(res); } catch (e) { }
+                    }
+
+                    if (res && res.success) {
+                        alert(res.message || 'Signature removed successfully!');
+                        $('#imgCurrentSignature').attr('src', '');
+                        $('[id$=hdnSignature]').val('');
+                        cancelSignaturePreview();
+
+                        // Switch state: Hide signature display, show simple upload option
+                        $('#divViewSignature').hide();
+                        $('#divUploadSignature').show();
+                    } else {
+                        var errMsg = (res && res.message) ? res.message : 'Error removing signature.';
+                        alert(errMsg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $('#btnRemoveSig').prop('disabled', false).html('<span class="glyphicon glyphicon-trash"></span> Remove');
+                    var errMsg = 'Error removing signature.';
+                    if (xhr.responseJSON) {
+                        errMsg = xhr.responseJSON.Message || xhr.responseJSON.message || errMsg;
+                    } else if (xhr.responseText) {
+                        try {
+                            var json = JSON.parse(xhr.responseText);
+                            errMsg = json.Message || json.message || errMsg;
+                        } catch (e) { }
+                    }
+                    alert(errMsg);
+                }
+            });
+        }
+    </script>
 </asp:Content>
