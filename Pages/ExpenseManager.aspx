@@ -1478,6 +1478,7 @@
 
         function renderExpenseCards() {
             $('#cardViewContainer').empty(); // clear old cards
+            $('#chkSelectAll').prop('checked', false);
 
             var start = (currentPage - 1) * pageSize;
             var end = start + pageSize;
@@ -1491,10 +1492,15 @@
             $.each(pageData, function (index, value) {
                 var html = '<div class="expense-card" style="border:1px solid #ccc; font-size:14px; padding:10px; margin-bottom:10px; border-radius:5px; box-shadow: 0px 0px 5px rgba(0,0,0,0.1);">';
 
-                if (value.Status != "Reimbursement Created") {
+                var appStatus = value.ApprovalStatus || 'Pending';
+                var isApproved = (appStatus === 'Approved');
+                var isReimbursed = (value.Status === 'Reimbursement Created');
+
+                if (isApproved && !isReimbursed) {
                     html += '<input type="checkbox" class="chkSingle" data-id="' + value.ID + '" style="margin-bottom:6px;"> ';
                 } else {
-                    html += '<input type="checkbox" class="chkSingle" disabled style="margin-bottom:6px;"> ';
+                    var disabledTooltip = isReimbursed ? 'Reimbursement already created' : (appStatus === 'Rejected' ? 'Expense rejected' : 'Pending manager approval');
+                    html += '<input type="checkbox" class="chkSingle" disabled data-id="' + value.ID + '" title="' + disabledTooltip + '" style="margin-bottom:6px; cursor: not-allowed;"> ';
                 }
                 html += '<strong>SNo: </strong>' + (start + index + 1) + '<br>';
                 html += '<strong>Date: </strong>' + value.ExpenseDate + '<br>';
@@ -1559,10 +1565,15 @@
 
 
 
-        // Select/Deselect All checkboxes
+        // Select/Deselect All checkboxes (only check enabled checkboxes)
         $(document).on('change', '#chkSelectAll', function () {
             var isChecked = $(this).is(':checked');
-            $('.chkSingle').prop('checked', isChecked);
+            var $enabled = $('.chkSingle:enabled');
+            if ($enabled.length === 0) {
+                $(this).prop('checked', false);
+                return;
+            }
+            $enabled.prop('checked', isChecked);
         });
 
         // If any single checkbox is unchecked, uncheck Select All
@@ -1570,13 +1581,13 @@
             if (!$(this).is(':checked')) {
                 $('#chkSelectAll').prop('checked', false);
             } else {
-                // If all checkboxes are checked, check Select All
-                if ($('.chkSingle:checked').length === $('.chkSingle').length) {
+                // If all enabled checkboxes are checked, check Select All
+                var $enabled = $('.chkSingle:enabled');
+                if ($enabled.length > 0 && $('.chkSingle:checked').length === $enabled.length) {
                     $('#chkSelectAll').prop('checked', true);
                 }
             }
-        }
-        );
+        });
 
 
         function OpenRbmPopup() {
@@ -1925,6 +1936,7 @@
         function renderExpenseTable() {
 
             $('#tblExpense tr').slice(1).remove();
+            $('#chkSelectAll').prop('checked', false);
             var totExpense = 0;
 
             var start = (currentPage - 1) * pageSize;
@@ -1935,12 +1947,17 @@
 
                 totExpense += value.Amount;
 
+                var appStatus = value.ApprovalStatus || 'Pending';
+                var isApproved = (appStatus === 'Approved');
+                var isReimbursed = (value.Status === 'Reimbursement Created');
+
                 var html = '<tr>';
-                if (value.Status != "Reimbursement Created") {
+                if (isApproved && !isReimbursed) {
                     html += '<td class="MyHeader"><input type="checkbox" class="chkSingle" data-id="' + value.ID + '" /></td>';
                 }
                 else {
-                    html += '<td class="MyHeader"><input type="checkbox" disabled class="chkSingle" data-id="' + value.ID + '" /></td>';
+                    var disabledTooltip = isReimbursed ? 'Reimbursement already created' : (appStatus === 'Rejected' ? 'Expense rejected' : 'Pending manager approval');
+                    html += '<td class="MyHeader"><input type="checkbox" disabled class="chkSingle" data-id="' + value.ID + '" title="' + disabledTooltip + '" style="cursor: not-allowed;" /></td>';
                     //html += '<td class="MyHeader"></td>';
                 }
                 html += '<td class="MyHeader">' + (start + index + 1) + '</td>';
