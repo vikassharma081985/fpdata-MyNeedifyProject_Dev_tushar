@@ -1125,6 +1125,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="BAL\PasswordHelper.cs" />
+    <Compile Include="BAL\EasyAttendanceSyncHelper.cs" />
     <Compile Include="Front\ForgotPassword.aspx.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -137,6 +137,18 @@ namespace DAL
 
         }
 
+        public object ExecuteScalar(SqlCommand cmd)
+        {
+            using (SqlConnection con = new SqlConnection())
+            {
+                ConStr = ConfigurationManager.ConnectionStrings["WsBilling"].ConnectionString;
+                con.ConnectionString = ConStr;
+                cmd.Connection = con;
+                con.Open();
+                return cmd.ExecuteScalar();
+            }
+        }
+
     }
 }
 

@@ -121,8 +121,25 @@ namespace WSBillingMaster.Pages
                     sqlCommand.Parameters.AddWithValue("@OrgId", OrgId);
                     sqlCommand.Parameters.AddWithValue("@IsBarber", IsBarber);
 
-                    if (objDAL.ExecuteNonQuery_RetInt(sqlCommand) > 0)
+                    int rowsAffected = objDAL.ExecuteNonQuery_RetInt(sqlCommand);
+                    if (rowsAffected > 0)
                     {
+                        try
+                        {
+                            using (SqlCommand getCmd = new SqlCommand("SELECT TOP 1 UserId FROM tblUser WITH (NOLOCK) WHERE (Mobile = @Mobile OR Email = @Email) AND OrgId = @OrgId ORDER BY UserId DESC"))
+                            {
+                                getCmd.Parameters.AddWithValue("@Mobile", Mobile ?? "");
+                                getCmd.Parameters.AddWithValue("@Email", Email ?? "");
+                                getCmd.Parameters.AddWithValue("@OrgId", OrgId);
+                                object uidObj = objDAL.ExecuteScalar(getCmd);
+                                if (uidObj != null && uidObj != DBNull.Value)
+                                {
+                                    long newUid = Convert.ToInt64(uidObj);
+                                    EasyAttendanceSyncHelper.ProvisionEmployee(OrgId, newUid, Name, Mobile, Email, RoleID, Password);
+                                }
+                            }
+                        }
+                        catch { }
                         return "1";
                     }
                     else
