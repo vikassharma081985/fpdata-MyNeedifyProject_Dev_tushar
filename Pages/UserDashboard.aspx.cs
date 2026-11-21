@@ -50,6 +50,13 @@ namespace WSBillingMaster.Pages
                     {
                         DataRow row = menuDt.Rows[i];
                         string url = row["MenuUrl"] != null ? row["MenuUrl"].ToString() : "";
+                        if (url.Equals("Attendance.aspx", StringComparison.OrdinalIgnoreCase) ||
+                            url.StartsWith("Attendance.aspx?", StringComparison.OrdinalIgnoreCase))
+                        {
+                            menuDt.Rows.RemoveAt(i);
+                            continue;
+                        }
+
                         if (url.IndexOf("ManageTeamHierarchy.aspx", StringComparison.OrdinalIgnoreCase) >= 0)
                         {
                             if (!canManageHierarchy)
@@ -72,6 +79,12 @@ namespace WSBillingMaster.Pages
                         newRow["MenuClass"] = "glyphicon-tree-conifer";
                         menuDt.Rows.Add(newRow);
                     }
+
+                    DataRow attendanceRow = menuDt.NewRow();
+                    attendanceRow["MenuName"] = "Attendance";
+                    attendanceRow["MenuUrl"] = "Attendance.aspx";
+                    attendanceRow["MenuClass"] = "glyphicon-calendar";
+                    menuDt.Rows.Add(attendanceRow);
 
                     lvMenu.DataSource = menuDt;
                     lvMenu.DataBind();

@@ -51,14 +51,6 @@ namespace WSBillingMaster.Pages
                         objBLL.Pincode = Pincode;
                         objBLL.UserId = "1";
                         int NewOrganizationId = objBLL.AddOrganizationMasterDetails();
-                        if (NewOrganizationId > 0)
-                        {
-                            try
-                            {
-                                EasyAttendanceSyncHelper.ProvisionCompany(NewOrganizationId, SellerName, BrandName, Email, Mobile, Password);
-                            }
-                            catch { }
-                        }
                         return NewOrganizationId;
                     }
                     catch (Exception ex)
