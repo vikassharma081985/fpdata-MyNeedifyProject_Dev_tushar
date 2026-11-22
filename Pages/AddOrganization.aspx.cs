@@ -40,7 +40,7 @@ namespace WSBillingMaster.Pages
                         objBLL.LandLineNumber = LandLineNumber;
                         objBLL.Email = Email;
                         objBLL.Website = Website;
-                        objBLL.Password = Password;
+                        objBLL.Password = PasswordHelper.HashPasswordSHA256(Password.Trim());
                         objBLL.UserName = Username;
                         objBLL.OrgProfileImage = ProfileImage;
                         objBLL.Latitude = Latitude;
@@ -77,7 +77,7 @@ namespace WSBillingMaster.Pages
                         objBLL.LandLineNumber = LandLineNumber;
                         objBLL.Email = Email;
                         objBLL.Website = Website;
-                        objBLL.Password = Password;
+                        objBLL.Password = PasswordHelper.HashPasswordSHA256(Password.Trim());
                         objBLL.OrgProfileImage = ProfileImage;
                         objBLL.Latitude = Latitude;
                         objBLL.Longitude = Longitude;
