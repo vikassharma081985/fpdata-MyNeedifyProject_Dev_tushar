@@ -38,9 +38,28 @@ namespace WSBillingMaster.Pages
 
             using (BusinessLogicLayer objBLL = new BusinessLogicLayer())
             {
-                DataTable dt = objBLL.GetJobRegistrations(txtSearchSkill.Text.Trim(), txtSearchLocation.Text.Trim(), ddlSearchExperience.SelectedValue);
-                rptJobs.DataSource = dt;
+                string category = selectedJobCategory.Value;
+                string keyword = txtSearchSkill.Text.Trim();
+                string skill = category.Length == 0 ? keyword : category;
+                DataTable registrations = objBLL.GetJobRegistrations(
+                    skill, txtSearchLocation.Text.Trim(), ddlSearchExperience.SelectedValue);
+
+                if (registrations != null && category.Length > 0)
+                {
+                    for (int index = registrations.Rows.Count - 1; index >= 0; index--)
+                    {
+                        string registeredSkill = Convert.ToString(registrations.Rows[index]["Skill"]).Trim();
+                        if (!string.Equals(registeredSkill, category, StringComparison.OrdinalIgnoreCase) ||
+                            registeredSkill.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) < 0)
+                        {
+                            registrations.Rows.RemoveAt(index);
+                        }
+                    }
+                }
+
+                rptJobs.DataSource = registrations;
                 rptJobs.DataBind();
+                jobSearchEmpty.Visible = rptJobs.Items.Count == 0;
             }
         }
 

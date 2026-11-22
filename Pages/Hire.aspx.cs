@@ -1,6 +1,7 @@
 using System;
 using System.Web.UI;
 using System.Data;
+using System.Globalization;
 using BLL;
 
 namespace WSBillingMaster.Pages
@@ -25,8 +26,7 @@ namespace WSBillingMaster.Pages
                         hdnRegId.Value = regId.ToString();
                         LoadCandidateSummary(regId);
                         
-                        // Set default joining date to tomorrow
-                        txtHireDate.Text = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+                        txtHireDate.Text = GetRequestedJoiningDate();
                     }
                     else
                     {
@@ -38,6 +38,25 @@ namespace WSBillingMaster.Pages
                     Response.Redirect("Job.aspx");
                 }
             }
+        }
+
+        private string GetRequestedJoiningDate()
+        {
+            DateTime today = DateTime.Today;
+            DateTime requestedDate;
+            if (DateTime.TryParseExact(Request.Form["jobCustomDate"], "yyyy-MM-dd",
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out requestedDate) &&
+                requestedDate >= today)
+            {
+                return requestedDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            }
+
+            if (Request.Form["jobWhenNeeded"] == "today")
+            {
+                return today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            }
+
+            return today.AddDays(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
         private void LoadCandidateSummary(int regId)

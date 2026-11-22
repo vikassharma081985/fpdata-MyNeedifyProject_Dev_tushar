@@ -45,13 +45,21 @@ namespace WSBillingMaster.Pages
         protected global::System.Web.UI.WebControls.DropDownList ddlSearchExperience;
 
         /// <summary>
-        /// txtSearchDate control.
+        /// pnlJobSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearchDate;
+        protected global::System.Web.UI.WebControls.Panel pnlJobSearch;
+
+        protected global::System.Web.UI.WebControls.HiddenField selectedJobCategory;
+
+        protected global::System.Web.UI.WebControls.RadioButtonList jobWhenNeeded;
+
+        protected global::System.Web.UI.WebControls.TextBox jobCustomDate;
+
+        protected global::System.Web.UI.WebControls.PlaceHolder jobSearchEmpty;
 
         /// <summary>
         /// btnSearch control.
