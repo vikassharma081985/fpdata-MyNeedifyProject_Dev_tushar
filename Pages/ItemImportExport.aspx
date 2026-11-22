@@ -152,7 +152,8 @@
             </div>
             <div class="mb-3">
                 <label for="ddlSeller" class="form-label fw-bold">Select Vendor</label>
-                <asp:DropDownList ID="ddlSeller" runat="server" CssClass="form-control form-select">
+                <asp:DropDownList ID="ddlSeller" runat="server" CssClass="form-control form-select" AppendDataBoundItems="true">
+                    <asp:ListItem Value="">-- No vendor selected --</asp:ListItem>
                 </asp:DropDownList>
             </div>
             <!-- ✅ Step Section -->

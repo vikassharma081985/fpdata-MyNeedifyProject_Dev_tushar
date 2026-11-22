@@ -271,7 +271,10 @@ namespace WSBillingMaster.Pages
                 objBLL.XML = hdnXML.Value;
                 objBLL.Ip = objBLL.GetVisitorsIPAddresss();
                 objBLL.UserId = Convert.ToString(Session["EmployeeId"]);
-                objBLL.SellerId = Convert.ToInt32(ddlSeller.SelectedValue);
+                int sellerId;
+                objBLL.SellerId = int.TryParse(ddlSeller.SelectedValue, out sellerId) && sellerId > 0
+                    ? sellerId
+                    : 0;
                 using (DataTable dt = objBLL.ImportItems())
                 {
                     int RowsInserted = dt.Rows.Count;

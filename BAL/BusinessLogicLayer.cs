@@ -1375,7 +1375,8 @@ namespace BLL
                     sqlCommand.Parameters.AddWithValue("@XML", XML);
                     sqlCommand.Parameters.AddWithValue("@IP", Ip);
                     sqlCommand.Parameters.AddWithValue("@UserId", UserId);
-                    sqlCommand.Parameters.AddWithValue("@SellerId", SellerId);
+                    sqlCommand.Parameters.Add("@SellerId", SqlDbType.Int).Value =
+                        SellerId > 0 ? (object)SellerId : DBNull.Value;
                     sqlCommand.Parameters.AddWithValue("@OrgId", Convert.ToInt32(HttpContext.Current.Session["OrgId"]));
                     using (DataSet ds = objDAL.GetDataSet(sqlCommand))
                     {
