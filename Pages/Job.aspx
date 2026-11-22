@@ -218,7 +218,12 @@
   <body class="bg-light">
     <form id="form1" runat="server">
       <!-- Banner -->
-      <section class="banner d-flex align-items-center justify-content-center">
+      <section class="banner d-flex flex-column align-items-center justify-content-center gap-3">
+        <div class="container">
+          <button type="button" id="jobBackButton" class="btn btn-sm btn-outline-light">
+            <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i> Back
+          </button>
+        </div>
         <h2 class="fw-bold display-6 text-center">ONLINE Job Search Portal
 
           <span class="banner-copy" lang="hi">अपने आस-पास के लोगों को काम दें।
@@ -380,6 +385,10 @@
 
     <script>
       (function () {
+        document.getElementById('jobBackButton').addEventListener('click', function () {
+          window.history.back();
+        });
+
         const category = document.getElementById('selectedJobCategory');
         const keyword = document.getElementById('txtSearchSkill');
         const search = document.getElementById('btnSearch');
