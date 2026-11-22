@@ -343,42 +343,51 @@
                 });
             }
 
+            function ImportXmlElement(name, value) {
+                var text = String(value);
+                if (text === '\u00a0') {
+                    text = '';
+                }
+                text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return '<' + name + '>' + text + '</' + name + '>';
+            }
+
             function Save() {
                 var IsValid = false;
                 var XML = '<Root>';
                 $('[id$=grd]').find('tr').each(function (index) {
                     if (index > 0) {
                         IsValid = true;
-                        var ItemName = $(this).find('td').eq(1).html();
-                        var Category = $(this).find('td').eq(2).html();
-                        var SubCategory = $(this).find('td').eq(3).html();
-                        var SubSubCategory = $(this).find('td').eq(4).html();
-                        var BatchNo = $(this).find('td').eq(5).html();
-                        var Size = $(this).find('td').eq(6).html();
-                        var Cost = $(this).find('td').eq(7).html();
-                        var GST = $(this).find('td').eq(8).html();
-                        var Freight = $(this).find('td').eq(9).html();
-                        var Misc = $(this).find('td').eq(10).html();
-                        var ProfitMargin = $(this).find('td').eq(11).html();
-                        var MRP = $(this).find('td').eq(12).html();
-                        var Stock = $(this).find('td').eq(13).html();
-                        var Remarks = $(this).find('td').eq(14).html();
+                        var ItemName = $(this).find('td').eq(1).text();
+                        var Category = $(this).find('td').eq(2).text();
+                        var SubCategory = $(this).find('td').eq(3).text();
+                        var SubSubCategory = $(this).find('td').eq(4).text();
+                        var BatchNo = $(this).find('td').eq(5).text();
+                        var Size = $(this).find('td').eq(6).text();
+                        var Cost = $(this).find('td').eq(7).text();
+                        var GST = $(this).find('td').eq(8).text();
+                        var Freight = $(this).find('td').eq(9).text();
+                        var Misc = $(this).find('td').eq(10).text();
+                        var ProfitMargin = $(this).find('td').eq(11).text();
+                        var MRP = $(this).find('td').eq(12).text();
+                        var Stock = $(this).find('td').eq(13).text();
+                        var Remarks = $(this).find('td').eq(14).text();
 
                         XML += '<Node>';
-                        XML += '<ItemName>' + ItemName + '</ItemName>';
-                        XML += '<Category>' + Category + '</Category>';
-                        XML += '<SubCategory>' + SubCategory + '</SubCategory>';
-                        XML += '<SubSubCategory>' + SubSubCategory + '</SubSubCategory>';
-                        XML += '<BatchNo>' + BatchNo + '</BatchNo>';
-                        XML += '<Cost>' + Cost + '</Cost>';
-                        XML += '<GST>' + GST + '</GST>';
-                        XML += '<Freight>' + Freight + '</Freight>';
-                        XML += '<Misc>' + Misc + '</Misc>';
-                        XML += '<ProfitMargin>' + ProfitMargin + '</ProfitMargin>';
-                        XML += '<MRP>' + MRP + '</MRP>';
-                        XML += '<Size>' + Size + '</Size>';
-                        XML += '<Stock>' + Stock + '</Stock>';
-                        XML += '<Remarks>' + Remarks + '</Remarks>';
+                        XML += ImportXmlElement('ItemName', ItemName);
+                        XML += ImportXmlElement('Category', Category);
+                        XML += ImportXmlElement('SubCategory', SubCategory);
+                        XML += ImportXmlElement('SubSubCategory', SubSubCategory);
+                        XML += ImportXmlElement('BatchNo', BatchNo);
+                        XML += ImportXmlElement('Cost', Cost);
+                        XML += ImportXmlElement('GST', GST);
+                        XML += ImportXmlElement('Freight', Freight);
+                        XML += ImportXmlElement('Misc', Misc);
+                        XML += ImportXmlElement('ProfitMargin', ProfitMargin);
+                        XML += ImportXmlElement('MRP', MRP);
+                        XML += ImportXmlElement('Size', Size);
+                        XML += ImportXmlElement('Stock', Stock);
+                        XML += ImportXmlElement('Remarks', Remarks);
 
                         XML += '</Node>';
                     }
@@ -388,20 +397,20 @@
                     if (index != ($('#tblData tr').length - 1)) {
                         IsValid = true;
 
-                        var ItemName = $(this).find('td').eq(0).html();
-                        var Category = $(this).find('td').eq(1).html();
-                        var SubCategory = $(this).find('td').eq(2).html();
-                        var SubSubCategory = $(this).find('td').eq(3).html();
-                        var BatchNo = $(this).find('td').eq(4).html();
-                        var Size = $(this).find('td').eq(5).html();
-                        var Cost = $(this).find('td').eq(6).html();
-                        var GST = $(this).find('td').eq(7).html();
-                        var Freight = $(this).find('td').eq(8).html();
-                        var Misc = $(this).find('td').eq(9).html();
-                        var ProfitMargin = $(this).find('td').eq(10).html();
-                        var MRP = $(this).find('td').eq(11).html();
-                        var Stock = $(this).find('td').eq(12).html();
-                        var Remarks = $(this).find('td').eq(13).html();
+                        var ItemName = $(this).find('td').eq(0).text();
+                        var Category = $(this).find('td').eq(1).text();
+                        var SubCategory = $(this).find('td').eq(2).text();
+                        var SubSubCategory = $(this).find('td').eq(3).text();
+                        var BatchNo = $(this).find('td').eq(4).text();
+                        var Size = $(this).find('td').eq(5).text();
+                        var Cost = $(this).find('td').eq(6).text();
+                        var GST = $(this).find('td').eq(7).text();
+                        var Freight = $(this).find('td').eq(8).text();
+                        var Misc = $(this).find('td').eq(9).text();
+                        var ProfitMargin = $(this).find('td').eq(10).text();
+                        var MRP = $(this).find('td').eq(11).text();
+                        var Stock = $(this).find('td').eq(12).text();
+                        var Remarks = $(this).find('td').eq(13).text();
 
                         var TotalCost = parseInt(Cost);
 
@@ -413,20 +422,20 @@
 
 
                         XML += '<Node>';
-                        XML += '<ItemName>' + ItemName + '</ItemName>';
-                        XML += '<Category>' + Category + '</Category>';
-                        XML += '<SubCategory>' + SubCategory + '</SubCategory>';
-                        XML += '<SubSubCategory>' + SubSubCategory + '</SubSubCategory>';
-                        XML += '<BatchNo>' + BatchNo + '</BatchNo>';
-                        XML += '<Cost>' + Cost + '</Cost>';
-                        XML += '<GST>' + GST + '</GST>';
-                        XML += '<Freight>' + Freight + '</Freight>';
-                        XML += '<Misc>' + Misc + '</Misc>';
-                        XML += '<ProfitMargin>' + ProfitMargin + '</ProfitMargin>';
-                        XML += '<MRP>' + MRP + '</MRP>';
-                        XML += '<Size>' + Size + '</Size>';
-                        XML += '<Stock>' + Stock + '</Stock>';
-                        XML += '<Remarks>' + Remarks + '</Remarks>';
+                        XML += ImportXmlElement('ItemName', ItemName);
+                        XML += ImportXmlElement('Category', Category);
+                        XML += ImportXmlElement('SubCategory', SubCategory);
+                        XML += ImportXmlElement('SubSubCategory', SubSubCategory);
+                        XML += ImportXmlElement('BatchNo', BatchNo);
+                        XML += ImportXmlElement('Cost', Cost);
+                        XML += ImportXmlElement('GST', GST);
+                        XML += ImportXmlElement('Freight', Freight);
+                        XML += ImportXmlElement('Misc', Misc);
+                        XML += ImportXmlElement('ProfitMargin', ProfitMargin);
+                        XML += ImportXmlElement('MRP', MRP);
+                        XML += ImportXmlElement('Size', Size);
+                        XML += ImportXmlElement('Stock', Stock);
+                        XML += ImportXmlElement('Remarks', Remarks);
                         XML += '</Node>';
                     }
                 });
@@ -480,7 +489,7 @@
             function AddRow(ctrl) {
 
                 var IsValid = true;
-                var html = '<tr>';
+                var row = $('<tr>');
                 $(ctrl).closest('tr').find('input[type=text]').each(function (index) {
                     if (index != 2 && index != 3) {
                         if ($(this).val().trim() == "") {
@@ -489,25 +498,25 @@
                     }
                     if (index == 7) {
                         if ($(this).prev().val() == "1") {
-                            html += '<td> Rs.' + $(this).val() + '</td>';
+                            row.append($('<td>').text(' Rs.' + $(this).val()));
 
                         } else
-                            html += '<td>' + $(this).val() + '%</td>';
+                            row.append($('<td>').text($(this).val() + '%'));
                     }
                     else if (index == 10) {
                         if ($(this).prev().val() == "1") {
-                            html += '<td> Rs.' + $(this).val() + '</td>';
+                            row.append($('<td>').text(' Rs.' + $(this).val()));
 
                         } else
-                            html += '<td>' + $(this).val() + '%</td>';
+                            row.append($('<td>').text($(this).val() + '%'));
                     }
                     else {
-                        html += '<td>' + $(this).val() + '</td>';
+                        row.append($('<td>').text($(this).val()));
                     }
                 });
-                html += '<td></td></tr>';
+                row.append($('<td>'));
                 if (IsValid) {
-                    $('#tblData').prepend(html);
+                    $('#tblData').prepend(row);
                     $(ctrl).closest('tr').find('input[type=text]').val('');
                     $('#ddlCategory').val('0');
                     $('#ddlSubCategory').empty().append('<option value="0">--Select--</option>');
